@@ -122,9 +122,34 @@ class _DashboardContent extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                Text('Totala Utgifter', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey)),
-                const SizedBox(height: 8),
-                Text(currency.format(totalExpenses), style: Theme.of(context).textTheme.displayMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      children: [
+                        Text('Inkomst', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey)),
+                        const SizedBox(height: 8),
+                        Text(
+                          currency.format(totalIncome),
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.greenAccent,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text('Utgifter', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey)),
+                        const SizedBox(height: 8),
+                        Text(
+                          currency.format(totalExpenses),
+                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 16),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
