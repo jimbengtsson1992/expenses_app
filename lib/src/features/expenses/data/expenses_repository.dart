@@ -114,12 +114,12 @@ class ExpensesRepository {
   }
 
   List<Expense> _parseSasAmexCsv(String content, String filename) {
-    // SAS Amex: Comma separated.
+    // SAS Amex: Semicolon separated.
     // Section "Köp/uttag" starts around line 26/27.
-    // Headers: Datum,Bokfört,Specifikation,Ort,Valuta,Utl. belopp,Belopp
-    // 2026-01-08,2026-01-09,WILLYS GOTEBORG HVIT,GOTEBORG,SEK,0,130.97
+    // Headers: Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
+    // 2026-01-08;2026-01-09;WILLYS GOTEBORG HVIT;GOTEBORG;SEK;0;130.97
     
-    final rows = const CsvToListConverter(fieldDelimiter: ',', eol: '\n').convert(content);
+    final rows = const CsvToListConverter(fieldDelimiter: ';', eol: '\n').convert(content);
     final expenses = <Expense>[];
     const sourceName = 'SAS Amex';
     
