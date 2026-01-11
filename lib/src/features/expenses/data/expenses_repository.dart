@@ -131,6 +131,16 @@ class ExpensesRepository {
 
       final firstCol = row[0].toString();
       
+      // Skip the "Totalt övriga händelser" section (contains payments which we want to filter)
+      if (firstCol.contains('Totalt övriga')) {
+        // Skip until we find the next section
+        while (i < rows.length && !(rows[i][0].toString().contains('Köp') || rows[i][0].toString() == 'Datum')) {
+          i++;
+        }
+        if (i >= rows.length) break;
+        continue;
+      }
+      
       // Detect start of section
       if (firstCol == 'Datum' && row.length > 6 && row[2].toString() == 'Specifikation') {
         isInTransactionSection = true;
