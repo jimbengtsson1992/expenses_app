@@ -128,7 +128,7 @@ class _DashboardContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     InkWell(
-                      onTap: () => ExpensesListRoute(filterType: 'income').go(context),
+                      onTap: () => const ExpensesListRoute(filterType: 'income').go(context),
                       borderRadius: BorderRadius.circular(12),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -148,7 +148,7 @@ class _DashboardContent extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () => ExpensesListRoute(filterType: 'expense').go(context),
+                      onTap: () => const ExpensesListRoute(filterType: 'expense').go(context),
                       borderRadius: BorderRadius.circular(12),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -170,7 +170,7 @@ class _DashboardContent extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   decoration: BoxDecoration(
-                    color: isSaved ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
+                    color: isSaved ? Colors.green.withValues(alpha: 0.2) : Colors.red.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
@@ -203,7 +203,7 @@ class _DashboardContent extends StatelessWidget {
                        children: [
                          Container(
                            padding: const EdgeInsets.all(8),
-                           decoration: BoxDecoration(color: Color(cat.colorValue).withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
+                           decoration: BoxDecoration(color: Color(cat.colorValue).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
                            child: Text(cat.emoji, style: const TextStyle(fontSize: 20)),
                          ),
                          const SizedBox(width: 12),

@@ -7,8 +7,6 @@ import 'routes.dart';
 part 'app_router.g.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorDashboardKey = GlobalKey<NavigatorState>(debugLabel: 'dashboard');
-final _shellNavigatorExpensesKey = GlobalKey<NavigatorState>(debugLabel: 'expenses');
 
 @riverpod
 GoRouter goRouter(Ref ref) {

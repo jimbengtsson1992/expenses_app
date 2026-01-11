@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../routing/routes.dart';
 
@@ -102,7 +101,7 @@ class ExpensesListScreen extends ConsumerWidget {
                       leading: Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Color(expense.category.colorValue).withOpacity(0.2),
+                          color: Color(expense.category.colorValue).withValues(alpha: 0.2),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(expense.category.emoji, style: const TextStyle(fontSize: 24)),

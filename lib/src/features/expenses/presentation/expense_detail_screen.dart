@@ -64,9 +64,9 @@ class ExpenseDetailScreen extends ConsumerWidget {
               // Source Account Field (Highlighted as requested)
               Container(
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue.withOpacity(0.5)),
+                  border: Border.all(color: Colors.blue.withValues(alpha: 0.5)),
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.blue.withOpacity(0.1),
+                  color: Colors.blue.withValues(alpha: 0.1),
                 ),
                 padding: const EdgeInsets.all(16),
                 child: Column(

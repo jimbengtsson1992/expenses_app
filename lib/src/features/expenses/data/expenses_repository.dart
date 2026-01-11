@@ -66,10 +66,15 @@ class ExpensesRepository {
 
     // Determine Source Account Name from filename
     String sourceName = 'Nordea';
-    if (filename.contains('1127 25 18949')) sourceName = 'Jim Personkonto';
-    else if (filename.contains('3016 28 91261')) sourceName = 'Jim Sparkonto';
-    else if (filename.contains('3016 05 24377')) sourceName = 'Gemensamt';
-    else if (filename.contains('3016 28 91415')) sourceName = 'Gemensamt Spar';
+    if (filename.contains('1127 25 18949')) {
+      sourceName = 'Jim Personkonto';
+    } else if (filename.contains('3016 28 91261')) {
+      sourceName = 'Jim Sparkonto';
+    } else if (filename.contains('3016 05 24377')) {
+      sourceName = 'Gemensamt';
+    } else if (filename.contains('3016 28 91415')) {
+      sourceName = 'Gemensamt Spar';
+    }
 
     // Skip header (row 0)
     for (var i = 1; i < rows.length; i++) {
