@@ -7,6 +7,8 @@ import '../../expenses/domain/category.dart';
 import '../../expenses/domain/expense.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../../routing/routes.dart';
+
 part 'dashboard_screen.g.dart';
 
 // State for selected month (Shared between Dashboard and List for consistency)
@@ -125,28 +127,42 @@ class _DashboardContent extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Column(
-                      children: [
-                        Text('Inkomst', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey)),
-                        const SizedBox(height: 8),
-                        Text(
-                          currency.format(totalIncome),
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.greenAccent,
-                          ),
+                    InkWell(
+                      onTap: () => ExpensesListRoute(filterType: 'income').go(context),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Text('Inkomst', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey)),
+                            const SizedBox(height: 8),
+                            Text(
+                              currency.format(totalIncome),
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.greenAccent,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        Text('Utgifter', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey)),
-                        const SizedBox(height: 8),
-                        Text(
-                          currency.format(totalExpenses),
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                    InkWell(
+                      onTap: () => ExpensesListRoute(filterType: 'expense').go(context),
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Text('Utgifter', style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.grey)),
+                            const SizedBox(height: 8),
+                            Text(
+                              currency.format(totalExpenses),
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
@@ -178,28 +194,32 @@ class _DashboardContent extends StatelessWidget {
              
              return Padding(
                padding: const EdgeInsets.only(bottom: 16),
-               child: Column(
-                 children: [
-                   Row(
-                     children: [
-                       Container(
-                         padding: const EdgeInsets.all(8),
-                         decoration: BoxDecoration(color: Color(cat.colorValue).withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                         child: Text(cat.emoji, style: const TextStyle(fontSize: 20)),
-                       ),
-                       const SizedBox(width: 12),
-                       Expanded(child: Text(cat.displayName, style: const TextStyle(fontWeight: FontWeight.w600))),
-                       Text(currency.format(amount), style: const TextStyle(fontWeight: FontWeight.bold)),
-                     ],
-                   ),
-                   const SizedBox(height: 8),
-                   LinearProgressIndicator(
-                     value: percentage,
-                     backgroundColor: Colors.grey[800],
-                     color: Color(cat.colorValue),
-                     borderRadius: BorderRadius.circular(4),
-                   ),
-                 ],
+               child: InkWell(
+                 onTap: () => ExpensesListRoute(category: cat.name).go(context),
+                 borderRadius: BorderRadius.circular(8),
+                 child: Column(
+                   children: [
+                     Row(
+                       children: [
+                         Container(
+                           padding: const EdgeInsets.all(8),
+                           decoration: BoxDecoration(color: Color(cat.colorValue).withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
+                           child: Text(cat.emoji, style: const TextStyle(fontSize: 20)),
+                         ),
+                         const SizedBox(width: 12),
+                         Expanded(child: Text(cat.displayName, style: const TextStyle(fontWeight: FontWeight.w600))),
+                         Text(currency.format(amount), style: const TextStyle(fontWeight: FontWeight.bold)),
+                       ],
+                     ),
+                     const SizedBox(height: 8),
+                     LinearProgressIndicator(
+                       value: percentage,
+                       backgroundColor: Colors.grey[800],
+                       color: Color(cat.colorValue),
+                       borderRadius: BorderRadius.circular(4),
+                     ),
+                   ],
+                 ),
                ),
              );
         }),

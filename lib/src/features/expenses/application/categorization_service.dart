@@ -15,25 +15,14 @@ class CategorizationService {
     // Income overrides
     if (lowerDesc.contains('lön') && !lowerDesc.contains('överföring')) return Category.income;
     if (lowerDesc.contains('insättning')) return Category.income;
-    if (amount > 0 && !lowerDesc.contains('överföring') && !lowerDesc.contains('betalning')) {
-       // Positive amount usually means income or refund. 
-       // If it's a refund, it might be better to keep original category? 
-       // For now, let's treat large positive as income?
-       // The user said "Income from input files".
-       // Let's stick to "Lön" and "Insättning" for explicit income, 
-       // and maybe 'return' items are just negative expenses (positive value).
-       // Actually, in the app, Expense amount is usually positive in UI, but logic-wise:
-       // If I spend 100, amount is -100.
-       // Only specifically 'Lön' is Real Income.
-    }
 
     // Food & Drink
-    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'systembolaget', 'kitchen', 'restaurant', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats'])) {
+    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'systembolaget', 'kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats'])) {
       return Category.food;
     }
 
     // Shopping
-    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'zara', 'shopping', 'kläder', 'skor', 'ikea', 'bauhaus', 'jula', 'clas ohlson', 'elgiganten', 'inet', 'webhallen', 'amazon'])) {
+    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'ikea', 'bauhaus', 'jula', 'clas ohlson', 'elgiganten', 'inet', 'webhallen', 'amazon'])) {
       return Category.shopping;
     }
 
