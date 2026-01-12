@@ -5,7 +5,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-import '../domain/expense.dart';
+import '../domain/transactions.dart';
+import '../domain/transaction_type.dart';
 import '../application/categorization_service.dart';
 
 part 'expenses_repository.g.dart';
@@ -31,14 +32,14 @@ class ExpensesRepository {
   
   static final _startParams = DateTime(2025, 1, 1);
 
-  Future<List<Expense>> getExpenses() async {
+  Future<List<Transaction>> getExpenses() async {
     final manifestContent = await rootBundle.loadString('AssetManifest.json');
     final Map<String, dynamic> manifestMap = json.decode(manifestContent);
     final filePaths = manifestMap.keys
         .where((String key) => key.startsWith('assets/data/') && (key.endsWith('.csv') || key.endsWith('.CSV')))
         .toList();
 
-    final allExpenses = <Expense>[];
+    final allExpenses = <Transaction>[];
 
     for (final path in filePaths) {
       final content = await rootBundle.loadString(path);
@@ -57,12 +58,12 @@ class ExpensesRepository {
     return allExpenses;
   }
 
-  List<Expense> _parseNordeaCsv(String content, String filename) {
+  List<Transaction> _parseNordeaCsv(String content, String filename) {
     // Nordea: Semi-colon separated.
     // Format: Bokföringsdag;Belopp;Avsändare;Mottagare;Namn;Rubrik;Saldo;Valuta;
     // Commas for decimals.
     final rows = const CsvToListConverter(fieldDelimiter: ';', eol: '\n').convert(content);
-    final expenses = <Expense>[];
+    final expenses = <Transaction>[];
 
     // Determine Source Account Name from filename
     String sourceName = 'Nordea';
@@ -97,10 +98,13 @@ class ExpensesRepository {
       // Amount Parse
       final amount = double.tryParse(amountStr.replaceAll(',', '.')) ?? 0;
       
+      // Determine transaction type: positive = income, negative = expense
+      final type = amount >= 0 ? TransactionType.income : TransactionType.expense;
+      
       // Categorize
       final category = _categorizationService.categorize(description, amount);
 
-      expenses.add(Expense(
+      expenses.add(Transaction(
         id: _uuid.v4(),
         date: date,
         amount: amount,
@@ -108,19 +112,20 @@ class ExpensesRepository {
         category: category,
         sourceAccount: sourceName,
         sourceFilename: filename,
+        type: type,
       ));
     }
     return expenses;
   }
 
-  List<Expense> _parseSasAmexCsv(String content, String filename) {
+  List<Transaction> _parseSasAmexCsv(String content, String filename) {
     // SAS Amex: Semicolon separated.
     // Section "Köp/uttag" starts around line 26/27.
     // Headers: Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
     // 2026-01-08;2026-01-09;WILLYS GOTEBORG HVIT;GOTEBORG;SEK;0;130.97
     
     final rows = const CsvToListConverter(fieldDelimiter: ';', eol: '\n').convert(content);
-    final expenses = <Expense>[];
+    final expenses = <Transaction>[];
     const sourceName = 'SAS Amex';
     
     bool isInTransactionSection = false;
@@ -191,7 +196,7 @@ class ExpensesRepository {
          // Categorize
          final category = _categorizationService.categorize(description, -amount); // pass positive for categorize check? logic uses >0 check.
 
-         expenses.add(Expense(
+         expenses.add(Transaction(
            id: _uuid.v4(),
            date: date,
            amount: amount,
@@ -199,6 +204,7 @@ class ExpensesRepository {
            category: category,
            sourceAccount: sourceName,
            sourceFilename: filename,
+           type: TransactionType.expense, // SAS Amex transactions are always expenses
          ));
       }
     }

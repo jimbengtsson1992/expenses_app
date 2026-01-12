@@ -15,11 +15,13 @@ final expensesListProvider = ExpensesListProvider._();
 final class ExpensesListProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<Expense>>,
-          List<Expense>,
-          FutureOr<List<Expense>>
+          AsyncValue<List<Transaction>>,
+          List<Transaction>,
+          FutureOr<List<Transaction>>
         >
-    with $FutureModifier<List<Expense>>, $FutureProvider<List<Expense>> {
+    with
+        $FutureModifier<List<Transaction>>,
+        $FutureProvider<List<Transaction>> {
   ExpensesListProvider._()
     : super(
         from: null,
@@ -36,17 +38,17 @@ final class ExpensesListProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<Expense>> $createElement(
+  $FutureProviderElement<List<Transaction>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<Expense>> create(Ref ref) {
+  FutureOr<List<Transaction>> create(Ref ref) {
     return expensesList(ref);
   }
 }
 
-String _$expensesListHash() => r'4046517df5f462a20dfa863efec5aa71460c8c95';
+String _$expensesListHash() => r'68b9a791a2a1d6bd0f840c8cc7afd38cab3b754c';
 
 @ProviderFor(expensesForMonth)
 final expensesForMonthProvider = ExpensesForMonthFamily._();
@@ -54,11 +56,13 @@ final expensesForMonthProvider = ExpensesForMonthFamily._();
 final class ExpensesForMonthProvider
     extends
         $FunctionalProvider<
-          AsyncValue<List<Expense>>,
-          List<Expense>,
-          FutureOr<List<Expense>>
+          AsyncValue<List<Transaction>>,
+          List<Transaction>,
+          FutureOr<List<Transaction>>
         >
-    with $FutureModifier<List<Expense>>, $FutureProvider<List<Expense>> {
+    with
+        $FutureModifier<List<Transaction>>,
+        $FutureProvider<List<Transaction>> {
   ExpensesForMonthProvider._({
     required ExpensesForMonthFamily super.from,
     required DateTime super.argument,
@@ -82,12 +86,12 @@ final class ExpensesForMonthProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<Expense>> $createElement(
+  $FutureProviderElement<List<Transaction>> $createElement(
     $ProviderPointer pointer,
   ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<List<Expense>> create(Ref ref) {
+  FutureOr<List<Transaction>> create(Ref ref) {
     final argument = this.argument as DateTime;
     return expensesForMonth(ref, argument);
   }
@@ -103,10 +107,10 @@ final class ExpensesForMonthProvider
   }
 }
 
-String _$expensesForMonthHash() => r'2a8b9c753344c9c420b329d7e66b89d52e5d75a4';
+String _$expensesForMonthHash() => r'05a981bebe75a0d9e6905e1f6b3a31d6f2b01070';
 
 final class ExpensesForMonthFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<Expense>>, DateTime> {
+    with $FunctionalFamilyOverride<FutureOr<List<Transaction>>, DateTime> {
   ExpensesForMonthFamily._()
     : super(
         retry: null,
@@ -128,8 +132,12 @@ final expenseByIdProvider = ExpenseByIdFamily._();
 
 final class ExpenseByIdProvider
     extends
-        $FunctionalProvider<AsyncValue<Expense?>, Expense?, FutureOr<Expense?>>
-    with $FutureModifier<Expense?>, $FutureProvider<Expense?> {
+        $FunctionalProvider<
+          AsyncValue<Transaction?>,
+          Transaction?,
+          FutureOr<Transaction?>
+        >
+    with $FutureModifier<Transaction?>, $FutureProvider<Transaction?> {
   ExpenseByIdProvider._({
     required ExpenseByIdFamily super.from,
     required String super.argument,
@@ -153,11 +161,12 @@ final class ExpenseByIdProvider
 
   @$internal
   @override
-  $FutureProviderElement<Expense?> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $FutureProviderElement<Transaction?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  FutureOr<Expense?> create(Ref ref) {
+  FutureOr<Transaction?> create(Ref ref) {
     final argument = this.argument as String;
     return expenseById(ref, argument);
   }
@@ -173,10 +182,10 @@ final class ExpenseByIdProvider
   }
 }
 
-String _$expenseByIdHash() => r'60eea03fb6fe5d172e34b841ed002788876f2b5c';
+String _$expenseByIdHash() => r'a79b131235be5b65ac6eac8246a04add127428fb';
 
 final class ExpenseByIdFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<Expense?>, String> {
+    with $FunctionalFamilyOverride<FutureOr<Transaction?>, String> {
   ExpenseByIdFamily._()
     : super(
         retry: null,

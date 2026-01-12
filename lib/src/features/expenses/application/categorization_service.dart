@@ -12,10 +12,6 @@ class CategorizationService {
   Category categorize(String description, double amount) {
     final lowerDesc = description.toLowerCase();
 
-    // Income overrides
-    if (lowerDesc.contains('lön') && !lowerDesc.contains('överföring')) return Category.income;
-    if (lowerDesc.contains('insättning')) return Category.income;
-
     // Food & Drink
     if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'systembolaget', 'kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats'])) {
       return Category.food;
