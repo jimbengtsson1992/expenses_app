@@ -99,7 +99,7 @@ class _DashboardContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     InkWell(
-                      onTap: () => const ExpensesListRoute(filterType: 'income').go(context),
+                      onTap: () => const TransactionsListRoute(filterType: 'income').go(context),
                       borderRadius: BorderRadius.circular(12),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -119,7 +119,7 @@ class _DashboardContent extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () => const ExpensesListRoute(filterType: 'expense').go(context),
+                      onTap: () => const TransactionsListRoute(filterType: 'expense').go(context),
                       borderRadius: BorderRadius.circular(12),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -166,7 +166,7 @@ class _DashboardContent extends StatelessWidget {
              return Padding(
                padding: const EdgeInsets.only(bottom: 16),
                child: InkWell(
-                 onTap: () => ExpensesListRoute(category: cat.name).go(context),
+                 onTap: () => TransactionsListRoute(category: cat.name).go(context),
                  borderRadius: BorderRadius.circular(8),
                  child: Column(
                    children: [

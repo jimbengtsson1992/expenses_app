@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Transaction {
 
- String get id; DateTime get date; double get amount; String get description; Category get category; String get sourceAccount; String get sourceFilename; TransactionType get type;
+ String get id; DateTime get date; double get amount; String get description; Category get category; Account get sourceAccount; String get sourceFilename; TransactionType get type;
 /// Create a copy of Transaction
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $TransactionCopyWith<$Res>  {
   factory $TransactionCopyWith(Transaction value, $Res Function(Transaction) _then) = _$TransactionCopyWithImpl;
 @useResult
 $Res call({
- String id, DateTime date, double amount, String description, Category category, String sourceAccount, String sourceFilename, TransactionType type
+ String id, DateTime date, double amount, String description, Category category, Account sourceAccount, String sourceFilename, TransactionType type
 });
 
 
@@ -73,7 +73,7 @@ as DateTime,amount: null == amount ? _self.amount : amount // ignore: cast_nulla
 as double,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as Category,sourceAccount: null == sourceAccount ? _self.sourceAccount : sourceAccount // ignore: cast_nullable_to_non_nullable
-as String,sourceFilename: null == sourceFilename ? _self.sourceFilename : sourceFilename // ignore: cast_nullable_to_non_nullable
+as Account,sourceFilename: null == sourceFilename ? _self.sourceFilename : sourceFilename // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as TransactionType,
   ));
@@ -160,7 +160,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime date,  double amount,  String description,  Category category,  String sourceAccount,  String sourceFilename,  TransactionType type)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime date,  double amount,  String description,  Category category,  Account sourceAccount,  String sourceFilename,  TransactionType type)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Transaction() when $default != null:
 return $default(_that.id,_that.date,_that.amount,_that.description,_that.category,_that.sourceAccount,_that.sourceFilename,_that.type);case _:
@@ -181,7 +181,7 @@ return $default(_that.id,_that.date,_that.amount,_that.description,_that.categor
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime date,  double amount,  String description,  Category category,  String sourceAccount,  String sourceFilename,  TransactionType type)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime date,  double amount,  String description,  Category category,  Account sourceAccount,  String sourceFilename,  TransactionType type)  $default,) {final _that = this;
 switch (_that) {
 case _Transaction():
 return $default(_that.id,_that.date,_that.amount,_that.description,_that.category,_that.sourceAccount,_that.sourceFilename,_that.type);case _:
@@ -201,7 +201,7 @@ return $default(_that.id,_that.date,_that.amount,_that.description,_that.categor
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime date,  double amount,  String description,  Category category,  String sourceAccount,  String sourceFilename,  TransactionType type)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime date,  double amount,  String description,  Category category,  Account sourceAccount,  String sourceFilename,  TransactionType type)?  $default,) {final _that = this;
 switch (_that) {
 case _Transaction() when $default != null:
 return $default(_that.id,_that.date,_that.amount,_that.description,_that.category,_that.sourceAccount,_that.sourceFilename,_that.type);case _:
@@ -224,7 +224,7 @@ class _Transaction implements Transaction {
 @override final  double amount;
 @override final  String description;
 @override final  Category category;
-@override final  String sourceAccount;
+@override final  Account sourceAccount;
 @override final  String sourceFilename;
 @override final  TransactionType type;
 
@@ -261,7 +261,7 @@ abstract mixin class _$TransactionCopyWith<$Res> implements $TransactionCopyWith
   factory _$TransactionCopyWith(_Transaction value, $Res Function(_Transaction) _then) = __$TransactionCopyWithImpl;
 @override @useResult
 $Res call({
- String id, DateTime date, double amount, String description, Category category, String sourceAccount, String sourceFilename, TransactionType type
+ String id, DateTime date, double amount, String description, Category category, Account sourceAccount, String sourceFilename, TransactionType type
 });
 
 
@@ -286,7 +286,7 @@ as DateTime,amount: null == amount ? _self.amount : amount // ignore: cast_nulla
 as double,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as Category,sourceAccount: null == sourceAccount ? _self.sourceAccount : sourceAccount // ignore: cast_nullable_to_non_nullable
-as String,sourceFilename: null == sourceFilename ? _self.sourceFilename : sourceFilename // ignore: cast_nullable_to_non_nullable
+as Account,sourceFilename: null == sourceFilename ? _self.sourceFilename : sourceFilename // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as TransactionType,
   ));

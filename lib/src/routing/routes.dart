@@ -1,6 +1,7 @@
 import 'package:expenses/src/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:expenses/src/features/transactions/presentation/expense_detail_screen.dart';
-import 'package:expenses/src/features/transactions/presentation/expenses_list_screen.dart';
+import 'package:expenses/src/features/transactions/presentation/transactions_list_screen.dart';
+import 'package:expenses/src/features/transactions/domain/account.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../common_widgets/scaffold_with_bottom_nav_bar.dart';
@@ -16,10 +17,10 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
         TypedGoRoute<DashboardRoute>(path: '/dashboard'),
       ],
     ),
-    TypedStatefulShellBranch<ExpensesBranch>(
+    TypedStatefulShellBranch<TransactionsBranch>(
       routes: [
-        TypedGoRoute<ExpensesListRoute>(
-          path: '/expenses',
+        TypedGoRoute<TransactionsListRoute>(
+          path: '/transactions',
           routes: [
             TypedGoRoute<ExpenseDetailRoute>(path: 'detail/:id'),
           ],
@@ -47,8 +48,8 @@ class DashboardBranch extends StatefulShellBranchData {
   const DashboardBranch();
 }
 
-class ExpensesBranch extends StatefulShellBranchData {
-  const ExpensesBranch();
+class TransactionsBranch extends StatefulShellBranchData {
+  const TransactionsBranch();
 }
 
 @immutable
@@ -62,18 +63,27 @@ class DashboardRoute extends GoRouteData with $DashboardRoute {
 }
 
 @immutable
-class ExpensesListRoute extends GoRouteData with $ExpensesListRoute {
-  const ExpensesListRoute({this.category, this.filterType});
+class TransactionsListRoute extends GoRouteData with $TransactionsListRoute {
+  const TransactionsListRoute({this.category, this.filterType, this.account});
 
   final String? category;
   final String? filterType;
+  final String? account;
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
+    Account? initialAccount;
+    if (account != null) {
+      try {
+        initialAccount = Account.values.firstWhere((a) => a.displayName == account || a.name == account);
+      } catch (_) {}
+    }
+
     return NoTransitionPage(
-      child: ExpensesListScreen(
+      child: TransactionsListScreen(
         initialCategory: category,
         filterType: filterType,
+        initialAccount: initialAccount,
       ),
     );
   }

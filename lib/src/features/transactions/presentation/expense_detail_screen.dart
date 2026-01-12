@@ -102,7 +102,7 @@ class ExpenseDetailScreen extends ConsumerWidget {
                       children: [
                         const Icon(Icons.credit_card, size: 20, color: Colors.white70),
                         const SizedBox(width: 8),
-                        Text(expense.sourceAccount, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(expense.sourceAccount.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ],

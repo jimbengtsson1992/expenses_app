@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'category.dart';
 import 'transaction_type.dart';
+import 'account.dart';
 
 part 'transactions.freezed.dart';
 part 'transactions.g.dart';
@@ -13,7 +14,7 @@ abstract class Transaction with _$Transaction {
     required double amount,
     required String description,
     required Category category,
-    required String sourceAccount,
+    required Account sourceAccount,
     required String sourceFilename,
     required TransactionType type,
   }) = _Transaction;
