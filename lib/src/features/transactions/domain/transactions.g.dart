@@ -12,7 +12,7 @@ _Transaction _$TransactionFromJson(Map<String, dynamic> json) => _Transaction(
   amount: (json['amount'] as num).toDouble(),
   description: json['description'] as String,
   category: $enumDecode(_$CategoryEnumMap, json['category']),
-  sourceAccount: json['sourceAccount'] as String,
+  sourceAccount: $enumDecode(_$AccountEnumMap, json['sourceAccount']),
   sourceFilename: json['sourceFilename'] as String,
   type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
 );
@@ -24,7 +24,7 @@ Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
       'amount': instance.amount,
       'description': instance.description,
       'category': _$CategoryEnumMap[instance.category]!,
-      'sourceAccount': instance.sourceAccount,
+      'sourceAccount': _$AccountEnumMap[instance.sourceAccount]!,
       'sourceFilename': instance.sourceFilename,
       'type': _$TransactionTypeEnumMap[instance.type]!,
     };
@@ -38,6 +38,15 @@ const _$CategoryEnumMap = {
   Category.savings: 'savings',
   Category.income: 'income',
   Category.other: 'other',
+};
+
+const _$AccountEnumMap = {
+  Account.jimPersonkonto: 'jimPersonkonto',
+  Account.jimSparkonto: 'jimSparkonto',
+  Account.gemensamt: 'gemensamt',
+  Account.gemensamtSpar: 'gemensamtSpar',
+  Account.sasAmex: 'sasAmex',
+  Account.nordea: 'nordea',
 };
 
 const _$TransactionTypeEnumMap = {

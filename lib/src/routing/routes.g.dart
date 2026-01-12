@@ -23,8 +23,8 @@ RouteBase get $bottomNavigationShell => StatefulShellRouteData.$route(
     StatefulShellBranchData.$branch(
       routes: [
         GoRouteData.$route(
-          path: '/expenses',
-          factory: $ExpensesListRoute._fromState,
+          path: '/transactions',
+          factory: $TransactionsListRoute._fromState,
           routes: [
             GoRouteData.$route(
               path: 'detail/:id',
@@ -63,20 +63,23 @@ mixin $DashboardRoute on GoRouteData {
   void replace(BuildContext context) => context.replace(location);
 }
 
-mixin $ExpensesListRoute on GoRouteData {
-  static ExpensesListRoute _fromState(GoRouterState state) => ExpensesListRoute(
-    category: state.uri.queryParameters['category'],
-    filterType: state.uri.queryParameters['filter-type'],
-  );
+mixin $TransactionsListRoute on GoRouteData {
+  static TransactionsListRoute _fromState(GoRouterState state) =>
+      TransactionsListRoute(
+        category: state.uri.queryParameters['category'],
+        filterType: state.uri.queryParameters['filter-type'],
+        account: state.uri.queryParameters['account'],
+      );
 
-  ExpensesListRoute get _self => this as ExpensesListRoute;
+  TransactionsListRoute get _self => this as TransactionsListRoute;
 
   @override
   String get location => GoRouteData.$location(
-    '/expenses',
+    '/transactions',
     queryParams: {
       if (_self.category != null) 'category': _self.category,
       if (_self.filterType != null) 'filter-type': _self.filterType,
+      if (_self.account != null) 'account': _self.account,
     },
   );
 
@@ -102,7 +105,7 @@ mixin $ExpenseDetailRoute on GoRouteData {
 
   @override
   String get location => GoRouteData.$location(
-    '/expenses/detail/${Uri.encodeComponent(_self.id)}',
+    '/transactions/detail/${Uri.encodeComponent(_self.id)}',
   );
 
   @override

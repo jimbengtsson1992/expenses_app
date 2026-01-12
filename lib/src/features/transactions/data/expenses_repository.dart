@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 
 import '../domain/transactions.dart';
 import '../domain/transaction_type.dart';
+import '../domain/account.dart';
 import '../application/categorization_service.dart';
 
 part 'expenses_repository.g.dart';
@@ -66,15 +67,15 @@ class ExpensesRepository {
     final expenses = <Transaction>[];
 
     // Determine Source Account Name from filename
-    String sourceName = 'Nordea';
+    Account sourceAccount = Account.nordea;
     if (filename.contains('1127 25 18949')) {
-      sourceName = 'Jim Personkonto';
+      sourceAccount = Account.jimPersonkonto;
     } else if (filename.contains('3016 28 91261')) {
-      sourceName = 'Jim Sparkonto';
+      sourceAccount = Account.jimSparkonto;
     } else if (filename.contains('3016 05 24377')) {
-      sourceName = 'Gemensamt';
+      sourceAccount = Account.gemensamt;
     } else if (filename.contains('3016 28 91415')) {
-      sourceName = 'Gemensamt Spar';
+      sourceAccount = Account.gemensamtSpar;
     }
 
     // Skip header (row 0)
@@ -110,7 +111,7 @@ class ExpensesRepository {
         amount: amount,
         description: description,
         category: category,
-        sourceAccount: sourceName,
+        sourceAccount: sourceAccount,
         sourceFilename: filename,
         type: type,
       ));
@@ -126,7 +127,7 @@ class ExpensesRepository {
     
     final rows = const CsvToListConverter(fieldDelimiter: ';', eol: '\n').convert(content);
     final expenses = <Transaction>[];
-    const sourceName = 'SAS Amex';
+    const sourceAccount = Account.sasAmex;
     
     bool isInTransactionSection = false;
 
@@ -202,7 +203,7 @@ class ExpensesRepository {
            amount: amount,
            description: description,
            category: category,
-           sourceAccount: sourceName,
+           sourceAccount: sourceAccount,
            sourceFilename: filename,
            type: TransactionType.expense, // SAS Amex transactions are always expenses
          ));
