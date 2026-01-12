@@ -2,6 +2,8 @@ import 'package:expenses/src/features/dashboard/presentation/dashboard_screen.da
 import 'package:expenses/src/features/transactions/presentation/expense_detail_screen.dart';
 import 'package:expenses/src/features/transactions/presentation/transactions_list_screen.dart';
 import 'package:expenses/src/features/transactions/domain/account.dart';
+import 'package:expenses/src/features/transactions/domain/category.dart';
+import 'package:expenses/src/features/transactions/domain/transaction_type.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../common_widgets/scaffold_with_bottom_nav_bar.dart';
@@ -66,24 +68,17 @@ class DashboardRoute extends GoRouteData with $DashboardRoute {
 class TransactionsListRoute extends GoRouteData with $TransactionsListRoute {
   const TransactionsListRoute({this.category, this.filterType, this.account});
 
-  final String? category;
-  final String? filterType;
-  final String? account;
+  final Category? category;
+  final TransactionType? filterType;
+  final Account? account;
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
-    Account? initialAccount;
-    if (account != null) {
-      try {
-        initialAccount = Account.values.firstWhere((a) => a.displayName == account || a.name == account);
-      } catch (_) {}
-    }
-
     return NoTransitionPage(
       child: TransactionsListScreen(
         initialCategory: category,
         filterType: filterType,
-        initialAccount: initialAccount,
+        initialAccount: account,
       ),
     );
   }

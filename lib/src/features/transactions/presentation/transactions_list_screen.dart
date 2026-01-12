@@ -18,8 +18,8 @@ class TransactionsListScreen extends ConsumerStatefulWidget {
     this.initialAccount,
   });
 
-  final String? initialCategory;
-  final String? filterType;
+  final Category? initialCategory;
+  final TransactionType? filterType;
   final Account? initialAccount;
 
   @override
@@ -38,20 +38,8 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
     _searchController = TextEditingController();
     
     // Initialize filters from widget params
-    if (widget.initialCategory != null) {
-       try {
-         _filterCategory = Category.values.firstWhere((c) => c.name == widget.initialCategory);
-       } catch (_) {}
-    }
-    
-    if (widget.filterType != null) {
-      if (widget.filterType == 'income') {
-        _filterType = TransactionType.income;
-      } else if (widget.filterType == 'expense') {
-        _filterType = TransactionType.expense;
-      }
-    }
-
+    _filterCategory = widget.initialCategory;
+    _filterType = widget.filterType;
     _filterAccount = widget.initialAccount;
   }
 

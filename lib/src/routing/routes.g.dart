@@ -66,9 +66,21 @@ mixin $DashboardRoute on GoRouteData {
 mixin $TransactionsListRoute on GoRouteData {
   static TransactionsListRoute _fromState(GoRouterState state) =>
       TransactionsListRoute(
-        category: state.uri.queryParameters['category'],
-        filterType: state.uri.queryParameters['filter-type'],
-        account: state.uri.queryParameters['account'],
+        category: _$convertMapValue(
+          'category',
+          state.uri.queryParameters,
+          _$CategoryEnumMap._$fromName,
+        ),
+        filterType: _$convertMapValue(
+          'filter-type',
+          state.uri.queryParameters,
+          _$TransactionTypeEnumMap._$fromName,
+        ),
+        account: _$convertMapValue(
+          'account',
+          state.uri.queryParameters,
+          _$AccountEnumMap._$fromName,
+        ),
       );
 
   TransactionsListRoute get _self => this as TransactionsListRoute;
@@ -77,9 +89,11 @@ mixin $TransactionsListRoute on GoRouteData {
   String get location => GoRouteData.$location(
     '/transactions',
     queryParams: {
-      if (_self.category != null) 'category': _self.category,
-      if (_self.filterType != null) 'filter-type': _self.filterType,
-      if (_self.account != null) 'account': _self.account,
+      if (_self.category != null)
+        'category': _$CategoryEnumMap[_self.category!],
+      if (_self.filterType != null)
+        'filter-type': _$TransactionTypeEnumMap[_self.filterType!],
+      if (_self.account != null) 'account': _$AccountEnumMap[_self.account!],
     },
   );
 
@@ -96,6 +110,31 @@ mixin $TransactionsListRoute on GoRouteData {
   @override
   void replace(BuildContext context) => context.replace(location);
 }
+
+const _$CategoryEnumMap = {
+  Category.food: 'food',
+  Category.shopping: 'shopping',
+  Category.transport: 'transport',
+  Category.health: 'health',
+  Category.bills: 'bills',
+  Category.savings: 'savings',
+  Category.income: 'income',
+  Category.other: 'other',
+};
+
+const _$TransactionTypeEnumMap = {
+  TransactionType.income: 'income',
+  TransactionType.expense: 'expense',
+};
+
+const _$AccountEnumMap = {
+  Account.jimPersonkonto: 'jim-personkonto',
+  Account.jimSparkonto: 'jim-sparkonto',
+  Account.gemensamt: 'gemensamt',
+  Account.gemensamtSpar: 'gemensamt-spar',
+  Account.sasAmex: 'sas-amex',
+  Account.unknown: 'unknown',
+};
 
 mixin $ExpenseDetailRoute on GoRouteData {
   static ExpenseDetailRoute _fromState(GoRouterState state) =>
@@ -120,4 +159,18 @@ mixin $ExpenseDetailRoute on GoRouteData {
 
   @override
   void replace(BuildContext context) => context.replace(location);
+}
+
+T? _$convertMapValue<T>(
+  String key,
+  Map<String, String> map,
+  T? Function(String) converter,
+) {
+  final value = map[key];
+  return value == null ? null : converter(value);
+}
+
+extension<T extends Enum> on Map<T, String> {
+  T? _$fromName(String? value) =>
+      entries.where((element) => element.value == value).firstOrNull?.key;
 }
