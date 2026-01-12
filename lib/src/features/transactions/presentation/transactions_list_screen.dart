@@ -44,6 +44,20 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
   }
 
   @override
+  void didUpdateWidget(TransactionsListScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialCategory != oldWidget.initialCategory ||
+        widget.filterType != oldWidget.filterType ||
+        widget.initialAccount != oldWidget.initialAccount) {
+      setState(() {
+        _filterCategory = widget.initialCategory;
+        _filterType = widget.filterType;
+        _filterAccount = widget.initialAccount;
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
