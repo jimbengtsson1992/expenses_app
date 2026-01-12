@@ -62,13 +62,16 @@ class _DashboardContent extends StatelessWidget {
     // Calculate Totals
     double totalIncome = 0;
     double totalExpenses = 0;
+
     final categoryTotals = <Category, double>{};
+    final incomeCategoryTotals = <Category, double>{};
 
     for (final e in expenses) {
       if (e.excludeFromOverview) continue;
 
       if (e.type == TransactionType.income) {
         totalIncome += e.amount.abs();
+        incomeCategoryTotals.update(e.category, (val) => val + e.amount.abs(), ifAbsent: () => e.amount.abs());
       } else {
         // Expense transaction
         totalExpenses += e.amount.abs();
@@ -81,6 +84,9 @@ class _DashboardContent extends StatelessWidget {
     
     // Sort categories
     final sortedCategories = categoryTotals.entries.toList()
+      ..sort((a, b) => b.value.compareTo(a.value));
+
+    final sortedIncomeCategories = incomeCategoryTotals.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
     // Formatter
@@ -156,6 +162,8 @@ class _DashboardContent extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 24),
+
+
         Text('Utgifter per Kategori', style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 16),
         
@@ -196,6 +204,49 @@ class _DashboardContent extends StatelessWidget {
                ),
              );
         }),
+        const SizedBox(height: 24),
+
+        if (sortedIncomeCategories.isNotEmpty) ...[
+          Text('Inkomster per Kategori', style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 16),
+          ...sortedIncomeCategories.map((e) {
+             final cat = e.key;
+             final amount = e.value;
+             final percentage = totalIncome > 0 ? amount / totalIncome : 0.0;
+             
+             return Padding(
+               padding: const EdgeInsets.only(bottom: 16),
+               child: InkWell(
+                 onTap: () => TransactionsListRoute(category: cat).go(context),
+                 borderRadius: BorderRadius.circular(8),
+                 child: Column(
+                   children: [
+                     Row(
+                       children: [
+                         Container(
+                           padding: const EdgeInsets.all(8),
+                           decoration: BoxDecoration(color: Color(cat.colorValue).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
+                           child: Text(cat.emoji, style: const TextStyle(fontSize: 20)),
+                         ),
+                         const SizedBox(width: 12),
+                         Expanded(child: Text(cat.displayName, style: const TextStyle(fontWeight: FontWeight.w600))),
+                         Text(currency.format(amount), style: const TextStyle(fontWeight: FontWeight.bold)),
+                       ],
+                     ),
+                     const SizedBox(height: 8),
+                     LinearProgressIndicator(
+                       value: percentage,
+                       backgroundColor: Colors.grey[800],
+                       color: Color(cat.colorValue),
+                       borderRadius: BorderRadius.circular(4),
+                     ),
+                   ],
+                 ),
+               ),
+             );
+          }),
+          const SizedBox(height: 24),
+        ],
       ],
     );
   }
