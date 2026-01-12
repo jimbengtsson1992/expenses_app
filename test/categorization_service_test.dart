@@ -28,10 +28,14 @@ void main() {
       expect(service.categorize('Circle K', -600), Category.transport);
     });
 
-    test('categorizes income transactions as other by default', () {
-      // Income detection is now handled by TransactionType, not Category
-      expect(service.categorize('Lön Jim', 40000), Category.other);
-      expect(service.categorize('Swish Insättning', 500), Category.other);
+    test('categorizes income transactions correctly', () {
+      // Salary check
+      expect(service.categorize('Lön Jim', 40000), Category.salary);
+      expect(service.categorize('Salary Jan', 35000), Category.salary);
+
+      // Other Income check
+      expect(service.categorize('Swish Insättning', 500), Category.income);
+      expect(service.categorize('Återbetalning', 1200), Category.income);
     });
 
     test('categorizes Bills correctly', () {

@@ -192,7 +192,7 @@ class ExpensesRepository {
          amount = -amount;
 
          // Categorize
-         final category = _categorizationService.categorize(description, -amount); // pass positive for categorize check? logic uses >0 check.
+         final category = _categorizationService.categorize(description, amount); // pass signed amount (negative for expense)
 
          expenses.add(Transaction(
            id: _uuid.v4(),

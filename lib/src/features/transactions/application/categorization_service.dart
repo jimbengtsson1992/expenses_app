@@ -12,6 +12,16 @@ class CategorizationService {
   Category categorize(String description, double amount) {
     final lowerDesc = description.toLowerCase();
 
+    // --- Income (> 0) ---
+    if (amount > 0) {
+      if (_matches(lowerDesc, ['lön', 'salary'])) {
+        return Category.salary;
+      }
+      return Category.income; // Defaults to "Övrig inkomst"
+    }
+
+    // --- Expenses (<= 0) ---
+    
     // Food & Drink
     if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'systembolaget', 'kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats'])) {
       return Category.food;
