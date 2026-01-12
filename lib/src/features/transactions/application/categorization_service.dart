@@ -42,6 +42,11 @@ class CategorizationService {
       return Category.health;
     }
 
+    // Loans & BRF
+    if (_matches(lowerDesc, ['omsättning lån', 'höjdena brf', 'bolån', 'brf avgift', 'bostadsrätt', 'amortering'])) {
+      return Category.loansAndBrf;
+    }
+
     // Bills
     if (_matches(lowerDesc, ['nordea', 'csn', 'bolagsverket', 'skatt', 'försäkring', 'trygg-hansa', 'if ', 'folksam', 'tele2', 'telenor', 'telia', 'tre ', 'netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney'])) {
       return Category.bills;

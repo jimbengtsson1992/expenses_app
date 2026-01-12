@@ -16,11 +16,13 @@ class TransactionsListScreen extends ConsumerStatefulWidget {
     this.initialCategory,
     this.filterType,
     this.initialAccount,
+    this.initialExcludeFromOverview,
   });
 
   final Category? initialCategory;
   final TransactionType? filterType;
   final Account? initialAccount;
+  final bool? initialExcludeFromOverview;
 
   @override
   ConsumerState<TransactionsListScreen> createState() => _TransactionsListScreenState();
@@ -31,6 +33,17 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
   TransactionType? _filterType;
   Category? _filterCategory;
   Account? _filterAccount;
+  // bool? _filterExcludeFromOverview; // true = show only excluded, false = show only included, null = show all?
+  // User logic: "Status" -> All, Included, Excluded.
+  // Let's use an enum or just bool? with null.
+  // null = All.
+  // true = Only Excluded.
+  // false = Only Included (Standard).
+  // Wait, standard behavior should be showing EVERYTHING unless filtered?
+  // Current requirement: "Add a filter that shows excludeFromOverview".
+  // Let's interpret as: Filter by "Is Excluded?".
+  // Values: All (null), Yes (true), No (false).
+  bool? _filterExcludeFromOverview;
 
   @override
   void initState() {
@@ -41,6 +54,7 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
     _filterCategory = widget.initialCategory;
     _filterType = widget.filterType;
     _filterAccount = widget.initialAccount;
+    _filterExcludeFromOverview = widget.initialExcludeFromOverview;
   }
 
   @override
@@ -48,11 +62,13 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
     super.didUpdateWidget(oldWidget);
     if (widget.initialCategory != oldWidget.initialCategory ||
         widget.filterType != oldWidget.filterType ||
-        widget.initialAccount != oldWidget.initialAccount) {
+        widget.initialAccount != oldWidget.initialAccount ||
+        widget.initialExcludeFromOverview != oldWidget.initialExcludeFromOverview) {
       setState(() {
         _filterCategory = widget.initialCategory;
         _filterType = widget.filterType;
         _filterAccount = widget.initialAccount;
+        _filterExcludeFromOverview = widget.initialExcludeFromOverview;
       });
     }
   }
@@ -69,11 +85,8 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
       _filterType = null;
       _filterCategory = null;
       _filterAccount = null;
+      _filterExcludeFromOverview = null;
     });
-    // Also clear query params by navigating to base route? 
-    // Or just let local state override? 
-    // For now, local state override is fine, but maybe we should update URL?
-    // Simplified: Just reset state.
   }
 
   @override
@@ -114,6 +127,11 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
           // 4. Account Filter
           if (_filterAccount != null) {
             filteredExpenses = filteredExpenses.where((e) => e.sourceAccount == _filterAccount).toList();
+          }
+
+          // 5. Exclusion Filter
+          if (_filterExcludeFromOverview != null) {
+            filteredExpenses = filteredExpenses.where((e) => e.excludeFromOverview == _filterExcludeFromOverview).toList();
           }
 
           final currency = NumberFormat.currency(locale: 'sv', symbol: 'kr', decimalDigits: 0);
@@ -193,7 +211,22 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
                               onChanged: (val) => setState(() => _filterAccount = val),
                             ),
                           ),
-                          if (_filterType != null || _filterCategory != null || _filterAccount != null)
+                          // Exclusion Filter
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: DropdownButton<bool?>(
+                              value: _filterExcludeFromOverview,
+                              hint: const Text('Översikt'),
+                              underline: Container(),
+                              items: const [
+                                DropdownMenuItem(value: null, child: Text('Alla visas')),
+                                DropdownMenuItem(value: false, child: Text('Inkluderade')),
+                                DropdownMenuItem(value: true, child: Text('Exkluderade')),
+                              ],
+                              onChanged: (val) => setState(() => _filterExcludeFromOverview = val),
+                            ),
+                          ),
+                          if (_filterType != null || _filterCategory != null || _filterAccount != null || _filterExcludeFromOverview != null)
                              TextButton(onPressed: _clearFilters, child: const Text('Rensa')),
                         ],
                       ),
@@ -243,9 +276,19 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
                              Text('• ${expense.sourceAccount.displayName}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
                           ],
                         ),
-                        trailing: Text(
-                          amountStr,
-                          style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 16),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            if (expense.excludeFromOverview)
+                              const Padding(
+                                padding: EdgeInsets.only(right: 8.0),
+                                child: Icon(Icons.visibility_off, size: 16, color: Colors.grey),
+                              ),
+                            Text(
+                              amountStr,
+                              style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 16),
+                            ),
+                          ],
                         ),
                         onTap: () => ExpenseDetailRoute(id: expense.id).go(context),
                       );

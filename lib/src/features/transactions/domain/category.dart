@@ -8,6 +8,7 @@ enum Category {
   savings('Sparande', 0xFF9C27B0, '💰'), // Purple
   income('Övrig inkomst', 0xFF009688, '💵'), // Teal
   salary('Lön', 0xFF4CAF50, '💸'), // Green (using a different green or similar to income)
+  loansAndBrf('Lån & BRF', 0xFF795548, '🏘️'), // Brown
   other('Övrigt', 0xFF9E9E9E, '❓'); // Grey
 
   const Category(this.displayName, this.colorValue, this.emoji);
