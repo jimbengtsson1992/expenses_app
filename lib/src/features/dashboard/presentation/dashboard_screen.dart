@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../common_widgets/month_selector.dart';
-import '../../expenses/data/expenses_providers.dart';
-import '../../expenses/domain/category.dart';
-import '../../expenses/domain/transactions.dart';
-import '../../expenses/domain/transaction_type.dart';
+import '../../transactions/data/expenses_providers.dart';
+import '../../transactions/domain/category.dart';
+import '../../transactions/domain/transactions.dart';
+import '../../transactions/domain/transaction_type.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../routing/routes.dart';

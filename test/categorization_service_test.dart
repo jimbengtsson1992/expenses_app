@@ -1,5 +1,5 @@
-import 'package:expenses/src/features/expenses/application/categorization_service.dart';
-import 'package:expenses/src/features/expenses/domain/category.dart';
+import 'package:expenses/src/features/transactions/application/categorization_service.dart';
+import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
