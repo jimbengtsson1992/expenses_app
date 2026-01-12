@@ -17,6 +17,7 @@ abstract class Transaction with _$Transaction {
     required Account sourceAccount,
     required String sourceFilename,
     required TransactionType type,
+    String? rawCsvData,
   }) = _Transaction;
 
   factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);

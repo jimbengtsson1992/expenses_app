@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../data/expenses_providers.dart';
@@ -113,9 +114,23 @@ class ExpenseDetailScreen extends ConsumerWidget {
               
               // Raw Data (Debug/Extra info)
               ExpansionTile(
-                title: const Text('Original Fil', style: TextStyle(fontSize: 14)),
+                title: const Text('Original Fil & Data', style: TextStyle(fontSize: 14)),
                 children: [
-                  ListTile(title: Text(expense.sourceFilename)),
+                  ListTile(title: Text(expense.sourceFilename), subtitle: const Text('Filnamn')),
+                  if (expense.rawCsvData != null)
+                    ListTile(
+                      title: Text(expense.rawCsvData!, style: const TextStyle(fontFamily: 'Courier', fontSize: 12)),
+                      subtitle: const Text('Raw CSV Data'),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.copy),
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: expense.rawCsvData!));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Kopierat till urklipp')),
+                          );
+                        },
+                      ),
+                    ),
                 ],
               ),
             ],

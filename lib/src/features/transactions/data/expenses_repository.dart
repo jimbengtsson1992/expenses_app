@@ -111,6 +111,7 @@ class ExpensesRepository {
         sourceAccount: sourceAccount,
         sourceFilename: filename,
         type: type,
+        rawCsvData: row.join(';'),
       ));
     }
     return expenses;
@@ -203,6 +204,7 @@ class ExpensesRepository {
            sourceAccount: sourceAccount,
            sourceFilename: filename,
            type: TransactionType.expense, // SAS Amex transactions are always expenses
+           rawCsvData: row.join(';'),
          ));
       }
     }

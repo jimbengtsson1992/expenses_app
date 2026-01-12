@@ -15,6 +15,7 @@ _Transaction _$TransactionFromJson(Map<String, dynamic> json) => _Transaction(
   sourceAccount: $enumDecode(_$AccountEnumMap, json['sourceAccount']),
   sourceFilename: json['sourceFilename'] as String,
   type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
+  rawCsvData: json['rawCsvData'] as String?,
 );
 
 Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
@@ -27,6 +28,7 @@ Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
       'sourceAccount': _$AccountEnumMap[instance.sourceAccount]!,
       'sourceFilename': instance.sourceFilename,
       'type': _$TransactionTypeEnumMap[instance.type]!,
+      'rawCsvData': instance.rawCsvData,
     };
 
 const _$CategoryEnumMap = {
@@ -37,6 +39,7 @@ const _$CategoryEnumMap = {
   Category.bills: 'bills',
   Category.savings: 'savings',
   Category.income: 'income',
+  Category.salary: 'salary',
   Category.other: 'other',
 };
 

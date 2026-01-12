@@ -119,6 +119,7 @@ const _$CategoryEnumMap = {
   Category.bills: 'bills',
   Category.savings: 'savings',
   Category.income: 'income',
+  Category.salary: 'salary',
   Category.other: 'other',
 };
 
