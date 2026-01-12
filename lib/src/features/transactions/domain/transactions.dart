@@ -17,6 +17,7 @@ abstract class Transaction with _$Transaction {
     required Account sourceAccount,
     required String sourceFilename,
     required TransactionType type,
+    @Default(false) bool excludeFromOverview,
     String? rawCsvData,
   }) = _Transaction;
 

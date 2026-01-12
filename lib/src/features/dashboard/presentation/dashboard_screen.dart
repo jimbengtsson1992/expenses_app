@@ -65,6 +65,8 @@ class _DashboardContent extends StatelessWidget {
     final categoryTotals = <Category, double>{};
 
     for (final e in expenses) {
+      if (e.excludeFromOverview) continue;
+
       if (e.type == TransactionType.income) {
         totalIncome += e.amount.abs();
       } else {

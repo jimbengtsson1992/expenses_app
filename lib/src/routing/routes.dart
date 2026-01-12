@@ -66,11 +66,12 @@ class DashboardRoute extends GoRouteData with $DashboardRoute {
 
 @immutable
 class TransactionsListRoute extends GoRouteData with $TransactionsListRoute {
-  const TransactionsListRoute({this.category, this.filterType, this.account});
+  const TransactionsListRoute({this.category, this.filterType, this.account, this.excludeFromOverview});
 
   final Category? category;
   final TransactionType? filterType;
   final Account? account;
+  final bool? excludeFromOverview;
 
   @override
   Page<void> buildPage(BuildContext context, GoRouterState state) {
@@ -79,6 +80,7 @@ class TransactionsListRoute extends GoRouteData with $TransactionsListRoute {
         initialCategory: category,
         filterType: filterType,
         initialAccount: account,
+        initialExcludeFromOverview: excludeFromOverview,
       ),
     );
   }

@@ -81,6 +81,11 @@ mixin $TransactionsListRoute on GoRouteData {
           state.uri.queryParameters,
           _$AccountEnumMap._$fromName,
         ),
+        excludeFromOverview: _$convertMapValue(
+          'exclude-from-overview',
+          state.uri.queryParameters,
+          _$boolConverter,
+        ),
       );
 
   TransactionsListRoute get _self => this as TransactionsListRoute;
@@ -94,6 +99,8 @@ mixin $TransactionsListRoute on GoRouteData {
       if (_self.filterType != null)
         'filter-type': _$TransactionTypeEnumMap[_self.filterType!],
       if (_self.account != null) 'account': _$AccountEnumMap[_self.account!],
+      if (_self.excludeFromOverview != null)
+        'exclude-from-overview': _self.excludeFromOverview!.toString(),
     },
   );
 
@@ -169,6 +176,17 @@ T? _$convertMapValue<T>(
 ) {
   final value = map[key];
   return value == null ? null : converter(value);
+}
+
+bool _$boolConverter(String value) {
+  switch (value) {
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    default:
+      throw UnsupportedError('Cannot convert "$value" into a bool.');
+  }
 }
 
 extension<T extends Enum> on Map<T, String> {

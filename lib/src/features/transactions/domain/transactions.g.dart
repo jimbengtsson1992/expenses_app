@@ -15,6 +15,7 @@ _Transaction _$TransactionFromJson(Map<String, dynamic> json) => _Transaction(
   sourceAccount: $enumDecode(_$AccountEnumMap, json['sourceAccount']),
   sourceFilename: json['sourceFilename'] as String,
   type: $enumDecode(_$TransactionTypeEnumMap, json['type']),
+  excludeFromOverview: json['excludeFromOverview'] as bool? ?? false,
   rawCsvData: json['rawCsvData'] as String?,
 );
 
@@ -28,6 +29,7 @@ Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
       'sourceAccount': _$AccountEnumMap[instance.sourceAccount]!,
       'sourceFilename': instance.sourceFilename,
       'type': _$TransactionTypeEnumMap[instance.type]!,
+      'excludeFromOverview': instance.excludeFromOverview,
       'rawCsvData': instance.rawCsvData,
     };
 

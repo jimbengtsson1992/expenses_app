@@ -88,8 +88,12 @@ class ExpensesRepository {
       final date = DateFormat('yyyy/MM/dd').parse(dateStr);
       if (date.isBefore(_startParams)) continue;
 
-      // Filter Transfers
-      if (_isInternalTransfer(description)) continue;
+      // Filter Transfers - No longer filter them out completely
+      // if (_isInternalTransfer(description)) continue;
+
+      // Determine exclusion
+      final excludeFromOverview = _isInternalTransfer(description);
+
       // Filter SAS Payments (to avoid dupe)
       if (description.contains('Betalning BG 595-4300 SAS EUROBONUS')) continue;
 
@@ -111,6 +115,7 @@ class ExpensesRepository {
         sourceAccount: sourceAccount,
         sourceFilename: filename,
         type: type,
+        excludeFromOverview: excludeFromOverview,
         rawCsvData: row.join(';'),
       ));
     }
@@ -212,10 +217,7 @@ class ExpensesRepository {
   }
 
   bool _isInternalTransfer(String description) {
-    if (!description.toLowerCase().contains('överföring') && !description.toLowerCase().contains('lån')) return false;
-    
     // Check if any of known accounts is in description
-
     for (final acc in Account.values) {
        final accNum = acc.accountNumber;
        if (accNum == null) continue;
@@ -226,6 +228,9 @@ class ExpensesRepository {
        // Also check without spaces just in case
        if (description.replaceAll(' ', '').contains(accNum.replaceAll(' ', ''))) return true;
     }
+    
+    if (description.toLowerCase().contains('överföring') || description.toLowerCase().contains('lån')) return true;
+
     return false;
   }
 }
