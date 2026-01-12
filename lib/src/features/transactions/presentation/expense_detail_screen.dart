@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../data/expenses_providers.dart';
+import '../domain/transaction_type.dart';
 
 class ExpenseDetailScreen extends ConsumerWidget {
   const ExpenseDetailScreen({super.key, required this.expenseId});
@@ -45,6 +46,29 @@ class ExpenseDetailScreen extends ConsumerWidget {
               Center(child: Text(dateFormat.format(expense.date))),
               
               const SizedBox(height: 48),
+
+              // Transaction Type Field
+              _DetailRow(
+                label: 'Typ',
+                content: Row(
+                  children: [
+                    Icon(
+                      expense.type == TransactionType.income ? Icons.arrow_downward : Icons.arrow_upward,
+                      color: expense.type == TransactionType.income ? Colors.green : Colors.red,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      expense.type == TransactionType.income ? 'Inkomst' : 'Utgift',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: expense.type == TransactionType.income ? Colors.green : Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
 
               // Category Field
               _DetailRow(

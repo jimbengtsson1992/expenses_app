@@ -1,5 +1,5 @@
-import 'package:expenses/src/features/expenses/application/categorization_service.dart';
-import 'package:expenses/src/features/expenses/domain/category.dart';
+import 'package:expenses/src/features/transactions/application/categorization_service.dart';
+import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -28,9 +28,10 @@ void main() {
       expect(service.categorize('Circle K', -600), Category.transport);
     });
 
-    test('categorizes Income correctly', () {
-      expect(service.categorize('Lön Jim', 40000), Category.income);
-      expect(service.categorize('Swish Insättning', 500), Category.income);
+    test('categorizes income transactions as other by default', () {
+      // Income detection is now handled by TransactionType, not Category
+      expect(service.categorize('Lön Jim', 40000), Category.other);
+      expect(service.categorize('Swish Insättning', 500), Category.other);
     });
 
     test('categorizes Bills correctly', () {

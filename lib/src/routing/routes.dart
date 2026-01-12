@@ -1,6 +1,6 @@
 import 'package:expenses/src/features/dashboard/presentation/dashboard_screen.dart';
-import 'package:expenses/src/features/expenses/presentation/expense_detail_screen.dart';
-import 'package:expenses/src/features/expenses/presentation/expenses_list_screen.dart';
+import 'package:expenses/src/features/transactions/presentation/expense_detail_screen.dart';
+import 'package:expenses/src/features/transactions/presentation/expenses_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../common_widgets/scaffold_with_bottom_nav_bar.dart';

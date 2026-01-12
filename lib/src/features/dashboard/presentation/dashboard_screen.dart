@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../common_widgets/month_selector.dart';
-import '../../expenses/data/expenses_providers.dart';
-import '../../expenses/domain/category.dart';
-import '../../expenses/domain/expense.dart';
+import '../../transactions/data/expenses_providers.dart';
+import '../../transactions/domain/category.dart';
+import '../../transactions/domain/transactions.dart';
+import '../../transactions/domain/transaction_type.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../routing/routes.dart';
@@ -54,7 +55,7 @@ class DashboardScreen extends ConsumerWidget {
 
 class _DashboardContent extends StatelessWidget {
   const _DashboardContent({required this.expenses});
-  final List<Expense> expenses;
+  final List<Transaction> expenses;
 
   @override
   Widget build(BuildContext context) {
@@ -64,42 +65,12 @@ class _DashboardContent extends StatelessWidget {
     final categoryTotals = <Category, double>{};
 
     for (final e in expenses) {
-      if (e.category == Category.income) {
-        // Income is positive in CSV but logic calls it income.
-        // Wait, repository inverted expenses to negative.
-        // But for income... 
-        // Lön is usually +Amount. Repo: "If amount > 0... return Category.income".
-        // Repo code for Nordea: "amount = double.parse...". If file says 40000 -> 40000.
-        // Repo code for SAS: Inverted.
-        // So Income should be positive. Expense negative.
-        
-        // Wait, I need to check my Repo Logic again for Nordea.
-        // Nordea: "2000,00" -> 2000.00.
-        // "Expense" usually implies cost.
-        // In this app, let's say:
-        // Income = +
-        // Expense = -
-        
-        if (e.amount > 0) {
-           totalIncome += e.amount;
-        } else {
-           totalExpenses += e.amount.abs();
-           
-           // Category Totals (using abs)
-           categoryTotals.update(e.category, (val) => val + e.amount.abs(), ifAbsent: () => e.amount.abs());
-        }
+      if (e.type == TransactionType.income) {
+        totalIncome += e.amount.abs();
       } else {
-         // Non-income category
-         if (e.amount < 0) {
-            totalExpenses += e.amount.abs();
-            categoryTotals.update(e.category, (val) => val + e.amount.abs(), ifAbsent: () => e.amount.abs());
-         } else {
-            // Refund? Treat as negative expense? Or Income?
-            // "Refund to card" -> +Amount. Reduces expense.
-            // Let's subtract from total expenses.
-            totalExpenses -= e.amount;
-            categoryTotals.update(e.category, (val) => val - e.amount, ifAbsent: () => -e.amount);
-         }
+        // Expense transaction
+        totalExpenses += e.amount.abs();
+        categoryTotals.update(e.category, (val) => val + e.amount.abs(), ifAbsent: () => e.amount.abs());
       }
     }
 

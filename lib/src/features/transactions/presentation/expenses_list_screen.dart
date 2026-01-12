@@ -7,6 +7,7 @@ import '../../../common_widgets/month_selector.dart';
 import '../../dashboard/presentation/dashboard_screen.dart'; // Import provider
 import '../data/expenses_providers.dart';
 import '../domain/category.dart';
+import '../domain/transaction_type.dart';
 
 class ExpensesListScreen extends ConsumerWidget {
   const ExpensesListScreen({
@@ -47,10 +48,10 @@ class ExpensesListScreen extends ConsumerWidget {
             } catch (_) {}
           } else if (filterType != null) {
             if (filterType == 'income') {
-              filteredExpenses = filteredExpenses.where((e) => e.category == Category.income).toList();
+              filteredExpenses = filteredExpenses.where((e) => e.type == TransactionType.income).toList();
               activeFilterLabel = 'Visar: Inkomster';
             } else if (filterType == 'expense') {
-              filteredExpenses = filteredExpenses.where((e) => e.category != Category.income).toList();
+              filteredExpenses = filteredExpenses.where((e) => e.type == TransactionType.expense).toList();
               activeFilterLabel = 'Visar: Utgifter';
             }
           }
@@ -93,7 +94,7 @@ class ExpensesListScreen extends ConsumerWidget {
                   separatorBuilder: (c, i) => const Divider(height: 1, indent: 70),
                   itemBuilder: (context, index) {
                     final expense = filteredExpenses[index];
-                    final isIncome = expense.category == Category.income;
+                    final isIncome = expense.type == TransactionType.income;
                     final amountStr = currency.format(expense.amount);
                     final color = isIncome ? Colors.green : Colors.white;
 
