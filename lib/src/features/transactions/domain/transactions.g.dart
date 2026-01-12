@@ -46,7 +46,7 @@ const _$AccountEnumMap = {
   Account.gemensamt: 'gemensamt',
   Account.gemensamtSpar: 'gemensamtSpar',
   Account.sasAmex: 'sasAmex',
-  Account.nordea: 'nordea',
+  Account.unknown: 'unknown',
 };
 
 const _$TransactionTypeEnumMap = {

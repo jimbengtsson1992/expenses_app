@@ -23,14 +23,6 @@ class ExpensesRepository {
   final _uuid = const Uuid();
 
   // Known account markers to filter transfers
-  static const _myAccounts = [
-    '1127 25 18949',
-    '3016 28 91261', 
-    '3016 05 24377', 
-    '3016 28 91415',
-    'RAGNAR,LOUISE', // Filter transfers to/from Louise by name for now
-  ];
-  
   static final _startParams = DateTime(2025, 1, 1);
 
   Future<List<Transaction>> getExpenses() async {
@@ -67,15 +59,20 @@ class ExpensesRepository {
     final expenses = <Transaction>[];
 
     // Determine Source Account Name from filename
-    Account sourceAccount = Account.nordea;
-    if (filename.contains('1127 25 18949')) {
-      sourceAccount = Account.jimPersonkonto;
-    } else if (filename.contains('3016 28 91261')) {
-      sourceAccount = Account.jimSparkonto;
-    } else if (filename.contains('3016 05 24377')) {
-      sourceAccount = Account.gemensamt;
-    } else if (filename.contains('3016 28 91415')) {
-      sourceAccount = Account.gemensamtSpar;
+
+    Account sourceAccount = Account.values.firstWhere(
+      (account) => 
+          account.accountNumber != null && 
+          filename.replaceAll(' ', '').contains(account.accountNumber!.replaceAll(' ', '')), // flexible match
+      orElse: () => Account.unknown,
+    );
+    // Double check with simpler containment if flexible match fails or just use a standard contains?
+    // Filenames usually look like "1127 25 18949.csv". 
+    // Let's stick to the previous logic's robustness but using the loop.
+    if (sourceAccount == Account.unknown) {
+       try {
+           sourceAccount = Account.values.firstWhere((a) => a.accountNumber != null && filename.contains(a.accountNumber!));
+       } catch (_) {}
     }
 
     // Skip header (row 0)
@@ -216,12 +213,16 @@ class ExpensesRepository {
     if (!description.toLowerCase().contains('överföring') && !description.toLowerCase().contains('lån')) return false;
     
     // Check if any of known accounts is in description
-    for (final acc in _myAccounts) {
+
+    for (final acc in Account.values) {
+       final accNum = acc.accountNumber;
+       if (accNum == null) continue;
+
        // Remove spaces from acc for matching? "3016 28 91261" vs "30162891261"?
        // File has spaces usually.
-       if (description.contains(acc)) return true;
+       if (description.contains(accNum)) return true;
        // Also check without spaces just in case
-       if (description.replaceAll(' ', '').contains(acc.replaceAll(' ', ''))) return true;
+       if (description.replaceAll(' ', '').contains(accNum.replaceAll(' ', ''))) return true;
     }
     return false;
   }
