@@ -27,6 +27,10 @@ enum Subcategory {
   phone('Telefoni'),
   insurance('Försäkring'),
 
+  // Income
+  salary('Lön'),
+  otherIncome('Övrig inkomst'),
+
   // Default/Fallback
   unknown('Okänd');
 

@@ -16,9 +16,9 @@ class CategorizationService {
     // --- Income (> 0) ---
     if (amount > 0) {
       if (_matches(lowerDesc, ['lön', 'salary'])) {
-        return (Category.salary, Subcategory.unknown);
+        return (Category.income, Subcategory.salary);
       }
-      return (Category.income, Subcategory.unknown); // Defaults to "Övrig inkomst"
+      return (Category.income, Subcategory.otherIncome); // Defaults to "Övrig inkomst"
     }
 
     // --- Expenses (<= 0) ---

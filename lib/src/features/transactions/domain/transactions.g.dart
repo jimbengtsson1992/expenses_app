@@ -45,7 +45,6 @@ const _$CategoryEnumMap = {
   Category.bills: 'bills',
   Category.savings: 'savings',
   Category.income: 'income',
-  Category.salary: 'salary',
   Category.loansAndBrf: 'loansAndBrf',
   Category.other: 'other',
 };
@@ -83,5 +82,7 @@ const _$SubcategoryEnumMap = {
   Subcategory.internet: 'internet',
   Subcategory.phone: 'phone',
   Subcategory.insurance: 'insurance',
+  Subcategory.salary: 'salary',
+  Subcategory.otherIncome: 'otherIncome',
   Subcategory.unknown: 'unknown',
 };

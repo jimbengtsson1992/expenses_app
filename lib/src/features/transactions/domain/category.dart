@@ -24,7 +24,6 @@ enum Category {
     Subcategory.gym,
     Subcategory.pharmacy,
     Subcategory.doctor,
-    Subcategory.unknown,
   ]),
   bills('Räkningar & Bank', 0xFF607D8B, '📄', [
     Subcategory.streaming,
@@ -35,8 +34,11 @@ enum Category {
     Subcategory.unknown,
   ]),
   savings('Sparande', 0xFF9C27B0, '💰', [Subcategory.unknown]),
-  income('Övrig inkomst', 0xFF009688, '💵', [Subcategory.unknown]),
-  salary('Lön', 0xFF4CAF50, '💸', [Subcategory.unknown]),
+  income('Inkomst', 0xFF009688, '💵', [
+    Subcategory.salary,
+    Subcategory.otherIncome,
+    Subcategory.unknown,
+  ]),
   loansAndBrf('Lån & BRF', 0xFF795548, '🏘️', [Subcategory.unknown]),
   other('Övrigt', 0xFF9E9E9E, '❓', [Subcategory.unknown]);
 
