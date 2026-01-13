@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../common_widgets/month_selector.dart';
 import '../../transactions/data/expenses_providers.dart';
 import '../../transactions/domain/category.dart';
+import '../../transactions/domain/subcategory.dart';
 import '../../transactions/domain/transactions.dart';
 import '../../transactions/domain/transaction_type.dart';
 
@@ -65,6 +66,9 @@ class _DashboardContent extends StatelessWidget {
 
     final categoryTotals = <Category, double>{};
     final incomeCategoryTotals = <Category, double>{};
+    
+    // Map<Category, Map<Subcategory, double>>
+    final subcategoryTotals = <Category, Map<Subcategory, double>>{};
 
     for (final e in expenses) {
       if (e.excludeFromOverview) continue;
@@ -77,6 +81,12 @@ class _DashboardContent extends StatelessWidget {
         totalExpenses += e.amount.abs();
         categoryTotals.update(e.category, (val) => val + e.amount.abs(), ifAbsent: () => e.amount.abs());
       }
+
+      // Subcategory totals (Applicable for both Income and Expenses)
+      if (!subcategoryTotals.containsKey(e.category)) {
+        subcategoryTotals[e.category] = {};
+      }
+      subcategoryTotals[e.category]!.update(e.subcategory, (val) => val + e.amount.abs(), ifAbsent: () => e.amount.abs());
     }
 
     final netResult = totalIncome - totalExpenses;
@@ -172,34 +182,71 @@ class _DashboardContent extends StatelessWidget {
              final cat = e.key;
              final amount = e.value;
              final percentage = totalExpenses > 0 ? amount / totalExpenses : 0.0;
+             final subs = subcategoryTotals[cat] ?? {};
              
+             // Sort subs by amount
+             final sortedSubs = subs.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+
              return Padding(
-               padding: const EdgeInsets.only(bottom: 16),
-               child: InkWell(
-                 onTap: () => TransactionsListRoute(category: cat).go(context),
-                 borderRadius: BorderRadius.circular(8),
-                 child: Column(
-                   children: [
-                     Row(
+               padding: const EdgeInsets.only(bottom: 8),
+               child: Card( // Use Card for elevation and shape
+                 elevation: 2, // Slight elevation
+                 margin: EdgeInsets.zero,
+                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                 child: Theme(
+                   data: Theme.of(context).copyWith(dividerColor: Colors.transparent), // Hide ExpansionTile border
+                   child: ExpansionTile(
+                     tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                     leading: Container(
+                         padding: const EdgeInsets.all(8),
+                         decoration: BoxDecoration(color: Color(cat.colorValue).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
+                         child: Text(cat.emoji, style: const TextStyle(fontSize: 20)),
+                     ),
+                     title: Row(
                        children: [
-                         Container(
-                           padding: const EdgeInsets.all(8),
-                           decoration: BoxDecoration(color: Color(cat.colorValue).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
-                           child: Text(cat.emoji, style: const TextStyle(fontSize: 20)),
-                         ),
-                         const SizedBox(width: 12),
                          Expanded(child: Text(cat.displayName, style: const TextStyle(fontWeight: FontWeight.w600))),
                          Text(currency.format(amount), style: const TextStyle(fontWeight: FontWeight.bold)),
                        ],
                      ),
-                     const SizedBox(height: 8),
-                     LinearProgressIndicator(
-                       value: percentage,
-                       backgroundColor: Colors.grey[800],
-                       color: Color(cat.colorValue),
-                       borderRadius: BorderRadius.circular(4),
+                     subtitle: Padding(
+                       padding: const EdgeInsets.only(top: 8.0),
+                       child: LinearProgressIndicator(
+                         value: percentage,
+                         backgroundColor: Colors.grey[800],
+                         color: Color(cat.colorValue),
+                         borderRadius: BorderRadius.circular(4),
+                       ),
                      ),
-                   ],
+                     children: [
+                       if (sortedSubs.isNotEmpty)
+                         Padding(
+                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                           child: Column(
+                             children: sortedSubs.map((subEntry) {
+                               final subData = subEntry.key;
+                               final subAmount = subEntry.value;
+                               final subName = subData.displayName;
+                               
+                               return Padding(
+                                 padding: const EdgeInsets.symmetric(vertical: 4),
+                                 child: Row(
+                                   children: [
+                                     const SizedBox(width: 48), // Indent to align text
+                                     Expanded(child: Text(subName, style: TextStyle(color: Colors.grey[400], fontSize: 13))),
+                                     Text(currency.format(subAmount), style: TextStyle(color: Colors.grey[400], fontSize: 13)),
+                                   ],
+                                 ),
+                               );
+                             }).toList(),
+                           ),
+                         ),
+                       // Link to list
+                       TextButton(
+                         onPressed: () => TransactionsListRoute(category: cat).go(context),
+                         child: const Text('Visa alla transaktioner'),
+                       ),
+                     ],
+                   ),
                  ),
                ),
              );
@@ -209,38 +256,75 @@ class _DashboardContent extends StatelessWidget {
         if (sortedIncomeCategories.isNotEmpty) ...[
           Text('Inkomster per Kategori', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: 16),
-          ...sortedIncomeCategories.map((e) {
+           ...sortedIncomeCategories.map((e) {
              final cat = e.key;
              final amount = e.value;
              final percentage = totalIncome > 0 ? amount / totalIncome : 0.0;
+             final subs = subcategoryTotals[cat] ?? {};
              
+             // Sort subs by amount
+             final sortedSubs = subs.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
+
              return Padding(
-               padding: const EdgeInsets.only(bottom: 16),
-               child: InkWell(
-                 onTap: () => TransactionsListRoute(category: cat).go(context),
-                 borderRadius: BorderRadius.circular(8),
-                 child: Column(
-                   children: [
-                     Row(
+               padding: const EdgeInsets.only(bottom: 8),
+               child: Card(
+                 elevation: 2,
+                 margin: EdgeInsets.zero,
+                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                 child: Theme(
+                   data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                   child: ExpansionTile(
+                     tilePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                     leading: Container(
+                         padding: const EdgeInsets.all(8),
+                         decoration: BoxDecoration(color: Color(cat.colorValue).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
+                         child: Text(cat.emoji, style: const TextStyle(fontSize: 20)),
+                     ),
+                     title: Row(
                        children: [
-                         Container(
-                           padding: const EdgeInsets.all(8),
-                           decoration: BoxDecoration(color: Color(cat.colorValue).withValues(alpha: 0.2), borderRadius: BorderRadius.circular(8)),
-                           child: Text(cat.emoji, style: const TextStyle(fontSize: 20)),
-                         ),
-                         const SizedBox(width: 12),
                          Expanded(child: Text(cat.displayName, style: const TextStyle(fontWeight: FontWeight.w600))),
                          Text(currency.format(amount), style: const TextStyle(fontWeight: FontWeight.bold)),
                        ],
                      ),
-                     const SizedBox(height: 8),
-                     LinearProgressIndicator(
-                       value: percentage,
-                       backgroundColor: Colors.grey[800],
-                       color: Color(cat.colorValue),
-                       borderRadius: BorderRadius.circular(4),
+                     subtitle: Padding(
+                       padding: const EdgeInsets.only(top: 8.0),
+                       child: LinearProgressIndicator(
+                         value: percentage,
+                         backgroundColor: Colors.grey[800],
+                         color: Color(cat.colorValue),
+                         borderRadius: BorderRadius.circular(4),
+                       ),
                      ),
-                   ],
+                     children: [
+                       if (sortedSubs.isNotEmpty)
+                         Padding(
+                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                           child: Column(
+                             children: sortedSubs.map((subEntry) {
+                               final subData = subEntry.key;
+                               final subAmount = subEntry.value;
+                               final subName = subData.displayName;
+                               
+                               return Padding(
+                                 padding: const EdgeInsets.symmetric(vertical: 4),
+                                 child: Row(
+                                   children: [
+                                     const SizedBox(width: 48), // Indent to align text
+                                     Expanded(child: Text(subName, style: TextStyle(color: Colors.grey[400], fontSize: 13))),
+                                     Text(currency.format(subAmount), style: TextStyle(color: Colors.grey[400], fontSize: 13)),
+                                   ],
+                                 ),
+                               );
+                             }).toList(),
+                           ),
+                         ),
+                       // Link to list
+                       TextButton(
+                         onPressed: () => TransactionsListRoute(category: cat).go(context),
+                         child: const Text('Visa alla transaktioner'),
+                       ),
+                     ],
+                   ),
                  ),
                ),
              );

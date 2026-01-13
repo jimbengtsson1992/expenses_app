@@ -79,11 +79,18 @@ class TransactionDetailScreen extends ConsumerWidget {
                     Text(expense.category.emoji, style: const TextStyle(fontSize: 20)),
                     const SizedBox(width: 8),
                     Text(expense.category.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                    const Spacer(),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.edit, color: Colors.blue)), // TODO: Implement edit
                   ],
                 ),
               ),
+                const SizedBox(height: 24),
+                _DetailRow(
+                  label: 'Underkategori',
+                  content: Row(
+                    children: [
+                      Text(expense.subcategory.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
               const SizedBox(height: 24),
 
               // Source Account Field (Highlighted as requested)

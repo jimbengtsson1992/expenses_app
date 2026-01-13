@@ -7,6 +7,7 @@ import '../../../common_widgets/month_selector.dart';
 import '../../dashboard/presentation/dashboard_screen.dart'; // Import provider
 import '../data/expenses_providers.dart';
 import '../domain/category.dart';
+import '../domain/subcategory.dart';
 import '../domain/transaction_type.dart';
 import '../domain/account.dart';
 
@@ -272,6 +273,10 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
                         subtitle: Row(
                           children: [
                              Text(dateFormat.format(expense.date)),
+                             if (expense.subcategory != Subcategory.unknown) ...[
+                               const SizedBox(width: 8),
+                               Text('• ${expense.subcategory.displayName}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                             ],
                              const SizedBox(width: 8),
                              Text('• ${expense.sourceAccount.displayName}', style: const TextStyle(fontSize: 12, color: Colors.grey)),
                           ],
