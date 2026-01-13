@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../data/expenses_providers.dart';
 import '../domain/transaction_type.dart';
+import '../domain/subcategory.dart';
 
 class TransactionDetailScreen extends ConsumerWidget {
   const TransactionDetailScreen({super.key, required this.expenseId});
@@ -79,11 +80,20 @@ class TransactionDetailScreen extends ConsumerWidget {
                     Text(expense.category.emoji, style: const TextStyle(fontSize: 20)),
                     const SizedBox(width: 8),
                     Text(expense.category.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                    const Spacer(),
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.edit, color: Colors.blue)), // TODO: Implement edit
                   ],
                 ),
               ),
+              if (expense.subcategory != Subcategory.unknown) ...[
+                const SizedBox(height: 24),
+                _DetailRow(
+                  label: 'Underkategori',
+                  content: Row(
+                    children: [
+                      Text(expense.subcategory.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                ),
+              ],
               const SizedBox(height: 24),
 
               // Source Account Field (Highlighted as requested)

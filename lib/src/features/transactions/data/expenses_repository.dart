@@ -104,7 +104,7 @@ class ExpensesRepository {
       final type = amount >= 0 ? TransactionType.income : TransactionType.expense;
       
       // Categorize
-      final category = _categorizationService.categorize(description, amount);
+      final (category, subcategory) = _categorizationService.categorize(description, amount);
 
       expenses.add(Transaction(
         id: _uuid.v4(),
@@ -112,6 +112,7 @@ class ExpensesRepository {
         amount: amount,
         description: description,
         category: category,
+        subcategory: subcategory,
         sourceAccount: sourceAccount,
         sourceFilename: filename,
         type: type,
@@ -198,7 +199,7 @@ class ExpensesRepository {
          amount = -amount;
 
          // Categorize
-         final category = _categorizationService.categorize(description, amount); // pass signed amount (negative for expense)
+         final (category, subcategory) = _categorizationService.categorize(description, amount); // pass signed amount (negative for expense)
 
          expenses.add(Transaction(
            id: _uuid.v4(),
@@ -206,6 +207,7 @@ class ExpensesRepository {
            amount: amount,
            description: description,
            category: category,
+           subcategory: subcategory,
            sourceAccount: sourceAccount,
            sourceFilename: filename,
            type: TransactionType.expense, // SAS Amex transactions are always expenses
