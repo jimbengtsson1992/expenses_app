@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import '../data/expenses_providers.dart';
 import '../domain/transaction_type.dart';
 
-class ExpenseDetailScreen extends ConsumerWidget {
-  const ExpenseDetailScreen({super.key, required this.expenseId});
+class TransactionDetailScreen extends ConsumerWidget {
+  const TransactionDetailScreen({super.key, required this.expenseId});
   final String expenseId;
 
   @override

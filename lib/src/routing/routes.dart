@@ -1,5 +1,5 @@
 import 'package:expenses/src/features/dashboard/presentation/dashboard_screen.dart';
-import 'package:expenses/src/features/transactions/presentation/expense_detail_screen.dart';
+import 'package:expenses/src/features/transactions/presentation/transaction_detail_screen.dart';
 import 'package:expenses/src/features/transactions/presentation/transactions_list_screen.dart';
 import 'package:expenses/src/features/transactions/domain/account.dart';
 import 'package:expenses/src/features/transactions/domain/category.dart';
@@ -94,6 +94,6 @@ class ExpenseDetailRoute extends GoRouteData with $ExpenseDetailRoute {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ExpenseDetailScreen(expenseId: id);
+    return TransactionDetailScreen(expenseId: id);
   }
 }
