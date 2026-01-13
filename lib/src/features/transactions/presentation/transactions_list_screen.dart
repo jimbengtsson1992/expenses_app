@@ -295,7 +295,7 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
                             ),
                           ],
                         ),
-                        onTap: () => ExpenseDetailRoute(id: expense.id).go(context),
+                        onTap: () => ExpenseDetailRoute(id: expense.id).push(context),
                       );
                     },
                   ),
