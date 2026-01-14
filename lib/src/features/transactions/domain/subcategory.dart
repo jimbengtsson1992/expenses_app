@@ -28,6 +28,7 @@ enum Subcategory {
   furniture('Möbler'),
   gifts('Presenter'),
   decor('Inredning'),
+  beauty('Skönhet'),
 
   // --- Nöje & fritid (Entertainment) ---
   travel('Resor'),

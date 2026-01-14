@@ -86,6 +86,7 @@ const _$SubcategoryEnumMap = {
   Subcategory.furniture: 'furniture',
   Subcategory.gifts: 'gifts',
   Subcategory.decor: 'decor',
+  Subcategory.beauty: 'beauty',
   Subcategory.travel: 'travel',
   Subcategory.hobby: 'hobby',
   Subcategory.boardGamesBooksAndToys: 'boardGamesBooksAndToys',

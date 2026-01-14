@@ -23,14 +23,13 @@ enum Category {
     Subcategory.other,
   ]),
 
-
-
   shopping('Shopping', 0xFFE91E63, '🛍️', [
     Subcategory.clothes,
     Subcategory.electronics,
     Subcategory.furniture,
     Subcategory.gifts,
     Subcategory.decor,
+    Subcategory.beauty,
     Subcategory.unknown,
     Subcategory.other,
   ]),

@@ -23,6 +23,7 @@ void main() {
       expect(service.categorize('NK Göteborg', -500), (Category.shopping, Subcategory.clothes));
       expect(service.categorize('H&M', -300), (Category.shopping, Subcategory.clothes));
       expect(service.categorize('Elgiganten', -1000), (Category.shopping, Subcategory.electronics));
+      expect(service.categorize('NK BEAUTY', -350), (Category.shopping, Subcategory.beauty));
     });
 
     test('categorizes Transport accurately', () {

@@ -79,6 +79,9 @@ class CategorizationService {
     }
 
     // Shopping
+    if (_matches(lowerDesc, ['nk beauty'])) {
+      return (Category.shopping, Subcategory.beauty);
+    }
     if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos'])) {
       return (Category.shopping, Subcategory.clothes);
     }
