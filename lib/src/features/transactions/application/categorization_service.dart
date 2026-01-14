@@ -46,6 +46,38 @@ class CategorizationService {
       return (Category.food, Subcategory.supplements);
     }
 
+    // Entertainment (Nöje & fritid)
+    if (_matches(lowerDesc, ['bio', 'sf bio', 'filmstaden', 'event', 'konsert', 'ticketmaster'])) {
+      // Was cinema, now gone. Put in Other or keep looking?
+      // User removed cinema. Maybe 'Other'?
+      // Actually user wanted 'Bio / event' under Nöje & fritid in the list, but then said "Remove this" for Subcategory.cinema.
+      // Wait, let's re-read the interaction.
+      // User list: "Bio / event" under Nöje.
+      // Comments: "Selection: >Subcategory.cinema, Comment: 'Remove this'".
+      // So no 'cinema' subcategory.
+      // I should categorize these as... 'Other' in Entertainment? Or just 'Category.entertainment, Subcategory.other/unknown'.
+      // I will put them in Subcategory.other for now.
+      return (Category.entertainment, Subcategory.other);
+    }
+     if (_matches(lowerDesc, ['resor', 'hotell', 'booking', 'airbnb', 'tågsemester'])) {
+      return (Category.entertainment, Subcategory.travel);
+    }
+    if (_matches(lowerDesc, ['hobby', 'panduro'])) {
+      return (Category.entertainment, Subcategory.hobby);
+    }
+    if (_matches(lowerDesc, ['akademibokhande'])) {
+      return (Category.entertainment, Subcategory.boardGamesBooksAndToys);
+    }
+    if (_matches(lowerDesc, ['snusbolaget'])) {
+      return (Category.entertainment, Subcategory.snuff);
+    }
+    if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible', 'amazon prime'])) {
+      return (Category.entertainment, Subcategory.streaming);
+    }
+    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di '])) {
+      return (Category.entertainment, Subcategory.newspapers);
+    }
+
     // Shopping
     if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos'])) {
       return (Category.shopping, Subcategory.clothes);
@@ -116,37 +148,7 @@ class CategorizationService {
       return (Category.other, Subcategory.personalInsurance);
     }
 
-    // Entertainment (Nöje & fritid)
-    if (_matches(lowerDesc, ['bio', 'sf bio', 'filmstaden', 'event', 'konsert', 'ticketmaster'])) {
-      // Was cinema, now gone. Put in Other or keep looking?
-      // User removed cinema. Maybe 'Other'?
-      // Actually user wanted 'Bio / event' under Nöje & fritid in the list, but then said "Remove this" for Subcategory.cinema.
-      // Wait, let's re-read the interaction.
-      // User list: "Bio / event" under Nöje.
-      // Comments: "Selection: >Subcategory.cinema, Comment: 'Remove this'".
-      // So no 'cinema' subcategory.
-      // I should categorize these as... 'Other' in Entertainment? Or just 'Category.entertainment, Subcategory.other/unknown'.
-      // I will put them in Subcategory.other for now.
-      return (Category.entertainment, Subcategory.other);
-    }
-     if (_matches(lowerDesc, ['resor', 'hotell', 'booking', 'airbnb', 'tågsemester'])) {
-      return (Category.entertainment, Subcategory.travel);
-    }
-    if (_matches(lowerDesc, ['hobby', 'panduro'])) {
-      return (Category.entertainment, Subcategory.hobby);
-    }
-    if (_matches(lowerDesc, ['akademibokhande'])) {
-      return (Category.entertainment, Subcategory.boardGamesBooksAndToys);
-    }
-    if (_matches(lowerDesc, ['snusbolaget'])) {
-      return (Category.entertainment, Subcategory.snuff);
-    }
-    if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible'])) {
-      return (Category.entertainment, Subcategory.streaming);
-    }
-    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di '])) {
-      return (Category.entertainment, Subcategory.newspapers);
-    }
+
 
     // Savings (Removed category, moved to Other)
     if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk'])) {

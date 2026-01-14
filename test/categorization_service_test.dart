@@ -52,6 +52,7 @@ void main() {
       
       // Netflix -> Entertainment/Streaming
       expect(service.categorize('Netflix', -129), (Category.entertainment, Subcategory.streaming)); 
+      expect(service.categorize('Amazon Prime', -59), (Category.entertainment, Subcategory.streaming)); 
       
       // Tele2 -> Other/MobileSubscription
       expect(service.categorize('Tele2', -299), (Category.other, Subcategory.mobileSubscription));
