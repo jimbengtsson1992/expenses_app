@@ -121,7 +121,6 @@ mixin $TransactionsListRoute on GoRouteData {
 const _$CategoryEnumMap = {
   Category.housing: 'housing',
   Category.food: 'food',
-  Category.insuranceAndSubscriptions: 'insurance-and-subscriptions',
   Category.shopping: 'shopping',
   Category.entertainment: 'entertainment',
   Category.health: 'health',

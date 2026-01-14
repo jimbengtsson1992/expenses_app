@@ -23,15 +23,7 @@ enum Category {
     Subcategory.other,
   ]),
 
-  insuranceAndSubscriptions('Försäkringar & Abonnemang', 0xFF607D8B, '🧾', [
-    Subcategory.personalInsurance,
-    Subcategory.mobileSubscription,
-    Subcategory.cloudServices,
-    Subcategory.newspapers,
-    Subcategory.streaming,
-    Subcategory.unknown,
-    Subcategory.other,
-  ]),
+
 
   shopping('Shopping', 0xFFE91E63, '🛍️', [
     Subcategory.clothes,
@@ -47,6 +39,8 @@ enum Category {
     Subcategory.travel,
     Subcategory.hobby,
     Subcategory.boardGamesBooksAndToys,
+    Subcategory.newspapers,
+    Subcategory.streaming,
     Subcategory.unknown,
     Subcategory.other,
   ]),
@@ -84,6 +78,8 @@ enum Category {
 
   other('Övrigt', 0xFF9E9E9E, '🧹', [
     Subcategory.tax,
+    Subcategory.personalInsurance,
+    Subcategory.mobileSubscription,
     Subcategory.unknown,
     Subcategory.other,
   ]);

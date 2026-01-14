@@ -14,11 +14,11 @@ enum Subcategory {
   takeaway('Takeaway'),
   coffee('Kaffe & Fika'),
   alcohol('Systembolaget'),
+  supplements('Kosttillskott'),
 
   // --- Försäkringar & abonnemang (Insurance & Subscriptions) ---
   personalInsurance('Personförsäkringar'),
   mobileSubscription('Mobilabonnemang'),
-  cloudServices('Molntjänster'),
   newspapers('Tidningar'),
   streaming('Streaming'),
 
@@ -33,6 +33,7 @@ enum Subcategory {
   travel('Resor'),
   hobby('Hobby'),
   boardGamesBooksAndToys('Brädspel, Böcker & Leksaker'),
+  snuff('Snus'),
 
   // --- Hälsa (Health) ---
   gym('Träning'),
@@ -57,8 +58,8 @@ enum Subcategory {
   interest('Ränta'),
 
   // --- Defaults ---
-  unknown('Unknown'),
-  other('Other');
+  unknown('Okänd'),
+  other('Övrigt');
 
   const Subcategory(this.displayName);
   final String displayName;

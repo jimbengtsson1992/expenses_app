@@ -15,6 +15,8 @@ void main() {
       expect(service.categorize('ICA Maxi', -100), (Category.food, Subcategory.groceries));
       expect(service.categorize('Willys', -200), (Category.food, Subcategory.groceries));
       expect(service.categorize('Restaurang Pizzeria', -150), (Category.food, Subcategory.restaurant));
+      expect(service.categorize('Capris', -100), (Category.food, Subcategory.groceries));
+      expect(service.categorize('MMSports', -500), (Category.food, Subcategory.supplements));
     });
 
     test('categorizes Shopping accurately', () {
@@ -25,6 +27,7 @@ void main() {
 
     test('categorizes Transport accurately', () {
       expect(service.categorize('Västtrafik', -35), (Category.transport, Subcategory.publicTransport));
+      expect(service.categorize('Vasttrafik', -35), (Category.transport, Subcategory.publicTransport));
       expect(service.categorize('Uber Trip', -120), (Category.transport, Subcategory.taxi));
       expect(service.categorize('Circle K', -600), (Category.transport, Subcategory.fuel));
     });
@@ -43,15 +46,28 @@ void main() {
       // Nordea Lån -> Housing/Mortgage
       expect(service.categorize('Nordea Lån', -2000), (Category.housing, Subcategory.mortgage));
       
-      // CSN -> Other/Unknown (not explicitly mapped currently)
+      
+      // CSN -> Other/Unknown
       expect(service.categorize('CSN', -1400), (Category.other, Subcategory.unknown));
       
-      // Netflix -> Insurance/Streaming
-      expect(service.categorize('Netflix', -129), (Category.insuranceAndSubscriptions, Subcategory.streaming)); 
+      // Netflix -> Entertainment/Streaming
+      expect(service.categorize('Netflix', -129), (Category.entertainment, Subcategory.streaming)); 
+      
+      // Tele2 -> Other/MobileSubscription
+      expect(service.categorize('Tele2', -299), (Category.other, Subcategory.mobileSubscription));
+
+      // Trygg-Hansa -> Other/PersonalInsurance
+      expect(service.categorize('Trygg-Hansa', -500), (Category.other, Subcategory.personalInsurance));
+
+      // DN -> Entertainment/Newspapers
+      expect(service.categorize('DN Prenumeration', -100), (Category.entertainment, Subcategory.newspapers));
     });
 
     test('fallback to Other', () {
       expect(service.categorize('Unknown Blob', -50), (Category.other, Subcategory.unknown));
+    });
+    test('categorizes Entertainment correctly', () {
+      expect(service.categorize('Snusbolaget', -500), (Category.entertainment, Subcategory.snuff));
     });
   });
 }

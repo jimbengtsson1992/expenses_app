@@ -27,7 +27,7 @@ class CategorizationService {
     // --- Expenses (<= 0) ---
     
     // Food & Drink
-    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross'])) {
+    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross', 'capris'])) {
       return (Category.food, Subcategory.groceries);
     }
     if (_matches(lowerDesc, ['systembolaget'])) {
@@ -41,6 +41,9 @@ class CategorizationService {
     }
     if (_matches(lowerDesc, ['7-eleven'])) {
       return (Category.food, Subcategory.coffee);
+    }
+    if (_matches(lowerDesc, ['mmsports'])) {
+      return (Category.food, Subcategory.supplements);
     }
 
     // Shopping
@@ -58,7 +61,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['uber', 'bolt', 'taxi'])) {
       return (Category.transport, Subcategory.taxi);
     }
-    if (_matches(lowerDesc, ['västtrafik', 'sj ', 'vy ', 'skånetrafiken', 'sl ', 'arlanda express', 'flygbussarna'])) {
+    if (_matches(lowerDesc, ['västtrafik', 'vasttrafik', 'sj ', 'vy ', 'skånetrafiken', 'sl ', 'arlanda express', 'flygbussarna'])) {
       return (Category.transport, Subcategory.publicTransport);
     }
     if (_matches(lowerDesc, ['bensin', 'macken', 'circle k', 'st1', 'preem', 'okq8', 'shell', 'ingo'])) {
@@ -96,23 +99,6 @@ class CategorizationService {
       return (Category.housing, Subcategory.homeInsurance);
     }
 
-    // Insurance & Subscriptions (Försäkringar & abonnemang)
-    if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible'])) {
-      return (Category.insuranceAndSubscriptions, Subcategory.streaming);
-    }
-    if (_matches(lowerDesc, ['tele2', 'telenor', 'telia', 'tre ', 'hallon', 'vimla'])) {
-      return (Category.insuranceAndSubscriptions, Subcategory.mobileSubscription);
-    }
-    if (_matches(lowerDesc, ['trygg-hansa', 'if ', 'folksam', 'länsförsäkringar', 'moderna', 'ica försäkring'])) {
-      // Could be home insurance too, but defaulting to personal/general if not explicitly 'hemförsäkring'
-      return (Category.insuranceAndSubscriptions, Subcategory.personalInsurance);
-    }
-    if (_matches(lowerDesc, ['google one', 'icloud', 'dropbox', 'microsoft'])) {
-      return (Category.insuranceAndSubscriptions, Subcategory.cloudServices);
-    }
-    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di '])) {
-      return (Category.insuranceAndSubscriptions, Subcategory.newspapers);
-    }
 
     // Fees (Avgifter)
     if (_matches(lowerDesc, ['bankavgift', 'prisplan', 'kortavgift', 'årsavgift'])) {
@@ -122,6 +108,12 @@ class CategorizationService {
     // Other / Admin
     if (_matches(lowerDesc, ['skatt', 'skatteverket', 'restskatt'])) {
       return (Category.other, Subcategory.tax);
+    }
+    if (_matches(lowerDesc, ['tele2', 'telenor', 'telia', 'tre ', 'hallon', 'vimla'])) {
+      return (Category.other, Subcategory.mobileSubscription);
+    }
+    if (_matches(lowerDesc, ['trygg-hansa', 'if ', 'folksam', 'länsförsäkringar', 'moderna', 'ica försäkring'])) {
+      return (Category.other, Subcategory.personalInsurance);
     }
 
     // Entertainment (Nöje & fritid)
@@ -145,6 +137,15 @@ class CategorizationService {
     }
     if (_matches(lowerDesc, ['akademibokhande'])) {
       return (Category.entertainment, Subcategory.boardGamesBooksAndToys);
+    }
+    if (_matches(lowerDesc, ['snusbolaget'])) {
+      return (Category.entertainment, Subcategory.snuff);
+    }
+    if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible'])) {
+      return (Category.entertainment, Subcategory.streaming);
+    }
+    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di '])) {
+      return (Category.entertainment, Subcategory.newspapers);
     }
 
     // Savings (Removed category, moved to Other)
