@@ -7,7 +7,7 @@ enum Subcategory {
   broadband('Bredband'),
 
   // --- Mat & Dryck (Food) ---
-  groceries('Groceries'),
+  groceries('Matbutik'),
   restaurant('Restaurant'),
   bar('Bar'),
   lunch('Lunch ute'),
