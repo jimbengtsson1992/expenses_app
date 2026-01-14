@@ -33,13 +33,13 @@ class CategorizationService {
     if (_matches(lowerDesc, ['systembolaget'])) {
       return (Category.food, Subcategory.alcohol);
     }
-    if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
+    if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
       return (Category.food, Subcategory.restaurant);
     }
     if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {
       return (Category.food, Subcategory.bar);
     }
-    if (_matches(lowerDesc, ['7-eleven', 'joeandthejuice'])) {
+    if (_matches(lowerDesc, ['7-eleven', 'joeandthejuice', 'espresso house', 'steinbrenner'])) {
       return (Category.food, Subcategory.coffee);
     }
     if (_matches(lowerDesc, ['mmsports'])) {
@@ -71,6 +71,9 @@ class CategorizationService {
     if (_matches(lowerDesc, ['snusbolaget'])) {
       return (Category.entertainment, Subcategory.snuff);
     }
+    if (_matches(lowerDesc, ['nintendo'])) {
+      return (Category.entertainment, Subcategory.videoGames);
+    }
     if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible', 'amazon prime'])) {
       return (Category.entertainment, Subcategory.streaming);
     }
@@ -82,7 +85,10 @@ class CategorizationService {
     if (_matches(lowerDesc, ['nk beauty', 'vacker nk'])) {
       return (Category.shopping, Subcategory.beauty);
     }
-    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos'])) {
+    if (_matches(lowerDesc, ['arket', 'lampgrossen'])) {
+      return (Category.shopping, Subcategory.decor);
+    }
+    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg'])) {
       return (Category.shopping, Subcategory.clothes);
     }
     if (_matches(lowerDesc, ['elgiganten', 'inet', 'webhallen', 'amazon', 'apple', 'power', 'netonnet'])) {

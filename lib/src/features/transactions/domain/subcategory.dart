@@ -35,6 +35,7 @@ enum Subcategory {
   hobby('Hobby'),
   boardGamesBooksAndToys('Brädspel, Böcker & Leksaker'),
   snuff('Snus'),
+  videoGames('TV-spel'),
 
   // --- Hälsa (Health) ---
   gym('Träning'),

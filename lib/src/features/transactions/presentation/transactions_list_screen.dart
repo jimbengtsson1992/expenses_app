@@ -84,29 +84,61 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
   }
 
   Future<void> _showRulesDialog() async {
-    final repo = await ref.read(userRulesRepositoryProvider.future);
-    final rules = repo.getAllRules(); // Map<String, (Category, Subcategory)>
-
-    // Group by (Category, Subcategory)
-    final grouped = <(Category, Subcategory), List<String>>{};
-    for (final entry in rules.entries) {
-      final key = entry.value;
-      grouped.putIfAbsent(key, () => []).add(entry.key);
-    }
+    final rulesRepo = await ref.read(userRulesRepositoryProvider.future);
+    final rules = rulesRepo.getAllRules(); 
+    final overrides = rulesRepo.getAllOverrides();
+    
+    // Fetch all transactions to look up details/CSV data for overrides
+    // This ensures we have the data even if it's not in the current month view
+    final allExpenses = await ref.read(expensesRepositoryProvider).getExpenses();
+    final expenseMap = {for (final e in allExpenses) e.id: e};
 
     final buffer = StringBuffer();
-    buffer.writeln('// Add this to CategorizationService.categorize logic\n');
+    buffer.writeln('Please update the categorization logic with the following changes:\n');
+    
+    // 1. General Rules
+    if (rules.isNotEmpty) {
+      buffer.writeln('### General Logic (Keywords)');
+      // Group by (Category, Subcategory)
+      final groupedRules = <(Category, Subcategory), List<String>>{};
+      for (final entry in rules.entries) {
+        groupedRules.putIfAbsent(entry.value, () => []).add(entry.key);
+      }
+      
+      for (final entry in groupedRules.entries) {
+        final cat = entry.key.$1;
+        final sub = entry.key.$2;
+        final keywords = entry.value.map((k) => "'$k'").join(', ');
+        buffer.writeln('- Assign **Category.${cat.name}** / **Subcategory.${sub.name}** if description contains: $keywords');
+      }
+      buffer.writeln();
+    }
 
-    for (final entry in grouped.entries) {
-      final cat = entry.key.$1;
-      final sub = entry.key.$2;
-      final keywords = entry.value.map((k) => "'${k.toLowerCase()}'").join(', ');
+    // 2. Overrides
+    if (overrides.isNotEmpty) {
+      buffer.writeln('### Specific Exceptions (Overrides)');
+      for (final entry in overrides.entries) {
+        final id = entry.key;
+        final cat = entry.value.$1;
+        final sub = entry.value.$2;
+        
+        final expense = expenseMap[id];
+        
+        if (expense != null && expense.rawCsvData != null) {
+           buffer.writeln('- For CSV Row: `${expense.rawCsvData}`');
+           buffer.writeln('  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**');
+        } else if (expense != null) {
+           buffer.writeln('- Hardcode Transaction: "${expense.description}" (${expense.date.toString().substring(0, 10)}, ${expense.amount} kr)');
+           buffer.writeln('  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**');
+        } else {
+           buffer.writeln('- Hardcode Transaction ID `$id` (Unknown Details)');
+           buffer.writeln('  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**');
+        }
+      }
+    }
 
-      buffer.writeln('// ${cat.displayName} - ${sub.displayName}');
-      buffer.writeln("if (_matches(lowerDesc, [$keywords])) {");
-      buffer.writeln("  return (Category.${cat.name}, Subcategory.${sub.name});");
-      buffer.writeln("}");
-      buffer.writeln(); // Empty line
+    if (rules.isEmpty && overrides.isEmpty) {
+      buffer.writeln('No rules or overrides saved.');
     }
 
     final code = buffer.toString();
@@ -117,24 +149,19 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
       context: context,
       barrierDismissible: false,
       builder: (ctx) => AlertDialog(
-        title: const Text('Exportera Regler'),
+        title: const Text('Exportera Regler & Overrides'),
         content: SingleChildScrollView(
           child: SelectableText(
-            code.isEmpty ? '// Inga regler sparade än.' : code,
+            code,
             style: const TextStyle(fontFamily: 'Courier', fontSize: 12),
           ),
         ),
         actions: [
-          if (code.isNotEmpty)
+          if (rules.isNotEmpty || overrides.isNotEmpty)
             TextButton(
               onPressed: () async {
-                 // Close dialog first using DIALOG context
                  Navigator.of(ctx).pop(); 
-                 
-                 // Perform async work
-                 await repo.clearAll(); 
-                 
-                 // Show feedback using WIDGET context if mounted
+                 await rulesRepo.clearAll(); 
                  if (mounted) {
                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Regler raderade')));
                    ref.invalidate(expensesRepositoryProvider);
@@ -149,10 +176,9 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
           ElevatedButton(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: code));
-              // Use main context for snackbar, dialog stays open or we can keep it open
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Kopierat till urklipp')));
             },
-            child: const Text('Kopiera Kod'),
+            child: const Text('Kopiera Prompt'),
           ),
         ],
       ),

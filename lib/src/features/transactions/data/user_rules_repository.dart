@@ -84,6 +84,7 @@ class UserRulesRepository {
   }
   
   Map<String, (Category, Subcategory)> getAllRules() => Map.from(_rulesCache);
+  Map<String, (Category, Subcategory)> getAllOverrides() => Map.from(_overridesCache);
 
   // --- Public Setters (Async) ---
 

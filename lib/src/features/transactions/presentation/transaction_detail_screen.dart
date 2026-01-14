@@ -224,9 +224,14 @@ class TransactionDetailScreen extends ConsumerWidget {
 
     if (action == _SaveAction.override) {
       await repo.addOverride(expense.id, category, subcategory);
+      
+      // Copy code to clipboard
+      final code = "await repo.addOverride('${expense.id}', Category.${category.name}, Subcategory.${subcategory.name});";
+      await Clipboard.setData(ClipboardData(text: code));
+
       ref.invalidate(expensesRepositoryProvider);
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Transaktion uppdaterad')));
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Transaktion uppdaterad & kod kopierad')));
       }
     } else if (action == _SaveAction.rule) {
       if (!context.mounted) return;
