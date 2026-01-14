@@ -17,6 +17,7 @@ void main() {
       expect(service.categorize('Restaurang Pizzeria', -150), (Category.food, Subcategory.restaurant));
       expect(service.categorize('Capris', -100), (Category.food, Subcategory.groceries));
       expect(service.categorize('MMSports', -500), (Category.food, Subcategory.supplements));
+      expect(service.categorize('JoeAndTheJuice', -85), (Category.food, Subcategory.coffee));
     });
 
     test('categorizes Shopping accurately', () {
@@ -24,6 +25,7 @@ void main() {
       expect(service.categorize('H&M', -300), (Category.shopping, Subcategory.clothes));
       expect(service.categorize('Elgiganten', -1000), (Category.shopping, Subcategory.electronics));
       expect(service.categorize('NK BEAUTY', -350), (Category.shopping, Subcategory.beauty));
+      expect(service.categorize('Vacker NK', -300), (Category.shopping, Subcategory.beauty));
     });
 
     test('categorizes Transport accurately', () {

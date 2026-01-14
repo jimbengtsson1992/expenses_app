@@ -39,7 +39,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {
       return (Category.food, Subcategory.bar);
     }
-    if (_matches(lowerDesc, ['7-eleven'])) {
+    if (_matches(lowerDesc, ['7-eleven', 'joeandthejuice'])) {
       return (Category.food, Subcategory.coffee);
     }
     if (_matches(lowerDesc, ['mmsports'])) {
@@ -79,7 +79,7 @@ class CategorizationService {
     }
 
     // Shopping
-    if (_matches(lowerDesc, ['nk beauty'])) {
+    if (_matches(lowerDesc, ['nk beauty', 'vacker nk'])) {
       return (Category.shopping, Subcategory.beauty);
     }
     if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos'])) {
