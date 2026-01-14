@@ -147,8 +147,8 @@ class CategorizationService {
     }
     
     // Other / Admin
-    if (_matches(lowerDesc, ['skatt', 'skatteverket', 'restskatt'])) {
-      return (Category.other, Subcategory.tax);
+    if (_matches(lowerDesc, ['skatt', 'skatteverket', 'restskatt', 'preliminär skatt'])) {
+      return (Category.fees, Subcategory.tax);
     }
     if (_matches(lowerDesc, ['tele2', 'telenor', 'telia', 'tre ', 'hallon', 'vimla'])) {
       return (Category.other, Subcategory.mobileSubscription);

@@ -54,6 +54,7 @@ enum Category {
 
   fees('Avgifter', 0xFFF44336, '💳', [
     Subcategory.bankFees,
+    Subcategory.tax,
     Subcategory.unknown,
     Subcategory.other,
   ]),
@@ -76,7 +77,6 @@ enum Category {
   ]),
 
   other('Övrigt', 0xFF9E9E9E, '🧹', [
-    Subcategory.tax,
     Subcategory.personalInsurance,
     Subcategory.mobileSubscription,
     Subcategory.unknown,

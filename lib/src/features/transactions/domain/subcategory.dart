@@ -44,9 +44,9 @@ enum Subcategory {
 
   // --- Avgifter (Fees) ---
   bankFees('Bankavgifter'),
+  tax('Skatt'),
 
   // --- Övrigt (Other / Admin) ---
-  tax('Skatt'),
 
   // --- Transport (Existing - Kept) ---
   taxi('Taxi'),
