@@ -18,6 +18,9 @@ class CategorizationService {
       if (_matches(lowerDesc, ['lön', 'salary'])) {
         return (Category.income, Subcategory.salary);
       }
+      if (_matches(lowerDesc, ['ränta'])) {
+        return (Category.income, Subcategory.interest);
+      }
       return (Category.income, Subcategory.other);
     }
 
@@ -27,7 +30,10 @@ class CategorizationService {
     if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross'])) {
       return (Category.food, Subcategory.groceries);
     }
-    if (_matches(lowerDesc, ['systembolaget', 'kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
+    if (_matches(lowerDesc, ['systembolaget'])) {
+      return (Category.food, Subcategory.alcohol);
+    }
+    if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
       return (Category.food, Subcategory.restaurant);
     }
     if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {

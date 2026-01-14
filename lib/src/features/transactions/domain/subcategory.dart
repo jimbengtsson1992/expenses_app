@@ -13,6 +13,7 @@ enum Subcategory {
   lunch('Lunch ute'),
   takeaway('Takeaway'),
   coffee('Kaffe & Fika'),
+  alcohol('Systembolaget'),
 
   // --- Försäkringar & abonnemang (Insurance & Subscriptions) ---
   personalInsurance('Personförsäkringar'),
@@ -53,6 +54,7 @@ enum Subcategory {
 
   // --- Income (Existing - Kept) ---
   salary('Lön'),
+  interest('Ränta'),
 
   // --- Defaults ---
   unknown('Unknown'),

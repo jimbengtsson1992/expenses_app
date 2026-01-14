@@ -76,6 +76,7 @@ const _$SubcategoryEnumMap = {
   Subcategory.lunch: 'lunch',
   Subcategory.takeaway: 'takeaway',
   Subcategory.coffee: 'coffee',
+  Subcategory.alcohol: 'alcohol',
   Subcategory.personalInsurance: 'personalInsurance',
   Subcategory.mobileSubscription: 'mobileSubscription',
   Subcategory.cloudServices: 'cloudServices',
@@ -100,6 +101,7 @@ const _$SubcategoryEnumMap = {
   Subcategory.fuel: 'fuel',
   Subcategory.parking: 'parking',
   Subcategory.salary: 'salary',
+  Subcategory.interest: 'interest',
   Subcategory.unknown: 'unknown',
   Subcategory.other: 'other',
 };

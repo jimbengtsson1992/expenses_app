@@ -17,6 +17,7 @@ enum Category {
     Subcategory.bar,
     Subcategory.lunch,
     Subcategory.takeaway,
+    Subcategory.alcohol,
     Subcategory.coffee,
     Subcategory.unknown,
     Subcategory.other,
@@ -74,8 +75,9 @@ enum Category {
     Subcategory.other,
   ]),
 
-  income('Inkomst', 0xFF009688, '💵', [
+  income('Inkomst', 0xFF009688, '💰', [
     Subcategory.salary,
+    Subcategory.interest,
     Subcategory.unknown,
     Subcategory.other,
   ]),
