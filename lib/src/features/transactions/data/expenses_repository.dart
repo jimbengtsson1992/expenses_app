@@ -5,7 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
-import '../domain/transactions.dart';
+import '../domain/transaction.dart';
 import '../domain/transaction_type.dart';
 import '../domain/account.dart';
 import '../application/categorization_service.dart';
