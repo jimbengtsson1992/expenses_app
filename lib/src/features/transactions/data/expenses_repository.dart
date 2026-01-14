@@ -1,26 +1,29 @@
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 import '../domain/transaction.dart';
 import '../domain/transaction_type.dart';
 import '../domain/account.dart';
+import '../domain/category.dart';
+import '../domain/subcategory.dart';
 import '../application/categorization_service.dart';
+import 'user_rules_repository.dart';
 
 part 'expenses_repository.g.dart';
 
 @riverpod
 ExpensesRepository expensesRepository(Ref ref) {
-  return ExpensesRepository(ref.read(categorizationServiceProvider));
+  return ExpensesRepository(ref, ref.read(categorizationServiceProvider));
 }
 
 class ExpensesRepository {
-  ExpensesRepository(this._categorizationService);
+  ExpensesRepository(this._ref, this._categorizationService);
+  final Ref _ref;
   final CategorizationService _categorizationService;
-  final _uuid = const Uuid();
 
   // Known account markers to filter transfers
   static final _startParams = DateTime(2025, 1, 1);
@@ -32,17 +35,22 @@ class ExpensesRepository {
         .where((String key) => key.startsWith('assets/data/') && (key.endsWith('.csv') || key.endsWith('.CSV')))
         .toList();
 
+    // Load User Rules via FutureProvider to ensure they are ready
+    final rulesRepo = await _ref.read(userRulesRepositoryProvider.future);
+
     final allExpenses = <Transaction>[];
+    // Registry to track ID collisions across all files
+    final Map<String, int> idRegistry = {};
 
     for (final path in filePaths) {
       final content = await rootBundle.loadString(path);
       final filename = path.split('/').last;
       
       if (filename.toUpperCase().contains('PERSONKONTO') || filename.toUpperCase().contains('SPARKONTO')) {
-        allExpenses.addAll(_parseNordeaCsv(content, filename));
+        allExpenses.addAll(_parseNordeaCsv(content, filename, idRegistry, rulesRepo));
       } else {
         // Assume SAS/Transaction export
-        allExpenses.addAll(_parseSasAmexCsv(content, filename));
+        allExpenses.addAll(_parseSasAmexCsv(content, filename, idRegistry, rulesRepo));
       }
     }
 
@@ -51,7 +59,39 @@ class ExpensesRepository {
     return allExpenses;
   }
 
-  List<Transaction> _parseNordeaCsv(String content, String filename) {
+  // Generate a deterministic stable ID
+  String _generateStableId(
+    DateTime date, 
+    double amount, 
+    String description, 
+    Account sourceAccount,
+    Map<String, int> idRegistry,
+  ) {
+    // strict ISO string might include time if not careful, ensure we use what we have
+    // Use a clean format for the key
+    final dateStr = DateFormat('yyyy-MM-dd').format(date);
+    final rawKey = '${dateStr}_${amount.toStringAsFixed(2)}_${description}_${sourceAccount.name}';
+    
+    final bytes = utf8.encode(rawKey);
+    final hash = sha256.convert(bytes).toString().substring(0, 16); // Shorten for readability/space
+
+    // Check collision
+    if (idRegistry.containsKey(hash)) {
+      final count = idRegistry[hash]! + 1;
+      idRegistry[hash] = count;
+      return '${hash}_$count';
+    } else {
+      idRegistry[hash] = 0;
+      return hash;
+    }
+  }
+
+  List<Transaction> _parseNordeaCsv(
+    String content, 
+    String filename, 
+    Map<String, int> idRegistry,
+    UserRulesRepository rulesRepo,
+  ) {
     // Nordea: Semi-colon separated.
     // Format: Bokföringsdag;Belopp;Avsändare;Mottagare;Namn;Rubrik;Saldo;Valuta;
     // Commas for decimals.
@@ -103,11 +143,35 @@ class ExpensesRepository {
       // Determine transaction type: positive = income, negative = expense
       final type = amount >= 0 ? TransactionType.income : TransactionType.expense;
       
-      // Categorize
-      final (category, subcategory) = _categorizationService.categorize(description, amount);
+       // Generate ID
+      final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
+
+      // Categorize Priority:
+      // 1. Specific Override (ID based)
+      // 2. User Rule (Description based)
+      // 3. Fallback to Service (Hardcoded)
+      
+      Category category;
+      Subcategory subcategory;
+
+      final override = rulesRepo.getOverride(id);
+      if (override != null) {
+        category = override.$1;
+        subcategory = override.$2;
+      } else {
+        final rule = rulesRepo.getRule(description);
+        if (rule != null) {
+          category = rule.$1;
+          subcategory = rule.$2;
+        } else {
+          final result = _categorizationService.categorize(description, amount);
+          category = result.$1;
+          subcategory = result.$2;
+        }
+      }
 
       expenses.add(Transaction(
-        id: _uuid.v4(),
+        id: id,
         date: date,
         amount: amount,
         description: description,
@@ -123,7 +187,12 @@ class ExpensesRepository {
     return expenses;
   }
 
-  List<Transaction> _parseSasAmexCsv(String content, String filename) {
+  List<Transaction> _parseSasAmexCsv(
+    String content, 
+    String filename, 
+    Map<String, int> idRegistry,
+    UserRulesRepository rulesRepo,
+  ) {
     // SAS Amex: Semicolon separated.
     // Section "Köp/uttag" starts around line 26/27.
     // Headers: Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
@@ -198,11 +267,31 @@ class ExpensesRepository {
          // Invert amount: 130 (Cost) -> -130 (Expense)
          amount = -amount;
 
-         // Categorize
-         final (category, subcategory) = _categorizationService.categorize(description, amount); // pass signed amount (negative for expense)
+         // Generate ID
+         final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
+
+          // Categorize Priority
+          Category category;
+          Subcategory subcategory;
+
+          final override = rulesRepo.getOverride(id);
+          if (override != null) {
+            category = override.$1;
+            subcategory = override.$2;
+          } else {
+            final rule = rulesRepo.getRule(description);
+            if (rule != null) {
+              category = rule.$1;
+               subcategory = rule.$2;
+            } else {
+               final result = _categorizationService.categorize(description, amount);
+               category = result.$1;
+               subcategory = result.$2;
+            }
+          }
 
          expenses.add(Transaction(
-           id: _uuid.v4(),
+           id: id,
            date: date,
            amount: amount,
            description: description,

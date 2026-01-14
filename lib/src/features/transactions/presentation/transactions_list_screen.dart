@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../routing/routes.dart';
@@ -6,6 +7,8 @@ import '../../../routing/routes.dart';
 import '../../../common_widgets/month_selector.dart';
 import '../../dashboard/presentation/dashboard_screen.dart'; // Import provider
 import '../data/expenses_providers.dart';
+import '../data/expenses_repository.dart';
+import '../data/user_rules_repository.dart';
 import '../domain/category.dart';
 import '../domain/subcategory.dart';
 import '../domain/transaction_type.dart';
@@ -34,16 +37,6 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
   TransactionType? _filterType;
   Category? _filterCategory;
   Account? _filterAccount;
-  // bool? _filterExcludeFromOverview; // true = show only excluded, false = show only included, null = show all?
-  // User logic: "Status" -> All, Included, Excluded.
-  // Let's use an enum or just bool? with null.
-  // null = All.
-  // true = Only Excluded.
-  // false = Only Included (Standard).
-  // Wait, standard behavior should be showing EVERYTHING unless filtered?
-  // Current requirement: "Add a filter that shows excludeFromOverview".
-  // Let's interpret as: Filter by "Is Excluded?".
-  // Values: All (null), Yes (true), No (false).
   bool? _filterExcludeFromOverview;
 
   @override
@@ -90,6 +83,82 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
     });
   }
 
+  Future<void> _showRulesDialog() async {
+    final repo = await ref.read(userRulesRepositoryProvider.future);
+    final rules = repo.getAllRules(); // Map<String, (Category, Subcategory)>
+
+    // Group by (Category, Subcategory)
+    final grouped = <(Category, Subcategory), List<String>>{};
+    for (final entry in rules.entries) {
+      final key = entry.value;
+      grouped.putIfAbsent(key, () => []).add(entry.key);
+    }
+
+    final buffer = StringBuffer();
+    buffer.writeln('// Add this to CategorizationService.categorize logic\n');
+
+    for (final entry in grouped.entries) {
+      final cat = entry.key.$1;
+      final sub = entry.key.$2;
+      final keywords = entry.value.map((k) => "'${k.toLowerCase()}'").join(', ');
+
+      buffer.writeln('// ${cat.displayName} - ${sub.displayName}');
+      buffer.writeln("if (_matches(lowerDesc, [$keywords])) {");
+      buffer.writeln("  return (Category.${cat.name}, Subcategory.${sub.name});");
+      buffer.writeln("}");
+      buffer.writeln(); // Empty line
+    }
+
+    final code = buffer.toString();
+
+    if (!mounted) return;
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Exportera Regler'),
+        content: SingleChildScrollView(
+          child: SelectableText(
+            code.isEmpty ? '// Inga regler sparade än.' : code,
+            style: const TextStyle(fontFamily: 'Courier', fontSize: 12),
+          ),
+        ),
+        actions: [
+          if (code.isNotEmpty)
+            TextButton(
+              onPressed: () async {
+                 // Close dialog first using DIALOG context
+                 Navigator.of(ctx).pop(); 
+                 
+                 // Perform async work
+                 await repo.clearAll(); 
+                 
+                 // Show feedback using WIDGET context if mounted
+                 if (mounted) {
+                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Regler raderade')));
+                   ref.invalidate(expensesRepositoryProvider);
+                 }
+              },
+              child: const Text('Rensa sparade', style: TextStyle(color: Colors.red)),
+            ),
+          TextButton(
+             onPressed: () => Navigator.of(ctx).pop(), 
+             child: const Text('Stäng')
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: code));
+              // Use main context for snackbar, dialog stays open or we can keep it open
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Kopierat till urklipp')));
+            },
+            child: const Text('Kopiera Kod'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentDate = ref.watch(currentDateProvider);
@@ -103,6 +172,13 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
           onNext: () => ref.read(currentDateProvider.notifier).nextMonth(),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.code),
+            tooltip: 'Exportera Regler',
+            onPressed: _showRulesDialog,
+          ),
+        ],
       ),
       body: expensesAsync.when(
         data: (expenses) {

@@ -33,6 +33,9 @@ class CategorizationService {
     if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {
       return (Category.food, Subcategory.bar);
     }
+    if (_matches(lowerDesc, ['7-eleven'])) {
+      return (Category.food, Subcategory.coffee);
+    }
 
     // Shopping
     if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos'])) {
@@ -133,6 +136,9 @@ class CategorizationService {
     }
     if (_matches(lowerDesc, ['hobby', 'panduro'])) {
       return (Category.entertainment, Subcategory.hobby);
+    }
+    if (_matches(lowerDesc, ['akademibokhande'])) {
+      return (Category.entertainment, Subcategory.boardGamesBooksAndToys);
     }
 
     // Savings (Removed category, moved to Other)

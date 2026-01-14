@@ -45,6 +45,7 @@ enum Category {
   entertainment('Nöje & Fritid', 0xFF9C27B0, '🎉', [
     Subcategory.travel,
     Subcategory.hobby,
+    Subcategory.boardGamesBooksAndToys,
     Subcategory.unknown,
     Subcategory.other,
   ]),

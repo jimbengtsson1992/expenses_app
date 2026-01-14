@@ -12,7 +12,7 @@ enum Subcategory {
   bar('Bar'),
   lunch('Lunch ute'),
   takeaway('Takeaway'),
-  coffee('Kaffe / fika'),
+  coffee('Kaffe & Fika'),
 
   // --- Försäkringar & abonnemang (Insurance & Subscriptions) ---
   personalInsurance('Personförsäkringar'),
@@ -31,9 +31,10 @@ enum Subcategory {
   // --- Nöje & fritid (Entertainment) ---
   travel('Resor'),
   hobby('Hobby'),
+  boardGamesBooksAndToys('Brädspel, Böcker & Leksaker'),
 
   // --- Hälsa (Health) ---
-  gym('Träning / gym'),
+  gym('Träning'),
   pharmacy('Apotek'),
   doctor('Vård'),
 
