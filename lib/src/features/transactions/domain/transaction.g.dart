@@ -83,6 +83,6 @@ const _$SubcategoryEnumMap = {
   Subcategory.phone: 'phone',
   Subcategory.insurance: 'insurance',
   Subcategory.salary: 'salary',
-  Subcategory.otherIncome: 'otherIncome',
   Subcategory.unknown: 'unknown',
+  Subcategory.other: 'other',
 };

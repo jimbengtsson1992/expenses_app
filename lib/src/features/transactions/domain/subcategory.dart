@@ -29,10 +29,10 @@ enum Subcategory {
 
   // Income
   salary('Lön'),
-  otherIncome('Övrig inkomst'),
 
   // Default/Fallback
-  unknown('Okänd');
+  unknown('Okänd'),
+  other('Övrigt');
 
   const Subcategory(this.displayName);
   final String displayName;

@@ -35,8 +35,8 @@ void main() {
       expect(service.categorize('Salary Jan', 35000), (Category.income, Subcategory.salary));
 
       // Other Income check
-      expect(service.categorize('Swish Insättning', 500), (Category.income, Subcategory.otherIncome));
-      expect(service.categorize('Återbetalning', 1200), (Category.income, Subcategory.otherIncome));
+      expect(service.categorize('Swish Insättning', 500), (Category.income, Subcategory.other));
+      expect(service.categorize('Återbetalning', 1200), (Category.income, Subcategory.other));
     });
 
     test('categorizes Bills correctly', () {
