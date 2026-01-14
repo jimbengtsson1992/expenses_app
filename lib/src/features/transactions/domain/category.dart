@@ -63,12 +63,6 @@ enum Category {
     Subcategory.other,
   ]),
 
-  other('Övrigt', 0xFF9E9E9E, '🧹', [
-    Subcategory.tax,
-    Subcategory.unknown,
-    Subcategory.other,
-  ]),
-
   transport('Transport', 0xFFFF9800, '🚌', [
     Subcategory.taxi,
     Subcategory.publicTransport,
@@ -81,6 +75,12 @@ enum Category {
 
   income('Inkomst', 0xFF009688, '💵', [
     Subcategory.salary,
+    Subcategory.unknown,
+    Subcategory.other,
+  ]),
+
+  other('Övrigt', 0xFF9E9E9E, '🧹', [
+    Subcategory.tax,
     Subcategory.unknown,
     Subcategory.other,
   ]);

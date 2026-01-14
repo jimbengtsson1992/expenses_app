@@ -126,9 +126,9 @@ const _$CategoryEnumMap = {
   Category.entertainment: 'entertainment',
   Category.health: 'health',
   Category.fees: 'fees',
-  Category.other: 'other',
   Category.transport: 'transport',
   Category.income: 'income',
+  Category.other: 'other',
 };
 
 const _$TransactionTypeEnumMap = {
