@@ -6,6 +6,7 @@ enum Category {
     Subcategory.mortgage,
     Subcategory.electricity,
     Subcategory.homeInsurance,
+    Subcategory.security,
     Subcategory.broadband,
     Subcategory.unknown,
     Subcategory.other,
@@ -19,6 +20,7 @@ enum Category {
     Subcategory.takeaway,
     Subcategory.alcohol,
     Subcategory.coffee,
+    Subcategory.supplements,
     Subcategory.unknown,
     Subcategory.other,
   ]),
@@ -55,6 +57,7 @@ enum Category {
   fees('Avgifter', 0xFFF44336, '💳', [
     Subcategory.bankFees,
     Subcategory.tax,
+    Subcategory.csn,
     Subcategory.unknown,
     Subcategory.other,
   ]),

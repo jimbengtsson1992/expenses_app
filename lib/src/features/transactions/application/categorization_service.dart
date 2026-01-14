@@ -39,10 +39,13 @@ class CategorizationService {
     if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {
       return (Category.food, Subcategory.bar);
     }
-    if (_matches(lowerDesc, ['7-eleven', 'joeandthejuice', 'espresso house', 'steinbrenner'])) {
+    if (_matches(lowerDesc, ['beets salads bar'])) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(lowerDesc, ['7-eleven', 'joeandthejuice', 'espresso house', 'steinbrenner', 'pressbyran'])) {
       return (Category.food, Subcategory.coffee);
     }
-    if (_matches(lowerDesc, ['mmsports'])) {
+    if (_matches(lowerDesc, ['mmsports', 'mm sports ab'])) {
       return (Category.food, Subcategory.supplements);
     }
 
@@ -85,7 +88,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['nk beauty', 'vacker nk'])) {
       return (Category.shopping, Subcategory.beauty);
     }
-    if (_matches(lowerDesc, ['arket', 'lampgrossen'])) {
+    if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex'])) {
       return (Category.shopping, Subcategory.decor);
     }
     if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg'])) {
@@ -93,6 +96,9 @@ class CategorizationService {
     }
     if (_matches(lowerDesc, ['elgiganten', 'inet', 'webhallen', 'amazon', 'apple', 'power', 'netonnet'])) {
       return (Category.shopping, Subcategory.electronics);
+    }
+    if (_matches(lowerDesc, ['marica roos'])) {
+      return (Category.shopping, Subcategory.gifts);
     }
     if (_matches(lowerDesc, ['ikea', 'bauhaus', 'jula', 'clas ohlson', 'mio', 'rusta', 'plantagen'])) {
       return (Category.shopping, Subcategory.furniture); // Approximation
@@ -113,7 +119,7 @@ class CategorizationService {
     }
 
     // Health
-    if (_matches(lowerDesc, ['fysiken', 'sats', 'nordic wellness', 'fitness', 'gym', 'friskis'])) {
+    if (_matches(lowerDesc, ['fysiken', 'sats', 'nordic wellness', 'fitness', 'gym', 'friskis', 'nordicwell'])) {
       return (Category.health, Subcategory.gym);
     }
     if (_matches(lowerDesc, ['apotek', 'kronans', 'doz'])) {
@@ -133,11 +139,14 @@ class CategorizationService {
     if (_matches(lowerDesc, ['göteborg energi', 'ellevio', 'vattenfall', 'eon', 'fortum'])) {
       return (Category.housing, Subcategory.electricity);
     }
-    if (_matches(lowerDesc, ['bahnhof', 'comhem', 'tele2 bredband', 'telenor bredband'])) {
+    if (_matches(lowerDesc, ['bahnhof', 'comhem', 'tele2 bredband', 'telenor bredband', 'tele2'])) {
       return (Category.housing, Subcategory.broadband);
     }
     if (_matches(lowerDesc, ['hemförsäkring', 'hedvig'])) {
       return (Category.housing, Subcategory.homeInsurance);
+    }
+    if (_matches(lowerDesc, ['verisure'])) {
+      return (Category.housing, Subcategory.security);
     }
 
 
@@ -145,12 +154,15 @@ class CategorizationService {
     if (_matches(lowerDesc, ['bankavgift', 'prisplan', 'kortavgift', 'årsavgift'])) {
       return (Category.fees, Subcategory.bankFees);
     }
+    if (_matches(lowerDesc, ['csn'])) {
+      return (Category.fees, Subcategory.csn);
+    }
     
     // Other / Admin
     if (_matches(lowerDesc, ['skatt', 'skatteverket', 'restskatt', 'preliminär skatt'])) {
       return (Category.fees, Subcategory.tax);
     }
-    if (_matches(lowerDesc, ['tele2', 'telenor', 'telia', 'tre ', 'hallon', 'vimla'])) {
+    if (_matches(lowerDesc, ['telenor', 'telia', 'tre ', 'hallon', 'vimla'])) {
       return (Category.other, Subcategory.mobileSubscription);
     }
     if (_matches(lowerDesc, ['trygg-hansa', 'if ', 'folksam', 'länsförsäkringar', 'moderna', 'ica försäkring'])) {

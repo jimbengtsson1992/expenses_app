@@ -4,6 +4,7 @@ enum Subcategory {
   mortgage('Bolån & Amortering'),
   electricity('El'),
   homeInsurance('Hemförsäkring'),
+  security('Larm & Säkerhet'),
   broadband('Bredband'),
 
   // --- Mat & Dryck (Food) ---
@@ -45,6 +46,7 @@ enum Subcategory {
   // --- Avgifter (Fees) ---
   bankFees('Bankavgifter'),
   tax('Skatt'),
+  csn('CSN'),
 
   // --- Övrigt (Other / Admin) ---
 
