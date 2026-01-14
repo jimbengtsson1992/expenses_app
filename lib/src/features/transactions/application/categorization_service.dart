@@ -18,83 +18,126 @@ class CategorizationService {
       if (_matches(lowerDesc, ['lön', 'salary'])) {
         return (Category.income, Subcategory.salary);
       }
-      return (Category.income, Subcategory.other); // Defaults to "Övrigt"
+      return (Category.income, Subcategory.other);
     }
 
     // --- Expenses (<= 0) ---
     
     // Food & Drink
-    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl'])) {
+    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross'])) {
       return (Category.food, Subcategory.groceries);
     }
-    if (_matches(lowerDesc, ['systembolaget', 'kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats'])) {
+    if (_matches(lowerDesc, ['systembolaget', 'kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'espresso', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
       return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {
+      return (Category.food, Subcategory.bar);
     }
 
     // Shopping
-    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor'])) {
+    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos'])) {
       return (Category.shopping, Subcategory.clothes);
     }
-    if (_matches(lowerDesc, ['elgiganten', 'inet', 'webhallen', 'amazon', 'apple'])) {
+    if (_matches(lowerDesc, ['elgiganten', 'inet', 'webhallen', 'amazon', 'apple', 'power', 'netonnet'])) {
       return (Category.shopping, Subcategory.electronics);
     }
-    if (_matches(lowerDesc, ['ikea', 'bauhaus', 'jula', 'clas ohlson'])) {
-      return (Category.shopping, Subcategory.home);
+    if (_matches(lowerDesc, ['ikea', 'bauhaus', 'jula', 'clas ohlson', 'mio', 'rusta', 'plantagen'])) {
+      return (Category.shopping, Subcategory.furniture); // Approximation
     }
 
     // Transport
     if (_matches(lowerDesc, ['uber', 'bolt', 'taxi'])) {
       return (Category.transport, Subcategory.taxi);
     }
-    if (_matches(lowerDesc, ['västtrafik', 'sj ', 'vy ', 'skånetrafiken', 'sl '])) {
+    if (_matches(lowerDesc, ['västtrafik', 'sj ', 'vy ', 'skånetrafiken', 'sl ', 'arlanda express', 'flygbussarna'])) {
       return (Category.transport, Subcategory.publicTransport);
     }
-    if (_matches(lowerDesc, ['bensin', 'macken', 'circle k', 'st1', 'preem', 'okq8'])) {
+    if (_matches(lowerDesc, ['bensin', 'macken', 'circle k', 'st1', 'preem', 'okq8', 'shell', 'ingo'])) {
       return (Category.transport, Subcategory.fuel);
     }
-    if (_matches(lowerDesc, ['parkering', 'easypark', 'aimo'])) {
+    if (_matches(lowerDesc, ['parkering', 'easypark', 'aimo', 'parkster'])) {
       return (Category.transport, Subcategory.parking);
     }
 
     // Health
-    if (_matches(lowerDesc, ['fysiken', 'sats', 'nordic wellness', 'fitness', 'gym'])) {
+    if (_matches(lowerDesc, ['fysiken', 'sats', 'nordic wellness', 'fitness', 'gym', 'friskis'])) {
       return (Category.health, Subcategory.gym);
     }
-    if (_matches(lowerDesc, ['apotek'])) {
+    if (_matches(lowerDesc, ['apotek', 'kronans', 'doz'])) {
       return (Category.health, Subcategory.pharmacy);
     }
-    if (_matches(lowerDesc, ['vård', 'tandläkare', 'karolinska', 'sjukvård', 'doctor'])) {
+    if (_matches(lowerDesc, ['vård', 'tandläkare', 'karolinska', 'sjukvård', 'doctor', '1177', 'capio'])) {
       return (Category.health, Subcategory.doctor);
     }
 
-    // Loans & BRF
-    if (_matches(lowerDesc, ['omsättning lån', 'höjdena brf', 'bolån', 'brf avgift', 'bostadsrätt', 'amortering'])) {
-      return (Category.loansAndBrf, Subcategory.unknown);
+    // Housing (Boende)
+    if (_matches(lowerDesc, ['höjdena brf', 'brf avgift', 'hsb'])) {
+      return (Category.housing, Subcategory.brfFee);
+    }
+    if (_matches(lowerDesc, ['omsättning lån', 'bolån', 'bostadsrätt', 'amortering', 'sbab', 'nordea lån'])) {
+      return (Category.housing, Subcategory.mortgage);
+    }
+    if (_matches(lowerDesc, ['göteborg energi', 'ellevio', 'vattenfall', 'eon', 'fortum'])) {
+      return (Category.housing, Subcategory.electricity);
+    }
+    if (_matches(lowerDesc, ['bahnhof', 'comhem', 'tele2 bredband', 'telenor bredband'])) {
+      return (Category.housing, Subcategory.broadband);
+    }
+    if (_matches(lowerDesc, ['hemförsäkring', 'hedvig'])) {
+      return (Category.housing, Subcategory.homeInsurance);
     }
 
-    // Bills
-    if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube'])) {
-      return (Category.bills, Subcategory.streaming);
+    // Insurance & Subscriptions (Försäkringar & abonnemang)
+    if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible'])) {
+      return (Category.insuranceAndSubscriptions, Subcategory.streaming);
     }
-    if (_matches(lowerDesc, ['tele2', 'telenor', 'telia', 'tre ', 'hallon'])) {
-      return (Category.bills, Subcategory.phone);
+    if (_matches(lowerDesc, ['tele2', 'telenor', 'telia', 'tre ', 'hallon', 'vimla'])) {
+      return (Category.insuranceAndSubscriptions, Subcategory.mobileSubscription);
     }
-    if (_matches(lowerDesc, ['trygg-hansa', 'if ', 'folksam', 'länsförsäkringar'])) {
-      return (Category.bills, Subcategory.insurance);
+    if (_matches(lowerDesc, ['trygg-hansa', 'if ', 'folksam', 'länsförsäkringar', 'moderna', 'ica försäkring'])) {
+      // Could be home insurance too, but defaulting to personal/general if not explicitly 'hemförsäkring'
+      return (Category.insuranceAndSubscriptions, Subcategory.personalInsurance);
     }
-    if (_matches(lowerDesc, ['göteborg energi', 'ellevio', 'vattenfall'])) {
-      return (Category.bills, Subcategory.electricity);
+    if (_matches(lowerDesc, ['google one', 'icloud', 'dropbox', 'microsoft'])) {
+      return (Category.insuranceAndSubscriptions, Subcategory.cloudServices);
     }
-    if (_matches(lowerDesc, ['bahnhof', 'comhem'])) {
-      return (Category.bills, Subcategory.internet);
-    }
-    if (_matches(lowerDesc, ['nordea', 'csn', 'bolagsverket', 'skatt'])) {
-      return (Category.bills, Subcategory.unknown);
+    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di '])) {
+      return (Category.insuranceAndSubscriptions, Subcategory.newspapers);
     }
 
-    // Savings
+    // Fees (Avgifter)
+    if (_matches(lowerDesc, ['bankavgift', 'prisplan', 'kortavgift', 'årsavgift'])) {
+      return (Category.fees, Subcategory.bankFees);
+    }
+    
+    // Other / Admin
+    if (_matches(lowerDesc, ['skatt', 'skatteverket', 'restskatt'])) {
+      return (Category.other, Subcategory.tax);
+    }
+
+    // Entertainment (Nöje & fritid)
+    if (_matches(lowerDesc, ['bio', 'sf bio', 'filmstaden', 'event', 'konsert', 'ticketmaster'])) {
+      // Was cinema, now gone. Put in Other or keep looking?
+      // User removed cinema. Maybe 'Other'?
+      // Actually user wanted 'Bio / event' under Nöje & fritid in the list, but then said "Remove this" for Subcategory.cinema.
+      // Wait, let's re-read the interaction.
+      // User list: "Bio / event" under Nöje.
+      // Comments: "Selection: >Subcategory.cinema, Comment: 'Remove this'".
+      // So no 'cinema' subcategory.
+      // I should categorize these as... 'Other' in Entertainment? Or just 'Category.entertainment, Subcategory.other/unknown'.
+      // I will put them in Subcategory.other for now.
+      return (Category.entertainment, Subcategory.other);
+    }
+     if (_matches(lowerDesc, ['resor', 'hotell', 'booking', 'airbnb', 'tågsemester'])) {
+      return (Category.entertainment, Subcategory.travel);
+    }
+    if (_matches(lowerDesc, ['hobby', 'panduro'])) {
+      return (Category.entertainment, Subcategory.hobby);
+    }
+
+    // Savings (Removed category, moved to Other)
     if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk'])) {
-      return (Category.savings, Subcategory.unknown);
+      return (Category.other, Subcategory.other);
     }
 
     return (Category.other, Subcategory.unknown);

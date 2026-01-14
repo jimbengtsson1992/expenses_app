@@ -1,38 +1,61 @@
 enum Subcategory {
-  // Transport
+  // --- Boende (Housing) ---
+  brfFee('Avgift BRF'),
+  mortgage('Bolån & Amortering'),
+  electricity('El'),
+  homeInsurance('Hemförsäkring'),
+  broadband('Bredband'),
+
+  // --- Mat & Dryck (Food) ---
+  groceries('Groceries'),
+  restaurant('Restaurant'),
+  bar('Bar'),
+  lunch('Lunch ute'),
+  takeaway('Takeaway'),
+  coffee('Kaffe / fika'),
+
+  // --- Försäkringar & abonnemang (Insurance & Subscriptions) ---
+  personalInsurance('Personförsäkringar'),
+  mobileSubscription('Mobilabonnemang'),
+  cloudServices('Molntjänster'),
+  newspapers('Tidningar'),
+  streaming('Streaming'),
+
+  // --- Shopping ---
+  clothes('Kläder & Skor'),
+  electronics('Elektronik'),
+  furniture('Möbler'),
+  gifts('Presenter'),
+  decor('Inredning'),
+
+  // --- Nöje & fritid (Entertainment) ---
+  travel('Resor'),
+  hobby('Hobby'),
+
+  // --- Hälsa (Health) ---
+  gym('Träning / gym'),
+  pharmacy('Apotek'),
+  doctor('Vård'),
+
+  // --- Avgifter (Fees) ---
+  bankFees('Bankavgifter'),
+
+  // --- Övrigt (Other / Admin) ---
+  tax('Skatt'),
+
+  // --- Transport (Existing - Kept) ---
   taxi('Taxi'),
   publicTransport('Kollektivtrafik'),
   car('Bil'),
   fuel('Drivmedel'),
   parking('Parkering'),
-  
-  // Food
-  groceries('Matbutik'),
-  restaurant('Restaurang'),
-  
-  // Shopping
-  clothes('Kläder'),
-  electronics('Elektronik'),
-  home('Hem & Inredning'),
-  
-  // Health
-  gym('Träning'),
-  pharmacy('Apotek'),
-  doctor('Vård'),
-  
-  // Bills
-  streaming('Streaming'),
-  electricity('El'),
-  internet('Bredband'),
-  phone('Telefoni'),
-  insurance('Försäkring'),
 
-  // Income
+  // --- Income (Existing - Kept) ---
   salary('Lön'),
 
-  // Default/Fallback
-  unknown('Okänd'),
-  other('Övrigt');
+  // --- Defaults ---
+  unknown('Unknown'),
+  other('Other');
 
   const Subcategory(this.displayName);
   final String displayName;

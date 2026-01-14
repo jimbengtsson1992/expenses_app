@@ -39,13 +39,15 @@ void main() {
       expect(service.categorize('Återbetalning', 1200), (Category.income, Subcategory.other));
     });
 
-    test('categorizes Bills correctly', () {
-      // Logic for bills might differ, check service:
-      // Nordea Lån -> unknown? checking service..
-      // 'nordea' -> Category.bills, Subcategory.unknown
-      expect(service.categorize('Nordea Lån', -2000), (Category.bills, Subcategory.unknown));
-      expect(service.categorize('CSN', -1400), (Category.bills, Subcategory.unknown));
-      expect(service.categorize('Netflix', -129), (Category.bills, Subcategory.streaming)); 
+    test('categorizes Bills/Housing/Subscriptions correctly', () {
+      // Nordea Lån -> Housing/Mortgage
+      expect(service.categorize('Nordea Lån', -2000), (Category.housing, Subcategory.mortgage));
+      
+      // CSN -> Other/Unknown (not explicitly mapped currently)
+      expect(service.categorize('CSN', -1400), (Category.other, Subcategory.unknown));
+      
+      // Netflix -> Insurance/Streaming
+      expect(service.categorize('Netflix', -129), (Category.insuranceAndSubscriptions, Subcategory.streaming)); 
     });
 
     test('fallback to Other', () {
