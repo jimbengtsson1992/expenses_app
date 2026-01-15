@@ -27,7 +27,10 @@ class CategorizationService {
     // --- Expenses (<= 0) ---
     
     // Food & Drink
-    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross', 'capris'])) {
+    if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport'])) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross', 'capris', 'feskekorka'])) {
       return (Category.food, Subcategory.groceries);
     }
     if (_matches(lowerDesc, ['systembolaget'])) {
@@ -39,7 +42,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {
       return (Category.food, Subcategory.bar);
     }
-    if (_matches(lowerDesc, ['beets salads bar'])) {
+    if (_matches(lowerDesc, ['beets salads bar', 'holy greens'])) {
       return (Category.food, Subcategory.lunch);
     }
     if (_matches(lowerDesc, ['7-eleven', 'joeandthejuice', 'espresso house', 'steinbrenner', 'pressbyran'])) {
@@ -91,15 +94,13 @@ class CategorizationService {
     if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex'])) {
       return (Category.shopping, Subcategory.decor);
     }
-    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg'])) {
+    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg', 'twist & tango'])) {
       return (Category.shopping, Subcategory.clothes);
     }
     if (_matches(lowerDesc, ['elgiganten', 'inet', 'webhallen', 'amazon', 'apple', 'power', 'netonnet'])) {
       return (Category.shopping, Subcategory.electronics);
     }
-    if (_matches(lowerDesc, ['marica roos'])) {
-      return (Category.shopping, Subcategory.gifts);
-    }
+
     if (_matches(lowerDesc, ['ikea', 'bauhaus', 'jula', 'clas ohlson', 'mio', 'rusta', 'plantagen'])) {
       return (Category.shopping, Subcategory.furniture); // Approximation
     }
@@ -167,6 +168,9 @@ class CategorizationService {
     }
     if (_matches(lowerDesc, ['trygg-hansa', 'if ', 'folksam', 'länsförsäkringar', 'moderna', 'ica försäkring'])) {
       return (Category.other, Subcategory.personalInsurance);
+    }
+    if (_matches(lowerDesc, ['fadder'])) {
+      return (Category.other, Subcategory.godfather);
     }
 
 

@@ -320,7 +320,8 @@ class ExpensesRepository {
        if (description.replaceAll(' ', '').contains(accNum.replaceAll(' ', ''))) return true;
     }
     
-    if (description.toLowerCase().contains('överföring') || description.toLowerCase().contains('lån')) return true;
+    if (description.toLowerCase().contains('överföring')) return true;
+    if (description.toLowerCase().contains('lån') && !description.toLowerCase().contains('omsättning lån')) return true;
     if (description.toLowerCase().contains('autogiro avanza bank')) return true;
 
     return false;

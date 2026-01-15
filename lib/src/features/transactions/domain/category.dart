@@ -81,6 +81,7 @@ enum Category {
 
   other('Övrigt', 0xFF9E9E9E, '🧹', [
     Subcategory.personalInsurance,
+    Subcategory.godfather,
     Subcategory.mobileSubscription,
     Subcategory.unknown,
     Subcategory.other,

@@ -49,6 +49,7 @@ enum Subcategory {
   csn('CSN'),
 
   // --- Övrigt (Other / Admin) ---
+  godfather('Fadder'),
 
   // --- Transport (Existing - Kept) ---
   taxi('Taxi'),
