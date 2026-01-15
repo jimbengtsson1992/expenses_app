@@ -30,6 +30,7 @@ enum Subcategory {
   gifts('Presenter'),
   decor('Inredning'),
   beauty('Skönhet'),
+  tools('Verktyg & Bygg'),
 
   // --- Nöje & fritid (Entertainment) ---
   travel('Resor'),

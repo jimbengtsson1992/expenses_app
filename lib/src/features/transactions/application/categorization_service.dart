@@ -52,7 +52,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['foodora ab'])) {
       return (Category.food, Subcategory.takeaway);
     }
-    if (_matches(lowerDesc, ['beets salads bar', 'holy greens', 'joeandthejuice', 'joe  the juice'])) {
+    if (_matches(lowerDesc, ['beets salads bar', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop'])) {
       return (Category.food, Subcategory.lunch);
     }
     if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
@@ -111,7 +111,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['nk kok & design'])) {
       return (Category.shopping, Subcategory.decor);
     }
-    if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex'])) {
+    if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex', 'ahlens'])) {
       return (Category.shopping, Subcategory.decor);
     }
     if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg', 'twist & tango', 'widing o stollman'])) {
@@ -121,7 +121,11 @@ class CategorizationService {
       return (Category.shopping, Subcategory.electronics);
     }
 
-    if (_matches(lowerDesc, ['ikea', 'bauhaus', 'jula', 'clas ohlson', 'mio', 'rusta', 'plantagen'])) {
+    if (_matches(lowerDesc, ['clas ohlson', 'bauhaus', 'jula', 'biltema', 'byggmax', 'golvvarmeb'])) {
+       return (Category.shopping, Subcategory.tools);
+    }
+
+    if (_matches(lowerDesc, ['ikea', 'mio', 'rusta', 'plantagen'])) {
       return (Category.shopping, Subcategory.furniture); // Approximation
     }
 
@@ -143,7 +147,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['fysiken', 'sats', 'nordic wellness', 'fitness', 'gym', 'friskis', 'nordicwell'])) {
       return (Category.health, Subcategory.gym);
     }
-    if (_matches(lowerDesc, ['apotek', 'kronans', 'doz'])) {
+    if (_matches(lowerDesc, ['apotek', 'kronans', 'doz', 'apotea'])) {
       return (Category.health, Subcategory.pharmacy);
     }
     if (_matches(lowerDesc, ['vård', 'tandläkare', 'karolinska', 'sjukvård', 'doctor', '1177', 'capio'])) {
@@ -169,9 +173,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['verisure'])) {
       return (Category.housing, Subcategory.security);
     }
-    if (_matches(lowerDesc, ['golvvarmeb'])) {
-      return (Category.housing, Subcategory.other);
-    }
+
 
 
     // Fees (Avgifter)

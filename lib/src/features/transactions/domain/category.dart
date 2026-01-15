@@ -32,6 +32,7 @@ enum Category {
     Subcategory.gifts,
     Subcategory.decor,
     Subcategory.beauty,
+    Subcategory.tools,
     Subcategory.unknown,
     Subcategory.other,
   ]),
