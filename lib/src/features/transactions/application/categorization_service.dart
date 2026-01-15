@@ -200,7 +200,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['bankavgift', 'prisplan', 'kortavgift', 'årsavgift', 'avgift extra kort', 'nordea vardagspaket'])) {
       return (Category.fees, Subcategory.bankFees);
     }
-    if (_matches(lowerDesc, ['boplats göteborg sw'])) {
+    if (_matches(lowerDesc, ['boplats göteborg sw', 'bolagsverket'])) {
       return (Category.fees, Subcategory.other);
     }
     if (_matches(lowerDesc, ['csn'])) {

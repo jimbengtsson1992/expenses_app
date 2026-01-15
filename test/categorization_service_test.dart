@@ -88,6 +88,9 @@ void main() {
 
         // Regression test for HBOMAX (containing 'max ')
         expect(service.categorize('HBOMAX HELP.HBOMAX.COM', -74.5), (Category.entertainment, Subcategory.streaming)); 
+
+        // Regression test for Bolagsverket
+        expect(service.categorize('Kortköp 251117 BOLAGSVERKET', -3435.72), (Category.fees, Subcategory.other));
     });
 
     test('Specific Overrides', () {
