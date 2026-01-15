@@ -13,20 +13,7 @@ class CategorizationService {
   (Category, Subcategory) categorize(String description, double amount) {
     final lowerDesc = description.toLowerCase();
 
-    // --- Income (> 0) ---
-    if (amount > 0) {
-      if (_matches(lowerDesc, ['lön', 'salary'])) {
-        return (Category.income, Subcategory.salary);
-      }
-      if (_matches(lowerDesc, ['ränta'])) {
-        return (Category.income, Subcategory.interest);
-      }
-      return (Category.income, Subcategory.other);
-    }
-
-    // --- Expenses (<= 0) ---
-    
-    // Specific Overrides (User Requested)
+    // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
     if (_matches(description, ['ZETTLE_*SAD RETAIL GRO']) && amount == -950) {
        return (Category.shopping, Subcategory.gifts);
     }
@@ -45,6 +32,22 @@ class CategorizationService {
     if (_matches(description, ['ELLOS AB']) && amount == -3148.1) {
        return (Category.shopping, Subcategory.furniture);
     }
+     if (_matches(description, ['NORDISKA GALLERIET GOT']) && (amount == 400 || amount == -400)) {
+       return (Category.shopping, Subcategory.decor);
+    }
+
+    // --- Income (> 0) ---
+    if (amount > 0) {
+      if (_matches(lowerDesc, ['lön', 'salary'])) {
+        return (Category.income, Subcategory.salary);
+      }
+      if (_matches(lowerDesc, ['ränta'])) {
+        return (Category.income, Subcategory.interest);
+      }
+      return (Category.income, Subcategory.other);
+    }
+
+    // --- Expenses (<= 0) ---
     // Food & Drink
     if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport', 'tz-shop'])) {
       return (Category.shopping, Subcategory.gifts);
@@ -58,7 +61,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['foodora ab', 'pastor - stora saluhal'])) {
       return (Category.food, Subcategory.lunch); // Or takeaway? User asked for Lunch for Pastor.
     }
-    if (_matches(lowerDesc, ['beets salads bar', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop'])) {
+    if (_matches(lowerDesc, ['beets salads bar', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop', 'harmoni dumplings'])) {
       return (Category.food, Subcategory.lunch);
     }
     if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
@@ -68,7 +71,7 @@ class CategorizationService {
       return (Category.food, Subcategory.bar);
     }
 
-    if (_matches(lowerDesc, ['7-eleven', 'espresso house', 'steinbrenner', 'pressbyran', 'direkten ostra sjukh', 'condeco'])) {
+    if (_matches(lowerDesc, ['7-eleven', 'espresso house', 'steinbrenner', 'pressbyran', 'direkten ostra sjukh', 'condeco', 'agnas glogg', 'pp trading varm chokla'])) {
       return (Category.food, Subcategory.coffee);
     }
     if (_matches(lowerDesc, ['mmsports', 'mm sports ab'])) {
@@ -103,7 +106,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['nintendo'])) {
       return (Category.entertainment, Subcategory.videoGames);
     }
-    if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible', 'amazon prime'])) {
+    if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible', 'amazon prime', 'hbomax'])) {
       return (Category.entertainment, Subcategory.streaming);
     }
     if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di ', 'klarna bonnier-local', 'aftonbladet.se'])) {
@@ -111,13 +114,13 @@ class CategorizationService {
     }
 
     // Shopping
-    if (_matches(lowerDesc, ['nk beauty', 'vacker nk'])) {
+    if (_matches(lowerDesc, ['nk beauty', 'vacker nk', 'kicks'])) {
       return (Category.shopping, Subcategory.beauty);
     }
     if (_matches(lowerDesc, ['nk kok & design'])) {
       return (Category.shopping, Subcategory.decor);
     }
-    if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex', 'ahlens'])) {
+    if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex', 'ahlens', 'bagaren och koc'])) {
       return (Category.shopping, Subcategory.decor);
     }
     if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg', 'twist & tango', 'widing o stollman'])) {
