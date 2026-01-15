@@ -8,6 +8,7 @@ enum Category {
     Subcategory.homeInsurance,
     Subcategory.security,
     Subcategory.broadband,
+    Subcategory.cleaning,
     Subcategory.unknown,
     Subcategory.other,
   ]),

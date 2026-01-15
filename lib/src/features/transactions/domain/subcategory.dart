@@ -6,6 +6,7 @@ enum Subcategory {
   homeInsurance('Hemförsäkring'),
   security('Larm & Säkerhet'),
   broadband('Bredband'),
+  cleaning('Städning'),
 
   // --- Mat & Dryck (Food) ---
   groceries('Matbutik'),

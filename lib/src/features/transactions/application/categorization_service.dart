@@ -61,7 +61,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['foodora ab', 'pastor - stora saluhal'])) {
       return (Category.food, Subcategory.lunch); // Or takeaway? User asked for Lunch for Pastor.
     }
-    if (_matches(lowerDesc, ['beets salads bar', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop', 'harmoni dumplings'])) {
+    if (_matches(lowerDesc, ['beets salads bar', 'beets', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop', 'harmoni dumplings'])) {
       return (Category.food, Subcategory.lunch);
     }
     if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
@@ -94,7 +94,7 @@ class CategorizationService {
      if (_matches(lowerDesc, ['resor', 'hotell', 'booking', 'airbnb', 'tågsemester'])) {
       return (Category.entertainment, Subcategory.travel);
     }
-    if (_matches(lowerDesc, ['hobby', 'panduro'])) {
+    if (_matches(lowerDesc, ['hobby', 'panduro', 'happy golfer'])) {
       return (Category.entertainment, Subcategory.hobby);
     }
     if (_matches(lowerDesc, ['akademibokhande'])) {
@@ -181,6 +181,9 @@ class CategorizationService {
     }
     if (_matches(lowerDesc, ['verisure'])) {
       return (Category.housing, Subcategory.security);
+    }
+    if (_matches(lowerDesc, ['renahus'])) {
+      return (Category.housing, Subcategory.cleaning);
     }
 
 
