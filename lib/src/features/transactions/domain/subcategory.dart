@@ -13,7 +13,7 @@ enum Subcategory {
   restaurant('Restaurant'),
   bar('Bar'),
   lunch('Lunch ute'),
-  takeaway('Foodora'),
+  takeaway('Foodora & Takeaway'),
   coffee('Kaffe & Fika'),
   alcohol('Systembolaget'),
   supplements('Kosttillskott'),

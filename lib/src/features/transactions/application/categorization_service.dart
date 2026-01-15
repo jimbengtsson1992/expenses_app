@@ -35,6 +35,12 @@ class CategorizationService {
      if (_matches(description, ['NORDISKA GALLERIET GOT']) && (amount == 400 || amount == -400)) {
        return (Category.shopping, Subcategory.decor);
     }
+    if (_matches(description, ['THAICORNERILINDOMEAB']) && (amount == -615 || amount == 615)) {
+       return (Category.food, Subcategory.takeaway);
+    }
+    if (_matches(description, ['Swish betalning PETTER NILSSON']) && (amount == -885.72 || amount == 885.72)) {
+       return (Category.food, Subcategory.restaurant);
+    }
 
     // --- Income (> 0) ---
     if (amount > 0) {
