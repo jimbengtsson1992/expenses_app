@@ -140,7 +140,8 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
     final expenseMap = {for (final e in allExpenses) e.id: e};
 
     final buffer = StringBuffer();
-    buffer.writeln('Please update the categorization logic with the following changes:\n');
+    buffer.writeln('Please update the categorization logic with the following changes.');
+    buffer.writeln('IMPORTANT: Create tests for any new or changed logic to prevent regressions.\n');
     
     // 1. General Rules
     if (rules.isNotEmpty) {
