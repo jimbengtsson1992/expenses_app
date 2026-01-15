@@ -54,37 +54,7 @@ class CategorizationService {
     }
 
     // --- Expenses (<= 0) ---
-    // Food & Drink
-    if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport', 'tz-shop'])) {
-      return (Category.shopping, Subcategory.gifts);
-    }
-    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross', 'capris', 'feskekorka'])) {
-      return (Category.food, Subcategory.groceries);
-    }
-    if (_matches(lowerDesc, ['systembolaget'])) {
-      return (Category.food, Subcategory.alcohol);
-    }
-    if (_matches(lowerDesc, ['foodora ab', 'pastor - stora saluhal'])) {
-      return (Category.food, Subcategory.takeaway);
-    }
-    if (_matches(lowerDesc, ['beets salads bar', 'beets', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop', 'harmoni dumplings'])) {
-      return (Category.food, Subcategory.lunch);
-    }
-    if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
-      return (Category.food, Subcategory.restaurant);
-    }
-    if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin', 'the melody club'])) {
-      return (Category.food, Subcategory.bar);
-    }
-
-    if (_matches(lowerDesc, ['7-eleven', 'espresso house', 'steinbrenner', 'pressbyran', 'direkten ostra sjukh', 'condeco', 'agnas glogg', 'pp trading varm chokla'])) {
-      return (Category.food, Subcategory.coffee);
-    }
-    if (_matches(lowerDesc, ['mmsports', 'mm sports ab'])) {
-      return (Category.food, Subcategory.supplements);
-    }
-
-    // Entertainment (Nöje & fritid)
+    // Entertainment - MOVED UP TO PRIORITIZE STREAMING (e.g. HBOMAX vs MAX burger)
     if (_matches(lowerDesc, ['bio', 'sf bio', 'filmstaden', 'event', 'konsert', 'ticketmaster'])) {
       // Was cinema, now gone. Put in Other or keep looking?
       // User removed cinema. Maybe 'Other'?
@@ -118,6 +88,38 @@ class CategorizationService {
     if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di ', 'klarna bonnier-local', 'aftonbladet.se'])) {
       return (Category.entertainment, Subcategory.newspapers);
     }
+    
+    // Food & Drink
+    if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport', 'tz-shop'])) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross', 'capris', 'feskekorka'])) {
+      return (Category.food, Subcategory.groceries);
+    }
+    if (_matches(lowerDesc, ['systembolaget'])) {
+      return (Category.food, Subcategory.alcohol);
+    }
+    if (_matches(lowerDesc, ['foodora ab', 'pastor - stora saluhal'])) {
+      return (Category.food, Subcategory.takeaway);
+    }
+    if (_matches(lowerDesc, ['beets salads bar', 'beets', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop', 'harmoni dumplings'])) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin', 'the melody club'])) {
+      return (Category.food, Subcategory.bar);
+    }
+
+    if (_matches(lowerDesc, ['7-eleven', 'espresso house', 'steinbrenner', 'pressbyran', 'direkten ostra sjukh', 'condeco', 'agnas glogg', 'pp trading varm chokla'])) {
+      return (Category.food, Subcategory.coffee);
+    }
+    if (_matches(lowerDesc, ['mmsports', 'mm sports ab'])) {
+      return (Category.food, Subcategory.supplements);
+    }
+
+
 
     // Shopping
     if (_matches(lowerDesc, ['nk beauty', 'vacker nk', 'kicks'])) {
