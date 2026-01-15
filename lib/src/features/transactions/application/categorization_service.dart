@@ -39,6 +39,9 @@ class CategorizationService {
     if (_matches(description, ['Kortköp 251218 NK KOK & DESIGN GBG']) && amount == -1299) {
        return (Category.shopping, Subcategory.gifts);
     }
+    if (_matches(description, ['KLARNA SMALANDSGRAN']) && amount == -1315) {
+       return (Category.shopping, Subcategory.other);
+    }
     // Food & Drink
     if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport', 'tz-shop'])) {
       return (Category.shopping, Subcategory.gifts);
@@ -49,8 +52,8 @@ class CategorizationService {
     if (_matches(lowerDesc, ['systembolaget'])) {
       return (Category.food, Subcategory.alcohol);
     }
-    if (_matches(lowerDesc, ['foodora ab'])) {
-      return (Category.food, Subcategory.takeaway);
+    if (_matches(lowerDesc, ['foodora ab', 'pastor - stora saluhal'])) {
+      return (Category.food, Subcategory.lunch); // Or takeaway? User asked for Lunch for Pastor.
     }
     if (_matches(lowerDesc, ['beets salads bar', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop'])) {
       return (Category.food, Subcategory.lunch);
@@ -62,7 +65,7 @@ class CategorizationService {
       return (Category.food, Subcategory.bar);
     }
 
-    if (_matches(lowerDesc, ['7-eleven', 'espresso house', 'steinbrenner', 'pressbyran', 'direkten ostra sjukh'])) {
+    if (_matches(lowerDesc, ['7-eleven', 'espresso house', 'steinbrenner', 'pressbyran', 'direkten ostra sjukh', 'condeco'])) {
       return (Category.food, Subcategory.coffee);
     }
     if (_matches(lowerDesc, ['mmsports', 'mm sports ab'])) {
@@ -100,7 +103,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible', 'amazon prime'])) {
       return (Category.entertainment, Subcategory.streaming);
     }
-    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di ', 'klarna bonnier-local'])) {
+    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di ', 'klarna bonnier-local', 'aftonbladet.se'])) {
       return (Category.entertainment, Subcategory.newspapers);
     }
 
@@ -161,13 +164,13 @@ class CategorizationService {
     if (_matches(lowerDesc, ['omsättning lån', 'bolån', 'bostadsrätt', 'amortering', 'sbab', 'nordea lån'])) {
       return (Category.housing, Subcategory.mortgage);
     }
-    if (_matches(lowerDesc, ['göteborg energi', 'ellevio', 'vattenfall', 'eon', 'fortum'])) {
+    if (_matches(lowerDesc, ['göteborg energi', 'ellevio', 'vattenfall', 'eon', 'fortum', 'gbg energi', 'dinel'])) {
       return (Category.housing, Subcategory.electricity);
     }
     if (_matches(lowerDesc, ['bahnhof', 'comhem', 'tele2 bredband', 'telenor bredband', 'tele2'])) {
       return (Category.housing, Subcategory.broadband);
     }
-    if (_matches(lowerDesc, ['hemförsäkring', 'hedvig'])) {
+    if (_matches(lowerDesc, ['hemförsäkring', 'hedvig', 'autogiro if skadeförs'])) {
       return (Category.housing, Subcategory.homeInsurance);
     }
     if (_matches(lowerDesc, ['verisure'])) {
@@ -177,8 +180,11 @@ class CategorizationService {
 
 
     // Fees (Avgifter)
-    if (_matches(lowerDesc, ['bankavgift', 'prisplan', 'kortavgift', 'årsavgift'])) {
+    if (_matches(lowerDesc, ['bankavgift', 'prisplan', 'kortavgift', 'årsavgift', 'avgift extra kort', 'nordea vardagspaket'])) {
       return (Category.fees, Subcategory.bankFees);
+    }
+    if (_matches(lowerDesc, ['boplats göteborg sw'])) {
+      return (Category.fees, Subcategory.other);
     }
     if (_matches(lowerDesc, ['csn'])) {
       return (Category.fees, Subcategory.csn);
@@ -191,7 +197,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['telenor', 'telia', 'tre ', 'hallon', 'vimla'])) {
       return (Category.other, Subcategory.mobileSubscription);
     }
-    if (_matches(lowerDesc, ['trygg-hansa', 'if ', 'folksam', 'länsförsäkringar', 'moderna', 'ica försäkring'])) {
+    if (_matches(lowerDesc, ['trygg-hansa', 'if ', 'folksam', 'länsförsäkringar', 'moderna', 'ica försäkring', 'nordea liv'])) {
       return (Category.other, Subcategory.personalInsurance);
     }
     if (_matches(lowerDesc, ['fadder'])) {
