@@ -354,6 +354,7 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
               else
                 Expanded(
                   child: ListView.separated(
+                    key: const PageStorageKey('transactions_list'),
                     itemCount: filteredExpenses.length,
                     separatorBuilder: (c, i) => const Divider(height: 1, indent: 70),
                     itemBuilder: (context, index) {

@@ -12,7 +12,7 @@ enum Subcategory {
   restaurant('Restaurant'),
   bar('Bar'),
   lunch('Lunch ute'),
-  takeaway('Takeaway'),
+  takeaway('Foodora'),
   coffee('Kaffe & Fika'),
   alcohol('Systembolaget'),
   supplements('Kosttillskott'),
@@ -24,7 +24,7 @@ enum Subcategory {
   streaming('Streaming'),
 
   // --- Shopping ---
-  clothes('Kläder & Skor'),
+  clothes('Kläder, Skor & Smycken'),
   electronics('Elektronik'),
   furniture('Möbler'),
   gifts('Presenter'),

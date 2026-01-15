@@ -26,8 +26,21 @@ class CategorizationService {
 
     // --- Expenses (<= 0) ---
     
+    // Specific Overrides (User Requested)
+    if (_matches(description, ['ZETTLE_*SAD RETAIL GRO']) && amount == -950) {
+       return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['NK KOK & DESIGN GBG']) && amount == -2090) {
+       return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['Kortköp 251218 NK KIDS & TEENS GBG']) && (amount == -239 || amount == -70)) {
+       return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['Kortköp 251218 NK KOK & DESIGN GBG']) && amount == -1299) {
+       return (Category.shopping, Subcategory.gifts);
+    }
     // Food & Drink
-    if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport'])) {
+    if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport', 'tz-shop'])) {
       return (Category.shopping, Subcategory.gifts);
     }
     if (_matches(lowerDesc, ['ica', 'willys', 'coop', 'hemköp', 'lidl', 'mathem', 'city gross', 'capris', 'feskekorka'])) {
@@ -36,16 +49,20 @@ class CategorizationService {
     if (_matches(lowerDesc, ['systembolaget'])) {
       return (Category.food, Subcategory.alcohol);
     }
+    if (_matches(lowerDesc, ['foodora ab'])) {
+      return (Category.food, Subcategory.takeaway);
+    }
+    if (_matches(lowerDesc, ['beets salads bar', 'holy greens', 'joeandthejuice', 'joe  the juice'])) {
+      return (Category.food, Subcategory.lunch);
+    }
     if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
       return (Category.food, Subcategory.restaurant);
     }
     if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {
       return (Category.food, Subcategory.bar);
     }
-    if (_matches(lowerDesc, ['beets salads bar', 'holy greens'])) {
-      return (Category.food, Subcategory.lunch);
-    }
-    if (_matches(lowerDesc, ['7-eleven', 'joeandthejuice', 'espresso house', 'steinbrenner', 'pressbyran'])) {
+
+    if (_matches(lowerDesc, ['7-eleven', 'espresso house', 'steinbrenner', 'pressbyran', 'direkten ostra sjukh'])) {
       return (Category.food, Subcategory.coffee);
     }
     if (_matches(lowerDesc, ['mmsports', 'mm sports ab'])) {
@@ -91,10 +108,13 @@ class CategorizationService {
     if (_matches(lowerDesc, ['nk beauty', 'vacker nk'])) {
       return (Category.shopping, Subcategory.beauty);
     }
+    if (_matches(lowerDesc, ['nk kok & design'])) {
+      return (Category.shopping, Subcategory.decor);
+    }
     if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex'])) {
       return (Category.shopping, Subcategory.decor);
     }
-    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg', 'twist & tango'])) {
+    if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg', 'twist & tango', 'widing o stollman'])) {
       return (Category.shopping, Subcategory.clothes);
     }
     if (_matches(lowerDesc, ['elgiganten', 'inet', 'webhallen', 'amazon', 'apple', 'power', 'netonnet'])) {
@@ -148,6 +168,9 @@ class CategorizationService {
     }
     if (_matches(lowerDesc, ['verisure'])) {
       return (Category.housing, Subcategory.security);
+    }
+    if (_matches(lowerDesc, ['golvvarmeb'])) {
+      return (Category.housing, Subcategory.other);
     }
 
 
