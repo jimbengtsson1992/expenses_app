@@ -65,7 +65,7 @@ class CategorizationService {
       return (Category.food, Subcategory.alcohol);
     }
     if (_matches(lowerDesc, ['foodora ab', 'pastor - stora saluhal'])) {
-      return (Category.food, Subcategory.lunch); // Or takeaway? User asked for Lunch for Pastor.
+      return (Category.food, Subcategory.takeaway);
     }
     if (_matches(lowerDesc, ['beets salads bar', 'beets', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop', 'harmoni dumplings'])) {
       return (Category.food, Subcategory.lunch);
@@ -126,7 +126,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['nk kok & design'])) {
       return (Category.shopping, Subcategory.decor);
     }
-    if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex', 'ahlens', 'bagaren och koc'])) {
+    if (_matches(lowerDesc, ['arket', 'lampgrossen', 'nk inredning', 'hemtex', 'ahlens', 'bagaren och koc', 'elboden'])) {
       return (Category.shopping, Subcategory.decor);
     }
     if (_matches(lowerDesc, ['nk ', 'mq ', 'åhlens', 'hestra', 'blomrum', 'hm ', 'h&m', 'zara', 'shopping', 'kläder', 'skor', 'zalando', 'asos', 'boss gbg', 'twist & tango', 'widing o stollman'])) {

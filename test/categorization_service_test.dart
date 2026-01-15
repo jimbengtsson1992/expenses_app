@@ -83,6 +83,8 @@ void main() {
         // ... existing tests
         expect(service.categorize('Steinbrenner & Nyberg', -150), (Category.food, Subcategory.coffee));
         expect(service.categorize('THE MELODY CLUB', -200), (Category.food, Subcategory.bar));
+        // Regression test for Foodora
+        expect(service.categorize('FOODORA AB', -592), (Category.food, Subcategory.takeaway));
     });
 
     test('Specific Overrides', () {
