@@ -38,6 +38,7 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
   Category? _filterCategory;
   Account? _filterAccount;
   bool? _filterExcludeFromOverview;
+  Set<Subcategory> _filterSubcategories = {};
 
   @override
   void initState() {
@@ -49,6 +50,10 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
     _filterType = widget.filterType;
     _filterAccount = widget.initialAccount;
     _filterExcludeFromOverview = widget.initialExcludeFromOverview;
+    
+    if (_filterCategory != null) {
+      _filterSubcategories = _filterCategory!.subcategories.toSet();
+    }
   }
 
   @override
@@ -63,10 +68,50 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
         _filterType = widget.filterType;
         _filterAccount = widget.initialAccount;
         _filterExcludeFromOverview = widget.initialExcludeFromOverview;
+        if (_filterCategory != null) {
+           _filterSubcategories = _filterCategory!.subcategories.toSet();
+        } else {
+           _filterSubcategories.clear();
+        }
       });
     }
   }
 
+
+  void _onCategoryChanged(Category? category) {
+    setState(() {
+      _filterCategory = category;
+      if (category != null) {
+        _filterSubcategories = category.subcategories.toSet();
+      } else {
+        _filterSubcategories.clear();
+      }
+    });
+  }
+
+  void _toggleSubcategory(Subcategory sub) {
+    setState(() {
+      if (_filterSubcategories.contains(sub)) {
+        _filterSubcategories.remove(sub);
+      } else {
+        _filterSubcategories.add(sub);
+      }
+    });
+  }
+
+  void _selectAllSubcategories() {
+    if (_filterCategory == null) return;
+    setState(() {
+      _filterSubcategories = _filterCategory!.subcategories.toSet();
+    });
+  }
+
+  void _deselectAllSubcategories() {
+    setState(() {
+      _filterSubcategories.clear();
+    });
+  }
+  
   @override
   void dispose() {
     _searchController.dispose();
@@ -80,6 +125,7 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
       _filterCategory = null;
       _filterAccount = null;
       _filterExcludeFromOverview = null;
+      _filterSubcategories.clear();
     });
   }
 
@@ -224,7 +270,9 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
 
           // 3. Category Filter
           if (_filterCategory != null) {
-            filteredExpenses = filteredExpenses.where((e) => e.category == _filterCategory).toList();
+            filteredExpenses = filteredExpenses.where((e) => 
+              e.category == _filterCategory && _filterSubcategories.contains(e.subcategory)
+            ).toList();
           }
 
           // 4. Account Filter
@@ -294,7 +342,7 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
                                   child: Text('${c.emoji} ${c.displayName}'),
                                 )),
                               ],
-                              onChanged: (val) => setState(() => _filterCategory = val),
+                              onChanged: _onCategoryChanged,
                             ),
                           ),
                            // Account Filter
@@ -334,6 +382,36 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
                         ],
                       ),
                     ),
+                    if (_filterCategory != null) ...[
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          TextButton(
+                            onPressed: _selectAllSubcategories,
+                            child: const Text('Markera alla'),
+                          ),
+                          TextButton(
+                            onPressed: _deselectAllSubcategories,
+                            child: const Text('Avmarkera alla'),
+                          ),
+                        ],
+                      ),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 4,
+                        children: _filterCategory!.subcategories.map((sub) {
+                          final isSelected = _filterSubcategories.contains(sub);
+                          return FilterChip(
+                            label: Text(sub.displayName),
+                            selected: isSelected,
+                            onSelected: (_) => _toggleSubcategory(sub),
+                            backgroundColor: Colors.grey.shade200,
+                            selectedColor: Color(_filterCategory!.colorValue).withValues(alpha: 0.3),
+                            checkmarkColor: Color(_filterCategory!.colorValue),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ],
                 ),
               ),
