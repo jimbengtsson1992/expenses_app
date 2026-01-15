@@ -86,6 +86,10 @@ void main() {
         // Regression test for Foodora
         expect(service.categorize('FOODORA AB', -592), (Category.food, Subcategory.takeaway));
 
+        // New rule for Masaki
+        expect(service.categorize('MASAKI HALSOSUSHI AB', -150), (Category.food, Subcategory.takeaway));
+
+
         // Regression test for HBOMAX (containing 'max ')
         expect(service.categorize('HBOMAX HELP.HBOMAX.COM', -74.5), (Category.entertainment, Subcategory.streaming)); 
 

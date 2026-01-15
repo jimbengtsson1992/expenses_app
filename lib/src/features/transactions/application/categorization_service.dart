@@ -99,7 +99,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['systembolaget'])) {
       return (Category.food, Subcategory.alcohol);
     }
-    if (_matches(lowerDesc, ['foodora ab', 'pastor - stora saluhal'])) {
+    if (_matches(lowerDesc, ['foodora ab', 'pastor - stora saluhal', 'masaki halsosushi ab'])) {
       return (Category.food, Subcategory.takeaway);
     }
     if (_matches(lowerDesc, ['beets salads bar', 'beets', 'holy greens', 'joeandthejuice', 'joe  the juice', 'aldardo', 's o larsson', 'banh mi shop', 'harmoni dumplings'])) {
