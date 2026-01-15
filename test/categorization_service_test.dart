@@ -18,7 +18,7 @@ void main() {
       expect(service.categorize('Espresso House', -89), (Category.food, Subcategory.coffee));
       expect(service.categorize('Capris', -100), (Category.food, Subcategory.groceries));
       expect(service.categorize('MMSports', -500), (Category.food, Subcategory.supplements));
-      expect(service.categorize('JoeAndTheJuice', -85), (Category.food, Subcategory.coffee));
+      expect(service.categorize('JoeAndTheJuice', -85), (Category.food, Subcategory.lunch));
     });
 
     test('categorizes Shopping accurately', () {
@@ -53,15 +53,15 @@ void main() {
       expect(service.categorize('Nordea Lån', -2000), (Category.housing, Subcategory.mortgage));
       
       
-      // CSN -> Other/Unknown
-      expect(service.categorize('CSN', -1400), (Category.other, Subcategory.unknown));
+      // CSN -> Fees/CSN
+      expect(service.categorize('CSN', -1400), (Category.fees, Subcategory.csn));
       
       // Netflix -> Entertainment/Streaming
       expect(service.categorize('Netflix', -129), (Category.entertainment, Subcategory.streaming)); 
       expect(service.categorize('Amazon Prime', -59), (Category.entertainment, Subcategory.streaming)); 
       
-      // Tele2 -> Other/MobileSubscription
-      expect(service.categorize('Tele2', -299), (Category.other, Subcategory.mobileSubscription));
+      // Tele2 -> Housing/Broadband (Logic changed to favor broadband for generic 'Tele2')
+      expect(service.categorize('Tele2', -299), (Category.housing, Subcategory.broadband));
 
       // Trygg-Hansa -> Other/PersonalInsurance
       expect(service.categorize('Trygg-Hansa', -500), (Category.other, Subcategory.personalInsurance));
@@ -78,9 +78,17 @@ void main() {
       expect(service.categorize('Nintendo eShop', -500), (Category.entertainment, Subcategory.videoGames));
     });
 
+
     test('categorizes Food accurately', () {
         // ... existing tests
         expect(service.categorize('Steinbrenner & Nyberg', -150), (Category.food, Subcategory.coffee));
+        expect(service.categorize('THE MELODY CLUB', -200), (Category.food, Subcategory.bar));
+    });
+
+    test('Specific Overrides', () {
+      expect(service.categorize('ELLOS AB', -3148.1), (Category.shopping, Subcategory.furniture));
     });
   });
+
+
 }

@@ -42,6 +42,9 @@ class CategorizationService {
     if (_matches(description, ['KLARNA SMALANDSGRAN']) && amount == -1315) {
        return (Category.shopping, Subcategory.other);
     }
+    if (_matches(description, ['ELLOS AB']) && amount == -3148.1) {
+       return (Category.shopping, Subcategory.furniture);
+    }
     // Food & Drink
     if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport', 'tz-shop'])) {
       return (Category.shopping, Subcategory.gifts);
@@ -61,7 +64,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['kitchen', 'restaurant', 'restaurang', 'mat', 'pizza', 'burger', 'starbucks', 'foodora', 'uber eats', 'max ', 'mcdonalds'])) {
       return (Category.food, Subcategory.restaurant);
     }
-    if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin'])) {
+    if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin', 'the melody club'])) {
       return (Category.food, Subcategory.bar);
     }
 
