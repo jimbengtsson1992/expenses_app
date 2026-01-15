@@ -100,7 +100,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['netflix', 'spotify', 'hbo', 'viaplay', 'tv4', 'disney', 'youtube', 'apple music', 'storytel', 'audible', 'amazon prime'])) {
       return (Category.entertainment, Subcategory.streaming);
     }
-    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di '])) {
+    if (_matches(lowerDesc, ['dn ', 'gp ', 'svd', 'di ', 'klarna bonnier-local'])) {
       return (Category.entertainment, Subcategory.newspapers);
     }
 
