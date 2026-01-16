@@ -14,15 +14,9 @@ enum Subcategory {
   bar('Bar'),
   lunch('Lunch ute'),
   takeaway('Foodora & Takeaway'),
-  coffee('Kaffe & Fika'),
   alcohol('Systembolaget'),
+  coffee('Kaffe & Fika'),
   supplements('Kosttillskott'),
-
-  // --- Försäkringar & abonnemang (Insurance & Subscriptions) ---
-  personalInsurance('Personförsäkringar'),
-  mobileSubscription('Mobilabonnemang'),
-  newspapers('Tidningar'),
-  streaming('Streaming'),
 
   // --- Shopping ---
   clothes('Kläder, Skor & Smycken'),
@@ -37,6 +31,8 @@ enum Subcategory {
   travel('Resor'),
   hobby('Hobby'),
   boardGamesBooksAndToys('Brädspel, Böcker & Leksaker'),
+  newspapers('Tidningar'),
+  streaming('Streaming'),
   snuff('Snus'),
   videoGames('TV-spel'),
 
@@ -50,20 +46,22 @@ enum Subcategory {
   tax('Skatt'),
   csn('CSN'),
 
-  // --- Övrigt (Other / Admin) ---
-  godfather('Fadder'),
-
-  // --- Transport (Existing - Kept) ---
+  // --- Transport ---
   taxi('Taxi'),
   publicTransport('Kollektivtrafik'),
   car('Bil'),
   fuel('Drivmedel'),
   parking('Parkering'),
 
-  // --- Income (Existing - Kept) ---
+  // --- Inkomst (Income) ---
   salary('Lön'),
   interest('Ränta'),
 
+  // --- Övrigt (Other) ---
+  personalInsurance('Personförsäkringar'),
+  godfather('Fadder'),
+  mobileSubscription('Mobilabonnemang'),
+  
   // --- Defaults ---
   unknown('Okänd'),
   other('Övrigt');
