@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
+import 'package:meta/meta.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:intl/intl.dart';
 
@@ -134,7 +135,7 @@ class ExpensesRepository {
       // if (_isInternalTransfer(description)) continue;
 
       // Determine exclusion
-      final excludeFromOverview = _isInternalTransfer(description);
+      final excludeFromOverview = isInternalTransfer(description);
 
       // Filter SAS Payments (to avoid dupe)
       if (description.contains('Betalning BG 595-4300 SAS EUROBONUS')) continue;
@@ -309,7 +310,8 @@ class ExpensesRepository {
     return expenses;
   }
 
-  bool _isInternalTransfer(String description) {
+  @visibleForTesting
+  bool isInternalTransfer(String description) {
     // Check if any of known accounts is in description
     for (final acc in Account.values) {
        final accNum = acc.accountNumber;

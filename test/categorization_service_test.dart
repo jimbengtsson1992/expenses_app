@@ -98,12 +98,57 @@ void main() {
     });
 
     test('Specific Overrides', () {
+      expect(service.categorize('ZETTLE_*SAD RETAIL GRO', -950), (Category.shopping, Subcategory.gifts));
+      expect(service.categorize('NK KOK & DESIGN GBG', -2090), (Category.shopping, Subcategory.gifts));
+      expect(service.categorize('Kortköp 251218 NK KIDS & TEENS GBG', -239), (Category.shopping, Subcategory.gifts));
+      expect(service.categorize('Kortköp 251218 NK KIDS & TEENS GBG', -70), (Category.shopping, Subcategory.gifts));
+      expect(service.categorize('Kortköp 251218 NK KOK & DESIGN GBG', -1299), (Category.shopping, Subcategory.gifts));
+      expect(service.categorize('KLARNA SMALANDSGRAN', -1315), (Category.shopping, Subcategory.other));
       expect(service.categorize('ELLOS AB', -3148.1), (Category.shopping, Subcategory.furniture));
+      expect(service.categorize('NORDISKA GALLERIET GOT', 400), (Category.shopping, Subcategory.decor));
+      expect(service.categorize('NORDISKA GALLERIET GOT', -400), (Category.shopping, Subcategory.decor));
+      expect(service.categorize('THAICORNERILINDOMEAB', -615), (Category.food, Subcategory.takeaway));
+      expect(service.categorize('THAICORNERILINDOMEAB', 615), (Category.food, Subcategory.takeaway));
+      expect(service.categorize('Swish betalning PETTER NILSSON', -885.72), (Category.food, Subcategory.restaurant));
+      expect(service.categorize('Swish betalning PETTER NILSSON', 885.72), (Category.food, Subcategory.restaurant));
     });
 
     test('categorizes Health accurately', () {
       expect(service.categorize('Sanna andrén', -500), (Category.health, Subcategory.beauty));
       expect(service.categorize('SATS', -450), (Category.health, Subcategory.gym));
+      expect(service.categorize('Apoteket AB', -120), (Category.health, Subcategory.pharmacy));
+      expect(service.categorize('Vårdcentralen', -200), (Category.health, Subcategory.doctor));
+    });
+
+    test('categorizes Housing accurately', () {
+      expect(service.categorize('Autogiro If Skadeförs', -350), (Category.housing, Subcategory.homeInsurance));
+      expect(service.categorize('Verisure', -499), (Category.housing, Subcategory.security));
+      expect(service.categorize('Renahus', -2500), (Category.housing, Subcategory.cleaning));
+      expect(service.categorize('Göteborg Energi', -600), (Category.housing, Subcategory.electricity));
+      expect(service.categorize('HSB', -4500), (Category.housing, Subcategory.brfFee));
+    });
+
+    test('categorizes Fees accurately', () {
+      expect(service.categorize('Nordea Vardagspaket', -20), (Category.fees, Subcategory.bankFees));
+      expect(service.categorize('Skatteverket', -10000), (Category.fees, Subcategory.tax));
+    });
+
+    test('categorizes Other/Admin accurately', () {
+      expect(service.categorize('Telenor', -399), (Category.other, Subcategory.mobileSubscription));
+      expect(service.categorize('Fadder', -200), (Category.other, Subcategory.godfather));
+      expect(service.categorize('Avanza', -5000), (Category.other, Subcategory.other));
+    });
+
+    test('categorizes Entertainment extended', () {
+       expect(service.categorize('SF Bio', -250), (Category.entertainment, Subcategory.other));
+       expect(service.categorize('SJ Resor', -400), (Category.entertainment, Subcategory.travel));
+       expect(service.categorize('Panduro', -150), (Category.entertainment, Subcategory.hobby));
+       expect(service.categorize('Akademibokhandeln', -199), (Category.entertainment, Subcategory.boardGamesBooksAndToys));
+    });
+
+    test('categorizes Shopping extended', () {
+       expect(service.categorize('NK KOK & DESIGN', -500), (Category.shopping, Subcategory.decor));
+       expect(service.categorize('Clas Ohlson', -129), (Category.shopping, Subcategory.tools));
     });
   });
 
