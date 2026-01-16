@@ -3,12 +3,12 @@ import 'package:intl/intl.dart';
 
 class MonthSelector extends StatelessWidget {
   const MonthSelector({
-    super.key, 
-    required this.currentDate, 
-    required this.onPrevious, 
-    required this.onNext
+    super.key,
+    required this.currentDate,
+    required this.onPrevious,
+    required this.onNext,
   });
-  
+
   final DateTime currentDate;
   final VoidCallback onPrevious;
   final VoidCallback onNext;

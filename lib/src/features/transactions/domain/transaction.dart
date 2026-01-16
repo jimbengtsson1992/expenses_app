@@ -23,5 +23,6 @@ abstract class Transaction with _$Transaction {
     String? rawCsvData,
   }) = _Transaction;
 
-  factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
+  factory Transaction.fromJson(Map<String, dynamic> json) =>
+      _$TransactionFromJson(json);
 }

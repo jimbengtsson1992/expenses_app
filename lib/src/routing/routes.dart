@@ -15,17 +15,13 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 @TypedStatefulShellRoute<BottomNavigationShell>(
   branches: [
     TypedStatefulShellBranch<DashboardBranch>(
-      routes: [
-        TypedGoRoute<DashboardRoute>(path: '/dashboard'),
-      ],
+      routes: [TypedGoRoute<DashboardRoute>(path: '/dashboard')],
     ),
     TypedStatefulShellBranch<TransactionsBranch>(
       routes: [
         TypedGoRoute<TransactionsListRoute>(
           path: '/transactions',
-          routes: [
-            TypedGoRoute<ExpenseDetailRoute>(path: 'detail/:id'),
-          ],
+          routes: [TypedGoRoute<ExpenseDetailRoute>(path: 'detail/:id')],
         ),
       ],
     ),
@@ -42,7 +38,7 @@ class BottomNavigationShell extends StatefulShellRouteData {
   ) {
     return ScaffoldWithBottomNavBar(navigationShell: navigationShell);
   }
-  
+
   static const String $restorationScopeId = 'bottom_navigation_shell';
 }
 
@@ -66,7 +62,12 @@ class DashboardRoute extends GoRouteData with $DashboardRoute {
 
 @immutable
 class TransactionsListRoute extends GoRouteData with $TransactionsListRoute {
-  const TransactionsListRoute({this.category, this.filterType, this.account, this.excludeFromOverview});
+  const TransactionsListRoute({
+    this.category,
+    this.filterType,
+    this.account,
+    this.excludeFromOverview,
+  });
 
   final Category? category;
   final TransactionType? filterType;

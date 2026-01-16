@@ -22,7 +22,9 @@ class TransactionDetailScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text('Transaktionsdetaljer')),
       body: expenseAsync.when(
         data: (expense) {
-          if (expense == null) return const Center(child: Text('Transaktion hittades inte'));
+          if (expense == null) {
+            return const Center(child: Text('Transaktion hittades inte'));
+          }
 
           final currency = NumberFormat.currency(locale: 'sv', symbol: 'kr');
           final dateFormat = DateFormat('d MMMM yyyy', 'sv');
@@ -44,13 +46,15 @@ class TransactionDetailScreen extends ConsumerWidget {
               Center(
                 child: Text(
                   expense.description,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(color: Colors.grey),
                   textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 8),
               Center(child: Text(dateFormat.format(expense.date))),
-              
+
               const SizedBox(height: 48),
 
               // Transaction Type Field
@@ -59,16 +63,24 @@ class TransactionDetailScreen extends ConsumerWidget {
                 content: Row(
                   children: [
                     Icon(
-                      expense.type == TransactionType.income ? Icons.arrow_downward : Icons.arrow_upward,
-                      color: expense.type == TransactionType.income ? Colors.green : Colors.red,
+                      expense.type == TransactionType.income
+                          ? Icons.arrow_downward
+                          : Icons.arrow_upward,
+                      color: expense.type == TransactionType.income
+                          ? Colors.green
+                          : Colors.red,
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      expense.type == TransactionType.income ? 'Inkomst' : 'Utgift',
+                      expense.type == TransactionType.income
+                          ? 'Inkomst'
+                          : 'Utgift',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w500,
-                        color: expense.type == TransactionType.income ? Colors.green : Colors.red,
+                        color: expense.type == TransactionType.income
+                            ? Colors.green
+                            : Colors.red,
                       ),
                     ),
                   ],
@@ -81,38 +93,53 @@ class TransactionDetailScreen extends ConsumerWidget {
                 onTap: () => _showEditDialog(context, ref, expense),
                 borderRadius: BorderRadius.circular(12),
                 child: Container(
-                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.white24)
-                   ),
-                   padding: const EdgeInsets.all(2.0),
-                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                         _DetailRow(
-                          label: 'Kategori (Klicka för att ändra)',
-                          content: Row(
-                            children: [
-                              Text(expense.category.emoji, style: const TextStyle(fontSize: 20)),
-                              const SizedBox(width: 8),
-                              Text(expense.category.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                            ],
-                          ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.white24),
+                  ),
+                  padding: const EdgeInsets.all(2.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _DetailRow(
+                        label: 'Kategori (Klicka för att ändra)',
+                        content: Row(
+                          children: [
+                            Text(
+                              expense.category.emoji,
+                              style: const TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              expense.category.displayName,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 12),
-                        _DetailRow(
-                          label: 'Underkategori',
-                          content: Row(
-                            children: [
-                              Text(expense.subcategory.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                            ],
-                          ),
+                      ),
+                      const SizedBox(height: 12),
+                      _DetailRow(
+                        label: 'Underkategori',
+                        content: Row(
+                          children: [
+                            Text(
+                              expense.subcategory.displayName,
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                   ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
 
               // Source Account Field (Highlighted as requested)
@@ -126,44 +153,82 @@ class TransactionDetailScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Konto', style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+                    const Text(
+                      'Konto',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        const Icon(Icons.credit_card, size: 20, color: Colors.white70),
+                        const Icon(
+                          Icons.credit_card,
+                          size: 20,
+                          color: Colors.white70,
+                        ),
                         const SizedBox(width: 8),
-                        Text(expense.sourceAccount.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text(
+                          expense.sourceAccount.displayName,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               // Raw Data (Debug/Extra info)
               ExpansionTile(
-                title: const Text('Original Fil & Data', style: TextStyle(fontSize: 14)),
+                title: const Text(
+                  'Original Fil & Data',
+                  style: TextStyle(fontSize: 14),
+                ),
                 children: [
-                  ListTile(title: Text(expense.sourceFilename), subtitle: const Text('Filnamn')),
+                  ListTile(
+                    title: Text(expense.sourceFilename),
+                    subtitle: const Text('Filnamn'),
+                  ),
                   if (expense.rawCsvData != null)
                     ListTile(
-                      title: Text(expense.rawCsvData!, style: const TextStyle(fontFamily: 'Courier', fontSize: 12)),
+                      title: Text(
+                        expense.rawCsvData!,
+                        style: const TextStyle(
+                          fontFamily: 'Courier',
+                          fontSize: 12,
+                        ),
+                      ),
                       subtitle: const Text('Raw CSV Data'),
                       trailing: IconButton(
                         icon: const Icon(Icons.copy),
                         onPressed: () {
-                          Clipboard.setData(ClipboardData(text: expense.rawCsvData!));
+                          Clipboard.setData(
+                            ClipboardData(text: expense.rawCsvData!),
+                          );
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Kopierat till urklipp')),
+                            const SnackBar(
+                              content: Text('Kopierat till urklipp'),
+                            ),
                           );
                         },
                       ),
                     ),
-                    ListTile(
-                      title: SelectableText(expense.id, style: const TextStyle(fontFamily: 'Courier', fontSize: 12)),
-                      subtitle: const Text('Transaction ID'),
-                    )
+                  ListTile(
+                    title: SelectableText(
+                      expense.id,
+                      style: const TextStyle(
+                        fontFamily: 'Courier',
+                        fontSize: 12,
+                      ),
+                    ),
+                    subtitle: const Text('Transaction ID'),
+                  ),
                 ],
               ),
             ],
@@ -175,7 +240,11 @@ class TransactionDetailScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _showEditDialog(BuildContext context, WidgetRef ref, Transaction expense) async {
+  Future<void> _showEditDialog(
+    BuildContext context,
+    WidgetRef ref,
+    Transaction expense,
+  ) async {
     // 1. Select Category/Subcategory
     final selection = await showDialog<(Category, Subcategory)>(
       context: context,
@@ -189,22 +258,24 @@ class TransactionDetailScreen extends ConsumerWidget {
 
     // 2. Select Save Mode (Override vs Rule)
     if (!context.mounted) return;
-    
+
     await _handleSaveOptions(context, ref, expense, selection.$1, selection.$2);
   }
 
   Future<void> _handleSaveOptions(
-    BuildContext context, 
-    WidgetRef ref, 
-    Transaction expense, 
-    Category category, 
-    Subcategory subcategory
+    BuildContext context,
+    WidgetRef ref,
+    Transaction expense,
+    Category category,
+    Subcategory subcategory,
   ) async {
     final action = await showDialog<_SaveAction>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Spara ändring'),
-        content: const Text('Vill du spara detta endast för denna transaktion, eller skapa en regel baserat på beskrivningen?'),
+        content: const Text(
+          'Vill du spara detta endast för denna transaktion, eller skapa en regel baserat på beskrivningen?',
+        ),
         actions: [
           TextButton(
             child: const Text('Endast denna (Override)'),
@@ -224,56 +295,77 @@ class TransactionDetailScreen extends ConsumerWidget {
 
     if (action == _SaveAction.override) {
       await repo.addOverride(expense.id, category, subcategory);
-      
+
       // Copy code to clipboard
-      final code = "await repo.addOverride('${expense.id}', Category.${category.name}, Subcategory.${subcategory.name});";
+      final code =
+          "await repo.addOverride('${expense.id}', Category.${category.name}, Subcategory.${subcategory.name});";
       await Clipboard.setData(ClipboardData(text: code));
 
       ref.invalidate(expensesRepositoryProvider);
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Transaktion uppdaterad & kod kopierad')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Transaktion uppdaterad & kod kopierad'),
+          ),
+        );
       }
     } else if (action == _SaveAction.rule) {
       if (!context.mounted) return;
-      await _handleKeywordRule(context, ref, expense.description, category, subcategory);
+      await _handleKeywordRule(
+        context,
+        ref,
+        expense.description,
+        category,
+        subcategory,
+      );
     }
   }
 
   Future<void> _handleKeywordRule(
-      BuildContext context, WidgetRef ref, String originalDescription, Category category, Subcategory subcategory) async {
+    BuildContext context,
+    WidgetRef ref,
+    String originalDescription,
+    Category category,
+    Subcategory subcategory,
+  ) async {
     final keyword = await showDialog<String>(
-       context: context,
-       builder: (ctx) {
-         final controller = TextEditingController(text: originalDescription);
-         return AlertDialog(
-           title: const Text('Skapa Regel'),
-           content: Column(
-             mainAxisSize: MainAxisSize.min,
-             children: [
-               const Text('Ange nyckelord att matcha mot:'),
-               TextField(controller: controller, autofocus: true),
-             ],
-           ),
-           actions: [
-              TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('Avbryt')),
-              ElevatedButton(
-                onPressed: () {
-                   Navigator.of(ctx).pop(controller.text.trim());
-                },
-                child: const Text('Spara Regel'),
-              )
-           ],
-         );
-       },
+      context: context,
+      builder: (ctx) {
+        final controller = TextEditingController(text: originalDescription);
+        return AlertDialog(
+          title: const Text('Skapa Regel'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Ange nyckelord att matcha mot:'),
+              TextField(controller: controller, autofocus: true),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(),
+              child: const Text('Avbryt'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(ctx).pop(controller.text.trim());
+              },
+              child: const Text('Spara Regel'),
+            ),
+          ],
+        );
+      },
     );
 
     if (keyword == null || keyword.isEmpty) return;
-            
+
     final repo = await ref.read(userRulesRepositoryProvider.future);
     await repo.addRule(keyword, category, subcategory);
     ref.invalidate(expensesRepositoryProvider);
     if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Regel sparad')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Regel sparad')));
     }
   }
 }
@@ -281,12 +373,16 @@ class TransactionDetailScreen extends ConsumerWidget {
 enum _SaveAction { override, rule }
 
 class _CategorySelectionDialog extends StatefulWidget {
-  const _CategorySelectionDialog({required this.initialCategory, required this.initialSubcategory});
+  const _CategorySelectionDialog({
+    required this.initialCategory,
+    required this.initialSubcategory,
+  });
   final Category initialCategory;
   final Subcategory? initialSubcategory;
 
   @override
-  State<_CategorySelectionDialog> createState() => _CategorySelectionDialogState();
+  State<_CategorySelectionDialog> createState() =>
+      _CategorySelectionDialogState();
 }
 
 class _CategorySelectionDialogState extends State<_CategorySelectionDialog> {
@@ -313,10 +409,14 @@ class _CategorySelectionDialogState extends State<_CategorySelectionDialog> {
           DropdownButton<Category>(
             isExpanded: true,
             value: selectedCategory,
-            items: Category.values.map((c) => DropdownMenuItem(
-              value: c,
-              child: Text('${c.emoji} ${c.displayName}'),
-            )).toList(),
+            items: Category.values
+                .map(
+                  (c) => DropdownMenuItem(
+                    value: c,
+                    child: Text('${c.emoji} ${c.displayName}'),
+                  ),
+                )
+                .toList(),
             onChanged: (val) {
               if (val != null && val != selectedCategory) {
                 setState(() {
@@ -333,10 +433,11 @@ class _CategorySelectionDialogState extends State<_CategorySelectionDialog> {
             isExpanded: true,
             value: selectedSubcategory,
             hint: const Text('Välj underkategori'),
-            items: available.map((s) => DropdownMenuItem(
-              value: s,
-              child: Text(s.displayName),
-            )).toList(),
+            items: available
+                .map(
+                  (s) => DropdownMenuItem(value: s, child: Text(s.displayName)),
+                )
+                .toList(),
             onChanged: (val) {
               if (val != null) setState(() => selectedSubcategory = val);
             },
@@ -344,11 +445,18 @@ class _CategorySelectionDialogState extends State<_CategorySelectionDialog> {
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Avbryt')),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Avbryt'),
+        ),
         ElevatedButton(
-          onPressed: selectedSubcategory == null ? null : () {
-            Navigator.of(context).pop((selectedCategory, selectedSubcategory!));
-          },
+          onPressed: selectedSubcategory == null
+              ? null
+              : () {
+                  Navigator.of(
+                    context,
+                  ).pop((selectedCategory, selectedSubcategory!));
+                },
           child: const Text('Nästa'),
         ),
       ],

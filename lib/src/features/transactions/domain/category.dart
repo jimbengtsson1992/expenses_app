@@ -49,12 +49,12 @@ enum Category {
   ]),
 
   health('Hälsa', 0xFF2196F3, '💪', [
-     Subcategory.gym,
-     Subcategory.pharmacy,
-     Subcategory.doctor,
-     Subcategory.beauty,
-     Subcategory.unknown,
-     Subcategory.other,
+    Subcategory.gym,
+    Subcategory.pharmacy,
+    Subcategory.doctor,
+    Subcategory.beauty,
+    Subcategory.unknown,
+    Subcategory.other,
   ]),
 
   fees('Avgifter', 0xFFF44336, '💳', [
@@ -90,7 +90,12 @@ enum Category {
     Subcategory.other,
   ]);
 
-  const Category(this.displayName, this.colorValue, this.emoji, this.subcategories);
+  const Category(
+    this.displayName,
+    this.colorValue,
+    this.emoji,
+    this.subcategories,
+  );
   final String displayName;
   final int colorValue;
   final String emoji;

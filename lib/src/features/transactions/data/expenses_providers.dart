@@ -13,10 +13,9 @@ Future<List<Transaction>> expensesList(Ref ref) async {
 @riverpod
 Future<List<Transaction>> expensesForMonth(Ref ref, DateTime month) async {
   final expenses = await ref.watch(expensesListProvider.future);
-  return expenses.where((e) => 
-    e.date.year == month.year && 
-    e.date.month == month.month
-  ).toList();
+  return expenses
+      .where((e) => e.date.year == month.year && e.date.month == month.month)
+      .toList();
 }
 
 @riverpod

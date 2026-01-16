@@ -55,7 +55,7 @@ class UserRulesRepository {
           return MapEntry(key, (cat, sub));
         });
       } catch (e) {
-         debugPrint('Error loading rules: $e');
+        debugPrint('Error loading rules: $e');
       }
     }
   }
@@ -71,8 +71,8 @@ class UserRulesRepository {
     // Note: This iterate over all rules for every transaction.
     // If rules are many, this might be slow. But likely few.
     // Also, assumes "rule" key is the keyword to search for.
-    
-    // Sort logic? Longest match? 
+
+    // Sort logic? Longest match?
     // Let's iterate and return first match for now.
     final lowerDesc = description.toLowerCase();
     for (final entry in _rulesCache.entries) {
@@ -82,27 +82,36 @@ class UserRulesRepository {
     }
     return null;
   }
-  
+
   Map<String, (Category, Subcategory)> getAllRules() => Map.from(_rulesCache);
-  Map<String, (Category, Subcategory)> getAllOverrides() => Map.from(_overridesCache);
+  Map<String, (Category, Subcategory)> getAllOverrides() =>
+      Map.from(_overridesCache);
 
   // --- Public Setters (Async) ---
 
-  Future<void> addOverride(String transactionId, Category category, Subcategory subcategory) async {
+  Future<void> addOverride(
+    String transactionId,
+    Category category,
+    Subcategory subcategory,
+  ) async {
     _overridesCache[transactionId] = (category, subcategory);
     await _saveOverrides();
   }
 
-  Future<void> addRule(String keyword, Category category, Subcategory subcategory) async {
+  Future<void> addRule(
+    String keyword,
+    Category category,
+    Subcategory subcategory,
+  ) async {
     _rulesCache[keyword] = (category, subcategory);
     await _saveRules();
   }
-  
+
   Future<void> removeRule(String keyword) async {
     _rulesCache.remove(keyword);
     await _saveRules();
   }
-  
+
   Future<void> clearAll() async {
     _overridesCache.clear();
     _rulesCache.clear();
@@ -124,7 +133,7 @@ class UserRulesRepository {
 
   Future<void> _saveRules() async {
     final encodable = _rulesCache.map((key, value) {
-       return MapEntry(key, {
+      return MapEntry(key, {
         'category': value.$1.name,
         'subcategory': value.$2.name,
       });
