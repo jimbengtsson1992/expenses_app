@@ -364,5 +364,32 @@ void main() {
         Subcategory.tools,
       ));
     });
+
+    test('categorizes New Rules (User Request 2026-01-17)', () {
+      // General Logic
+      expect(service.categorize('Köp INTERFLORA AKTIEBOL', -350), (
+        Category.shopping,
+        Subcategory.gifts,
+      ));
+      expect(service.categorize('Betalning K*ratsit.se', -59), (
+        Category.entertainment,
+        Subcategory.hobby,
+      ));
+
+      // Specific Exceptions
+      expect(service.categorize('Swish betalning LUNDBERG, CHARLOTTA', -155.00), (
+        Category.other,
+        Subcategory.other,
+      ));
+      expect(service.categorize('HESTRA GOTHENBURG', -1400), (
+        Category.shopping,
+        Subcategory.gifts,
+      ));
+      // Fallback test
+      expect(service.categorize('HESTRA GOTHENBURG', -500), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
+    });
   });
 }

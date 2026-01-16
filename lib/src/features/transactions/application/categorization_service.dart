@@ -14,6 +14,16 @@ class CategorizationService {
     final lowerDesc = description.toLowerCase();
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
+    if (_matches(description, ['Swish betalning LUNDBERG, CHARLOTTA']) &&
+        amount == -155.0) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['HESTRA GOTHENBURG']) &&
+        (amount == -1400 || amount == 1400)) {
+      // Logic for HESTRA GOTHENBURG: 2026-01-03 row -> Shopping/Gifts
+      return (Category.shopping, Subcategory.gifts);
+    }
+
     if (_matches(description, ['ZETTLE_*SAD RETAIL GRO']) && amount == -950) {
       return (Category.shopping, Subcategory.gifts);
     }
@@ -92,7 +102,7 @@ class CategorizationService {
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
-    if (_matches(lowerDesc, ['hobby', 'panduro', 'happy golfer'])) {
+    if (_matches(lowerDesc, ['hobby', 'panduro', 'happy golfer', 'k*ratsit.se', 'ratsit.se'])) {
       return (Category.entertainment, Subcategory.hobby);
     }
     if (_matches(lowerDesc, ['akademibokhande'])) {
@@ -132,7 +142,7 @@ class CategorizationService {
     }
 
     // Food & Drink
-    if (_matches(lowerDesc, ['marica roos', 'avilena', 'newport', 'tz-shop'])) {
+    if (_matches(lowerDesc, ['interflora aktiebol', 'marica roos', 'avilena', 'newport', 'tz-shop'])) {
       return (Category.shopping, Subcategory.gifts);
     }
     if (_matches(lowerDesc, [
