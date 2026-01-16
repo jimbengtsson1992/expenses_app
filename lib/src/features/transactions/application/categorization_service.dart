@@ -88,7 +88,7 @@ class CategorizationService {
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
-    if (_matches(lowerDesc, ['hobby', 'panduro', 'happy golfer'])) {
+    if (_matches(lowerDesc, ['hobby', 'panduro', 'happy golfer', 'apple.com/bill'])) {
       return (Category.entertainment, Subcategory.hobby);
     }
     if (_matches(lowerDesc, ['akademibokhande'])) {

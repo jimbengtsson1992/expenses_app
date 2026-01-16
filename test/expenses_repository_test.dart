@@ -104,6 +104,15 @@ void main() {
           true,
         );
 
+        // Strict number check
+        expect(
+          repository.shouldExcludeFromOverview(
+            '95561384521',
+            -200.0,
+          ),
+          true,
+        );
+
         // Jollyroom other amount should not be excluded
         expect(
           repository.shouldExcludeFromOverview(

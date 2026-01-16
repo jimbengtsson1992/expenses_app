@@ -376,7 +376,7 @@ class ExpensesRepository {
       return true;
     }
 
-    if (description.toLowerCase().contains('95561384521 louise avanza')) {
+    if (description.contains('95561384521')) { // Louise Avanza
       return true;
     }
 
