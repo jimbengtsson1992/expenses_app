@@ -100,6 +100,11 @@ void main() {
     test('Specific Overrides', () {
       expect(service.categorize('ELLOS AB', -3148.1), (Category.shopping, Subcategory.furniture));
     });
+
+    test('categorizes Health accurately', () {
+      expect(service.categorize('Sanna andrén', -500), (Category.health, Subcategory.beauty));
+      expect(service.categorize('SATS', -450), (Category.health, Subcategory.gym));
+    });
   });
 
 

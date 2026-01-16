@@ -170,6 +170,9 @@ class CategorizationService {
     if (_matches(lowerDesc, ['vård', 'tandläkare', 'karolinska', 'sjukvård', 'doctor', '1177', 'capio'])) {
       return (Category.health, Subcategory.doctor);
     }
+    if (_matches(lowerDesc, ['sanna andrén'])) {
+      return (Category.health, Subcategory.beauty);
+    }
 
     // Housing (Boende)
     if (_matches(lowerDesc, ['höjdena brf', 'brf avgift', 'hsb'])) {

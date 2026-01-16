@@ -52,6 +52,7 @@ enum Category {
      Subcategory.gym,
      Subcategory.pharmacy,
      Subcategory.doctor,
+     Subcategory.beauty,
      Subcategory.unknown,
      Subcategory.other,
   ]),
