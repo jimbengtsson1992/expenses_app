@@ -29,9 +29,9 @@ class ExpensesRepository {
   static final _startParams = DateTime(2025, 1, 1);
 
   Future<List<Transaction>> getExpenses() async {
-    final manifestContent = await rootBundle.loadString('AssetManifest.json');
-    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-    final filePaths = manifestMap.keys
+    final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+    final filePaths = manifest
+        .listAssets()
         .where(
           (String key) =>
               key.startsWith('assets/data/') &&
