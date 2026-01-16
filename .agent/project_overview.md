@@ -129,7 +129,7 @@ The project uses build_runner for code generation:
 
 Run code generation with:
 ```bash
-flutter pub run build_runner build --delete-conflicting-outputs
+fvm flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 ## Recent Development

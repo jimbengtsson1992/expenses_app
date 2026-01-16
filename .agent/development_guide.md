@@ -12,17 +12,17 @@
 
 1. **Install dependencies**:
    ```bash
-   flutter pub get
+   fvm flutter pub get
    ```
 
 2. **Run code generation**:
    ```bash
-   flutter pub run build_runner build --delete-conflicting-outputs
+   fvm flutter pub run build_runner build --delete-conflicting-outputs
    ```
 
 3. **Run the app**:
    ```bash
-   flutter run
+   fvm flutter run
    ```
 
 ## Development Workflow
@@ -34,11 +34,11 @@ When modifying Freezed models or Riverpod providers:
 1. Make your changes to the source `.dart` file
 2. Run code generation:
    ```bash
-   flutter pub run build_runner build --delete-conflicting-outputs
+   fvm flutter pub run build_runner build --delete-conflicting-outputs
    ```
 3. For continuous generation during development:
    ```bash
-   flutter pub run build_runner watch --delete-conflicting-outputs
+   fvm flutter pub run build_runner watch --delete-conflicting-outputs
    ```
 
 ### Adding New CSV Import Sources
@@ -187,17 +187,17 @@ The app uses `fl_chart` for visualization. Example patterns should be in the das
 
 ### Debug Build
 ```bash
-flutter run
+fvm flutter run
 ```
 
 ### Release Build (Android)
 ```bash
-flutter build apk --release
+fvm flutter build apk --release
 ```
 
 ### Release Build (iOS)
 ```bash
-flutter build ios --release
+fvm flutter build ios --release
 ```
 
 ## Troubleshooting
@@ -209,7 +209,7 @@ flutter build ios --release
 ```bash
 find . -name "*.g.dart" -delete
 find . -name "*.freezed.dart" -delete
-flutter pub run build_runner build --delete-conflicting-outputs
+fvm flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
 ### CSV Import Not Working
