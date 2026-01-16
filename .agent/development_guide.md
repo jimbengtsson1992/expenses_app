@@ -3,7 +3,7 @@
 ## Getting Started
 
 ### Prerequisites
-- Flutter SDK (compatible with Dart SDK ^3.9.2)
+- Flutter SDK (compatible with Dart SDK ^3.10.0)
 - IDE: Android Studio or VS Code with Flutter extensions
 - iOS development: Xcode (for iOS builds)
 - Android development: Android Studio

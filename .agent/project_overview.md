@@ -6,7 +6,7 @@ This is a personal expense tracking Flutter application that imports, categorize
 
 ## Tech Stack
 
-- **Framework**: Flutter (Dart SDK ^3.9.2)
+- **Framework**: Flutter (Dart SDK ^3.10.0)
 - **State Management**: Riverpod (flutter_riverpod ^3.1.0)
 - **Navigation**: GoRouter ^17.0.1
 - **Data Models**: Freezed ^3.2.3 for immutable models

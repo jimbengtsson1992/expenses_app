@@ -15,7 +15,7 @@ You **MUST** create/update tests when modifying:
 
 
 ## 🛠 Tech Stack
-- **Flutter**: Dart SDK ^3.9.2
+- **Flutter**: Dart SDK ^3.10.0
 - **State**: Riverpod (`flutter_riverpod`, `riverpod_generator`)
 - **Navigation**: GoRouter
 - **Models**: Freezed & JSON Serializable
