@@ -59,6 +59,10 @@ class CategorizationService {
     }
 
     // --- Expenses (<= 0) ---
+    if (_matches(lowerDesc, ['apple.com/bill'])) {
+      return (Category.other, Subcategory.mobileSubscription);
+    }
+
     // Entertainment - MOVED UP TO PRIORITIZE STREAMING (e.g. HBOMAX vs MAX burger)
     if (_matches(lowerDesc, [
       'bio',
@@ -88,7 +92,7 @@ class CategorizationService {
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
-    if (_matches(lowerDesc, ['hobby', 'panduro', 'happy golfer', 'apple.com/bill'])) {
+    if (_matches(lowerDesc, ['hobby', 'panduro', 'happy golfer'])) {
       return (Category.entertainment, Subcategory.hobby);
     }
     if (_matches(lowerDesc, ['akademibokhande'])) {

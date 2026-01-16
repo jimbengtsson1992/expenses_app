@@ -345,8 +345,8 @@ void main() {
         Subcategory.hobby,
       ));
       expect(service.categorize('APPLE.COM/BILL', -129), (
-        Category.entertainment,
-        Subcategory.hobby,
+        Category.other,
+        Subcategory.mobileSubscription,
       ));
       expect(service.categorize('Akademibokhandeln', -199), (
         Category.entertainment,
