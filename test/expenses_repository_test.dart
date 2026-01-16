@@ -53,5 +53,20 @@ void main() {
       expect(repository.isInternalTransfer('Netflix'), false);
       expect(repository.isInternalTransfer('Lön'), false); // Salary is not a transfer in this context (unless from own account?)
     });
+
+    test('shouldExcludeFromOverview correctly identifies specific exclusions', () {
+      // Jollyroom 1889 logic
+      expect(repository.shouldExcludeFromOverview('Swish återbetalning Jollyroom AB', 1889.00), true);
+      expect(repository.shouldExcludeFromOverview('Swish betalning Jollyroom AB', -1889.00), true);
+      
+      // Jollyroom other amount should not be excluded
+      expect(repository.shouldExcludeFromOverview('Swish betalning Jollyroom AB', -500.00), false);
+
+      // Internal transfer should also be excluded
+      expect(repository.shouldExcludeFromOverview('Överföring till XXX', -1000.0), true);
+      
+      // Regular transaction should not be excluded
+      expect(repository.shouldExcludeFromOverview('ICA Maxi', -500.0), false);
+    });
   });
 }

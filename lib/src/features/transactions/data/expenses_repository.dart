@@ -131,17 +131,17 @@ class ExpensesRepository {
       final date = DateFormat('yyyy/MM/dd').parse(dateStr);
       if (date.isBefore(_startParams)) continue;
 
+      // Amount Parse
+      final amount = double.tryParse(amountStr.replaceAll(',', '.')) ?? 0;
+
       // Filter Transfers - No longer filter them out completely
       // if (_isInternalTransfer(description)) continue;
 
       // Determine exclusion
-      final excludeFromOverview = isInternalTransfer(description);
+      final excludeFromOverview = shouldExcludeFromOverview(description, amount);
 
       // Filter SAS Payments (to avoid dupe)
       if (description.contains('Betalning BG 595-4300 SAS EUROBONUS')) continue;
-
-      // Amount Parse
-      final amount = double.tryParse(amountStr.replaceAll(',', '.')) ?? 0;
       
       // Determine transaction type: positive = income, negative = expense
       final type = amount >= 0 ? TransactionType.income : TransactionType.expense;
@@ -308,6 +308,17 @@ class ExpensesRepository {
       }
     }
     return expenses;
+  }
+
+  @visibleForTesting
+  bool shouldExcludeFromOverview(String description, double amount) {
+    if (isInternalTransfer(description)) return true;
+    
+    // User requested exclusions
+    // Jollyroom refund and payment (approx 1889 SEK)
+    if (description.contains('Jollyroom AB') && (amount.abs() - 1889.0).abs() < 0.01) return true;
+
+    return false;
   }
 
   @visibleForTesting
