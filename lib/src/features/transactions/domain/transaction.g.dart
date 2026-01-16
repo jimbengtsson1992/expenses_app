@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'transactions.dart';
+part of 'transaction.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
@@ -38,14 +38,14 @@ Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
     };
 
 const _$CategoryEnumMap = {
+  Category.housing: 'housing',
   Category.food: 'food',
   Category.shopping: 'shopping',
-  Category.transport: 'transport',
+  Category.entertainment: 'entertainment',
   Category.health: 'health',
-  Category.bills: 'bills',
-  Category.savings: 'savings',
+  Category.fees: 'fees',
+  Category.transport: 'transport',
   Category.income: 'income',
-  Category.loansAndBrf: 'loansAndBrf',
   Category.other: 'other',
 };
 
@@ -64,25 +64,51 @@ const _$TransactionTypeEnumMap = {
 };
 
 const _$SubcategoryEnumMap = {
+  Subcategory.brfFee: 'brfFee',
+  Subcategory.mortgage: 'mortgage',
+  Subcategory.electricity: 'electricity',
+  Subcategory.homeInsurance: 'homeInsurance',
+  Subcategory.security: 'security',
+  Subcategory.broadband: 'broadband',
+  Subcategory.cleaning: 'cleaning',
+  Subcategory.groceries: 'groceries',
+  Subcategory.restaurant: 'restaurant',
+  Subcategory.bar: 'bar',
+  Subcategory.lunch: 'lunch',
+  Subcategory.takeaway: 'takeaway',
+  Subcategory.coffee: 'coffee',
+  Subcategory.alcohol: 'alcohol',
+  Subcategory.supplements: 'supplements',
+  Subcategory.personalInsurance: 'personalInsurance',
+  Subcategory.mobileSubscription: 'mobileSubscription',
+  Subcategory.newspapers: 'newspapers',
+  Subcategory.streaming: 'streaming',
+  Subcategory.clothes: 'clothes',
+  Subcategory.electronics: 'electronics',
+  Subcategory.furniture: 'furniture',
+  Subcategory.gifts: 'gifts',
+  Subcategory.decor: 'decor',
+  Subcategory.beauty: 'beauty',
+  Subcategory.tools: 'tools',
+  Subcategory.travel: 'travel',
+  Subcategory.hobby: 'hobby',
+  Subcategory.boardGamesBooksAndToys: 'boardGamesBooksAndToys',
+  Subcategory.snuff: 'snuff',
+  Subcategory.videoGames: 'videoGames',
+  Subcategory.gym: 'gym',
+  Subcategory.pharmacy: 'pharmacy',
+  Subcategory.doctor: 'doctor',
+  Subcategory.bankFees: 'bankFees',
+  Subcategory.tax: 'tax',
+  Subcategory.csn: 'csn',
+  Subcategory.godfather: 'godfather',
   Subcategory.taxi: 'taxi',
   Subcategory.publicTransport: 'publicTransport',
   Subcategory.car: 'car',
   Subcategory.fuel: 'fuel',
   Subcategory.parking: 'parking',
-  Subcategory.groceries: 'groceries',
-  Subcategory.restaurant: 'restaurant',
-  Subcategory.clothes: 'clothes',
-  Subcategory.electronics: 'electronics',
-  Subcategory.home: 'home',
-  Subcategory.gym: 'gym',
-  Subcategory.pharmacy: 'pharmacy',
-  Subcategory.doctor: 'doctor',
-  Subcategory.streaming: 'streaming',
-  Subcategory.electricity: 'electricity',
-  Subcategory.internet: 'internet',
-  Subcategory.phone: 'phone',
-  Subcategory.insurance: 'insurance',
   Subcategory.salary: 'salary',
-  Subcategory.otherIncome: 'otherIncome',
+  Subcategory.interest: 'interest',
   Subcategory.unknown: 'unknown',
+  Subcategory.other: 'other',
 };

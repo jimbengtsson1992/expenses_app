@@ -3,7 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../data/expenses_providers.dart';
+import '../data/expenses_repository.dart';
+import '../data/user_rules_repository.dart';
 import '../domain/transaction_type.dart';
+import '../domain/transaction.dart';
+import '../domain/category.dart';
+import '../domain/subcategory.dart';
 
 class TransactionDetailScreen extends ConsumerWidget {
   const TransactionDetailScreen({super.key, required this.expenseId});
@@ -71,26 +76,43 @@ class TransactionDetailScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
 
-              // Category Field
-              _DetailRow(
-                label: 'Kategori',
-                content: Row(
-                  children: [
-                    Text(expense.category.emoji, style: const TextStyle(fontSize: 20)),
-                    const SizedBox(width: 8),
-                    Text(expense.category.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                  ],
+              // Category Field (Editable)
+              InkWell(
+                onTap: () => _showEditDialog(context, ref, expense),
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                   decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.white24)
+                   ),
+                   padding: const EdgeInsets.all(2.0),
+                   child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                         _DetailRow(
+                          label: 'Kategori (Klicka för att ändra)',
+                          content: Row(
+                            children: [
+                              Text(expense.category.emoji, style: const TextStyle(fontSize: 20)),
+                              const SizedBox(width: 8),
+                              Text(expense.category.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        _DetailRow(
+                          label: 'Underkategori',
+                          content: Row(
+                            children: [
+                              Text(expense.subcategory.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        ),
+                      ],
+                   ),
                 ),
               ),
-                const SizedBox(height: 24),
-                _DetailRow(
-                  label: 'Underkategori',
-                  content: Row(
-                    children: [
-                      Text(expense.subcategory.displayName, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-                    ],
-                  ),
-                ),
+              
               const SizedBox(height: 24),
 
               // Source Account Field (Highlighted as requested)
@@ -138,6 +160,10 @@ class TransactionDetailScreen extends ConsumerWidget {
                         },
                       ),
                     ),
+                    ListTile(
+                      title: SelectableText(expense.id, style: const TextStyle(fontFamily: 'Courier', fontSize: 12)),
+                      subtitle: const Text('Transaction ID'),
+                    )
                 ],
               ),
             ],
@@ -146,6 +172,186 @@ class TransactionDetailScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
+    );
+  }
+
+  Future<void> _showEditDialog(BuildContext context, WidgetRef ref, Transaction expense) async {
+    // 1. Select Category/Subcategory
+    final selection = await showDialog<(Category, Subcategory)>(
+      context: context,
+      builder: (ctx) => _CategorySelectionDialog(
+        initialCategory: expense.category,
+        initialSubcategory: expense.subcategory,
+      ),
+    );
+
+    if (selection == null) return; // Cancelled
+
+    // 2. Select Save Mode (Override vs Rule)
+    if (!context.mounted) return;
+    
+    await _handleSaveOptions(context, ref, expense, selection.$1, selection.$2);
+  }
+
+  Future<void> _handleSaveOptions(
+    BuildContext context, 
+    WidgetRef ref, 
+    Transaction expense, 
+    Category category, 
+    Subcategory subcategory
+  ) async {
+    final action = await showDialog<_SaveAction>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Spara ändring'),
+        content: const Text('Vill du spara detta endast för denna transaktion, eller skapa en regel baserat på beskrivningen?'),
+        actions: [
+          TextButton(
+            child: const Text('Endast denna (Override)'),
+            onPressed: () => Navigator.of(ctx).pop(_SaveAction.override),
+          ),
+          ElevatedButton(
+            child: const Text('Skapa Regel (Beskrivning)'),
+            onPressed: () => Navigator.of(ctx).pop(_SaveAction.rule),
+          ),
+        ],
+      ),
+    );
+
+    if (action == null) return;
+
+    final repo = await ref.read(userRulesRepositoryProvider.future);
+
+    if (action == _SaveAction.override) {
+      await repo.addOverride(expense.id, category, subcategory);
+      
+      // Copy code to clipboard
+      final code = "await repo.addOverride('${expense.id}', Category.${category.name}, Subcategory.${subcategory.name});";
+      await Clipboard.setData(ClipboardData(text: code));
+
+      ref.invalidate(expensesRepositoryProvider);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Transaktion uppdaterad & kod kopierad')));
+      }
+    } else if (action == _SaveAction.rule) {
+      if (!context.mounted) return;
+      await _handleKeywordRule(context, ref, expense.description, category, subcategory);
+    }
+  }
+
+  Future<void> _handleKeywordRule(
+      BuildContext context, WidgetRef ref, String originalDescription, Category category, Subcategory subcategory) async {
+    final keyword = await showDialog<String>(
+       context: context,
+       builder: (ctx) {
+         final controller = TextEditingController(text: originalDescription);
+         return AlertDialog(
+           title: const Text('Skapa Regel'),
+           content: Column(
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               const Text('Ange nyckelord att matcha mot:'),
+               TextField(controller: controller, autofocus: true),
+             ],
+           ),
+           actions: [
+              TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('Avbryt')),
+              ElevatedButton(
+                onPressed: () {
+                   Navigator.of(ctx).pop(controller.text.trim());
+                },
+                child: const Text('Spara Regel'),
+              )
+           ],
+         );
+       },
+    );
+
+    if (keyword == null || keyword.isEmpty) return;
+            
+    final repo = await ref.read(userRulesRepositoryProvider.future);
+    await repo.addRule(keyword, category, subcategory);
+    ref.invalidate(expensesRepositoryProvider);
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Regel sparad')));
+    }
+  }
+}
+
+enum _SaveAction { override, rule }
+
+class _CategorySelectionDialog extends StatefulWidget {
+  const _CategorySelectionDialog({required this.initialCategory, required this.initialSubcategory});
+  final Category initialCategory;
+  final Subcategory? initialSubcategory;
+
+  @override
+  State<_CategorySelectionDialog> createState() => _CategorySelectionDialogState();
+}
+
+class _CategorySelectionDialogState extends State<_CategorySelectionDialog> {
+  late Category selectedCategory;
+  Subcategory? selectedSubcategory;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedCategory = widget.initialCategory;
+    selectedSubcategory = widget.initialSubcategory;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Filter available subcategories
+    final available = selectedCategory.subcategories;
+
+    return AlertDialog(
+      title: const Text('Ändra Kategori'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          DropdownButton<Category>(
+            isExpanded: true,
+            value: selectedCategory,
+            items: Category.values.map((c) => DropdownMenuItem(
+              value: c,
+              child: Text('${c.emoji} ${c.displayName}'),
+            )).toList(),
+            onChanged: (val) {
+              if (val != null && val != selectedCategory) {
+                setState(() {
+                  selectedCategory = val;
+                  if (!val.subcategories.contains(selectedSubcategory)) {
+                    selectedSubcategory = null;
+                  }
+                });
+              }
+            },
+          ),
+          const SizedBox(height: 16),
+          DropdownButton<Subcategory>(
+            isExpanded: true,
+            value: selectedSubcategory,
+            hint: const Text('Välj underkategori'),
+            items: available.map((s) => DropdownMenuItem(
+              value: s,
+              child: Text(s.displayName),
+            )).toList(),
+            onChanged: (val) {
+              if (val != null) setState(() => selectedSubcategory = val);
+            },
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Avbryt')),
+        ElevatedButton(
+          onPressed: selectedSubcategory == null ? null : () {
+            Navigator.of(context).pop((selectedCategory, selectedSubcategory!));
+          },
+          child: const Text('Nästa'),
+        ),
+      ],
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../domain/transactions.dart';
+import '../domain/transaction.dart';
 import 'expenses_repository.dart';
 
 part 'expenses_providers.g.dart';

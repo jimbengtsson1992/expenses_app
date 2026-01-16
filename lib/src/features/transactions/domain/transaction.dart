@@ -4,8 +4,8 @@ import 'subcategory.dart';
 import 'transaction_type.dart';
 import 'account.dart';
 
-part 'transactions.freezed.dart';
-part 'transactions.g.dart';
+part 'transaction.freezed.dart';
+part 'transaction.g.dart';
 
 @freezed
 abstract class Transaction with _$Transaction {

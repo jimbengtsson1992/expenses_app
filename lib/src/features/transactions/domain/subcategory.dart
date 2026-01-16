@@ -1,38 +1,72 @@
 enum Subcategory {
-  // Transport
+  // --- Boende (Housing) ---
+  brfFee('Avgift BRF'),
+  mortgage('Bolån & Amortering'),
+  electricity('El'),
+  homeInsurance('Hemförsäkring'),
+  security('Larm & Säkerhet'),
+  broadband('Bredband'),
+  cleaning('Städning'),
+
+  // --- Mat & Dryck (Food) ---
+  groceries('Matbutik'),
+  restaurant('Restaurant'),
+  bar('Bar'),
+  lunch('Lunch ute'),
+  takeaway('Foodora & Takeaway'),
+  coffee('Kaffe & Fika'),
+  alcohol('Systembolaget'),
+  supplements('Kosttillskott'),
+
+  // --- Försäkringar & abonnemang (Insurance & Subscriptions) ---
+  personalInsurance('Personförsäkringar'),
+  mobileSubscription('Mobilabonnemang'),
+  newspapers('Tidningar'),
+  streaming('Streaming'),
+
+  // --- Shopping ---
+  clothes('Kläder, Skor & Smycken'),
+  electronics('Elektronik'),
+  furniture('Möbler'),
+  gifts('Presenter'),
+  decor('Inredning'),
+  beauty('Skönhet'),
+  tools('Verktyg & Bygg'),
+
+  // --- Nöje & fritid (Entertainment) ---
+  travel('Resor'),
+  hobby('Hobby'),
+  boardGamesBooksAndToys('Brädspel, Böcker & Leksaker'),
+  snuff('Snus'),
+  videoGames('TV-spel'),
+
+  // --- Hälsa (Health) ---
+  gym('Träning'),
+  pharmacy('Apotek'),
+  doctor('Vård'),
+
+  // --- Avgifter (Fees) ---
+  bankFees('Bankavgifter'),
+  tax('Skatt'),
+  csn('CSN'),
+
+  // --- Övrigt (Other / Admin) ---
+  godfather('Fadder'),
+
+  // --- Transport (Existing - Kept) ---
   taxi('Taxi'),
   publicTransport('Kollektivtrafik'),
   car('Bil'),
   fuel('Drivmedel'),
   parking('Parkering'),
-  
-  // Food
-  groceries('Matbutik'),
-  restaurant('Restaurang'),
-  
-  // Shopping
-  clothes('Kläder'),
-  electronics('Elektronik'),
-  home('Hem & Inredning'),
-  
-  // Health
-  gym('Träning'),
-  pharmacy('Apotek'),
-  doctor('Vård'),
-  
-  // Bills
-  streaming('Streaming'),
-  electricity('El'),
-  internet('Bredband'),
-  phone('Telefoni'),
-  insurance('Försäkring'),
 
-  // Income
+  // --- Income (Existing - Kept) ---
   salary('Lön'),
-  otherIncome('Övrig inkomst'),
+  interest('Ränta'),
 
-  // Default/Fallback
-  unknown('Okänd');
+  // --- Defaults ---
+  unknown('Okänd'),
+  other('Övrigt');
 
   const Subcategory(this.displayName);
   final String displayName;

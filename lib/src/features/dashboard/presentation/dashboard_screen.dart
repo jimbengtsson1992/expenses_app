@@ -5,7 +5,7 @@ import '../../../common_widgets/month_selector.dart';
 import '../../transactions/data/expenses_providers.dart';
 import '../../transactions/domain/category.dart';
 import '../../transactions/domain/subcategory.dart';
-import '../../transactions/domain/transactions.dart';
+import '../../transactions/domain/transaction.dart';
 import '../../transactions/domain/transaction_type.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';

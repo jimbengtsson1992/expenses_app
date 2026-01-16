@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../routing/routes.dart';
@@ -6,6 +7,8 @@ import '../../../routing/routes.dart';
 import '../../../common_widgets/month_selector.dart';
 import '../../dashboard/presentation/dashboard_screen.dart'; // Import provider
 import '../data/expenses_providers.dart';
+import '../data/expenses_repository.dart';
+import '../data/user_rules_repository.dart';
 import '../domain/category.dart';
 import '../domain/subcategory.dart';
 import '../domain/transaction_type.dart';
@@ -34,17 +37,8 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
   TransactionType? _filterType;
   Category? _filterCategory;
   Account? _filterAccount;
-  // bool? _filterExcludeFromOverview; // true = show only excluded, false = show only included, null = show all?
-  // User logic: "Status" -> All, Included, Excluded.
-  // Let's use an enum or just bool? with null.
-  // null = All.
-  // true = Only Excluded.
-  // false = Only Included (Standard).
-  // Wait, standard behavior should be showing EVERYTHING unless filtered?
-  // Current requirement: "Add a filter that shows excludeFromOverview".
-  // Let's interpret as: Filter by "Is Excluded?".
-  // Values: All (null), Yes (true), No (false).
   bool? _filterExcludeFromOverview;
+  Set<Subcategory> _filterSubcategories = {};
 
   @override
   void initState() {
@@ -56,6 +50,10 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
     _filterType = widget.filterType;
     _filterAccount = widget.initialAccount;
     _filterExcludeFromOverview = widget.initialExcludeFromOverview;
+    
+    if (_filterCategory != null) {
+      _filterSubcategories = _filterCategory!.subcategories.toSet();
+    }
   }
 
   @override
@@ -70,10 +68,50 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
         _filterType = widget.filterType;
         _filterAccount = widget.initialAccount;
         _filterExcludeFromOverview = widget.initialExcludeFromOverview;
+        if (_filterCategory != null) {
+           _filterSubcategories = _filterCategory!.subcategories.toSet();
+        } else {
+           _filterSubcategories.clear();
+        }
       });
     }
   }
 
+
+  void _onCategoryChanged(Category? category) {
+    setState(() {
+      _filterCategory = category;
+      if (category != null) {
+        _filterSubcategories = category.subcategories.toSet();
+      } else {
+        _filterSubcategories.clear();
+      }
+    });
+  }
+
+  void _toggleSubcategory(Subcategory sub) {
+    setState(() {
+      if (_filterSubcategories.contains(sub)) {
+        _filterSubcategories.remove(sub);
+      } else {
+        _filterSubcategories.add(sub);
+      }
+    });
+  }
+
+  void _selectAllSubcategories() {
+    if (_filterCategory == null) return;
+    setState(() {
+      _filterSubcategories = _filterCategory!.subcategories.toSet();
+    });
+  }
+
+  void _deselectAllSubcategories() {
+    setState(() {
+      _filterSubcategories.clear();
+    });
+  }
+  
   @override
   void dispose() {
     _searchController.dispose();
@@ -87,7 +125,111 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
       _filterCategory = null;
       _filterAccount = null;
       _filterExcludeFromOverview = null;
+      _filterSubcategories.clear();
     });
+  }
+
+  Future<void> _showRulesDialog() async {
+    final rulesRepo = await ref.read(userRulesRepositoryProvider.future);
+    final rules = rulesRepo.getAllRules(); 
+    final overrides = rulesRepo.getAllOverrides();
+    
+    // Fetch all transactions to look up details/CSV data for overrides
+    // This ensures we have the data even if it's not in the current month view
+    final allExpenses = await ref.read(expensesRepositoryProvider).getExpenses();
+    final expenseMap = {for (final e in allExpenses) e.id: e};
+
+    final buffer = StringBuffer();
+    buffer.writeln('Please update the categorization logic with the following changes.');
+    buffer.writeln('IMPORTANT: Create tests for any new or changed logic to prevent regressions.\n');
+    
+    // 1. General Rules
+    if (rules.isNotEmpty) {
+      buffer.writeln('### General Logic (Keywords)');
+      // Group by (Category, Subcategory)
+      final groupedRules = <(Category, Subcategory), List<String>>{};
+      for (final entry in rules.entries) {
+        groupedRules.putIfAbsent(entry.value, () => []).add(entry.key);
+      }
+      
+      for (final entry in groupedRules.entries) {
+        final cat = entry.key.$1;
+        final sub = entry.key.$2;
+        final keywords = entry.value.map((k) => "'$k'").join(', ');
+        buffer.writeln('- Assign **Category.${cat.name}** / **Subcategory.${sub.name}** if description contains: $keywords');
+      }
+      buffer.writeln();
+    }
+
+    // 2. Overrides
+    if (overrides.isNotEmpty) {
+      buffer.writeln('### Specific Exceptions (Overrides)');
+      for (final entry in overrides.entries) {
+        final id = entry.key;
+        final cat = entry.value.$1;
+        final sub = entry.value.$2;
+        
+        final expense = expenseMap[id];
+        
+        if (expense != null && expense.rawCsvData != null) {
+           buffer.writeln('- For CSV Row: `${expense.rawCsvData}`');
+           buffer.writeln('  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**');
+        } else if (expense != null) {
+           buffer.writeln('- Hardcode Transaction: "${expense.description}" (${expense.date.toString().substring(0, 10)}, ${expense.amount} kr)');
+           buffer.writeln('  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**');
+        } else {
+           buffer.writeln('- Hardcode Transaction ID `$id` (Unknown Details)');
+           buffer.writeln('  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**');
+        }
+      }
+    }
+
+    if (rules.isEmpty && overrides.isEmpty) {
+      buffer.writeln('No rules or overrides saved.');
+    }
+
+    final code = buffer.toString();
+
+    if (!mounted) return;
+
+    await showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Exportera Regler & Overrides'),
+        content: SingleChildScrollView(
+          child: SelectableText(
+            code,
+            style: const TextStyle(fontFamily: 'Courier', fontSize: 12),
+          ),
+        ),
+        actions: [
+          if (rules.isNotEmpty || overrides.isNotEmpty)
+            TextButton(
+              onPressed: () async {
+                 Navigator.of(ctx).pop(); 
+                 await rulesRepo.clearAll(); 
+                 if (mounted) {
+                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Regler raderade')));
+                   ref.invalidate(expensesRepositoryProvider);
+                 }
+              },
+              child: const Text('Rensa sparade', style: TextStyle(color: Colors.red)),
+            ),
+          TextButton(
+             onPressed: () => Navigator.of(ctx).pop(), 
+             child: const Text('Stäng')
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Clipboard.setData(ClipboardData(text: code));
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Kopierat till urklipp')));
+            },
+            child: const Text('Kopiera Prompt'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -103,6 +245,13 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
           onNext: () => ref.read(currentDateProvider.notifier).nextMonth(),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.code),
+            tooltip: 'Exportera Regler',
+            onPressed: _showRulesDialog,
+          ),
+        ],
       ),
       body: expensesAsync.when(
         data: (expenses) {
@@ -122,7 +271,9 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
 
           // 3. Category Filter
           if (_filterCategory != null) {
-            filteredExpenses = filteredExpenses.where((e) => e.category == _filterCategory).toList();
+            filteredExpenses = filteredExpenses.where((e) => 
+              e.category == _filterCategory && _filterSubcategories.contains(e.subcategory)
+            ).toList();
           }
 
           // 4. Account Filter
@@ -192,7 +343,7 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
                                   child: Text('${c.emoji} ${c.displayName}'),
                                 )),
                               ],
-                              onChanged: (val) => setState(() => _filterCategory = val),
+                              onChanged: _onCategoryChanged,
                             ),
                           ),
                            // Account Filter
@@ -232,6 +383,36 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
                         ],
                       ),
                     ),
+                    if (_filterCategory != null) ...[
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          TextButton(
+                            onPressed: _selectAllSubcategories,
+                            child: const Text('Markera alla'),
+                          ),
+                          TextButton(
+                            onPressed: _deselectAllSubcategories,
+                            child: const Text('Avmarkera alla'),
+                          ),
+                        ],
+                      ),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 4,
+                        children: _filterCategory!.subcategories.map((sub) {
+                          final isSelected = _filterSubcategories.contains(sub);
+                          return FilterChip(
+                            label: Text(sub.displayName),
+                            selected: isSelected,
+                            onSelected: (_) => _toggleSubcategory(sub),
+                            backgroundColor: Colors.grey.shade200,
+                            selectedColor: Color(_filterCategory!.colorValue).withValues(alpha: 0.3),
+                            checkmarkColor: Color(_filterCategory!.colorValue),
+                          );
+                        }).toList(),
+                      ),
+                    ],
                   ],
                 ),
               ),
@@ -252,6 +433,7 @@ class _TransactionsListScreenState extends ConsumerState<TransactionsListScreen>
               else
                 Expanded(
                   child: ListView.separated(
+                    key: const PageStorageKey('transactions_list'),
                     itemCount: filteredExpenses.length,
                     separatorBuilder: (c, i) => const Divider(height: 1, indent: 70),
                     itemBuilder: (context, index) {

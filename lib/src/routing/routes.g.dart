@@ -119,14 +119,14 @@ mixin $TransactionsListRoute on GoRouteData {
 }
 
 const _$CategoryEnumMap = {
+  Category.housing: 'housing',
   Category.food: 'food',
   Category.shopping: 'shopping',
-  Category.transport: 'transport',
+  Category.entertainment: 'entertainment',
   Category.health: 'health',
-  Category.bills: 'bills',
-  Category.savings: 'savings',
+  Category.fees: 'fees',
+  Category.transport: 'transport',
   Category.income: 'income',
-  Category.loansAndBrf: 'loans-and-brf',
   Category.other: 'other',
 };
 
