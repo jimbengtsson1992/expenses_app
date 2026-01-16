@@ -138,6 +138,9 @@ const _$TransactionTypeEnumMap = {
 const _$AccountEnumMap = {
   Account.jimPersonkonto: 'jim-personkonto',
   Account.jimSparkonto: 'jim-sparkonto',
+  Account.louisePersonkonto: 'louise-personkonto',
+  Account.louiseSparkonto: 'louise-sparkonto',
+  Account.louiseVardagskonto: 'louise-vardagskonto',
   Account.gemensamt: 'gemensamt',
   Account.gemensamtSpar: 'gemensamt-spar',
   Account.sasAmex: 'sas-amex',

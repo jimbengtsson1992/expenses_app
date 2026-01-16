@@ -52,6 +52,9 @@ const _$CategoryEnumMap = {
 const _$AccountEnumMap = {
   Account.jimPersonkonto: 'jimPersonkonto',
   Account.jimSparkonto: 'jimSparkonto',
+  Account.louisePersonkonto: 'louisePersonkonto',
+  Account.louiseSparkonto: 'louiseSparkonto',
+  Account.louiseVardagskonto: 'louiseVardagskonto',
   Account.gemensamt: 'gemensamt',
   Account.gemensamtSpar: 'gemensamtSpar',
   Account.sasAmex: 'sasAmex',

@@ -46,7 +46,9 @@ class ExpensesRepository {
       final content = await rootBundle.loadString(path);
       final filename = path.split('/').last;
       
-      if (filename.toUpperCase().contains('PERSONKONTO') || filename.toUpperCase().contains('SPARKONTO')) {
+      if (filename.toUpperCase().contains('PERSONKONTO') || 
+          filename.toUpperCase().contains('SPARKONTO') || 
+          filename.toUpperCase().contains('VARDAGSKONTO')) {
         allExpenses.addAll(_parseNordeaCsv(content, filename, idRegistry, rulesRepo));
       } else {
         // Assume SAS/Transaction export
