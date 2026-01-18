@@ -198,7 +198,11 @@ class ExpensesRepository {
           category = rule.$1;
           subcategory = rule.$2;
         } else {
-          final result = _categorizationService.categorize(description, amount);
+          final result = _categorizationService.categorize(
+            description,
+            amount,
+            date,
+          );
           category = result.$1;
           subcategory = result.$2;
         }
@@ -340,6 +344,7 @@ class ExpensesRepository {
             final result = _categorizationService.categorize(
               description,
               amount,
+              date,
             );
             category = result.$1;
             subcategory = result.$2;

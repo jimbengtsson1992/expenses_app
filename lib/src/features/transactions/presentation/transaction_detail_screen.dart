@@ -297,8 +297,11 @@ class TransactionDetailScreen extends ConsumerWidget {
       await repo.addOverride(expense.id, category, subcategory);
 
       // Copy code to clipboard
+      // Format: yyyy, M, d
+      final dateStr =
+          'DateTime(${expense.date.year}, ${expense.date.month}, ${expense.date.day})';
       final code =
-          "await repo.addOverride('${expense.id}', Category.${category.name}, Subcategory.${subcategory.name});";
+          "await repo.addOverride('${expense.id}', Category.${category.name}, Subcategory.${subcategory.name}); // Date: $dateStr";
       await Clipboard.setData(ClipboardData(text: code));
 
       ref.invalidate(expensesRepositoryProvider);

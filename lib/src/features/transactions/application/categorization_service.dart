@@ -10,7 +10,11 @@ CategorizationService categorizationService(Ref ref) {
 }
 
 class CategorizationService {
-  (Category, Subcategory) categorize(String description, double amount) {
+  (Category, Subcategory) categorize(
+      String description,
+      double amount,
+      DateTime date,
+    ) {
     final lowerDesc = description.toLowerCase();
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
@@ -21,7 +25,9 @@ class CategorizationService {
     if (_matches(description, ['HESTRA GOTHENBURG']) &&
         (amount == -1400 || amount == 1400)) {
       // Logic for HESTRA GOTHENBURG: 2026-01-03 row -> Shopping/Gifts
-      return (Category.shopping, Subcategory.gifts);
+      if (date.year == 2026 && date.month == 1 && date.day == 3) {
+        return (Category.shopping, Subcategory.gifts);
+      }
     }
 
     if (_matches(description, ['ZETTLE_*SAD RETAIL GRO']) && amount == -950) {
