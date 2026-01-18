@@ -16,7 +16,7 @@ enum Subcategory {
   takeaway('Foodora & Takeaway'),
   alcohol('Systembolaget'),
   coffee('Kaffe & Fika'),
-  supplements('Kosttillskott'),
+
 
   // --- Shopping ---
   clothes('Kläder, Skor & Smycken'),
@@ -40,6 +40,7 @@ enum Subcategory {
   gym('Träning'),
   pharmacy('Apotek'),
   doctor('Vård'),
+  supplements('Kosttillskott'),
 
   // --- Avgifter (Fees) ---
   bankFees('Bankavgifter'),

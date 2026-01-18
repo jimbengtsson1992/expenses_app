@@ -247,7 +247,7 @@ class CategorizationService {
       return (Category.food, Subcategory.coffee);
     }
     if (_matches(lowerDesc, ['mmsports', 'mm sports ab'])) {
-      return (Category.food, Subcategory.supplements);
+      return (Category.health, Subcategory.supplements);
     }
 
     // Shopping

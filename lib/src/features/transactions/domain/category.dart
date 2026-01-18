@@ -21,7 +21,7 @@ enum Category {
     Subcategory.takeaway,
     Subcategory.alcohol,
     Subcategory.coffee,
-    Subcategory.supplements,
+
     Subcategory.unknown,
     Subcategory.other,
   ]),
@@ -53,6 +53,7 @@ enum Category {
     Subcategory.pharmacy,
     Subcategory.doctor,
     Subcategory.beauty,
+    Subcategory.supplements,
     Subcategory.unknown,
     Subcategory.other,
   ]),

@@ -34,7 +34,7 @@ void main() {
         Subcategory.groceries,
       ));
       expect(service.categorize('MMSports', -500, dummyDate), (
-        Category.food,
+        Category.health,
         Subcategory.supplements,
       ));
       expect(service.categorize('JoeAndTheJuice', -85, dummyDate), (
