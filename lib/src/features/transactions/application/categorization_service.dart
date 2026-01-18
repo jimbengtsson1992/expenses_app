@@ -18,6 +18,66 @@ class CategorizationService {
     final lowerDesc = description.toLowerCase();
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
+    if (_matches(description, ['Swish betalning PETTER NILSSON']) &&
+        (amount == -2550.0 || amount == 2550.0) &&
+        date.year == 2025 && date.month == 11 && date.day == 22) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['Kortköp 251115 Hestra Gothenburg']) &&
+        (amount == -1400.0) &&
+        date.year == 2025 && date.month == 11 && date.day == 16) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['SULTAN DONER']) &&
+        date.year == 2025 && date.month == 11 && date.day == 16) {
+       return (Category.food, Subcategory.takeaway);
+    }
+    if (_matches(description, ['Aktiekapital 1110 31 04004']) &&
+        (amount == -25000.0) &&
+        date.year == 2025 && date.month == 11 && date.day == 16) {
+      return (Category.fees, Subcategory.jimHolding);
+    }
+    if (_matches(description, ['EVION HOTELL &']) &&
+        date.year == 2025 && date.month == 11 && date.day == 15) {
+      return (Category.food, Subcategory.bar);
+    }
+    if (_matches(description, ['GOTEBORG CITY MAT &']) &&
+        date.year == 2025 && date.month == 11 && date.day == 15) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['JINX DYNASTY']) &&
+        date.year == 2025 && date.month == 11 && date.day == 12) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning AB SVENSKA SPEL']) &&
+        (amount == -250.0) &&
+        date.year == 2025 && date.month == 11 && date.day == 9) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['Swish betalning GÖRAN BENGTSSON']) &&
+        (amount == -600.0) &&
+        date.year == 2025 && date.month == 11 && date.day == 8) {
+      return (Category.shopping, Subcategory.tools);
+    }
+    if (_matches(description, ['Kontantuttag 251107 BANKOMAT ALMEDA']) &&
+        (amount == -1300.0) &&
+        date.year == 2025 && date.month == 11 && date.day == 8) {
+      return (Category.shopping, Subcategory.furniture);
+    }
+    if (_matches(description, ['Swish betalning gdb i centrum ab']) &&
+        (amount == -174.0) &&
+        date.year == 2025 && date.month == 11 && date.day == 7) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['BILLDALS BLOMMOR']) &&
+        date.year == 2025 && date.month == 11 && date.day == 1) {
+      return (Category.shopping, Subcategory.decor);
+    }
+    if (_matches(description, ['Swish betalning LUCAS MALINA']) &&
+        (amount == -280.0) &&
+        date.year == 2025 && date.month == 11 && date.day == 1) {
+      return (Category.other, Subcategory.other);
+    }
     if (_matches(description, ['Swish betalning LUNDBERG, CHARLOTTA']) &&
         amount == -155.0) {
       return (Category.other, Subcategory.other);
@@ -183,7 +243,7 @@ class CategorizationService {
     }
 
     // Food & Drink
-    if (_matches(lowerDesc, ['interflora aktiebol', 'marica roos', 'avilena', 'newport', 'tz-shop'])) {
+    if (_matches(lowerDesc, ['interflora aktiebol', 'marica roos', 'avilena', 'newport', 'tz-shop', 'euroflorist'])) {
       return (Category.shopping, Subcategory.gifts);
     }
     if (_matches(lowerDesc, [
@@ -202,11 +262,11 @@ class CategorizationService {
     if (_matches(lowerDesc, ['systembolaget'])) {
       return (Category.food, Subcategory.alcohol);
     }
-    if (_matches(lowerDesc, [
-      'foodora ab',
-      'masaki halsosushi ab',
-    ])) {
+    if (_matches(lowerDesc, ['foodora ab'])) {
       return (Category.food, Subcategory.takeaway);
+    }
+    if (_matches(lowerDesc, ['masaki halsosushi ab'])) {
+      return (Category.food, Subcategory.lunch);
     }
     if (_matches(lowerDesc, [
       'beets salads bar',
@@ -219,6 +279,9 @@ class CategorizationService {
       'banh mi shop',
       'harmoni dumplings',
       'pastor - stora saluhal',
+      'velic,ajla',
+      'deli and coffee',
+      'swish inbetalning sehlin,marianne',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -234,10 +297,11 @@ class CategorizationService {
       'uber eats',
       'max ',
       'mcdonalds',
+      'mcdvarbergnord',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
-    if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin', 'the melody club'])) {
+    if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin', 'the melody club', 'park lane resta'])) {
       return (Category.food, Subcategory.bar);
     }
 
@@ -250,6 +314,7 @@ class CategorizationService {
       'condeco',
       'agnas glogg',
       'pp trading varm chokla',
+      'brogyllen',
     ])) {
       return (Category.food, Subcategory.coffee);
     }
@@ -261,7 +326,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['nk beauty', 'vacker nk', 'kicks'])) {
       return (Category.shopping, Subcategory.beauty);
     }
-    if (_matches(lowerDesc, ['nk kok & design'])) {
+    if (_matches(lowerDesc, ['nk kok & design', 'artilleriet store'])) {
       return (Category.shopping, Subcategory.decor);
     }
     if (_matches(lowerDesc, [
@@ -292,6 +357,7 @@ class CategorizationService {
       'boss gbg',
       'twist & tango',
       'widing o stollman',
+      'livly',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
@@ -335,6 +401,7 @@ class CategorizationService {
       'sl ',
       'arlanda express',
       'flygbussarna',
+      'hallandstrafike',
     ])) {
       return (Category.transport, Subcategory.publicTransport);
     }
@@ -377,10 +444,11 @@ class CategorizationService {
       'doctor',
       '1177',
       'capio',
+      'idrottsrehab',
     ])) {
       return (Category.health, Subcategory.doctor);
     }
-    if (_matches(lowerDesc, ['sanna andrén'])) {
+    if (_matches(lowerDesc, ['sanna andrén', 'style barbershop'])) {
       return (Category.health, Subcategory.beauty);
     }
 
