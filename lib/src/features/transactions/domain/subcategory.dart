@@ -11,7 +11,7 @@ enum Subcategory {
   // --- Mat & Dryck (Food) ---
   groceries('Matbutik'),
   restaurant('Restaurant'),
-  bar('Bar'),
+  bar('Bar & Klubb'),
   lunch('Lunch ute'),
   takeaway('Foodora & Takeaway'),
   alcohol('Systembolaget'),

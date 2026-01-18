@@ -181,7 +181,7 @@ void main() {
         Subcategory.coffee,
       ));
       expect(service.categorize('THE MELODY CLUB', -200, dummyDate), (
-        Category.food,
+        Category.entertainment,
         Subcategory.bar,
       ));
       // Regression test for Foodora
@@ -456,7 +456,7 @@ void main() {
       expect(service.categorize('ARTILLERIET STORE', -500, dummyDate), (Category.shopping, Subcategory.decor));
 
       // Food / Bar
-      expect(service.categorize('PARK LANE RESTA', -200, dummyDate), (Category.food, Subcategory.bar));
+      expect(service.categorize('PARK LANE RESTA', -200, dummyDate), (Category.entertainment, Subcategory.bar));
 
       // Health / Beauty
       expect(service.categorize('STYLE BARBERSHOP', -450, dummyDate), (Category.health, Subcategory.beauty)); // Request said Health/Beauty but code puts it in Shopping/Beauty. Checking code... Yes, Shopping/Beauty. Wait, user request said "Category.health / Subcategory.beauty".
@@ -495,8 +495,8 @@ void main() {
       expect(service.categorize('Aktiekapital 1110 31 04004', -25000.00, DateTime(2025, 11, 16)), (Category.fees, Subcategory.jimHolding));
 
       // EVION HOTELL & -> Food/Bar
-      expect(service.categorize('EVION HOTELL &', -96.0, DateTime(2025, 11, 15)), (Category.food, Subcategory.bar));
-      expect(service.categorize('EVION HOTELL &', -42.0, DateTime(2025, 11, 15)), (Category.food, Subcategory.bar));
+      expect(service.categorize('EVION HOTELL &', -96.0, DateTime(2025, 11, 15)), (Category.entertainment, Subcategory.bar));
+      expect(service.categorize('EVION HOTELL &', -42.0, DateTime(2025, 11, 15)), (Category.entertainment, Subcategory.bar));
 
       // GOTEBORG CITY MAT & -> Food/Lunch
       expect(service.categorize('GOTEBORG CITY MAT &', -130.0, DateTime(2025, 11, 15)), (Category.food, Subcategory.lunch));

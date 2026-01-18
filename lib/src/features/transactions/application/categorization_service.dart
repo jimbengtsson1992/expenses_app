@@ -37,9 +37,10 @@ class CategorizationService {
         date.year == 2025 && date.month == 11 && date.day == 16) {
       return (Category.fees, Subcategory.jimHolding);
     }
+
     if (_matches(description, ['EVION HOTELL &']) &&
         date.year == 2025 && date.month == 11 && date.day == 15) {
-      return (Category.food, Subcategory.bar);
+      return (Category.entertainment, Subcategory.bar);
     }
     if (_matches(description, ['GOTEBORG CITY MAT &']) &&
         date.year == 2025 && date.month == 11 && date.day == 15) {
@@ -301,8 +302,9 @@ class CategorizationService {
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
+
     if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin', 'the melody club', 'park lane resta'])) {
-      return (Category.food, Subcategory.bar);
+      return (Category.entertainment, Subcategory.bar);
     }
 
     if (_matches(lowerDesc, [

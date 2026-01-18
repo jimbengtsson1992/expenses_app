@@ -16,7 +16,6 @@ enum Category {
   food('Mat & Dryck', 0xFF4CAF50, '🍔', [
     Subcategory.groceries,
     Subcategory.restaurant,
-    Subcategory.bar,
     Subcategory.lunch,
     Subcategory.takeaway,
     Subcategory.alcohol,
@@ -41,6 +40,7 @@ enum Category {
   entertainment('Nöje & Fritid', 0xFF9C27B0, '🎉', [
     Subcategory.travel,
     Subcategory.hobby,
+    Subcategory.bar,
     Subcategory.boardGamesBooksAndToys,
     Subcategory.newspapers,
     Subcategory.streaming,
