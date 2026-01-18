@@ -76,6 +76,20 @@ class CategorizationService {
         date.day == 22) {
       return (Category.other, Subcategory.other);
     }
+    if (_matches(description, ['JOHN HENRIC NK GBG']) &&
+        amount == -1999.0 &&
+        date.year == 2025 &&
+        date.month == 12 &&
+        date.day == 22) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['CAPRIS']) &&
+        amount == -650.0 &&
+        date.year == 2025 &&
+        date.month == 12 &&
+        date.day == 30) {
+      return (Category.shopping, Subcategory.gifts);
+    }
 
     // --- Income (> 0) ---
     if (amount > 0) {
@@ -183,7 +197,6 @@ class CategorizationService {
     }
     if (_matches(lowerDesc, [
       'foodora ab',
-      'pastor - stora saluhal',
       'masaki halsosushi ab',
     ])) {
       return (Category.food, Subcategory.takeaway);
@@ -198,6 +211,7 @@ class CategorizationService {
       's o larsson',
       'banh mi shop',
       'harmoni dumplings',
+      'pastor - stora saluhal',
     ])) {
       return (Category.food, Subcategory.lunch);
     }

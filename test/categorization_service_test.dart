@@ -401,15 +401,6 @@ void main() {
       ));
 
       // Specific Override: NK MAN GBG
-      expect(service.categorize('2025/12/22;-2299,00;1127 25 18957;;;Kortköp 251221 NK MAN GBG;688,72;SEK;', -2299.00, DateTime(2025, 12, 22)), (
-        Category.shopping,
-        Subcategory.gifts,
-      )); // Using full CSV description style just in case, but service.categorize uses the description passed to it.
-      // Wait, the Service usually receives the parsed description. The user request showed the CSV ROW.
-      // The parsed description from `Kortköp 251221 NK MAN GBG;...` is usually just `Kortköp 251221 NK MAN GBG` depending on parser.
-      // The logic I added checks: `_matches(description, ['Kortköp 251221 NK MAN GBG'])`
-      // So I should test with that string.
-      
       expect(service.categorize('Kortköp 251221 NK MAN GBG', -2299.00, DateTime(2025, 12, 22)), (
         Category.shopping,
         Subcategory.gifts,
@@ -419,6 +410,24 @@ void main() {
       expect(service.categorize('Open Banking BG 5734-9797 Patientfa', -100.00, DateTime(2025, 12, 22)), (
         Category.other,
         Subcategory.other,
+      ));
+
+      // Specific Override: JOHN HENRIC NK GBG
+      expect(service.categorize('JOHN HENRIC NK GBG', -1999.00, DateTime(2025, 12, 22)), (
+        Category.shopping,
+        Subcategory.gifts,
+      ));
+
+      // Specific Override: CAPRIS
+      expect(service.categorize('CAPRIS', -650.00, DateTime(2025, 12, 30)), (
+        Category.shopping,
+        Subcategory.gifts,
+      ));
+
+      // General Logic: PASTOR - STORA SALUHAL
+      expect(service.categorize('PASTOR - STORA SALUHAL', -125, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
       ));
 
       // Fallback check (wrong date/amount)
