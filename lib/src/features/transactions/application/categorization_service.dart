@@ -90,6 +90,13 @@ class CategorizationService {
         date.day == 30) {
       return (Category.shopping, Subcategory.gifts);
     }
+    if (_matches(description, ['Swish betalning LUCAS MALINA']) &&
+        amount == -2716.0 &&
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 30) {
+      return (Category.food, Subcategory.restaurant);
+    }
 
     // --- Income (> 0) ---
     if (amount > 0) {

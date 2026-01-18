@@ -424,6 +424,12 @@ void main() {
         Subcategory.gifts,
       ));
 
+      // Specific Override: LUCAS MALINA
+      expect(service.categorize('Swish betalning LUCAS MALINA', -2716.00, DateTime(2025, 11, 30)), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+
       // General Logic: PASTOR - STORA SALUHAL
       expect(service.categorize('PASTOR - STORA SALUHAL', -125, dummyDate), (
         Category.food,
