@@ -205,7 +205,7 @@ void main() {
       // Regression test for Bolagsverket
       expect(service.categorize('Kortköp 251117 BOLAGSVERKET', -3435.72, dummyDate), (
         Category.fees,
-        Subcategory.other,
+        Subcategory.jimHolding,
       ));
     });
 

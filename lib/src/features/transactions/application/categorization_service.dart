@@ -443,7 +443,10 @@ class CategorizationService {
     ])) {
       return (Category.fees, Subcategory.bankFees);
     }
-    if (_matches(lowerDesc, ['boplats göteborg sw', 'bolagsverket'])) {
+    if (_matches(lowerDesc, ['bolagsverket'])) {
+      return (Category.fees, Subcategory.jimHolding);
+    }
+    if (_matches(lowerDesc, ['boplats göteborg sw'])) {
       return (Category.fees, Subcategory.other);
     }
     if (_matches(lowerDesc, ['csn'])) {

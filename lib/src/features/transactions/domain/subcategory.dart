@@ -46,6 +46,7 @@ enum Subcategory {
   bankFees('Bankavgifter'),
   tax('Skatt'),
   csn('CSN'),
+  jimHolding('Jim Holdingbolag'),
 
   // --- Transport ---
   taxi('Taxi'),

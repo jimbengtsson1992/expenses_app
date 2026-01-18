@@ -62,6 +62,7 @@ enum Category {
     Subcategory.bankFees,
     Subcategory.tax,
     Subcategory.csn,
+    Subcategory.jimHolding,
     Subcategory.unknown,
     Subcategory.other,
   ]),
