@@ -392,5 +392,40 @@ void main() {
         Subcategory.clothes,
       ));
     });
+
+    test('categorizes New Rules (User Request 2026-01-18)', () {
+      // Keyword: Gudmor Lollo
+      expect(service.categorize('Överföring Gudmor Lollo', -200, dummyDate), (
+        Category.other,
+        Subcategory.godfather,
+      ));
+
+      // Specific Override: NK MAN GBG
+      expect(service.categorize('2025/12/22;-2299,00;1127 25 18957;;;Kortköp 251221 NK MAN GBG;688,72;SEK;', -2299.00, DateTime(2025, 12, 22)), (
+        Category.shopping,
+        Subcategory.gifts,
+      )); // Using full CSV description style just in case, but service.categorize uses the description passed to it.
+      // Wait, the Service usually receives the parsed description. The user request showed the CSV ROW.
+      // The parsed description from `Kortköp 251221 NK MAN GBG;...` is usually just `Kortköp 251221 NK MAN GBG` depending on parser.
+      // The logic I added checks: `_matches(description, ['Kortköp 251221 NK MAN GBG'])`
+      // So I should test with that string.
+      
+      expect(service.categorize('Kortköp 251221 NK MAN GBG', -2299.00, DateTime(2025, 12, 22)), (
+        Category.shopping,
+        Subcategory.gifts,
+      ));
+
+      // Specific Override: Patientfa
+      expect(service.categorize('Open Banking BG 5734-9797 Patientfa', -100.00, DateTime(2025, 12, 22)), (
+        Category.other,
+        Subcategory.other,
+      ));
+
+      // Fallback check (wrong date/amount)
+      expect(service.categorize('Kortköp 251221 NK MAN GBG', -500, dummyDate), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
+    });
   });
 }

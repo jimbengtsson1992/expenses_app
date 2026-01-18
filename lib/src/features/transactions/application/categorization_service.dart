@@ -58,9 +58,23 @@ class CategorizationService {
         (amount == -615 || amount == 615)) {
       return (Category.food, Subcategory.takeaway);
     }
+    if (_matches(description, ['Kortköp 251221 NK MAN GBG']) &&
+        amount == -2299.00 &&
+        date.year == 2025 &&
+        date.month == 12 &&
+        date.day == 22) {
+      return (Category.shopping, Subcategory.gifts);
+    }
     if (_matches(description, ['Swish betalning PETTER NILSSON']) &&
         (amount == -885.72 || amount == 885.72)) {
       return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['Open Banking BG 5734-9797 Patientfa']) &&
+        amount == -100.0 &&
+        date.year == 2025 &&
+        date.month == 12 &&
+        date.day == 22) {
+      return (Category.other, Subcategory.other);
     }
 
     // --- Income (> 0) ---
@@ -438,7 +452,7 @@ class CategorizationService {
     ])) {
       return (Category.other, Subcategory.personalInsurance);
     }
-    if (_matches(lowerDesc, ['fadder'])) {
+    if (_matches(lowerDesc, ['fadder', 'gudmor lollo'])) {
       return (Category.other, Subcategory.godfather);
     }
 
