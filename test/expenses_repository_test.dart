@@ -77,6 +77,7 @@ void main() {
           repository.shouldExcludeFromOverview(
             'Swish återbetalning Jollyroom AB',
             1889.00,
+            DateTime(2025, 1, 1),
           ),
           true,
         );
@@ -84,6 +85,7 @@ void main() {
           repository.shouldExcludeFromOverview(
             'Swish betalning Jollyroom AB',
             -1889.00,
+            DateTime(2025, 1, 1),
           ),
           true,
         );
@@ -93,6 +95,7 @@ void main() {
           repository.shouldExcludeFromOverview(
             '95561384521 louise avanza',
             -100.00,
+            DateTime(2025, 1, 1),
           ),
           true,
         );
@@ -100,6 +103,7 @@ void main() {
           repository.shouldExcludeFromOverview(
             'Payment to 95561384521 Louise Avanza',
             -500.00,
+            DateTime(2025, 1, 1),
           ),
           true,
         );
@@ -109,6 +113,7 @@ void main() {
           repository.shouldExcludeFromOverview(
             '95561384521',
             -200.0,
+            DateTime(2025, 1, 1),
           ),
           true,
         );
@@ -118,18 +123,59 @@ void main() {
           repository.shouldExcludeFromOverview(
             'Swish betalning Jollyroom AB',
             -500.00,
+            DateTime(2025, 1, 1),
           ),
           false,
         );
 
         // Internal transfer should also be excluded
         expect(
-          repository.shouldExcludeFromOverview('Överföring till XXX', -1000.0),
+          repository.shouldExcludeFromOverview(
+            'Överföring till XXX',
+            -1000.0,
+            DateTime(2025, 1, 1),
+          ),
           true,
         );
 
         // Regular transaction should not be excluded
-        expect(repository.shouldExcludeFromOverview('ICA Maxi', -500.0), false);
+        expect(
+          repository.shouldExcludeFromOverview(
+            'ICA Maxi',
+            -500.0,
+            DateTime(2025, 1, 1),
+          ),
+          false,
+        );
+
+        // New Exclusion 1: Nordea Swish
+        expect(
+          repository.shouldExcludeFromOverview(
+            'Swish inbetalning ANDERSSON,ERIK',
+            1485.00,
+            DateTime(2025, 11, 12),
+          ),
+          true,
+        );
+        // Wrong date
+        expect(
+          repository.shouldExcludeFromOverview(
+            'Swish inbetalning ANDERSSON,ERIK',
+            1485.00,
+            DateTime(2025, 11, 13),
+          ),
+          false,
+        );
+
+        // New Exclusion 2: Amex Jinx Dynasty
+        expect(
+          repository.shouldExcludeFromOverview(
+            'JINX DYNASTY',
+            -1485.00,
+            DateTime(2025, 11, 12),
+          ),
+          true,
+        );
       },
     );
   });

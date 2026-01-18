@@ -161,6 +161,7 @@ class ExpensesRepository {
       final excludeFromOverview = shouldExcludeFromOverview(
         description,
         amount,
+        date,
       );
 
       // Filter SAS Payments (to avoid dupe)
@@ -331,6 +332,13 @@ class ExpensesRepository {
         Category category;
         Subcategory subcategory;
 
+        // Determine exclusion
+        final excludeFromOverview = shouldExcludeFromOverview(
+          description,
+          amount,
+          date,
+        );
+
         final override = rulesRepo.getOverride(id);
         if (override != null) {
           category = override.$1;
@@ -363,6 +371,7 @@ class ExpensesRepository {
             sourceFilename: filename,
             type: TransactionType
                 .expense, // SAS Amex transactions are always expenses
+            excludeFromOverview: excludeFromOverview,
             rawCsvData: row.join(';'),
           ),
         );
@@ -371,13 +380,36 @@ class ExpensesRepository {
     return expenses;
   }
 
-  bool shouldExcludeFromOverview(String description, double amount) {
+  bool shouldExcludeFromOverview(
+    String description,
+    double amount,
+    DateTime date,
+  ) {
     if (isInternalTransfer(description)) return true;
 
     // User requested exclusions
     // Jollyroom refund and payment (approx 1889 SEK)
     if (description.contains('Jollyroom AB') &&
         (amount.abs() - 1889.0).abs() < 0.01) {
+      return true;
+    }
+
+    // Nordea: 2025/11/12;1485,00;;1127 25 18949;;Swish inbetalning ANDERSSON,ERIK;5685,72;SEK;
+    if (description.contains('Swish inbetalning ANDERSSON,ERIK') &&
+        (amount - 1485.0).abs() < 0.01 &&
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 12) {
+      return true;
+    }
+
+    // Amex: 2025-11-12;2025-11-13;JINX DYNASTY;GOTEBORG;SEK;0;1485
+    // Parsed amount is -1485.0
+    if (description.contains('JINX DYNASTY') &&
+        (amount - -1485.0).abs() < 0.01 &&
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 12) {
       return true;
     }
 
