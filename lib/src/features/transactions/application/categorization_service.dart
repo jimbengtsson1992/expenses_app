@@ -18,6 +18,28 @@ class CategorizationService {
     final lowerDesc = description.toLowerCase();
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
+    if (_matches(description, ['EVENT BOOKING (RACEID)'])) {
+      return (Category.health, Subcategory.gym);
+    }
+    if (_matches(description, ['2352 5694 01 75741']) &&
+        amount == -3100.0 &&
+        date.year == 2025 && date.month == 10 && date.day == 21) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning Aros Ballroom And L']) &&
+        date.year == 2025 && date.month == 10 && date.day == 18) {
+      if (amount == -60.0) return (Category.food, Subcategory.coffee);
+      if (amount == -85.0 || amount == -150.0) return (Category.food, Subcategory.lunch);
+    }
+    if (date.year == 2025 && date.month == 10 && date.day == 4) {
+      if (_matches(description, ['NYX*SANIBOXAB'])) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['KMARKT TEATERN'])) {
+        return (Category.other, Subcategory.other);
+      }
+    }
+
     if (_matches(description, ['NK KAFFE, TE & KONFEKT']) &&
         (amount == -109.0 || amount == 109.0) &&
         (date.year == 2025 && date.month == 10 && date.day == 31)) {
@@ -291,6 +313,10 @@ class CategorizationService {
       'saluhallen wrapsody',
       'mr shou',
       'bun gbg',
+      'jinx dynasty',
+      'hasselssons macklucka',
+      'swish betalning ellen abenius',
+      'zettle_*cheap noodles',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -307,6 +333,9 @@ class CategorizationService {
       'max ',
       'mcdonalds',
       'mcdvarbergnord',
+      'voyage gbg ab',
+      'chopchop',
+      'enoteca sassi',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -325,6 +354,8 @@ class CategorizationService {
       'agnas glogg',
       'pp trading varm chokla',
       'brogyllen',
+      'espresso', // Matches 'espresso house' too? No, checks contains from list. 'espresso house' is already in list separately. 'espresso' will catch both. Should be fine.
+      '5151 ritazza st',
     ])) {
       return (Category.food, Subcategory.coffee);
     }
@@ -369,6 +400,9 @@ class CategorizationService {
       'widing o stollman',
       'livly',
       'stadium',
+      'newbody ab',
+      'j. lindeberg nk',
+      'autogiro k*rohnisch.c',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
@@ -395,7 +429,7 @@ class CategorizationService {
       return (Category.shopping, Subcategory.tools);
     }
 
-    if (_matches(lowerDesc, ['ikea', 'mio', 'rusta', 'plantagen'])) {
+    if (_matches(lowerDesc, ['ikea', 'mio', 'rusta', 'plantagen', 'nordiskagalleriet'])) {
       return (Category.shopping, Subcategory.furniture); // Approximation
     }
 
@@ -414,6 +448,10 @@ class CategorizationService {
       'flygbussarna',
       'hallandstrafike',
     ])) {
+      return (Category.transport, Subcategory.publicTransport);
+    }
+    // Strict match for SL
+    if (RegExp(r'\bSL\b', caseSensitive: false).hasMatch(description)) {
       return (Category.transport, Subcategory.publicTransport);
     }
     if (_matches(lowerDesc, [
@@ -441,6 +479,7 @@ class CategorizationService {
       'gym',
       'friskis',
       'nordicwell',
+      'event booking (raceid)',
     ])) {
       return (Category.health, Subcategory.gym);
     }

@@ -544,5 +544,67 @@ void main() {
       expect(service.categorize('NK KAFFE, TE & KONFEKT', -109.0, DateTime(2025, 10, 31)), (Category.shopping, Subcategory.gifts));
       expect(service.categorize('NK KAFFE, TE & KONFEKT', 109.0, DateTime(2025, 10, 31)), (Category.shopping, Subcategory.gifts));
     });
+    test('categorizes New Rules (User Request 2026-01-20)', () {
+      // --- GENERAL KEYWORDS ---
+      
+      // Food / Lunch
+      expect(service.categorize('JINX DYNASTY', -100, dummyDate), (Category.food, Subcategory.lunch));
+      expect(service.categorize('HASSELSSONS MACKLUCKA', -100, dummyDate), (Category.food, Subcategory.lunch));
+      expect(service.categorize('Swish betalning Ellen Abenius', -100, dummyDate), (Category.food, Subcategory.lunch));
+      expect(service.categorize('ZETTLE_*CHEAP NOODLES', -100, dummyDate), (Category.food, Subcategory.lunch));
+
+      // Shopping / Clothes
+      expect(service.categorize('NEWBODY AB', -100, dummyDate), (Category.shopping, Subcategory.clothes));
+      expect(service.categorize('J. LINDEBERG NK', -100, dummyDate), (Category.shopping, Subcategory.clothes));
+      expect(service.categorize('Autogiro K*rohnisch.c', -100, dummyDate), (Category.shopping, Subcategory.clothes));
+
+      // Shopping / Furniture
+      expect(service.categorize('NORDISKAGALLERIET', -100, dummyDate), (Category.shopping, Subcategory.furniture));
+
+      // Food / Restaurant
+      expect(service.categorize('VOYAGE GBG AB', -100, dummyDate), (Category.food, Subcategory.restaurant));
+      expect(service.categorize('CHOPCHOP', -100, dummyDate), (Category.food, Subcategory.restaurant));
+      expect(service.categorize('ENOTECA SASSI', -100, dummyDate), (Category.food, Subcategory.restaurant));
+
+      // Health / Gym
+      expect(service.categorize('EVENT BOOKING (RACEID)', -100, dummyDate), (Category.health, Subcategory.gym));
+
+      // Food / Coffee
+      expect(service.categorize('ESPRESSO', -100, dummyDate), (Category.food, Subcategory.coffee));
+      expect(service.categorize('5151 RITAZZA ST', -100, dummyDate), (Category.food, Subcategory.coffee));
+
+      // Transport / PublicTransport: 'SL'
+      // Strict match check
+      expect(service.categorize('SL', -39, dummyDate), (Category.transport, Subcategory.publicTransport));
+      expect(service.categorize('Resa SL Stockholm', -39, dummyDate), (Category.transport, Subcategory.publicTransport));
+      // Should NOT match 'Tesla', 'Island', 'Slow'
+      expect(service.categorize('Tesla Supercharger', -100, dummyDate), (Category.other, Subcategory.unknown)); // Correctly avoids SL match
+      // Actually 'Tesla' might fall to unknown if no other rule matches. Let's precise:
+      // 'Tesla' should not match 'SL' rule. If it returns Unknown, that's fine for this test context (assuming no other 'Tesla' rule exists).
+      
+      // --- SPECIFIC OVERRIDES ---
+
+      // Row 1: 2025/10/21;-3100,00;...2352 5694 01 75741... -> Other/Other
+      expect(service.categorize('2352 5694 01 75741', -3100.0, DateTime(2025, 10, 21)), (Category.other, Subcategory.other));
+
+      // Row 2: 2025/10/18;-60,00;...Swish betalning Aros Ballroom And L... -> Food/Coffee
+      expect(service.categorize('Swish betalning Aros Ballroom And L', -60.0, DateTime(2025, 10, 18)), (Category.food, Subcategory.coffee));
+
+      // Row 3: 2025/10/18;-85,00;...Swish betalning Aros Ballroom And L... -> Food/Lunch
+      expect(service.categorize('Swish betalning Aros Ballroom And L', -85.0, DateTime(2025, 10, 18)), (Category.food, Subcategory.lunch));
+
+      // Row 4: 2025/10/18;-150,00;...Swish betalning Aros Ballroom And L... -> Food/Lunch
+      expect(service.categorize('Swish betalning Aros Ballroom And L', -150.0, DateTime(2025, 10, 18)), (Category.food, Subcategory.lunch));
+
+      // Row 5: 2025-10-04;...NYX*SANIBOXAB... -> Other/Other
+      // Note: Amount 10 or -10? User request "SEK;0;10" often means 10.00 amount. Expenses are neg? Let's assume -10.0 for safety, or check both if ambiguous.
+      // Given previous context, expenses are negative.
+      expect(service.categorize('NYX*SANIBOXAB', -10.0, DateTime(2025, 10, 4)), (Category.other, Subcategory.other));
+      // Try positive too just in case
+      expect(service.categorize('NYX*SANIBOXAB', 10.0, DateTime(2025, 10, 4)), (Category.other, Subcategory.other));
+
+      // Row 6: 2025-10-04;...KMARKT TEATERN... -> Other/Other
+      expect(service.categorize('KMARKT TEATERN', -57.0, DateTime(2025, 10, 4)), (Category.other, Subcategory.other));
+    });
   });
 }
