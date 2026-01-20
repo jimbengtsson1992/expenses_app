@@ -413,13 +413,14 @@ class ExpensesRepository {
       return true;
     }
 
-    if (description.contains('95561384521')) { // Louise Avanza
+    if (description.contains('95561384521')) {
+      // Louise Avanza
       return true;
     }
 
     return false;
   }
-  
+
   bool isInternalTransfer(String description) {
     // Check if any of known accounts is in description
     for (final acc in Account.values) {
@@ -430,7 +431,9 @@ class ExpensesRepository {
       // File has spaces usually.
       if (description.contains(accNum)) return true;
       // Also check without spaces just in case
-      if (description.replaceAll(' ', '').contains(accNum.replaceAll(' ', ''))) {
+      if (description
+          .replaceAll(' ', '')
+          .contains(accNum.replaceAll(' ', ''))) {
         return true;
       }
     }

@@ -17,7 +17,6 @@ enum Subcategory {
   alcohol('Systembolaget'),
   coffee('Kaffe & Fika'),
 
-
   // --- Shopping ---
   clothes('Kläder, Skor & Smycken'),
   electronics('Elektronik'),
@@ -63,7 +62,7 @@ enum Subcategory {
   personalInsurance('Personförsäkringar'),
   godfather('Fadder'),
   mobileSubscription('Mobilabonnemang'),
-  
+
   // --- Defaults ---
   unknown('Okänd'),
   other('Övrigt');

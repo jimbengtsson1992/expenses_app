@@ -203,10 +203,10 @@ void main() {
       ));
 
       // Regression test for Bolagsverket
-      expect(service.categorize('Kortköp 251117 BOLAGSVERKET', -3435.72, dummyDate), (
-        Category.fees,
-        Subcategory.jimHolding,
-      ));
+      expect(
+        service.categorize('Kortköp 251117 BOLAGSVERKET', -3435.72, dummyDate),
+        (Category.fees, Subcategory.jimHolding),
+      );
     });
 
     test('Specific Overrides', () {
@@ -218,18 +218,30 @@ void main() {
         Category.shopping,
         Subcategory.gifts,
       ));
-      expect(service.categorize('Kortköp 251218 NK KIDS & TEENS GBG', -239, dummyDate), (
-        Category.shopping,
-        Subcategory.gifts,
-      ));
-      expect(service.categorize('Kortköp 251218 NK KIDS & TEENS GBG', -70, dummyDate), (
-        Category.shopping,
-        Subcategory.gifts,
-      ));
-      expect(service.categorize('Kortköp 251218 NK KOK & DESIGN GBG', -1299, dummyDate), (
-        Category.shopping,
-        Subcategory.gifts,
-      ));
+      expect(
+        service.categorize(
+          'Kortköp 251218 NK KIDS & TEENS GBG',
+          -239,
+          dummyDate,
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
+      expect(
+        service.categorize(
+          'Kortköp 251218 NK KIDS & TEENS GBG',
+          -70,
+          dummyDate,
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
+      expect(
+        service.categorize(
+          'Kortköp 251218 NK KOK & DESIGN GBG',
+          -1299,
+          dummyDate,
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
       expect(service.categorize('KLARNA SMALANDSGRAN', -1315, dummyDate), (
         Category.shopping,
         Subcategory.other,
@@ -254,14 +266,18 @@ void main() {
         Category.food,
         Subcategory.takeaway,
       ));
-      expect(service.categorize('Swish betalning PETTER NILSSON', -885.72, dummyDate), (
-        Category.food,
-        Subcategory.restaurant,
-      ));
-      expect(service.categorize('Swish betalning PETTER NILSSON', 885.72, dummyDate), (
-        Category.food,
-        Subcategory.restaurant,
-      ));
+      expect(
+        service.categorize(
+          'Swish betalning PETTER NILSSON',
+          -885.72,
+          dummyDate,
+        ),
+        (Category.food, Subcategory.restaurant),
+      );
+      expect(
+        service.categorize('Swish betalning PETTER NILSSON', 885.72, dummyDate),
+        (Category.food, Subcategory.restaurant),
+      );
     });
 
     test('categorizes Health accurately', () {
@@ -378,14 +394,18 @@ void main() {
       ));
 
       // Specific Exceptions
-      expect(service.categorize('Swish betalning LUNDBERG, CHARLOTTA', -155.00, dummyDate), (
-        Category.other,
-        Subcategory.other,
-      ));
-      expect(service.categorize('HESTRA GOTHENBURG', -1400, DateTime(2026, 1, 3)), (
-        Category.shopping,
-        Subcategory.gifts,
-      ));
+      expect(
+        service.categorize(
+          'Swish betalning LUNDBERG, CHARLOTTA',
+          -155.00,
+          dummyDate,
+        ),
+        (Category.other, Subcategory.other),
+      );
+      expect(
+        service.categorize('HESTRA GOTHENBURG', -1400, DateTime(2026, 1, 3)),
+        (Category.shopping, Subcategory.gifts),
+      );
       // Fallback test
       expect(service.categorize('HESTRA GOTHENBURG', -500, dummyDate), (
         Category.shopping,
@@ -401,22 +421,34 @@ void main() {
       ));
 
       // Specific Override: NK MAN GBG
-      expect(service.categorize('Kortköp 251221 NK MAN GBG', -2299.00, DateTime(2025, 12, 22)), (
-        Category.shopping,
-        Subcategory.gifts,
-      ));
+      expect(
+        service.categorize(
+          'Kortköp 251221 NK MAN GBG',
+          -2299.00,
+          DateTime(2025, 12, 22),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
 
       // Specific Override: Patientfa
-      expect(service.categorize('Open Banking BG 5734-9797 Patientfa', -100.00, DateTime(2025, 12, 22)), (
-        Category.other,
-        Subcategory.other,
-      ));
+      expect(
+        service.categorize(
+          'Open Banking BG 5734-9797 Patientfa',
+          -100.00,
+          DateTime(2025, 12, 22),
+        ),
+        (Category.other, Subcategory.other),
+      );
 
       // Specific Override: JOHN HENRIC NK GBG
-      expect(service.categorize('JOHN HENRIC NK GBG', -1999.00, DateTime(2025, 12, 22)), (
-        Category.shopping,
-        Subcategory.gifts,
-      ));
+      expect(
+        service.categorize(
+          'JOHN HENRIC NK GBG',
+          -1999.00,
+          DateTime(2025, 12, 22),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
 
       // Specific Override: CAPRIS
       expect(service.categorize('CAPRIS', -650.00, DateTime(2025, 12, 30)), (
@@ -425,10 +457,14 @@ void main() {
       ));
 
       // Specific Override: LUCAS MALINA
-      expect(service.categorize('Swish betalning LUCAS MALINA', -2716.00, DateTime(2025, 11, 30)), (
-        Category.food,
-        Subcategory.restaurant,
-      ));
+      expect(
+        service.categorize(
+          'Swish betalning LUCAS MALINA',
+          -2716.00,
+          DateTime(2025, 11, 30),
+        ),
+        (Category.food, Subcategory.restaurant),
+      );
 
       // General Logic: PASTOR - STORA SALUHAL
       expect(service.categorize('PASTOR - STORA SALUHAL', -125, dummyDate), (
@@ -445,166 +481,423 @@ void main() {
 
     test('categorizes New Rules (User Request 2026-01-18 - Batch 2)', () {
       // --- GENERAL KEYWORDS ---
-      
+
       // Food / Lunch
-      expect(service.categorize('VELIC,AJLA', -100, dummyDate), (Category.food, Subcategory.lunch));
-      expect(service.categorize('MASAKI HALSOSUSHI AB', -150, dummyDate), (Category.food, Subcategory.lunch)); // Updated existing rule/test logic
-      expect(service.categorize('DELI AND COFFEE', -85, dummyDate), (Category.food, Subcategory.lunch));
-      expect(service.categorize('Swish inbetalning SEHLIN,MARIANNE', -120, dummyDate), (Category.food, Subcategory.lunch));
+      expect(service.categorize('VELIC,AJLA', -100, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
+      expect(service.categorize('MASAKI HALSOSUSHI AB', -150, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      )); // Updated existing rule/test logic
+      expect(service.categorize('DELI AND COFFEE', -85, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
+      expect(
+        service.categorize(
+          'Swish inbetalning SEHLIN,MARIANNE',
+          -120,
+          dummyDate,
+        ),
+        (Category.food, Subcategory.lunch),
+      );
 
       // Shopping / Decor
-      expect(service.categorize('ARTILLERIET STORE', -500, dummyDate), (Category.shopping, Subcategory.decor));
+      expect(service.categorize('ARTILLERIET STORE', -500, dummyDate), (
+        Category.shopping,
+        Subcategory.decor,
+      ));
 
       // Food / Bar
-      expect(service.categorize('PARK LANE RESTA', -200, dummyDate), (Category.entertainment, Subcategory.bar));
+      expect(service.categorize('PARK LANE RESTA', -200, dummyDate), (
+        Category.entertainment,
+        Subcategory.bar,
+      ));
 
       // Health / Beauty
-      expect(service.categorize('STYLE BARBERSHOP', -450, dummyDate), (Category.health, Subcategory.beauty)); // Request said Health/Beauty but code puts it in Shopping/Beauty. Checking code... Yes, Shopping/Beauty. Wait, user request said "Category.health / Subcategory.beauty".
-      
+      expect(
+        service.categorize('STYLE BARBERSHOP', -450, dummyDate),
+        (Category.health, Subcategory.beauty),
+      ); // Request said Health/Beauty but code puts it in Shopping/Beauty. Checking code... Yes, Shopping/Beauty. Wait, user request said "Category.health / Subcategory.beauty".
+
       // Shopping / Gifts
-      expect(service.categorize('EUROFLORIST', -350, dummyDate), (Category.shopping, Subcategory.gifts));
+      expect(service.categorize('EUROFLORIST', -350, dummyDate), (
+        Category.shopping,
+        Subcategory.gifts,
+      ));
 
       // Transport / PublicTransport
-      expect(service.categorize('HALLANDSTRAFIKE', -35, dummyDate), (Category.transport, Subcategory.publicTransport));
+      expect(service.categorize('HALLANDSTRAFIKE', -35, dummyDate), (
+        Category.transport,
+        Subcategory.publicTransport,
+      ));
 
       // Shopping / Clothes
-      expect(service.categorize('LIVLY', -500, dummyDate), (Category.shopping, Subcategory.clothes));
+      expect(service.categorize('LIVLY', -500, dummyDate), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
 
       // Food / Coffee
-      expect(service.categorize('BROGYLLEN', -89, dummyDate), (Category.food, Subcategory.coffee));
+      expect(service.categorize('BROGYLLEN', -89, dummyDate), (
+        Category.food,
+        Subcategory.coffee,
+      ));
 
       // Food / Restaurant
-      expect(service.categorize('MCDVARBERGNORD', -150, dummyDate), (Category.food, Subcategory.restaurant));
+      expect(service.categorize('MCDVARBERGNORD', -150, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
 
       // Health / Doctor
-      expect(service.categorize('IDROTTSREHAB', -200, dummyDate), (Category.health, Subcategory.doctor));
-
+      expect(service.categorize('IDROTTSREHAB', -200, dummyDate), (
+        Category.health,
+        Subcategory.doctor,
+      ));
 
       // --- SPECIFIC OVERRIDES ---
 
       // Swish betalning PETTER NILSSON -> Food/Restaurant
-      expect(service.categorize('Swish betalning PETTER NILSSON', -2550.00, DateTime(2025, 11, 22)), (Category.food, Subcategory.restaurant));
-      
+      expect(
+        service.categorize(
+          'Swish betalning PETTER NILSSON',
+          -2550.00,
+          DateTime(2025, 11, 22),
+        ),
+        (Category.food, Subcategory.restaurant),
+      );
+
       // Hestra Gothenburg -> Shopping/Gifts
-      expect(service.categorize('Kortköp 251115 Hestra Gothenburg', -1400.00, DateTime(2025, 11, 16)), (Category.shopping, Subcategory.gifts));
+      expect(
+        service.categorize(
+          'Kortköp 251115 Hestra Gothenburg',
+          -1400.00,
+          DateTime(2025, 11, 16),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
 
       // SULTAN DONER -> Food/Takeaway
-      expect(service.categorize('SULTAN DONER', -280.0, DateTime(2025, 11, 16)), (Category.food, Subcategory.takeaway));
+      expect(
+        service.categorize('SULTAN DONER', -280.0, DateTime(2025, 11, 16)),
+        (Category.food, Subcategory.takeaway),
+      );
 
       // JimHolding -> Fees/JimHolding
-      expect(service.categorize('Aktiekapital 1110 31 04004', -25000.00, DateTime(2025, 11, 16)), (Category.fees, Subcategory.jimHolding));
+      expect(
+        service.categorize(
+          'Aktiekapital 1110 31 04004',
+          -25000.00,
+          DateTime(2025, 11, 16),
+        ),
+        (Category.fees, Subcategory.jimHolding),
+      );
 
       // EVION HOTELL & -> Food/Bar
-      expect(service.categorize('EVION HOTELL &', -96.0, DateTime(2025, 11, 15)), (Category.entertainment, Subcategory.bar));
-      expect(service.categorize('EVION HOTELL &', -42.0, DateTime(2025, 11, 15)), (Category.entertainment, Subcategory.bar));
+      expect(
+        service.categorize('EVION HOTELL &', -96.0, DateTime(2025, 11, 15)),
+        (Category.entertainment, Subcategory.bar),
+      );
+      expect(
+        service.categorize('EVION HOTELL &', -42.0, DateTime(2025, 11, 15)),
+        (Category.entertainment, Subcategory.bar),
+      );
 
       // GOTEBORG CITY MAT & -> Food/Lunch
-      expect(service.categorize('GOTEBORG CITY MAT &', -130.0, DateTime(2025, 11, 15)), (Category.food, Subcategory.lunch));
+      expect(
+        service.categorize(
+          'GOTEBORG CITY MAT &',
+          -130.0,
+          DateTime(2025, 11, 15),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
 
       // JINX DYNASTY -> Other/Other
-      expect(service.categorize('JINX DYNASTY', -1485, DateTime(2025, 11, 12)), (Category.other, Subcategory.other));
+      expect(
+        service.categorize('JINX DYNASTY', -1485, DateTime(2025, 11, 12)),
+        (Category.other, Subcategory.other),
+      );
 
       // SVENSKA SPEL -> Shopping/Gifts
-      expect(service.categorize('Swish betalning AB SVENSKA SPEL', -250.00, DateTime(2025, 11, 9)), (Category.shopping, Subcategory.gifts));
+      expect(
+        service.categorize(
+          'Swish betalning AB SVENSKA SPEL',
+          -250.00,
+          DateTime(2025, 11, 9),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
 
       // GÖRAN BENGTSSON -> Shopping/Tools
-      expect(service.categorize('Swish betalning GÖRAN BENGTSSON', -600.00, DateTime(2025, 11, 8)), (Category.shopping, Subcategory.tools));
+      expect(
+        service.categorize(
+          'Swish betalning GÖRAN BENGTSSON',
+          -600.00,
+          DateTime(2025, 11, 8),
+        ),
+        (Category.shopping, Subcategory.tools),
+      );
 
       // BANKOMAT ALMEDA -> Shopping/Furniture
-      expect(service.categorize('Kontantuttag 251107 BANKOMAT ALMEDA', -1300.00, DateTime(2025, 11, 8)), (Category.shopping, Subcategory.furniture));
+      expect(
+        service.categorize(
+          'Kontantuttag 251107 BANKOMAT ALMEDA',
+          -1300.00,
+          DateTime(2025, 11, 8),
+        ),
+        (Category.shopping, Subcategory.furniture),
+      );
 
       // gdb i centrum ab -> Other/Other
-      expect(service.categorize('Swish betalning gdb i centrum ab', -174.00, DateTime(2025, 11, 7)), (Category.other, Subcategory.other));
+      expect(
+        service.categorize(
+          'Swish betalning gdb i centrum ab',
+          -174.00,
+          DateTime(2025, 11, 7),
+        ),
+        (Category.other, Subcategory.other),
+      );
 
       // BILLDALS BLOMMOR -> Shopping/Decor
-      expect(service.categorize('BILLDALS BLOMMOR', -720.0, DateTime(2025, 11, 1)), (Category.shopping, Subcategory.decor));
+      expect(
+        service.categorize('BILLDALS BLOMMOR', -720.0, DateTime(2025, 11, 1)),
+        (Category.shopping, Subcategory.decor),
+      );
 
       // LUCAS MALINA -> Other/Other
-      expect(service.categorize('Swish betalning LUCAS MALINA', -280.0, DateTime(2025, 11, 1)), (Category.other, Subcategory.other));
+      expect(
+        service.categorize(
+          'Swish betalning LUCAS MALINA',
+          -280.0,
+          DateTime(2025, 11, 1),
+        ),
+        (Category.other, Subcategory.other),
+      );
     });
 
     test('categorizes New Rules (User Request 2026-01-20)', () {
       // --- GENERAL KEYWORDS ---
-      
+
       // Food / Lunch: 'SALUHALLEN WRAPSODY', 'MR SHOU', 'BUN GBG'
-      expect(service.categorize('Köp SALUHALLEN WRAPSODY', -115, dummyDate), (Category.food, Subcategory.lunch));
-      expect(service.categorize('MR SHOU', -145, dummyDate), (Category.food, Subcategory.lunch));
-      expect(service.categorize('BUN GBG', -130, dummyDate), (Category.food, Subcategory.lunch));
+      expect(service.categorize('Köp SALUHALLEN WRAPSODY', -115, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
+      expect(service.categorize('MR SHOU', -145, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
+      expect(service.categorize('BUN GBG', -130, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
 
       // Shopping / Clothes: 'STADIUM'
-      expect(service.categorize('Köp STADIUM', -499, dummyDate), (Category.shopping, Subcategory.clothes));
+      expect(service.categorize('Köp STADIUM', -499, dummyDate), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
 
       // Health / Doctor: 'BABYSCREEN'
-      expect(service.categorize('BABYSCREEN GBG', -1200, dummyDate), (Category.health, Subcategory.doctor));
+      expect(service.categorize('BABYSCREEN GBG', -1200, dummyDate), (
+        Category.health,
+        Subcategory.doctor,
+      ));
 
       // --- SPECIFIC OVERRIDES ---
 
       // NK KAFFE, TE & KONFEKT -> Shopping/Gifts
       // Row: 2025-10-31;2025-11-03;NK KAFFE, TE & KONFEKT;GA.TEBORG;SEK;0;109
-      expect(service.categorize('NK KAFFE, TE & KONFEKT', -109.0, DateTime(2025, 10, 31)), (Category.shopping, Subcategory.gifts));
-      expect(service.categorize('NK KAFFE, TE & KONFEKT', 109.0, DateTime(2025, 10, 31)), (Category.shopping, Subcategory.gifts));
+      expect(
+        service.categorize(
+          'NK KAFFE, TE & KONFEKT',
+          -109.0,
+          DateTime(2025, 10, 31),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
+      expect(
+        service.categorize(
+          'NK KAFFE, TE & KONFEKT',
+          109.0,
+          DateTime(2025, 10, 31),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
+    });
+    test('categorizes New Rules (User Request 2026-01-20 - Zettle)', () {
+      // ZETTLE_*VR SNABBTAG SV -> Food/Coffee
+      // Row: 2025-10-03;2025-10-06;ZETTLE_*VR SNABBTAG SV;STOCKHOLM;SEK;0;50
+      expect(
+        service.categorize(
+          'ZETTLE_*VR SNABBTAG SV',
+          -50.0,
+          DateTime(2025, 10, 3),
+        ),
+        (Category.food, Subcategory.coffee),
+      );
+      expect(
+        service.categorize(
+          'ZETTLE_*VR SNABBTAG SV',
+          50.0,
+          DateTime(2025, 10, 3),
+        ),
+        (Category.food, Subcategory.coffee),
+      );
     });
     test('categorizes New Rules (User Request 2026-01-20)', () {
       // --- GENERAL KEYWORDS ---
-      
+
       // Food / Lunch
-      expect(service.categorize('JINX DYNASTY', -100, dummyDate), (Category.food, Subcategory.lunch));
-      expect(service.categorize('HASSELSSONS MACKLUCKA', -100, dummyDate), (Category.food, Subcategory.lunch));
-      expect(service.categorize('Swish betalning Ellen Abenius', -100, dummyDate), (Category.food, Subcategory.lunch));
-      expect(service.categorize('ZETTLE_*CHEAP NOODLES', -100, dummyDate), (Category.food, Subcategory.lunch));
+      expect(service.categorize('JINX DYNASTY', -100, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
+      expect(service.categorize('HASSELSSONS MACKLUCKA', -100, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
+      expect(
+        service.categorize('Swish betalning Ellen Abenius', -100, dummyDate),
+        (Category.food, Subcategory.lunch),
+      );
+      expect(service.categorize('ZETTLE_*CHEAP NOODLES', -100, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
 
       // Shopping / Clothes
-      expect(service.categorize('NEWBODY AB', -100, dummyDate), (Category.shopping, Subcategory.clothes));
-      expect(service.categorize('J. LINDEBERG NK', -100, dummyDate), (Category.shopping, Subcategory.clothes));
-      expect(service.categorize('Autogiro K*rohnisch.c', -100, dummyDate), (Category.shopping, Subcategory.clothes));
+      expect(service.categorize('NEWBODY AB', -100, dummyDate), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
+      expect(service.categorize('J. LINDEBERG NK', -100, dummyDate), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
+      expect(service.categorize('Autogiro K*rohnisch.c', -100, dummyDate), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
 
       // Shopping / Furniture
-      expect(service.categorize('NORDISKAGALLERIET', -100, dummyDate), (Category.shopping, Subcategory.furniture));
+      expect(service.categorize('NORDISKAGALLERIET', -100, dummyDate), (
+        Category.shopping,
+        Subcategory.furniture,
+      ));
 
       // Food / Restaurant
-      expect(service.categorize('VOYAGE GBG AB', -100, dummyDate), (Category.food, Subcategory.restaurant));
-      expect(service.categorize('CHOPCHOP', -100, dummyDate), (Category.food, Subcategory.restaurant));
-      expect(service.categorize('ENOTECA SASSI', -100, dummyDate), (Category.food, Subcategory.restaurant));
+      expect(service.categorize('VOYAGE GBG AB', -100, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('CHOPCHOP', -100, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('ENOTECA SASSI', -100, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
 
       // Health / Gym
-      expect(service.categorize('EVENT BOOKING (RACEID)', -100, dummyDate), (Category.health, Subcategory.gym));
+      expect(service.categorize('EVENT BOOKING (RACEID)', -100, dummyDate), (
+        Category.health,
+        Subcategory.gym,
+      ));
 
       // Food / Coffee
-      expect(service.categorize('ESPRESSO', -100, dummyDate), (Category.food, Subcategory.coffee));
-      expect(service.categorize('5151 RITAZZA ST', -100, dummyDate), (Category.food, Subcategory.coffee));
+      expect(service.categorize('ESPRESSO', -100, dummyDate), (
+        Category.food,
+        Subcategory.coffee,
+      ));
+      expect(service.categorize('5151 RITAZZA ST', -100, dummyDate), (
+        Category.food,
+        Subcategory.coffee,
+      ));
 
       // Transport / PublicTransport: 'SL'
       // Strict match check
-      expect(service.categorize('SL', -39, dummyDate), (Category.transport, Subcategory.publicTransport));
-      expect(service.categorize('Resa SL Stockholm', -39, dummyDate), (Category.transport, Subcategory.publicTransport));
+      expect(service.categorize('SL', -39, dummyDate), (
+        Category.transport,
+        Subcategory.publicTransport,
+      ));
+      expect(service.categorize('Resa SL Stockholm', -39, dummyDate), (
+        Category.transport,
+        Subcategory.publicTransport,
+      ));
       // Should NOT match 'Tesla', 'Island', 'Slow'
-      expect(service.categorize('Tesla Supercharger', -100, dummyDate), (Category.other, Subcategory.unknown)); // Correctly avoids SL match
+      expect(service.categorize('Tesla Supercharger', -100, dummyDate), (
+        Category.other,
+        Subcategory.unknown,
+      )); // Correctly avoids SL match
       // Actually 'Tesla' might fall to unknown if no other rule matches. Let's precise:
       // 'Tesla' should not match 'SL' rule. If it returns Unknown, that's fine for this test context (assuming no other 'Tesla' rule exists).
-      
+
       // --- SPECIFIC OVERRIDES ---
 
       // Row 1: 2025/10/21;-3100,00;...2352 5694 01 75741... -> Other/Other
-      expect(service.categorize('2352 5694 01 75741', -3100.0, DateTime(2025, 10, 21)), (Category.other, Subcategory.other));
+      expect(
+        service.categorize(
+          '2352 5694 01 75741',
+          -3100.0,
+          DateTime(2025, 10, 21),
+        ),
+        (Category.other, Subcategory.other),
+      );
 
       // Row 2: 2025/10/18;-60,00;...Swish betalning Aros Ballroom And L... -> Food/Coffee
-      expect(service.categorize('Swish betalning Aros Ballroom And L', -60.0, DateTime(2025, 10, 18)), (Category.food, Subcategory.coffee));
+      expect(
+        service.categorize(
+          'Swish betalning Aros Ballroom And L',
+          -60.0,
+          DateTime(2025, 10, 18),
+        ),
+        (Category.food, Subcategory.coffee),
+      );
 
       // Row 3: 2025/10/18;-85,00;...Swish betalning Aros Ballroom And L... -> Food/Lunch
-      expect(service.categorize('Swish betalning Aros Ballroom And L', -85.0, DateTime(2025, 10, 18)), (Category.food, Subcategory.lunch));
+      expect(
+        service.categorize(
+          'Swish betalning Aros Ballroom And L',
+          -85.0,
+          DateTime(2025, 10, 18),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
 
       // Row 4: 2025/10/18;-150,00;...Swish betalning Aros Ballroom And L... -> Food/Lunch
-      expect(service.categorize('Swish betalning Aros Ballroom And L', -150.0, DateTime(2025, 10, 18)), (Category.food, Subcategory.lunch));
+      expect(
+        service.categorize(
+          'Swish betalning Aros Ballroom And L',
+          -150.0,
+          DateTime(2025, 10, 18),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
 
       // Row 5: 2025-10-04;...NYX*SANIBOXAB... -> Other/Other
       // Note: Amount 10 or -10? User request "SEK;0;10" often means 10.00 amount. Expenses are neg? Let's assume -10.0 for safety, or check both if ambiguous.
       // Given previous context, expenses are negative.
-      expect(service.categorize('NYX*SANIBOXAB', -10.0, DateTime(2025, 10, 4)), (Category.other, Subcategory.other));
+      expect(
+        service.categorize('NYX*SANIBOXAB', -10.0, DateTime(2025, 10, 4)),
+        (Category.other, Subcategory.other),
+      );
       // Try positive too just in case
-      expect(service.categorize('NYX*SANIBOXAB', 10.0, DateTime(2025, 10, 4)), (Category.other, Subcategory.other));
+      expect(service.categorize('NYX*SANIBOXAB', 10.0, DateTime(2025, 10, 4)), (
+        Category.other,
+        Subcategory.other,
+      ));
 
       // Row 6: 2025-10-04;...KMARKT TEATERN... -> Other/Other
-      expect(service.categorize('KMARKT TEATERN', -57.0, DateTime(2025, 10, 4)), (Category.other, Subcategory.other));
+      expect(
+        service.categorize('KMARKT TEATERN', -57.0, DateTime(2025, 10, 4)),
+        (Category.other, Subcategory.other),
+      );
     });
   });
 }

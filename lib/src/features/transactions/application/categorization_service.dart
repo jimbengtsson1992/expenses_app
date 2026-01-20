@@ -11,25 +11,37 @@ CategorizationService categorizationService(Ref ref) {
 
 class CategorizationService {
   (Category, Subcategory) categorize(
-      String description,
-      double amount,
-      DateTime date,
-    ) {
+    String description,
+    double amount,
+    DateTime date,
+  ) {
     final lowerDesc = description.toLowerCase();
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
     if (_matches(description, ['EVENT BOOKING (RACEID)'])) {
       return (Category.health, Subcategory.gym);
     }
+    if (_matches(description, ['ZETTLE_*VR SNABBTAG SV']) &&
+        (amount == -50.0 || amount == 50.0) &&
+        date.year == 2025 &&
+        date.month == 10 &&
+        date.day == 3) {
+      return (Category.food, Subcategory.coffee);
+    }
     if (_matches(description, ['2352 5694 01 75741']) &&
         amount == -3100.0 &&
-        date.year == 2025 && date.month == 10 && date.day == 21) {
+        date.year == 2025 &&
+        date.month == 10 &&
+        date.day == 21) {
       return (Category.other, Subcategory.other);
     }
     if (_matches(description, ['Swish betalning Aros Ballroom And L']) &&
-        date.year == 2025 && date.month == 10 && date.day == 18) {
+        date.year == 2025 &&
+        date.month == 10 &&
+        date.day == 18) {
       if (amount == -60.0) return (Category.food, Subcategory.coffee);
-      if (amount == -85.0 || amount == -150.0) return (Category.food, Subcategory.lunch);
+      if (amount == -85.0 || amount == -150.0)
+        return (Category.food, Subcategory.lunch);
     }
     if (date.year == 2025 && date.month == 10 && date.day == 4) {
       if (_matches(description, ['NYX*SANIBOXAB'])) {
@@ -43,67 +55,93 @@ class CategorizationService {
     if (_matches(description, ['NK KAFFE, TE & KONFEKT']) &&
         (amount == -109.0 || amount == 109.0) &&
         (date.year == 2025 && date.month == 10 && date.day == 31)) {
-       return (Category.shopping, Subcategory.gifts);
+      return (Category.shopping, Subcategory.gifts);
     }
     if (_matches(description, ['Swish betalning PETTER NILSSON']) &&
         (amount == -2550.0 || amount == 2550.0) &&
-        date.year == 2025 && date.month == 11 && date.day == 22) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 22) {
       return (Category.food, Subcategory.restaurant);
     }
     if (_matches(description, ['Kortköp 251115 Hestra Gothenburg']) &&
         (amount == -1400.0) &&
-        date.year == 2025 && date.month == 11 && date.day == 16) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 16) {
       return (Category.shopping, Subcategory.gifts);
     }
     if (_matches(description, ['SULTAN DONER']) &&
-        date.year == 2025 && date.month == 11 && date.day == 16) {
-       return (Category.food, Subcategory.takeaway);
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 16) {
+      return (Category.food, Subcategory.takeaway);
     }
     if (_matches(description, ['Aktiekapital 1110 31 04004']) &&
         (amount == -25000.0) &&
-        date.year == 2025 && date.month == 11 && date.day == 16) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 16) {
       return (Category.fees, Subcategory.jimHolding);
     }
 
     if (_matches(description, ['EVION HOTELL &']) &&
-        date.year == 2025 && date.month == 11 && date.day == 15) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 15) {
       return (Category.entertainment, Subcategory.bar);
     }
     if (_matches(description, ['GOTEBORG CITY MAT &']) &&
-        date.year == 2025 && date.month == 11 && date.day == 15) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 15) {
       return (Category.food, Subcategory.lunch);
     }
     if (_matches(description, ['JINX DYNASTY']) &&
-        date.year == 2025 && date.month == 11 && date.day == 12) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 12) {
       return (Category.other, Subcategory.other);
     }
     if (_matches(description, ['Swish betalning AB SVENSKA SPEL']) &&
         (amount == -250.0) &&
-        date.year == 2025 && date.month == 11 && date.day == 9) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 9) {
       return (Category.shopping, Subcategory.gifts);
     }
     if (_matches(description, ['Swish betalning GÖRAN BENGTSSON']) &&
         (amount == -600.0) &&
-        date.year == 2025 && date.month == 11 && date.day == 8) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 8) {
       return (Category.shopping, Subcategory.tools);
     }
     if (_matches(description, ['Kontantuttag 251107 BANKOMAT ALMEDA']) &&
         (amount == -1300.0) &&
-        date.year == 2025 && date.month == 11 && date.day == 8) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 8) {
       return (Category.shopping, Subcategory.furniture);
     }
     if (_matches(description, ['Swish betalning gdb i centrum ab']) &&
         (amount == -174.0) &&
-        date.year == 2025 && date.month == 11 && date.day == 7) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 7) {
       return (Category.other, Subcategory.other);
     }
     if (_matches(description, ['BILLDALS BLOMMOR']) &&
-        date.year == 2025 && date.month == 11 && date.day == 1) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 1) {
       return (Category.shopping, Subcategory.decor);
     }
     if (_matches(description, ['Swish betalning LUCAS MALINA']) &&
         (amount == -280.0) &&
-        date.year == 2025 && date.month == 11 && date.day == 1) {
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 1) {
       return (Category.other, Subcategory.other);
     }
     if (_matches(description, ['Swish betalning LUNDBERG, CHARLOTTA']) &&
@@ -231,7 +269,13 @@ class CategorizationService {
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
-    if (_matches(lowerDesc, ['hobby', 'panduro', 'happy golfer', 'k*ratsit.se', 'ratsit.se'])) {
+    if (_matches(lowerDesc, [
+      'hobby',
+      'panduro',
+      'happy golfer',
+      'k*ratsit.se',
+      'ratsit.se',
+    ])) {
       return (Category.entertainment, Subcategory.hobby);
     }
     if (_matches(lowerDesc, ['akademibokhande'])) {
@@ -271,7 +315,14 @@ class CategorizationService {
     }
 
     // Food & Drink
-    if (_matches(lowerDesc, ['interflora aktiebol', 'marica roos', 'avilena', 'newport', 'tz-shop', 'euroflorist'])) {
+    if (_matches(lowerDesc, [
+      'interflora aktiebol',
+      'marica roos',
+      'avilena',
+      'newport',
+      'tz-shop',
+      'euroflorist',
+    ])) {
       return (Category.shopping, Subcategory.gifts);
     }
     if (_matches(lowerDesc, [
@@ -340,7 +391,14 @@ class CategorizationService {
       return (Category.food, Subcategory.restaurant);
     }
 
-    if (_matches(lowerDesc, ['pub', 'bar ', 'öl', 'vin', 'the melody club', 'park lane resta'])) {
+    if (_matches(lowerDesc, [
+      'pub',
+      'bar ',
+      'öl',
+      'vin',
+      'the melody club',
+      'park lane resta',
+    ])) {
       return (Category.entertainment, Subcategory.bar);
     }
 
@@ -429,7 +487,13 @@ class CategorizationService {
       return (Category.shopping, Subcategory.tools);
     }
 
-    if (_matches(lowerDesc, ['ikea', 'mio', 'rusta', 'plantagen', 'nordiskagalleriet'])) {
+    if (_matches(lowerDesc, [
+      'ikea',
+      'mio',
+      'rusta',
+      'plantagen',
+      'nordiskagalleriet',
+    ])) {
       return (Category.shopping, Subcategory.furniture); // Approximation
     }
 
