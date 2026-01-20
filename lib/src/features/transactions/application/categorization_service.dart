@@ -18,6 +18,11 @@ class CategorizationService {
     final lowerDesc = description.toLowerCase();
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
+    if (_matches(description, ['NK KAFFE, TE & KONFEKT']) &&
+        (amount == -109.0 || amount == 109.0) &&
+        (date.year == 2025 && date.month == 10 && date.day == 31)) {
+       return (Category.shopping, Subcategory.gifts);
+    }
     if (_matches(description, ['Swish betalning PETTER NILSSON']) &&
         (amount == -2550.0 || amount == 2550.0) &&
         date.year == 2025 && date.month == 11 && date.day == 22) {
@@ -283,6 +288,9 @@ class CategorizationService {
       'velic,ajla',
       'deli and coffee',
       'swish inbetalning sehlin,marianne',
+      'saluhallen wrapsody',
+      'mr shou',
+      'bun gbg',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -360,6 +368,7 @@ class CategorizationService {
       'twist & tango',
       'widing o stollman',
       'livly',
+      'stadium',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
@@ -447,6 +456,7 @@ class CategorizationService {
       '1177',
       'capio',
       'idrottsrehab',
+      'babyscreen',
     ])) {
       return (Category.health, Subcategory.doctor);
     }

@@ -522,5 +522,27 @@ void main() {
       // LUCAS MALINA -> Other/Other
       expect(service.categorize('Swish betalning LUCAS MALINA', -280.0, DateTime(2025, 11, 1)), (Category.other, Subcategory.other));
     });
+
+    test('categorizes New Rules (User Request 2026-01-20)', () {
+      // --- GENERAL KEYWORDS ---
+      
+      // Food / Lunch: 'SALUHALLEN WRAPSODY', 'MR SHOU', 'BUN GBG'
+      expect(service.categorize('Köp SALUHALLEN WRAPSODY', -115, dummyDate), (Category.food, Subcategory.lunch));
+      expect(service.categorize('MR SHOU', -145, dummyDate), (Category.food, Subcategory.lunch));
+      expect(service.categorize('BUN GBG', -130, dummyDate), (Category.food, Subcategory.lunch));
+
+      // Shopping / Clothes: 'STADIUM'
+      expect(service.categorize('Köp STADIUM', -499, dummyDate), (Category.shopping, Subcategory.clothes));
+
+      // Health / Doctor: 'BABYSCREEN'
+      expect(service.categorize('BABYSCREEN GBG', -1200, dummyDate), (Category.health, Subcategory.doctor));
+
+      // --- SPECIFIC OVERRIDES ---
+
+      // NK KAFFE, TE & KONFEKT -> Shopping/Gifts
+      // Row: 2025-10-31;2025-11-03;NK KAFFE, TE & KONFEKT;GA.TEBORG;SEK;0;109
+      expect(service.categorize('NK KAFFE, TE & KONFEKT', -109.0, DateTime(2025, 10, 31)), (Category.shopping, Subcategory.gifts));
+      expect(service.categorize('NK KAFFE, TE & KONFEKT', 109.0, DateTime(2025, 10, 31)), (Category.shopping, Subcategory.gifts));
+    });
   });
 }
