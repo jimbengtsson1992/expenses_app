@@ -50,7 +50,7 @@ enum Subcategory {
   jimHolding('Jim Holdingbolag'),
 
   // --- Transport ---
-  taxi('Taxi'),
+  taxi('Taxi & Voi'),
   publicTransport('Kollektivtrafik'),
   car('Bil'),
   fuel('Drivmedel'),

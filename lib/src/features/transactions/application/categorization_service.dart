@@ -18,6 +18,35 @@ class CategorizationService {
     final lowerDesc = description.toLowerCase();
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
+    if (_matches(description, ['STUDIO']) &&
+        (amount == 521.4) &&
+        date.year == 2025 &&
+        date.month == 9 &&
+        date.day == 11) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['LOOMISP*STAURANG VASTE']) &&
+        (amount == 178.0) &&
+        date.year == 2025 &&
+        date.month == 9 &&
+        date.day == 6) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['HASSELBACKEN']) &&
+        (amount == 162.41) &&
+        date.year == 2025 &&
+        date.month == 9 &&
+        date.day == 5) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning BYSTRÖM, MALOU']) &&
+        (amount == -1000.0) &&
+        date.year == 2025 &&
+        date.month == 9 &&
+        date.day == 5) {
+      return (Category.other, Subcategory.other);
+    }
+
     if (_matches(description, ['EVENT BOOKING (RACEID)'])) {
       return (Category.health, Subcategory.gym);
     }
@@ -345,6 +374,7 @@ class CategorizationService {
       'capris',
       'feskekorka',
       'hemkop',
+      'hugo ericson ost i sal',
     ])) {
       return (Category.food, Subcategory.groceries);
     }
@@ -401,6 +431,7 @@ class CategorizationService {
       'skanshof',
       'storkoket i got',
       'toso',
+      'vita duvan',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -533,6 +564,7 @@ class CategorizationService {
       'arlanda express',
       'flygbussarna',
       'hallandstrafike',
+      'styr  staell',
     ])) {
       return (Category.transport, Subcategory.publicTransport);
     }

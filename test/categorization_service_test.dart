@@ -804,6 +804,78 @@ void main() {
     test('categorizes New Rules (User Request 2026-01-21)', () {
       // --- GENERAL KEYWORDS ---
 
+      // Food / Groceries: 'HUGO ERICSON OST I SAL'
+      expect(
+        service.categorize('HUGO ERICSON OST I SAL', -100, dummyDate),
+        (Category.food, Subcategory.groceries),
+      );
+
+      // Food / Restaurant: 'VITA DUVAN'
+      expect(
+        service.categorize('VITA DUVAN', -100, dummyDate),
+        (Category.food, Subcategory.restaurant),
+      );
+
+      // Transport / PublicTransport: 'STYR  STAELL'
+      expect(
+        service.categorize('STYR  STAELL', -25, dummyDate),
+        (Category.transport, Subcategory.publicTransport),
+      );
+
+      // --- SPECIFIC OVERRIDES ---
+
+      // 2025-09-11;2025-09-12;STUDIO;GOTEBORG;SEK;0;521.4 -> Other/Other
+      expect(
+        service.categorize(
+          'STUDIO',
+          521.4,
+          DateTime(2025, 9, 11),
+        ), // Positive amount in CSV? User said "SEK;0;521.4" usually implies amount is 521.4, but overrides usually check negative for expenses or specific amount. The user request says "2025-09-11... 521.4". I will assume it's an expense recorded as positive in description or just match the number. Wait, in this codebase expenses are negative. But the user wrote "521.4". I should check if it's income or expense. Usually 'STUDIO' sounds like an expense. The user pasted a CSV row. "2025-09-11;...;521.4". It might be positive. If it's a refund or split. Or maybe the CSV format has positive for expenses?
+        // Looking at previous tests: 'Kortköp... -1400'. 'Lön... 40000'. So expenses are negative.
+        // The user provided row: "2025-09-11;...;521.4". If this is a copy paste from a CSV where expenses are positive (some banks do that), I need to be careful.
+        // However, looking at the other rows: "2025/09/05;-1000,00...". That one has negative.
+        // "2025-09-11... 521.4". This is positive.
+        // "2025-09-06... 178". Positive.
+        // "2025-09-05... 162.41". Positive.
+        // I will match exact amount 521.4.
+        (Category.other, Subcategory.other),
+      );
+
+      // 2025-09-06;...;LOOMISP*STAURANG VASTE;...;178 -> Food/Lunch
+      expect(
+        service.categorize(
+          'LOOMISP*STAURANG VASTE',
+          178.0,
+          DateTime(2025, 9, 6),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
+
+      // 2025-09-05;...;HASSELBACKEN;...;162.41 -> Other/Other
+      expect(
+        service.categorize(
+          'HASSELBACKEN',
+          162.41,
+          DateTime(2025, 9, 5),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // 2025/09/05;-1000,00;...Swish betalning BYSTRÖM, MALOU... -> Other/Other
+      // Note: User wrote "2025/09/05;-1000,00...". This is definitely negative.
+      expect(
+        service.categorize(
+          'Swish betalning BYSTRÖM, MALOU',
+          -1000.0,
+          DateTime(2025, 9, 5),
+        ),
+        (Category.other, Subcategory.other),
+      );
+    });
+
+    test('categorizes New Rules (User Request 2026-01-21)', () {
+      // --- GENERAL KEYWORDS ---
+
       // Food / Restaurant
       expect(service.categorize('ZETTLE_*JIMMY   JOAN S', -100, dummyDate), (
         Category.food,
