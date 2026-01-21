@@ -418,6 +418,15 @@ class ExpensesRepository {
       return true;
     }
 
+    // Nordea: 2025/11/16;-25000,00;...;Aktiekapital 1110 31 04004;...
+    if (description.contains('Aktiekapital 1110 31 04004') &&
+        (amount - -25000.00).abs() < 0.01 &&
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 16) {
+      return true;
+    }
+
     return false;
   }
 

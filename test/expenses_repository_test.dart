@@ -176,6 +176,16 @@ void main() {
           ),
           true,
         );
+
+        // New Exclusion 3: Aktiekapital
+        expect(
+          repository.shouldExcludeFromOverview(
+            'Aktiekapital 1110 31 04004',
+            -25000.00,
+            DateTime(2025, 11, 16),
+          ),
+          true,
+        );
       },
     );
   });
