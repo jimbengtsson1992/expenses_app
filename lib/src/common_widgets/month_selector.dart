@@ -19,9 +19,13 @@ class MonthSelector extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(onPressed: onPrevious, icon: const Icon(Icons.chevron_left)),
-        Text(
-          DateFormat('MMMM yyyy', 'sv').format(currentDate),
-          style: const TextStyle(fontWeight: FontWeight.bold),
+        SizedBox(
+          width: 100,
+          child: Text(
+            DateFormat('MMM yy', 'sv').format(currentDate),
+            style: const TextStyle(fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
         ),
         IconButton(onPressed: onNext, icon: const Icon(Icons.chevron_right)),
       ],
