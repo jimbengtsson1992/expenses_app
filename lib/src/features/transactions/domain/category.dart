@@ -21,7 +21,6 @@ enum Category {
     Subcategory.takeaway,
     Subcategory.alcohol,
     Subcategory.coffee,
-
     Subcategory.unknown,
     Subcategory.other,
   ]),
@@ -34,6 +33,7 @@ enum Category {
     Subcategory.decor,
     Subcategory.beauty,
     Subcategory.tools,
+    Subcategory.dryCleaning,
     Subcategory.unknown,
     Subcategory.other,
   ]),
