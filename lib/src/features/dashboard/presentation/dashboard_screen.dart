@@ -11,6 +11,8 @@ import '../../transactions/domain/transaction_type.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../routing/routes.dart';
 
+import '../../../common_widgets/net_result_badge.dart';
+
 part 'dashboard_screen.g.dart';
 
 // State for selected month (Shared between Dashboard and List for consistency)
@@ -103,7 +105,6 @@ class _DashboardContent extends StatelessWidget {
     }
 
     final netResult = totalIncome - totalExpenses;
-    final isSaved = netResult >= 0;
 
     // Sort categories
     final sortedCategories = categoryTotals.entries.toList()
@@ -189,25 +190,7 @@ class _DashboardContent extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSaved
-                        ? Colors.green.withValues(alpha: 0.2)
-                        : Colors.red.withValues(alpha: 0.2),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Text(
-                    '${isSaved ? 'Sparat' : 'Överkonsumtion'} ${isSaved ? '+' : ''}${currency.format(netResult)}',
-                    style: TextStyle(
-                      color: isSaved ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                NetResultBadge(netResult: netResult),
               ],
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import '../../../common_widgets/net_result_badge.dart';
 import '../../../routing/routes.dart';
 
 import '../../../common_widgets/month_selector.dart';
@@ -326,6 +327,20 @@ class _TransactionsListScreenState
                 .toList();
           }
 
+          // --- Calculate Totals for Display ---
+          double totalIncome = 0;
+          double totalExpenses = 0;
+
+          for (final e in filteredExpenses) {
+            if (e.type == TransactionType.income) {
+              totalIncome += e.amount.abs();
+            } else {
+              totalExpenses += e.amount.abs();
+            }
+          }
+
+          final netResult = totalIncome - totalExpenses;
+
           final currency = NumberFormat.currency(
             locale: 'sv',
             symbol: 'kr',
@@ -508,6 +523,16 @@ class _TransactionsListScreenState
                   ],
                 ),
               ),
+
+              // --- Summary Widget ---
+               if (filteredExpenses.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  child: NetResultBadge(netResult: netResult),
+                ),
 
               if (filteredExpenses.isEmpty)
                 const Expanded(

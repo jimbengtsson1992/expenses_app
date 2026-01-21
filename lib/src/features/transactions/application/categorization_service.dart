@@ -76,8 +76,9 @@ class CategorizationService {
         date.month == 10 &&
         date.day == 18) {
       if (amount == -60.0) return (Category.food, Subcategory.coffee);
-      if (amount == -85.0 || amount == -150.0)
+      if (amount == -85.0 || amount == -150.0) {
         return (Category.food, Subcategory.lunch);
+      }
     }
     if (date.year == 2025 && date.month == 10 && date.day == 4) {
       if (_matches(description, ['NYX*SANIBOXAB'])) {
