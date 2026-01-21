@@ -799,6 +799,7 @@ void main() {
         Category.food,
         Subcategory.restaurant,
       ));
+
       expect(service.categorize('ENOTECA SASSI', -100, dummyDate), (
         Category.food,
         Subcategory.restaurant,
@@ -896,6 +897,59 @@ void main() {
       // Row 6: 2025-10-04;...KMARKT TEATERN... -> Other/Other
       expect(
         service.categorize('KMARKT TEATERN', -57.0, DateTime(2025, 10, 4)),
+        (Category.other, Subcategory.other),
+      );
+    });
+  test('categorizes New Rules (User Request 2026-01-21)', () {
+      // --- GENERAL KEYWORDS ---
+
+      // Food / Groceries
+      expect(service.categorize('Köp HEMKOP', -200, dummyDate), (
+        Category.food,
+        Subcategory.groceries,
+      ));
+
+      // Food / Coffee
+      expect(service.categorize('TEHUSET', -89, dummyDate), (
+        Category.food,
+        Subcategory.coffee,
+      ));
+
+      // Transport / Taxi
+      expect(service.categorize('VOI SE', -45, dummyDate), (
+        Category.transport,
+        Subcategory.taxi,
+      ));
+
+      // Health / Doctor
+      expect(service.categorize('Eliasson Psyk', -1200, dummyDate), (
+        Category.health,
+        Subcategory.doctor,
+      ));
+
+      // Shopping / Clothes
+      expect(service.categorize('WEEKDAY', -500, dummyDate), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
+
+      // --- SPECIFIC OVERRIDES ---
+
+      // OLIVIA GOTEBORG -> Other/Other
+      expect(
+        service.categorize(
+          'OLIVIA GOTEBORG',
+          -359.0,
+          DateTime(2025, 9, 26),
+        ),
+        (Category.other, Subcategory.other),
+      );
+      expect(
+        service.categorize(
+          'OLIVIA GOTEBORG',
+          359.0,
+          DateTime(2025, 9, 26),
+        ),
         (Category.other, Subcategory.other),
       );
     });

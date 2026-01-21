@@ -28,6 +28,13 @@ class CategorizationService {
         date.day == 3) {
       return (Category.food, Subcategory.coffee);
     }
+    if (_matches(description, ['OLIVIA GOTEBORG']) &&
+        (amount == -359.0 || amount == 359.0) &&
+        date.year == 2025 &&
+        date.month == 9 &&
+        date.day == 26) {
+      return (Category.other, Subcategory.other);
+    }
     if (_matches(description, ['2352 5694 01 75741']) &&
         amount == -3100.0 &&
         date.year == 2025 &&
@@ -335,6 +342,7 @@ class CategorizationService {
       'city gross',
       'capris',
       'feskekorka',
+      'hemkop',
     ])) {
       return (Category.food, Subcategory.groceries);
     }
@@ -414,6 +422,8 @@ class CategorizationService {
       'brogyllen',
       'espresso', // Matches 'espresso house' too? No, checks contains from list. 'espresso house' is already in list separately. 'espresso' will catch both. Should be fine.
       '5151 ritazza st',
+      '5151 ritazza st',
+      'tehuset',
     ])) {
       return (Category.food, Subcategory.coffee);
     }
@@ -460,7 +470,9 @@ class CategorizationService {
       'stadium',
       'newbody ab',
       'j. lindeberg nk',
+      'j. lindeberg nk',
       'autogiro k*rohnisch.c',
+      'weekday',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
@@ -498,7 +510,7 @@ class CategorizationService {
     }
 
     // Transport
-    if (_matches(lowerDesc, ['uber', 'bolt', 'taxi'])) {
+    if (_matches(lowerDesc, ['uber', 'bolt', 'taxi', 'voi se'])) {
       return (Category.transport, Subcategory.taxi);
     }
     if (_matches(lowerDesc, [
@@ -560,6 +572,7 @@ class CategorizationService {
       'capio',
       'idrottsrehab',
       'babyscreen',
+      'eliasson psyk',
     ])) {
       return (Category.health, Subcategory.doctor);
     }
