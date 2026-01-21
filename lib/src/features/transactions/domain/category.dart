@@ -9,6 +9,7 @@ enum Category {
     Subcategory.security,
     Subcategory.broadband,
     Subcategory.cleaning,
+    Subcategory.kitchenRenovation,
     Subcategory.unknown,
     Subcategory.other,
   ]),
