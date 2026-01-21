@@ -61,7 +61,7 @@ enum Subcategory {
 
   // --- Övrigt (Other) ---
   personalInsurance('Personförsäkringar'),
-  godfather('Fadder'),
+  godfather('Fadder & Gudmor'),
   mobileSubscription('Mobilabonnemang'),
 
   // --- Defaults ---
