@@ -272,7 +272,9 @@ class CategorizationService {
       'hotell',
       'booking',
       'airbnb',
+      'bnb',
       'tågsemester',
+      'vr resa',
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
@@ -395,6 +397,10 @@ class CategorizationService {
       'voyage gbg ab',
       'chopchop',
       'enoteca sassi',
+      'zettle_*jimmy   joan s',
+      'skanshof',
+      'storkoket i got',
+      'toso',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -406,6 +412,7 @@ class CategorizationService {
       'vin',
       'the melody club',
       'park lane resta',
+      'on air game shows swed',
     ])) {
       return (Category.entertainment, Subcategory.bar);
     }
@@ -448,6 +455,9 @@ class CategorizationService {
       'elboden',
     ])) {
       return (Category.shopping, Subcategory.decor);
+    }
+    if (_matches(lowerDesc, ['vasque kemtvatt'])) {
+      return (Category.shopping, Subcategory.dryCleaning);
     }
     if (_matches(lowerDesc, [
       'nk ',

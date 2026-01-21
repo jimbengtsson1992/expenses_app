@@ -799,7 +799,49 @@ void main() {
         Category.food,
         Subcategory.restaurant,
       ));
+    });
 
+    test('categorizes New Rules (User Request 2026-01-21)', () {
+      // --- GENERAL KEYWORDS ---
+
+      // Food / Restaurant
+      expect(service.categorize('ZETTLE_*JIMMY   JOAN S', -100, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('SKANSHOF', -200, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('STORKOKET I GOT', -150, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('TOSO', -300, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+
+      // Entertainment / Travel
+      expect(service.categorize('VR RESA', -400, dummyDate), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+
+      // Entertainment / Bar
+      expect(service.categorize('ON AIR GAME SHOWS SWED', -250, dummyDate), (
+        Category.entertainment,
+        Subcategory.bar,
+      ));
+
+      // Shopping / DryCleaning
+      expect(service.categorize('VASQUE KEMTVATT', -150, dummyDate), (
+        Category.shopping,
+        Subcategory.dryCleaning,
+      ));
+    });
+
+    test('Additional checks', () {
       expect(service.categorize('ENOTECA SASSI', -100, dummyDate), (
         Category.food,
         Subcategory.restaurant,
