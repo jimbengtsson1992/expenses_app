@@ -196,6 +196,16 @@ void main() {
           ),
           true,
         );
+
+        // Generic Avanza exclusion
+        expect(
+          repository.shouldExcludeFromOverview(
+            'Some random AVANZA transaction',
+            -100.0,
+            DateTime(2025, 1, 1),
+          ),
+          true,
+        );
       },
     );
   });

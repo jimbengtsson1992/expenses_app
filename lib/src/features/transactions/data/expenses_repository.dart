@@ -431,6 +431,10 @@ class ExpensesRepository {
       return true;
     }
 
+    if (description.toUpperCase().contains('AVANZA')) {
+      return true;
+    }
+
     return false;
   }
 
