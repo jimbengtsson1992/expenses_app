@@ -1067,5 +1067,13 @@ void main() {
         (Category.other, Subcategory.other),
       );
     });
+
+    test('categorizes New Rules (User Request 2026-01-22)', () {
+      // Shopping / Clothes: 'DRESSMANN'
+      expect(
+        service.categorize('Köp DRESSMANN', -500, dummyDate),
+        (Category.shopping, Subcategory.clothes),
+      );
+    });
   });
 }

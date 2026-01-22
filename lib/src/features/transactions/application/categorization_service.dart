@@ -515,6 +515,7 @@ class CategorizationService {
       'j. lindeberg nk',
       'autogiro k*rohnisch.c',
       'weekday',
+      'dressmann',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
