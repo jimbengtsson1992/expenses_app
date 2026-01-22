@@ -801,6 +801,76 @@ void main() {
       ));
     });
 
+    test('categorizes New Rules (User Request 2026-01-22)', () {
+      // --- GENERAL KEYWORDS ---
+
+      // 'Filippa K' -> Shopping/Clothes
+      expect(service.categorize('Köp Filippa K', -500, dummyDate), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
+
+      // 'ELIO', 'LOCO' -> Food/Restaurant
+      expect(service.categorize('ELIO RESTAURANT', -200, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('LOCO BAR', -200, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+
+      // 'KAFFELABBET' -> Food/Coffee
+      expect(service.categorize('KAFFELABBET GBG', -89, dummyDate), (
+        Category.food,
+        Subcategory.coffee,
+      ));
+
+      // 'BELLE CELINE AB' -> Shopping/Beauty
+      expect(service.categorize('BELLE CELINE AB', -350, dummyDate), (
+        Category.shopping,
+        Subcategory.beauty,
+      ));
+
+      // 'VIETNAM MARKET' -> Food/Lunch
+      expect(service.categorize('VIETNAM MARKET', -120, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
+
+      // --- SPECIFIC OVERRIDES ---
+
+      // Swish betalning DANIEL LENNARTSSON
+      expect(
+        service.categorize(
+          'Swish betalning DANIEL LENNARTSSON',
+          -400.00,
+          DateTime(2025, 8, 23),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // Swish betalning KUJTIM LENA
+      expect(
+        service.categorize(
+          'Swish betalning KUJTIM LENA',
+          -40.00,
+          DateTime(2025, 8, 23),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // Swish betalning HAPPY ORDER AB
+      expect(
+        service.categorize(
+          'Swish betalning HAPPY ORDER AB',
+          -129.00,
+          DateTime(2025, 8, 21),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
+    });
+
     test('categorizes New Rules (User Request 2026-01-21)', () {
       // --- GENERAL KEYWORDS ---
 

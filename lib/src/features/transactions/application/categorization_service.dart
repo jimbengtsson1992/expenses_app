@@ -47,6 +47,26 @@ class CategorizationService {
       return (Category.other, Subcategory.other);
     }
 
+    // --- New User Request 2026-01-22 ---
+    if (_matches(description, ['Swish betalning DANIEL LENNARTSSON']) &&
+        (amount == -400.00)) {
+      if (date.year == 2025 && date.month == 8 && date.day == 23) {
+        return (Category.other, Subcategory.other);
+      }
+    }
+    if (_matches(description, ['Swish betalning KUJTIM LENA']) &&
+        (amount == -40.00)) {
+      if (date.year == 2025 && date.month == 8 && date.day == 23) {
+        return (Category.other, Subcategory.other);
+      }
+    }
+    if (_matches(description, ['Swish betalning HAPPY ORDER AB']) &&
+        (amount == -129.00)) {
+      if (date.year == 2025 && date.month == 8 && date.day == 21) {
+        return (Category.food, Subcategory.lunch);
+      }
+    }
+
     if (_matches(description, ['EVENT BOOKING (RACEID)'])) {
       return (Category.health, Subcategory.gym);
     }
@@ -409,6 +429,7 @@ class CategorizationService {
       'hasselssons macklucka',
       'swish betalning ellen abenius',
       'zettle_*cheap noodles',
+      'vietnam market',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -433,6 +454,8 @@ class CategorizationService {
       'storkoket i got',
       'toso',
       'vita duvan',
+      'elio',
+      'loco',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -463,6 +486,7 @@ class CategorizationService {
       '5151 ritazza st',
       '5151 ritazza st',
       'tehuset',
+      'kaffelabbet',
     ])) {
       return (Category.food, Subcategory.coffee);
     }
@@ -471,7 +495,7 @@ class CategorizationService {
     }
 
     // Shopping
-    if (_matches(lowerDesc, ['nk beauty', 'vacker nk', 'kicks'])) {
+    if (_matches(lowerDesc, ['nk beauty', 'vacker nk', 'kicks', 'belle celine ab'])) {
       return (Category.shopping, Subcategory.beauty);
     }
     if (_matches(lowerDesc, ['nk kok & design', 'artilleriet store'])) {
@@ -515,7 +539,9 @@ class CategorizationService {
       'j. lindeberg nk',
       'autogiro k*rohnisch.c',
       'weekday',
+      'weekday',
       'dressmann',
+      'filippa k',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
