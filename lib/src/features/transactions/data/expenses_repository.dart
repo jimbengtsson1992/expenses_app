@@ -427,6 +427,10 @@ class ExpensesRepository {
       return true;
     }
 
+    if (description.contains('Nordea LIV 1896 80 27633')) {
+      return true;
+    }
+
     return false;
   }
 

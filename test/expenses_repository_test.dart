@@ -186,6 +186,16 @@ void main() {
           ),
           true,
         );
+
+        // New Exclusion 4: Nordea LIV
+        expect(
+          repository.shouldExcludeFromOverview(
+            'Nordea LIV 1896 80 27633',
+            -500.00,
+            DateTime(2025, 1, 1),
+          ),
+          true,
+        );
       },
     );
   });
