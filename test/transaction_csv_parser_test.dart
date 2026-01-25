@@ -81,6 +81,40 @@ void main() {
       );
     });
 
+    test('shouldExcludeFromOverview excludes Swish between Jim and Louise', () {
+      final date = DateTime(2025, 1, 1);
+      final excludedDescriptions = [
+        'Swish inbetalning RAGNAR,LOUISE',
+        'Swish inbetalning RAGNAR, LOUISE',
+        'Swish inbetalning Bengtsson,Jim',
+        'Swish inbetalning Bengtsson, Jim',
+        'Swish inbetalning ragnar,louise', // lowercase check
+        'SWISH INBETALNING BENGTSSON,JIM', // uppercase check
+      ];
+
+      for (final desc in excludedDescriptions) {
+        expect(
+          parser.shouldExcludeFromOverview(desc, 100, date),
+          true,
+          reason: 'Failed to exclude: $desc',
+        );
+      }
+
+      final includedDescriptions = [
+        'Swish inbetalning ANDERSSON,ERIK', // Only specific date/amount excluded in other rule
+        'Swish inbetalning Another,Person',
+      ];
+
+      for (final desc in includedDescriptions) {
+        // ANDERSSON,ERIK has a specific rule for date/amount, so we use a generic amount/date here to ensure it's NOT excluded by the new logic
+        expect(
+          parser.shouldExcludeFromOverview(desc, 500, date),
+          false,
+          reason: 'Incorrectly excluded: $desc',
+        );
+      }
+    });
+
     test('parseSasAmexCsv parses transactions and supports multiple sections', () {
       const csvContent = '''
 Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp

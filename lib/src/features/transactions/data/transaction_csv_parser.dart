@@ -383,6 +383,17 @@ class TransactionCsvParser {
       return true;
     }
 
+    // Exclude Swish between Jim and Louise
+    // "Swish inbetalning RAGNAR,LOUISE", "Swish inbetalning Bengtsson,Jim", etc.
+    // Case insensitive matching and flexible spacing (handled by contains)
+    final upperDesc = description.toUpperCase();
+    if (upperDesc.contains('SWISH INBETALNING RAGNAR,LOUISE') ||
+        upperDesc.contains('SWISH INBETALNING RAGNAR, LOUISE') ||
+        upperDesc.contains('SWISH INBETALNING BENGTSSON,JIM') ||
+        upperDesc.contains('SWISH INBETALNING BENGTSSON, JIM')) {
+      return true;
+    }
+
     return false;
   }
 
