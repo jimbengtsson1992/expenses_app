@@ -11,6 +11,13 @@ import '../domain/subcategory.dart';
 import '../application/categorization_service.dart';
 import 'user_rules_repository.dart';
 
+enum AmexSection {
+  none,
+  other,
+  purchases,
+}
+
+
 class TransactionCsvParser {
   TransactionCsvParser(this._categorizationService, this._userRulesRepository);
 
@@ -151,11 +158,6 @@ class TransactionCsvParser {
     String filename,
     Map<String, int> idRegistry,
   ) {
-    // SAS Amex: Semicolon separated.
-    // Section "Köp/uttag" starts around line 26/27.
-    // Headers: Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
-    // 2026-01-08;2026-01-09;WILLYS GOTEBORG HVIT;GOTEBORG;SEK;0;130.97
-
     final rows = const CsvToListConverter(
       fieldDelimiter: ';',
       eol: '\n',
@@ -163,7 +165,7 @@ class TransactionCsvParser {
     final expenses = <Transaction>[];
     const sourceAccount = Account.sasAmex;
 
-    bool isInTransactionSection = false;
+    AmexSection currentSection = AmexSection.none;
 
     for (var i = 0; i < rows.length; i++) {
       final row = rows[i];
@@ -171,131 +173,152 @@ class TransactionCsvParser {
 
       final firstCol = row[0].toString();
 
-      // Skip the "Totalt övriga händelser" section (contains payments which we want to filter)
+      // Detect Section Headers
       if (firstCol.contains('Totalt övriga')) {
-        // Skip until we find the next section
-        while (i < rows.length &&
-            !(rows[i][0].toString().contains('Köp') ||
-                rows[i][0].toString() == 'Datum')) {
-          i++;
-        }
-        if (i >= rows.length) break;
+        // This section contains Payments (negative) and Fees (positive)
+        // We want to enter this section but filter carefully.
+        // The headers "Datum;..." will follow, which triggers the actual data reading.
+        // We just need to know we are "approaching/in" this section's context.
+        // Actually, the loop below detects 'Datum' to start reading.
+        // We can set a flag here that says "Next data block is Other".
+        currentSection = AmexSection.other;
         continue;
       }
 
-      // Detect start of section
+      if (firstCol.contains('Köp/uttag')) {
+        currentSection = AmexSection.purchases;
+        continue;
+      }
+
+      // Detect start of data table headers
       if (firstCol == 'Datum' &&
           row.length > 6 &&
           row[2].toString() == 'Specifikation') {
-        isInTransactionSection = true;
+        // Headers found. The section flag should already be set by the title above it.
+        // If not (first section might not have title? No, usually does), default to purchases?
+        // In the file provided:
+        // Line 1: Transaktionsexport...
+        // Line 3: Totalt övriga händelser
+        // Line 4: Datum...
+        // Line 26: Köp/uttag
+        // Line 27: Datum...
         continue;
       }
 
-      // Check for next section or end
-      if (isInTransactionSection) {
-        if (firstCol.isEmpty &&
-            row.length > 2 &&
-            row[2].toString().startsWith('Summa')) {
-          isInTransactionSection = false;
-          continue;
-        }
-        // Date check to ensure it's a data row
-        if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(firstCol)) continue;
-
-        final dateStr = firstCol;
-        final description = row[2].toString();
-        final amountStr = row[6].toString(); // Belopp
-
-        final date = DateFormat('yyyy-MM-dd').parse(dateStr);
-        if (date.isBefore(_startParams)) continue;
-
-        // Filter SAS Invoice Payments (usually inbound to card, but appearing here?)
-        // In SAS file, "BETALT BG DATUM" means we paid the bill. It's a "credit" to the account (negative value in file?).
-        // File analysis:
-        // 2025-01-13... BETALT BG DATUM ... -28278.52
-        // 2026-01-08... WILLYS ... 130.97
-        // Wait. Willys is 130.97 (Positive). Payment is -28278 (Negative).
-        // So for Amex: Positive = Expense. Negative = Payment.
-        // We should INVERT this to match standard (Expense = Negative).
-        // AND we should filter out the Payments entirely if they are just transfers from our bank.
-
-        if (description.contains('BETALT BG DATUM')) continue;
-
-        // Parse amount
-        // "130.97" is standard dot decimal? CSV parser handles it?
-        // In file view: "130.97". CSV converter might treat as num or string.
-        double amount = 0;
-        if (row[6] is num) {
-          amount = (row[6] as num).toDouble();
-        } else {
-          amount =
-              double.tryParse(amountStr.replaceAll(',', '')) ??
-              0; // handle 1,000.00? File looked simple.
-        }
-
-        // Invert amount: 130 (Cost) -> -130 (Expense)
-        amount = -amount;
-
-        // Generate ID
-        final id = _generateStableId(
-          date,
-          amount,
-          description,
-          sourceAccount,
-          idRegistry,
-        );
-
-        // Categorize Priority
-        Category category;
-        Subcategory subcategory;
-
-        // Determine exclusion
-        final excludeFromOverview = shouldExcludeFromOverview(
-          description,
-          amount,
-          date,
-        );
-
-        final override = _userRulesRepository.getOverride(id);
-        if (override != null) {
-          category = override.$1;
-          subcategory = override.$2;
-        } else {
-          final rule = _userRulesRepository.getRule(description);
-          if (rule != null) {
-            category = rule.$1;
-            subcategory = rule.$2;
-          } else {
-            final result = _categorizationService.categorize(
-              description,
-              amount,
-              date,
-            );
-            category = result.$1;
-            subcategory = result.$2;
-          }
-        }
-
-        expenses.add(
-          Transaction(
-            id: id,
-            date: date,
-            amount: amount,
-            description: description,
-            category: category,
-            subcategory: subcategory,
-            sourceAccount: sourceAccount,
-            sourceFilename: filename,
-            type: TransactionType
-                .expense, // SAS Amex transactions are always expenses
-            excludeFromOverview: excludeFromOverview,
-            rawCsvData: row.join(';'),
-          ),
-        );
+      // Check for End of Section (Sum lines)
+      if (row.length > 2 && row[2].toString().startsWith('Summa')) {
+        // End of current block data
+        // currentSection = AmexSection.none; // Optional, or just leave it until next title
+        continue;
       }
+
+      // Date check to ensure it's a data row
+      if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(firstCol)) continue;
+
+      // If we haven't identified a section, assume Purchases if unidentified?
+      // Or just proceed.
+      // safely default to purchases if unknown?
+      final section = currentSection == AmexSection.none
+          ? AmexSection.purchases
+          : currentSection;
+
+      // ---------------------------------------------------------
+      // DATA ROW PARSING
+      // ---------------------------------------------------------
+
+      final dateStr = firstCol;
+      final description = row[2].toString();
+      final amountStr = row[6].toString(); // Belopp
+
+      final date = DateFormat('yyyy-MM-dd').parse(dateStr);
+      if (date.isBefore(_startParams)) continue;
+
+      // Parse amount
+      double rawAmount = 0;
+      if (row[6] is num) {
+        rawAmount = (row[6] as num).toDouble();
+      } else {
+        rawAmount =
+            double.tryParse(amountStr.replaceAll(',', '')) ?? 0;
+      }
+
+      // Filter Logic based on Section
+      if (section == AmexSection.other) {
+        // In "Totalt övriga händelser":
+        // Negative values are Payments (e.g. -28000). Skip these.
+        // Positive values are Fees (e.g. 2335). Keep these.
+        if (rawAmount < 0) continue;
+      }
+
+      // Standard Filter: "BETALT BG DATUM" is an explicit payment marker too.
+      // Usually negative in 'other', but good to keep as safety.
+      if (description.contains('BETALT BG DATUM')) continue;
+
+      // Invert amount:
+      // Amex File: Positive = Cost (e.g. 130). We want Negative (-130).
+      // Amex File: Positive Fee (2335). We want Negative (-2335).
+      // Amex File: Negative Refund/Payment (-100). We want Positive (100).
+      final amount = -rawAmount;
+
+      // Generate ID
+      final id = _generateStableId(
+        date,
+        amount,
+        description,
+        sourceAccount,
+        idRegistry,
+      );
+
+      // Categorize Priority
+      Category category;
+      Subcategory subcategory;
+
+      // Determine exclusion
+      final excludeFromOverview = shouldExcludeFromOverview(
+        description,
+        amount,
+        date,
+      );
+
+      final override = _userRulesRepository.getOverride(id);
+      if (override != null) {
+        category = override.$1;
+        subcategory = override.$2;
+      } else {
+        final rule = _userRulesRepository.getRule(description);
+        if (rule != null) {
+          category = rule.$1;
+          subcategory = rule.$2;
+        } else {
+          final result = _categorizationService.categorize(
+            description,
+            amount,
+            date,
+          );
+          category = result.$1;
+          subcategory = result.$2;
+        }
+      }
+
+      expenses.add(
+        Transaction(
+          id: id,
+          date: date,
+          amount: amount,
+          description: description,
+          category: category,
+          subcategory: subcategory,
+          sourceAccount: sourceAccount,
+          sourceFilename: filename,
+          type: TransactionType.expense,
+          excludeFromOverview: excludeFromOverview,
+          rawCsvData: row.join(';'),
+        ),
+      );
     }
     return expenses;
   }
+
 
   // Generate a deterministic stable ID
   String _generateStableId(

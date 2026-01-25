@@ -148,5 +148,46 @@ Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
       );
       expect(fee2.amount, -295.0);
     });
+    test(
+        'parseSasAmexCsv parses "Totalt övriga händelser" but excludes payments (negative)',
+        () {
+      const csvContent = '''
+Transaktionsexport;;;;;;2026-01-25 16:14:59
+;;;;;;
+Totalt övriga händelser;;;;;;
+Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
+2025-07-31;2025-08-06;ÅRSAVGIFT;;SEK;0;2335
+2025-07-31;2025-08-06;EXTRAKORTSAVGIFT;;SEK;0;295
+2025-01-13;2025-01-13;BETALT BG DATUM 250113;;SEK;0;-28278.52
+;;Summa köp/uttag;;;;2630
+Totalt belopp;;;;;;73296.08
+;;;;;;
+Köp/uttag;;;;;;
+Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
+2026-01-23;2026-01-23;ESPRESSO HOUSE 363;GOETEBORG;SEK;0;58
+''';
+
+      final transactions = parser.parseSasAmexCsv(
+        csvContent,
+        'amex_test.csv',
+        {},
+      );
+
+      // We expect:
+      // 1. ÅRSAVGIFT (2335 -> became -2335)
+      // 2. EXTRAKORTSAVGIFT (295 -> became -295)
+      // 3. ESPRESSO HOUSE (58 -> became -58)
+      // 4. BETALT BG DATUM (negative value) should be EXCLUDED.
+
+      expect(transactions.length, 3);
+      expect(
+          transactions.any((t) => t.description == 'ÅRSAVGIFT'), isTrue);
+      expect(
+          transactions.any((t) => t.description == 'EXTRAKORTSAVGIFT'),
+          isTrue);
+      expect(
+          transactions.any((t) => t.description.contains('BETALT BG DATUM')),
+          isFalse);
+    });
   });
 }
