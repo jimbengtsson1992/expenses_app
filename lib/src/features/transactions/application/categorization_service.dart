@@ -68,6 +68,15 @@ class CategorizationService {
     }
 
     // --- New User Request 2026-01-25 ---
+    if (_matches(description, ['Swish betalning LUCAS MALINA']) &&
+        (amount == -500.0) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 6) {
+      return (Category.other, Subcategory.other);
+    }
+    
+    // --- New User Request 2026-01-25 ---
     if (_matches(description, ['MARBODAL']) &&
         (amount == -297.0) &&
         date.year == 2026 &&

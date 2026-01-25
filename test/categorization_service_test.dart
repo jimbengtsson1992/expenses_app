@@ -748,6 +748,16 @@ void main() {
         ),
         (Category.food, Subcategory.coffee),
       );
+      
+      // Swish betalning LUCAS MALINA -> Other/Other (2026-01-06)
+      expect(
+        service.categorize(
+          'Swish betalning LUCAS MALINA',
+          -500.0,
+          DateTime(2026, 1, 6),
+        ),
+        (Category.other, Subcategory.other),
+      );
     });
     test('categorizes New Rules (User Request 2026-01-20)', () {
       // --- GENERAL KEYWORDS ---
