@@ -1145,5 +1145,15 @@ void main() {
         (Category.shopping, Subcategory.clothes),
       );
     });
+    test('categorizes New Rules (User Request 2026-01-25 - Missing SAS Fees)', () {
+      expect(service.categorize('ÅRSAVGIFT', -2335, dummyDate), (
+        Category.fees,
+        Subcategory.bankFees,
+      ));
+      expect(service.categorize('EXTRAKORTSAVGIFT', -295, dummyDate), (
+        Category.fees,
+        Subcategory.bankFees,
+      ));
+    });
   });
 }

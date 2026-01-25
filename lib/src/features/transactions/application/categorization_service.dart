@@ -705,6 +705,7 @@ class CategorizationService {
       'kortavgift',
       'årsavgift',
       'avgift extra kort',
+      'extrakortsavgift',
       'nordea vardagspaket',
     ])) {
       return (Category.fees, Subcategory.bankFees);
