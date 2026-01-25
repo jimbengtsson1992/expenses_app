@@ -132,6 +132,27 @@ void main() {
       }
     });
 
+    test('shouldExcludeFromOverview excludes NK MAN GBG transactions', () {
+      // Purchase
+      expect(
+        parser.shouldExcludeFromOverview(
+          'Kortköp 251221 NK MAN GBG',
+          -2299.00,
+          DateTime(2025, 12, 22),
+        ),
+        true,
+      );
+      // Refund
+      expect(
+        parser.shouldExcludeFromOverview(
+          'Insättning kort 260117 NK MAN GBG',
+          2299.00,
+          DateTime(2026, 1, 18),
+        ),
+        true,
+      );
+    });
+
     test('parseSasAmexCsv parses transactions and supports multiple sections', () {
       const csvContent = '''
 Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp

@@ -406,6 +406,25 @@ class TransactionCsvParser {
       return true;
     }
 
+    // NK MAN GBG Exclusions
+    // Kortköp 251221 NK MAN GBG;688,72 | Amount -2299.00
+    if (description.contains('Kortköp 251221 NK MAN GBG') &&
+        (amount - -2299.00).abs() < 0.01 &&
+        date.year == 2025 &&
+        date.month == 12 &&
+        date.day == 22) {
+      return true;
+    }
+
+    // Insättning kort 260117 NK MAN GBG;4073,22 | Amount 2299.00
+    if (description.contains('Insättning kort 260117 NK MAN GBG') &&
+        (amount - 2299.00).abs() < 0.01 &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 18) {
+      return true;
+    }
+
     // Exclude Swish between Jim and Louise
     // "Swish inbetalning RAGNAR,LOUISE", "Swish inbetalning Bengtsson,Jim", etc.
     // Case insensitive matching and flexible spacing (handled by contains)

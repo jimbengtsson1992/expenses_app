@@ -801,6 +801,43 @@ void main() {
       ));
     });
 
+    test('categorizes New Rules (User Request 2026-01-25)', () {
+      // General Keyword
+      expect(service.categorize('Köp CLASOHLSON.COM/SE', -100, dummyDate), (
+        Category.shopping,
+        Subcategory.tools,
+      ));
+
+      // Specific Exceptions
+      expect(
+        service.categorize(
+          'MARBODAL',
+          -297.0,
+          DateTime(2026, 1, 19),
+        ),
+        (Category.shopping, Subcategory.furniture),
+      );
+
+      expect(
+        service.categorize(
+          'TM *TICKETMASTER',
+          -1770.0,
+          DateTime(2026, 1, 11),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
+
+      expect(
+        service.categorize(
+          'Swish betalning BYSTRÖM, ALEXANDER',
+          -1580.0,
+          DateTime(2026, 1, 5),
+        ),
+        (Category.food, Subcategory.restaurant),
+      );
+    });
+
+
     test('categorizes New Rules (User Request 2026-01-22)', () {
       // --- GENERAL KEYWORDS ---
 

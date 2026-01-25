@@ -67,6 +67,29 @@ class CategorizationService {
       }
     }
 
+    // --- New User Request 2026-01-25 ---
+    if (_matches(description, ['MARBODAL']) &&
+        (amount == -297.0) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 19) {
+      return (Category.shopping, Subcategory.furniture);
+    }
+    if (_matches(description, ['TM *TICKETMASTER']) &&
+        (amount == -1770.0) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 11) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['Swish betalning BYSTRÖM, ALEXANDER']) &&
+        (amount == -1580.0) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 5) {
+      return (Category.food, Subcategory.restaurant);
+    }
+
     if (_matches(description, ['EVENT BOOKING (RACEID)'])) {
       return (Category.health, Subcategory.gym);
     }
@@ -559,6 +582,7 @@ class CategorizationService {
 
     if (_matches(lowerDesc, [
       'clas ohlson',
+      'clasohlson.com/se',
       'bauhaus',
       'jula',
       'biltema',
