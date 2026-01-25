@@ -413,7 +413,11 @@ class TransactionCsvParser {
     if (upperDesc.contains('SWISH INBETALNING RAGNAR,LOUISE') ||
         upperDesc.contains('SWISH INBETALNING RAGNAR, LOUISE') ||
         upperDesc.contains('SWISH INBETALNING BENGTSSON,JIM') ||
-        upperDesc.contains('SWISH INBETALNING BENGTSSON, JIM')) {
+        upperDesc.contains('SWISH INBETALNING BENGTSSON, JIM') ||
+        upperDesc.contains('SWISH BETALNING RAGNAR,LOUISE') ||
+        upperDesc.contains('SWISH BETALNING RAGNAR, LOUISE') ||
+        upperDesc.contains('SWISH BETALNING BENGTSSON,JIM') ||
+        upperDesc.contains('SWISH BETALNING BENGTSSON, JIM')) {
       return true;
     }
 

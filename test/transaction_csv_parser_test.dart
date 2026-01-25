@@ -100,6 +100,23 @@ void main() {
         );
       }
 
+      final excludedBetalningDescriptions = [
+        'SWISH BETALNING RAGNAR,LOUISE',
+        'SWISH BETALNING RAGNAR, LOUISE',
+        'SWISH BETALNING BENGTSSON,JIM',
+        'SWISH BETALNING BENGTSSON, JIM',
+        // Mixed case / spacing check if needed, though mostly upper is expected from bank?
+        // Let's assume standard variants based on requirements.
+      ];
+
+       for (final desc in excludedBetalningDescriptions) {
+        expect(
+          parser.shouldExcludeFromOverview(desc, 100, date),
+          true,
+          reason: 'Failed to exclude: $desc',
+        );
+      }
+
       final includedDescriptions = [
         'Swish inbetalning ANDERSSON,ERIK', // Only specific date/amount excluded in other rule
         'Swish inbetalning Another,Person',
