@@ -1322,5 +1322,115 @@ void main() {
         (Category.other, Subcategory.other),
       );
     });
+
+
+    test('categorizes New Rules (User Request 2026-01-26 - Late)', () {
+      // --- SPECIFIC OVERRIDES ---
+
+      // ROGER NILSSON STAVERSH -> Other/Other
+      expect(
+        service.categorize(
+          'ROGER NILSSON STAVERSH',
+          -120.0,
+          DateTime(2025, 7, 18),
+        ),
+        (Category.other, Subcategory.other),
+      );
+      // Check allowing positive amount just in case
+      expect(
+         service.categorize(
+          'ROGER NILSSON STAVERSH',
+          120.0,
+          DateTime(2025, 7, 18),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+       // W*ROYALDESIGN.SE -> Shopping/Decor
+      expect(
+        service.categorize(
+          'W*ROYALDESIGN.SE',
+          -4668.0,
+          DateTime(2025, 7, 5),
+        ),
+        (Category.shopping, Subcategory.decor),
+      );
+
+      // --- GENERAL KEYWORDS ---
+
+      // Food / Coffee: 'GELATO'
+      expect(service.categorize('GELATO', -50, dummyDate), (
+        Category.food,
+        Subcategory.coffee,
+      ));
+
+      // Food / Restaurant
+      expect(service.categorize('BASTAD HAMNRESTAURAN', -200, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+      expect(service.categorize('TOPEJA BJÄRE AB', -300, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+      expect(service.categorize('V[RFTETS MADMAR', -250, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+      expect(service.categorize('NORDSJALLANDS V', -400, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+      expect(service.categorize('AXELHUS BODEGA', -150, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+      expect(service.categorize('FAMILJEN PAX', -600, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+      expect(service.categorize('FAMILJEN ORRMYR', -700, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+      expect(service.categorize('CHICCA BELLONI', -200, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+      expect(service.categorize('COLLAGE', -150, dummyDate), (
+         Category.food,
+         Subcategory.restaurant,
+      ));
+
+      // Entertainment / Hobby: 'NORRVIKEN'
+      expect(service.categorize('NORRVIKEN', -100, dummyDate), (
+        Category.entertainment,
+        Subcategory.hobby,
+      ));
+
+      // Entertainment / Travel
+      expect(service.categorize('FC HELSING@R', -100, dummyDate), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+      expect(service.categorize('AURORA', -500, dummyDate), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+      expect(service.categorize('STROMMA SWEDEN', -300, dummyDate), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+
+      // Shopping / Decor
+      expect(service.categorize('ALTHALLENSFARGTAPETERA', -1000, dummyDate), (
+        Category.shopping,
+        Subcategory.decor,
+      ));
+      expect(service.categorize('BGA.SE', -200, dummyDate), (
+        Category.shopping,
+        Subcategory.decor,
+      ));
+    });
   });
 }

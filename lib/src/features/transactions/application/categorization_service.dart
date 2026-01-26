@@ -19,8 +19,23 @@ class CategorizationService {
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
     // --- New User Request 2026-01-26 ---
-    // Housing / KitchenRenovation
-    // --- New User Request 2026-01-26 ---
+    // Override: ROGER NILSSON STAVERSH -> Other/Other
+    if (_matches(description, ['ROGER NILSSON STAVERSH']) &&
+        (amount == 120.0 || amount == -120.0) &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 18) {
+      return (Category.other, Subcategory.other);
+    }
+    // Override: W*ROYALDESIGN.SE -> Shopping/Decor
+    if (_matches(description, ['W*ROYALDESIGN.SE']) &&
+        (amount == 4668.0 || amount == -4668.0) &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 5) {
+      return (Category.shopping, Subcategory.decor);
+    }
+    
     // Specific Overrides Batch 2
     if (_matches(description, ['Kortköp 250726 LEXINGTON HOME GOT']) &&
         (amount == -498.00)) {
@@ -424,6 +439,7 @@ class CategorizationService {
       // I will put them in Subcategory.other for now.
       return (Category.entertainment, Subcategory.other);
     }
+
     if (_matches(lowerDesc, [
       'resor',
       'hotell',
@@ -433,15 +449,20 @@ class CategorizationService {
       'tågsemester',
       'vr resa',
       'sj.se',
+      'fc helsing@r',
+      'aurora',
+      'stromma sweden',
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
+
     if (_matches(lowerDesc, [
       'hobby',
       'panduro',
       'happy golfer',
       'k*ratsit.se',
       'ratsit.se',
+      'norrviken',
     ])) {
       return (Category.entertainment, Subcategory.hobby);
     }
@@ -544,6 +565,7 @@ class CategorizationService {
     ])) {
       return (Category.food, Subcategory.lunch);
     }
+
     if (_matches(lowerDesc, [
       'kitchen',
       'restaurant',
@@ -570,6 +592,15 @@ class CategorizationService {
       'villa belparc',
       'nonna',
       'benne pasta',
+      'bastad hamnrestauran',
+      'topeja bjäre ab',
+      'v[rftets madmar',
+      'nordsjallands v',
+      'axelhus bodega',
+      'familjen pax',
+      'familjen orrmyr',
+      'chicca belloni',
+      'collage',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -604,7 +635,7 @@ class CategorizationService {
       'tehuset',
       'kaffelabbet',
       'stenugnsbageriet heden',
-
+      'gelato',
     ])) {
       return (Category.food, Subcategory.coffee);
     }
@@ -619,6 +650,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['nk kok & design', 'artilleriet store'])) {
       return (Category.shopping, Subcategory.decor);
     }
+
     if (_matches(lowerDesc, [
       'arket',
       'lampgrossen',
@@ -627,6 +659,8 @@ class CategorizationService {
       'ahlens',
       'bagaren och koc',
       'elboden',
+      'althallensfargtapetera',
+      'bga.se',
     ])) {
       return (Category.shopping, Subcategory.decor);
     }
