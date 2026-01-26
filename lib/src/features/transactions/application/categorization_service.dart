@@ -21,6 +21,31 @@ class CategorizationService {
     // --- New User Request 2026-01-26 ---
     // Housing / KitchenRenovation
     // --- New User Request 2026-01-26 ---
+    // Specific Overrides Batch 2
+    if (_matches(description, ['Kortköp 250726 LEXINGTON HOME GOT']) &&
+        (amount == -498.00)) {
+       if (date.year == 2025 && date.month == 7 && date.day == 28) {
+          return (Category.shopping, Subcategory.decor);
+       }
+    }
+    if (_matches(description, ['LEKIA KUNGSGATAN']) &&
+        (amount == -304.0)) {
+       if (date.year == 2025 && date.month == 7 && date.day == 27) {
+          return (Category.shopping, Subcategory.gifts);
+       }
+    }
+    if (_matches(description, ['Swish inbetalning JOAKIM MALMQVIST']) &&
+        (amount == 2000.00)) {
+       if (date.year == 2025 && date.month == 7 && date.day == 26) {
+          return (Category.income, Subcategory.kitchenRenovation);
+       }
+    }
+    if (_matches(description, ['Swish betalning LUCAS MALINA']) &&
+        (amount == -200.00)) {
+       if (date.year == 2025 && date.month == 7 && date.day == 23) {
+          return (Category.other, Subcategory.other);
+       }
+    }
     if (_matches(description, ['Insättning']) &&
         (amount == 400000.00)) {
        if (date.year == 2025 && date.month == 2 && date.day == 3) {
@@ -407,6 +432,7 @@ class CategorizationService {
       'bnb',
       'tågsemester',
       'vr resa',
+      'sj.se',
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
@@ -463,6 +489,8 @@ class CategorizationService {
       'newport',
       'tz-shop',
       'euroflorist',
+      'lekia',
+      'betalning bg 5597-7003 sportdansklu',
     ])) {
       return (Category.shopping, Subcategory.gifts);
     }
@@ -478,6 +506,7 @@ class CategorizationService {
       'feskekorka',
       'hemkop',
       'hugo ericson ost i sal',
+      'krabbesk{rs fisk',
     ])) {
       return (Category.food, Subcategory.groceries);
     }
@@ -539,7 +568,8 @@ class CategorizationService {
       'elio',
       'loco',
       'villa belparc',
-
+      'nonna',
+      'benne pasta',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -630,6 +660,7 @@ class CategorizationService {
       'weekday',
       'dressmann',
       'filippa k',
+      'ginatricot',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
@@ -653,6 +684,7 @@ class CategorizationService {
       'biltema',
       'byggmax',
       'golvvarmeb',
+      'hornbach',
     ])) {
       return (Category.shopping, Subcategory.tools);
     }
@@ -732,10 +764,11 @@ class CategorizationService {
       'idrottsrehab',
       'babyscreen',
       'eliasson psyk',
+      'naturalcycles',
     ])) {
       return (Category.health, Subcategory.doctor);
     }
-    if (_matches(lowerDesc, ['sanna andrén', 'style barbershop'])) {
+    if (_matches(lowerDesc, ['sanna andrén', 'style barbershop', 'beauty style va'])) {
       return (Category.health, Subcategory.beauty);
     }
 

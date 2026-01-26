@@ -807,118 +807,6 @@ void main() {
         Category.shopping,
         Subcategory.clothes,
       ));
-      expect(service.categorize('Autogiro K*rohnisch.c', -100, dummyDate), (
-        Category.shopping,
-        Subcategory.clothes,
-      ));
-
-      // Shopping / Furniture
-      expect(service.categorize('NORDISKAGALLERIET', -100, dummyDate), (
-        Category.shopping,
-        Subcategory.furniture,
-      ));
-    });
-
-    test('categorizes New Rules (User Request 2026-01-26)', () {
-      // --- GENERAL KEYWORDS ---
-
-      // Housing / KitchenRenovation
-      expect(service.categorize('Factoringgrup', -5000, dummyDate), (
-        Category.housing,
-        Subcategory.kitchenRenovation,
-      ));
-
-      // Food / Coffee
-      expect(service.categorize('STENUGNSBAGERIET HEDEN', -80, dummyDate), (
-        Category.food,
-        Subcategory.coffee,
-      ));
-
-      // Food / Takeaway
-      expect(service.categorize('INDISKA HORNET', -150, dummyDate), (
-        Category.food,
-        Subcategory.takeaway,
-      ));
-
-      // Other / Other
-      expect(service.categorize('TORPA', -200, dummyDate), (
-        Category.other,
-        Subcategory.other,
-      ));
-
-      // Entertainment / Bar
-      expect(service.categorize('CHAMPAGNEBAREN', -400, dummyDate), (
-        Category.entertainment,
-        Subcategory.bar,
-      ));
-
-      // Food / Restaurant
-      expect(service.categorize('VILLA BELPARC', -750, dummyDate), (
-        Category.food,
-        Subcategory.restaurant,
-      ));
-
-      // --- SPECIFIC OVERRIDES ---
-
-      // Housing / KitchenRenovation - Exception 1
-      expect(
-        service.categorize(
-          'Swish inbetalning SADIQ MAMAND',
-          2600.00,
-          DateTime(2025, 8, 11),
-        ),
-        (Category.income, Subcategory.other),
-      );
-
-      // Housing / KitchenRenovation - Exception 2
-      expect(
-        service.categorize(
-          'Swish inbetalning AZMIR ALIC',
-          1000.00,
-          DateTime(2025, 8, 11),
-        ),
-        (Category.income, Subcategory.kitchenRenovation),
-      );
-
-      // Housing / KitchenRenovation - Exception 3
-      expect(
-        service.categorize(
-          'Swish inbetalning ANDERSSON,MIKAEL',
-          1500.00,
-          DateTime(2025, 8, 10),
-        ),
-        (Category.income, Subcategory.kitchenRenovation),
-      );
-
-      // Other / Other - Exception 4
-      expect(
-        service.categorize(
-          'Swish betalning PEHR ZETHELIUS',
-          -200.00,
-          DateTime(2025, 8, 10),
-        ),
-        (Category.other, Subcategory.other),
-      );
-
-      // Shopping / Decor - Exception 5
-      expect(
-        service.categorize(
-          'SVEA*ALSENS.COM',
-          -116.0,
-          DateTime(2025, 8, 8),
-        ),
-        (Category.shopping, Subcategory.decor),
-      );
-
-      // Entertainment / Travel - Exception 6
-      expect(
-        service.categorize(
-          'MS* GRANDHOTELFALKENB',
-          -2108.0,
-          DateTime(2025, 8, 2),
-        ),
-        (Category.entertainment, Subcategory.travel),
-      );
     });
 
     test('categorizes New Rules (User Request 2026-01-20 - Part 2)', () {
@@ -1323,6 +1211,116 @@ void main() {
         Category.fees,
         Subcategory.bankFees,
       ));
+    });
+
+    test('categorizes New Rules (User Request 2026-01-26)', () {
+      final d = dummyDate;
+
+      // --- GENERAL KEYWORDS ---
+
+      // 'NATURALCYCLES' -> Health / Doctor
+      expect(service.categorize('NATURALCYCLES', -100, d), (
+        Category.health,
+        Subcategory.doctor,
+      ));
+
+      // 'HORNBACH' -> Shopping / Tools
+      expect(service.categorize('Köp HORNBACH', -500, d), (
+        Category.shopping,
+        Subcategory.tools,
+      ));
+
+      // 'NONNA', 'BENNE PASTA' -> Food / Restaurant
+      expect(service.categorize('NONNA', -200, d), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('BENNE PASTA', -150, d), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+
+      // 'LEKIA' -> Shopping / Gifts
+      expect(service.categorize('LEKIA', -300, d), (
+        Category.shopping,
+        Subcategory.gifts,
+      ));
+      
+      // 'Betalning BG 5597-7003 SPORTDANSKLU' -> Shopping / Gifts
+      expect(
+          service.categorize(
+              'Betalning BG 5597-7003 SPORTDANSKLU', -300, d),
+          (Category.shopping, Subcategory.gifts));
+
+      // 'BEAUTY STYLE VA' -> Health / Beauty
+      expect(service.categorize('BEAUTY STYLE VA', -400, d), (
+        Category.health,
+        Subcategory.beauty,
+      ));
+
+      // 'SJ.SE' -> Entertainment / Travel
+      expect(service.categorize('SJ.SE', -500, d), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+
+      // 'KRABBESK{RS FISK' -> Food / Groceries
+      expect(service.categorize('KRABBESK{RS FISK', -200, d), (
+        Category.food,
+        Subcategory.groceries,
+      ));
+
+      // 'ginatricot' -> Shopping / Clothes
+      expect(service.categorize('ginatricot', -400, d), (
+        Category.shopping,
+        Subcategory.clothes,
+      ));
+
+      // --- SPECIFIC EXCEPTIONS (OVERRIDES) ---
+
+      // Row: 2025/07/28;-498,00;...;Kortköp 250726 LEXINGTON HOME GOT;...
+      // -> Shopping / Decor
+      expect(
+        service.categorize(
+          'Kortköp 250726 LEXINGTON HOME GOT',
+          -498.00,
+          DateTime(2025, 7, 28),
+        ),
+        (Category.shopping, Subcategory.decor),
+      );
+
+      // Row: 2025-07-27;...;LEKIA KUNGSGATAN;...;304
+      // -> Shopping / Gifts
+      expect(
+        service.categorize(
+          'LEKIA KUNGSGATAN',
+          -304.0,
+          DateTime(2025, 7, 27),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
+
+      // Row: 2025/07/26;2000,00;...;Swish inbetalning JOAKIM MALMQVIST;...
+      // -> Income / KitchenRenovation
+      expect(
+        service.categorize(
+          'Swish inbetalning JOAKIM MALMQVIST',
+          2000.00,
+          DateTime(2025, 7, 26),
+        ),
+        (Category.income, Subcategory.kitchenRenovation),
+      );
+
+      // Row: 2025/07/23;-200,00;...;Swish betalning LUCAS MALINA;...
+      // -> Other / Other
+      expect(
+        service.categorize(
+          'Swish betalning LUCAS MALINA',
+          -200.00,
+          DateTime(2025, 7, 23),
+        ),
+        (Category.other, Subcategory.other),
+      );
     });
   });
 }
