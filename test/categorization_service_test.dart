@@ -320,6 +320,14 @@ void main() {
         Category.housing,
         Subcategory.brfFee,
       ));
+
+      // Verification for Kitchen Renovation (User Request 2026-01-26)
+      expect(service.categorize('Factoringgrup', -5000, dummyDate), (
+        Category.housing,
+        Subcategory.kitchenRenovation,
+      ));
+      // Explicitly check that it is part of the enum (compile-time check essentially)
+      expect(Category.housing.subcategories, contains(Subcategory.kitchenRenovation));
     });
 
     test('categorizes Fees accurately', () {
@@ -859,7 +867,7 @@ void main() {
           2600.00,
           DateTime(2025, 8, 11),
         ),
-        (Category.housing, Subcategory.kitchenRenovation),
+        (Category.income, Subcategory.kitchenRenovation),
       );
 
       // Housing / KitchenRenovation - Exception 2
@@ -869,7 +877,7 @@ void main() {
           1000.00,
           DateTime(2025, 8, 11),
         ),
-        (Category.housing, Subcategory.kitchenRenovation),
+        (Category.income, Subcategory.kitchenRenovation),
       );
 
       // Housing / KitchenRenovation - Exception 3
@@ -879,7 +887,7 @@ void main() {
           1500.00,
           DateTime(2025, 8, 10),
         ),
-        (Category.housing, Subcategory.kitchenRenovation),
+        (Category.income, Subcategory.kitchenRenovation),
       );
 
       // Other / Other - Exception 4

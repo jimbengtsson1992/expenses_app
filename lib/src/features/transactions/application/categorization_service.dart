@@ -31,19 +31,19 @@ class CategorizationService {
     if (_matches(description, ['Swish inbetalning SADIQ MAMAND']) &&
         (amount == 2600.00 || amount == -2600.00)) { // Allowing both for safety, but request was positive 2600,00
          if (date.year == 2025 && date.month == 8 && date.day == 11) {
-            return (Category.housing, Subcategory.kitchenRenovation);
+            return (Category.income, Subcategory.kitchenRenovation);
          }
     }
     if (_matches(description, ['Swish inbetalning AZMIR ALIC']) &&
         (amount == 1000.00)) {
          if (date.year == 2025 && date.month == 8 && date.day == 11) {
-            return (Category.housing, Subcategory.kitchenRenovation);
+            return (Category.income, Subcategory.kitchenRenovation);
          }
     }
     if (_matches(description, ['Swish inbetalning ANDERSSON,MIKAEL']) &&
         (amount == 1500.00)) {
          if (date.year == 2025 && date.month == 8 && date.day == 10) {
-            return (Category.housing, Subcategory.kitchenRenovation);
+            return (Category.income, Subcategory.kitchenRenovation);
          }
     }
     // Other / Other

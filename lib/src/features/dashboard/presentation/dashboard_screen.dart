@@ -30,6 +30,14 @@ class CurrentDate extends _$CurrentDate {
   }
 }
 
+@riverpod
+class DashboardIncludeRenovationAndLoan extends _$DashboardIncludeRenovationAndLoan {
+  @override
+  bool build() => true;
+
+  void toggle() => state = !state;
+}
+
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
 
@@ -46,6 +54,23 @@ class DashboardScreen extends ConsumerWidget {
               ref.read(currentDateProvider.notifier).previousMonth(),
           onNext: () => ref.read(currentDateProvider.notifier).nextMonth(),
         ),
+        actions: [
+          Row(
+            children: [
+              Text(
+                'Renovering & Lån',
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              Switch(
+                value: ref.watch(dashboardIncludeRenovationAndLoanProvider),
+                onChanged: (_) => ref
+                    .read(dashboardIncludeRenovationAndLoanProvider.notifier)
+                    .toggle(),
+              ),
+            ],
+          ),
+          const SizedBox(width: 8),
+        ],
         centerTitle: true,
       ),
       body: expensesAsync.when(
@@ -57,12 +82,12 @@ class DashboardScreen extends ConsumerWidget {
   }
 }
 
-class _DashboardContent extends StatelessWidget {
+class _DashboardContent extends ConsumerWidget {
   const _DashboardContent({required this.expenses});
   final List<Transaction> expenses;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // Calculate Totals
     double totalIncome = 0;
     double totalExpenses = 0;
@@ -74,8 +99,25 @@ class _DashboardContent extends StatelessWidget {
     final expenseSubcategoryTotals = <Category, Map<Subcategory, double>>{};
     final incomeSubcategoryTotals = <Category, Map<Subcategory, double>>{};
 
+    final includeRenovationAndLoan = ref.watch(dashboardIncludeRenovationAndLoanProvider);
+
     for (final e in expenses) {
       if (e.excludeFromOverview) continue;
+
+      if (!includeRenovationAndLoan) {
+        if (e.category == Category.housing &&
+            e.subcategory == Subcategory.kitchenRenovation) {
+          continue;
+        }
+        if (e.category == Category.income &&
+            e.subcategory == Subcategory.loan) {
+          continue;
+        }
+        if (e.category == Category.income &&
+            e.subcategory == Subcategory.kitchenRenovation) {
+          continue;
+        }
+      }
 
       if (e.type == TransactionType.income) {
         totalIncome += e.amount.abs();
