@@ -867,7 +867,7 @@ void main() {
           2600.00,
           DateTime(2025, 8, 11),
         ),
-        (Category.income, Subcategory.kitchenRenovation),
+        (Category.income, Subcategory.other),
       );
 
       // Housing / KitchenRenovation - Exception 2

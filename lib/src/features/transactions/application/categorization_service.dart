@@ -31,7 +31,7 @@ class CategorizationService {
     if (_matches(description, ['Swish inbetalning SADIQ MAMAND']) &&
         (amount == 2600.00 || amount == -2600.00)) { // Allowing both for safety, but request was positive 2600,00
          if (date.year == 2025 && date.month == 8 && date.day == 11) {
-            return (Category.income, Subcategory.kitchenRenovation);
+            return (Category.income, Subcategory.other);
          }
     }
     if (_matches(description, ['Swish inbetalning AZMIR ALIC']) &&

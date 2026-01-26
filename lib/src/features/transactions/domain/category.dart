@@ -82,6 +82,7 @@ enum Category {
     Subcategory.salary,
     Subcategory.interest,
     Subcategory.loan,
+    Subcategory.kitchenRenovation,
     Subcategory.unknown,
     Subcategory.other,
   ]),
