@@ -728,6 +728,16 @@ void main() {
         ),
         (Category.shopping, Subcategory.gifts),
       );
+
+      // Loan Deposit (User Request 2026-01-26)
+      expect(
+        service.categorize(
+          'Insättning',
+          400000.00,
+          DateTime(2025, 2, 3),
+        ),
+        (Category.income, Subcategory.loan),
+      );
     });
     test('categorizes New Rules (User Request 2026-01-20 - Zettle)', () {
       // ZETTLE_*VR SNABBTAG SV -> Food/Coffee

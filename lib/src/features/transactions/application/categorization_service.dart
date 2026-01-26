@@ -20,6 +20,14 @@ class CategorizationService {
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
     // --- New User Request 2026-01-26 ---
     // Housing / KitchenRenovation
+    // --- New User Request 2026-01-26 ---
+    if (_matches(description, ['Insättning']) &&
+        (amount == 400000.00)) {
+       if (date.year == 2025 && date.month == 2 && date.day == 3) {
+          return (Category.income, Subcategory.loan);
+       }
+    }
+    
     if (_matches(description, ['Swish inbetalning SADIQ MAMAND']) &&
         (amount == 2600.00 || amount == -2600.00)) { // Allowing both for safety, but request was positive 2600,00
          if (date.year == 2025 && date.month == 8 && date.day == 11) {
