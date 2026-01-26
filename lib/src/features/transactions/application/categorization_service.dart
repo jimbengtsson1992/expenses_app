@@ -18,6 +18,48 @@ class CategorizationService {
     final lowerDesc = description.toLowerCase();
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
+    // --- New User Request 2026-01-26 ---
+    // Housing / KitchenRenovation
+    if (_matches(description, ['Swish inbetalning SADIQ MAMAND']) &&
+        (amount == 2600.00 || amount == -2600.00)) { // Allowing both for safety, but request was positive 2600,00
+         if (date.year == 2025 && date.month == 8 && date.day == 11) {
+            return (Category.housing, Subcategory.kitchenRenovation);
+         }
+    }
+    if (_matches(description, ['Swish inbetalning AZMIR ALIC']) &&
+        (amount == 1000.00)) {
+         if (date.year == 2025 && date.month == 8 && date.day == 11) {
+            return (Category.housing, Subcategory.kitchenRenovation);
+         }
+    }
+    if (_matches(description, ['Swish inbetalning ANDERSSON,MIKAEL']) &&
+        (amount == 1500.00)) {
+         if (date.year == 2025 && date.month == 8 && date.day == 10) {
+            return (Category.housing, Subcategory.kitchenRenovation);
+         }
+    }
+    // Other / Other
+    if (_matches(description, ['Swish betalning PEHR ZETHELIUS']) &&
+        (amount == -200.00)) {
+         if (date.year == 2025 && date.month == 8 && date.day == 10) {
+            return (Category.other, Subcategory.other);
+         }
+    }
+     // Shopping / Decor
+    if (_matches(description, ['SVEA*ALSENS.COM']) &&
+        (amount == -116.0)) {
+         if (date.year == 2025 && date.month == 8 && date.day == 8) {
+            return (Category.shopping, Subcategory.decor);
+         }
+    }
+     // Entertainment / Travel
+    if (_matches(description, ['MS* GRANDHOTELFALKENB']) &&
+        (amount == -2108.0)) {
+         if (date.year == 2025 && date.month == 8 && date.day == 2) {
+            return (Category.entertainment, Subcategory.travel);
+         }
+    }
+
     if (_matches(description, ['STUDIO']) &&
         (amount == 521.4) &&
         date.year == 2025 &&
@@ -434,7 +476,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['systembolaget'])) {
       return (Category.food, Subcategory.alcohol);
     }
-    if (_matches(lowerDesc, ['foodora ab'])) {
+    if (_matches(lowerDesc, ['foodora ab', 'indiska hornet'])) {
       return (Category.food, Subcategory.takeaway);
     }
     if (_matches(lowerDesc, ['masaki halsosushi ab'])) {
@@ -488,6 +530,8 @@ class CategorizationService {
       'vita duvan',
       'elio',
       'loco',
+      'villa belparc',
+
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -500,6 +544,8 @@ class CategorizationService {
       'the melody club',
       'park lane resta',
       'on air game shows swed',
+      'champagnebaren',
+
     ])) {
       return (Category.entertainment, Subcategory.bar);
     }
@@ -519,6 +565,8 @@ class CategorizationService {
       '5151 ritazza st',
       'tehuset',
       'kaffelabbet',
+      'stenugnsbageriet heden',
+
     ])) {
       return (Category.food, Subcategory.coffee);
     }
@@ -727,6 +775,10 @@ class CategorizationService {
     if (_matches(lowerDesc, ['verisure'])) {
       return (Category.housing, Subcategory.security);
     }
+    if (_matches(lowerDesc, ['factoringgrup'])) {
+      return (Category.housing, Subcategory.kitchenRenovation);
+    }
+
     if (_matches(lowerDesc, ['renahus'])) {
       return (Category.housing, Subcategory.cleaning);
     }
@@ -781,7 +833,7 @@ class CategorizationService {
     }
 
     // Savings (Removed category, moved to Other)
-    if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk'])) {
+    if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk', 'torpa'])) {
       return (Category.other, Subcategory.other);
     }
 
