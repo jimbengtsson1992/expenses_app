@@ -19,6 +19,32 @@ class CategorizationService {
 
     // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
     // --- New User Request 2026-01-26 ---
+    // Override: Swish betalning STRANDVERKET I MARS -> Other/Other
+    if (_matches(description, ['Swish betalning STRANDVERKET I MARS']) &&
+        (amount == -20.00) &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 12) {
+      return (Category.other, Subcategory.other);
+    }
+    // Override: Swish betalning GABRIELLA FOSSUM -> Other/Other
+    if (_matches(description, ['Swish betalning GABRIELLA FOSSUM']) &&
+        (amount == -525.00) &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 3) {
+      return (Category.other, Subcategory.other);
+    }
+    // Override: Swish betalning LINDSTRÖM,VENDELA -> Other/Other
+    if (_matches(description, ['Swish betalning LINDSTRÖM,VENDELA']) &&
+        (amount == -689.50) &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 31) {
+      return (Category.other, Subcategory.other);
+    }
+
+
     // Override: ROGER NILSSON STAVERSH -> Other/Other
     if (_matches(description, ['ROGER NILSSON STAVERSH']) &&
         (amount == 120.0 || amount == -120.0) &&

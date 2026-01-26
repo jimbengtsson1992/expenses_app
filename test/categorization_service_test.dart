@@ -1432,5 +1432,32 @@ void main() {
         Subcategory.decor,
       ));
     });
+    test('categorizes New Rules (User Request 2026-01-26 - Swish Overrides)', () {
+      expect(
+        service.categorize(
+          'Swish betalning STRANDVERKET I MARS',
+          -20.00,
+          DateTime(2025, 7, 12),
+        ),
+        (Category.other, Subcategory.other),
+      );
+      expect(
+        service.categorize(
+          'Swish betalning GABRIELLA FOSSUM',
+          -525.00,
+          DateTime(2025, 7, 3),
+        ),
+        (Category.other, Subcategory.other),
+      );
+      expect(
+        service.categorize(
+          'Swish betalning LINDSTRÖM,VENDELA',
+          -689.50,
+          DateTime(2025, 7, 31),
+        ),
+        (Category.other, Subcategory.other),
+      );
+    });
   });
+
 }
