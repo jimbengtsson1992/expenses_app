@@ -71,7 +71,8 @@ class _DashboardContent extends StatelessWidget {
     final incomeCategoryTotals = <Category, double>{};
 
     // Map<Category, Map<Subcategory, double>>
-    final subcategoryTotals = <Category, Map<Subcategory, double>>{};
+    final expenseSubcategoryTotals = <Category, Map<Subcategory, double>>{};
+    final incomeSubcategoryTotals = <Category, Map<Subcategory, double>>{};
 
     for (final e in expenses) {
       if (e.excludeFromOverview) continue;
@@ -83,6 +84,15 @@ class _DashboardContent extends StatelessWidget {
           (val) => val + e.amount.abs(),
           ifAbsent: () => e.amount.abs(),
         );
+        
+        if (!incomeSubcategoryTotals.containsKey(e.category)) {
+          incomeSubcategoryTotals[e.category] = {};
+        }
+        incomeSubcategoryTotals[e.category]!.update(
+          e.subcategory,
+          (val) => val + e.amount.abs(),
+          ifAbsent: () => e.amount.abs(),
+        );
       } else {
         // Expense transaction
         totalExpenses += e.amount.abs();
@@ -91,17 +101,16 @@ class _DashboardContent extends StatelessWidget {
           (val) => val + e.amount.abs(),
           ifAbsent: () => e.amount.abs(),
         );
-      }
 
-      // Subcategory totals (Applicable for both Income and Expenses)
-      if (!subcategoryTotals.containsKey(e.category)) {
-        subcategoryTotals[e.category] = {};
+        if (!expenseSubcategoryTotals.containsKey(e.category)) {
+          expenseSubcategoryTotals[e.category] = {};
+        }
+        expenseSubcategoryTotals[e.category]!.update(
+          e.subcategory,
+          (val) => val + e.amount.abs(),
+          ifAbsent: () => e.amount.abs(),
+        );
       }
-      subcategoryTotals[e.category]!.update(
-        e.subcategory,
-        (val) => val + e.amount.abs(),
-        ifAbsent: () => e.amount.abs(),
-      );
     }
 
     final netResult = totalIncome - totalExpenses;
@@ -208,7 +217,7 @@ class _DashboardContent extends StatelessWidget {
           final cat = e.key;
           final amount = e.value;
           final percentage = totalExpenses > 0 ? amount / totalExpenses : 0.0;
-          final subs = subcategoryTotals[cat] ?? {};
+          final subs = expenseSubcategoryTotals[cat] ?? {};
 
           // Sort subs by amount
           final sortedSubs = subs.entries.toList()
@@ -311,7 +320,10 @@ class _DashboardContent extends StatelessWidget {
                     // Link to list
                     TextButton(
                       onPressed: () =>
-                          TransactionsListRoute(category: cat).go(context),
+                          TransactionsListRoute(
+                            category: cat,
+                            filterType: TransactionType.expense,
+                          ).go(context),
                       child: const Text('Visa alla transaktioner'),
                     ),
                   ],
@@ -332,7 +344,7 @@ class _DashboardContent extends StatelessWidget {
             final cat = e.key;
             final amount = e.value;
             final percentage = totalIncome > 0 ? amount / totalIncome : 0.0;
-            final subs = subcategoryTotals[cat] ?? {};
+            final subs = incomeSubcategoryTotals[cat] ?? {};
 
             // Sort subs by amount
             final sortedSubs = subs.entries.toList()
@@ -436,7 +448,10 @@ class _DashboardContent extends StatelessWidget {
                       // Link to list
                       TextButton(
                         onPressed: () =>
-                            TransactionsListRoute(category: cat).go(context),
+                            TransactionsListRoute(
+                              category: cat,
+                              filterType: TransactionType.income,
+                            ).go(context),
                         child: const Text('Visa alla transaktioner'),
                       ),
                     ],
