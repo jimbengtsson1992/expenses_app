@@ -112,6 +112,7 @@ const _$SubcategoryEnumMap = {
   Subcategory.parking: 'parking',
   Subcategory.salary: 'salary',
   Subcategory.interest: 'interest',
+  Subcategory.loan: 'loan',
   Subcategory.personalInsurance: 'personalInsurance',
   Subcategory.godfather: 'godfather',
   Subcategory.mobileSubscription: 'mobileSubscription',

@@ -81,6 +81,7 @@ enum Category {
   income('Inkomst', 0xFF009688, '💰', [
     Subcategory.salary,
     Subcategory.interest,
+    Subcategory.loan,
     Subcategory.unknown,
     Subcategory.other,
   ]),

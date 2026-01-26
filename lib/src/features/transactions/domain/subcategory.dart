@@ -59,6 +59,7 @@ enum Subcategory {
   // --- Inkomst (Income) ---
   salary('Lön'),
   interest('Ränta'),
+  loan('Lån'),
 
   // --- Övrigt (Other) ---
   personalInsurance('Personförsäkringar'),
