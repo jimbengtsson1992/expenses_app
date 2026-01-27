@@ -79,10 +79,12 @@ class CategorizationService {
     if (_matches(description, ['Swish betalning LEJON,MIKAEL']) &&
         date.year == 2025 &&
         date.month == 6) {
-      if (date.day == 16 && amount == -230.00)
+      if (date.day == 16 && amount == -230.00) {
         return (Category.other, Subcategory.other);
-      if (date.day == 13 && amount == -585.00)
+      }
+      if (date.day == 13 && amount == -585.00) {
         return (Category.other, Subcategory.other);
+      }
     }
     if (_matches(description, ['ULLEVI KONFEREN']) &&
         date.year == 2025 &&
@@ -164,6 +166,10 @@ class CategorizationService {
         date.month == 7 &&
         date.day == 5) {
       return (Category.shopping, Subcategory.decor);
+    }
+    // Override: SVEA BANK AB -> Housing/KitchenRenovation
+    if (_matches(description, ['Kortköp 250625 SVEA BANK AB'])) {
+      return (Category.housing, Subcategory.kitchenRenovation);
     }
 
     // Specific Overrides Batch 2

@@ -278,6 +278,15 @@ void main() {
         service.categorize('Swish betalning PETTER NILSSON', 885.72, dummyDate),
         (Category.food, Subcategory.restaurant),
       );
+      // SVEA BANK AB -> Housing/KitchenRenovation (User Request 2026-01-27)
+      expect(
+        service.categorize(
+          'Kortköp 250625 SVEA BANK AB',
+          -1000,
+          dummyDate,
+        ),
+        (Category.housing, Subcategory.kitchenRenovation),
+      );
     });
 
     test('categorizes Health accurately', () {
