@@ -798,6 +798,22 @@ void main() {
         Subcategory.lunch,
       ));
 
+      // Regression test for "Bankomat" vs "mat" (User Request 2026-01-27)
+      // "mat" matches Food/Restaurant, but "Bankomat" should NOT.
+      expect(
+        service.categorize('Bankomat kl 09.48', -500, dummyDate),
+        isNot((Category.food, Subcategory.restaurant)),
+      );
+      // Ensure strict "mat" still works
+      expect(
+        service.categorize('Köp av mat', -100, dummyDate),
+        (Category.food, Subcategory.restaurant),
+      );
+      expect(
+        service.categorize('MAT OCH PRAT', -100, dummyDate),
+        (Category.food, Subcategory.restaurant),
+      );
+
       // Shopping / Clothes
       expect(service.categorize('NEWBODY AB', -100, dummyDate), (
         Category.shopping,

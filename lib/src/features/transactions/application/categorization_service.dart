@@ -596,7 +596,7 @@ class CategorizationService {
       'kitchen',
       'restaurant',
       'restaurang',
-      'mat',
+//      'mat', // Moved to strict match
       'pizza',
       'burger',
       'starbucks',
@@ -628,6 +628,11 @@ class CategorizationService {
       'chicca belloni',
       'collage',
     ])) {
+      return (Category.food, Subcategory.restaurant);
+    }
+
+    // Strict match for 'mat' to avoid matching 'Bankomat'
+    if (RegExp(r'\bmat\b', caseSensitive: false).hasMatch(description)) {
       return (Category.food, Subcategory.restaurant);
     }
 
