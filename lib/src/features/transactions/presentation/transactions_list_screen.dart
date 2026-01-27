@@ -527,7 +527,7 @@ class _TransactionsListScreenState
               ),
 
               // --- Summary Widget ---
-               if (filteredExpenses.isNotEmpty)
+              if (filteredExpenses.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,

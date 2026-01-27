@@ -1,4 +1,3 @@
-
 import 'package:expenses/src/features/transactions/application/categorization_service.dart';
 import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:expenses/src/features/transactions/domain/subcategory.dart';
@@ -11,7 +10,11 @@ void main() {
     final amount = -1940.00;
     final date = DateTime(2025, 06, 26);
 
-    final (category, subcategory) = service.categorize(description, amount, date);
+    final (category, subcategory) = service.categorize(
+      description,
+      amount,
+      date,
+    );
 
     print('Category: $category, Subcategory: $subcategory');
 
@@ -22,11 +25,15 @@ void main() {
   test('NK STOCKHOLM should BE categorized as Shopping/Clothes', () {
     final service = CategorizationService();
     // legitimate transaction
-    final description = 'Kortköp 251221 NK STOCKHOLM'; 
+    final description = 'Kortköp 251221 NK STOCKHOLM';
     final amount = -500.00;
     final date = DateTime(2025, 12, 22);
 
-    final (category, subcategory) = service.categorize(description, amount, date);
+    final (category, subcategory) = service.categorize(
+      description,
+      amount,
+      date,
+    );
 
     expect(category, Category.shopping);
     expect(subcategory, Subcategory.clothes);

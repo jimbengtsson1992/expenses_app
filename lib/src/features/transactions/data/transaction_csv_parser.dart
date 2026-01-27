@@ -11,12 +11,7 @@ import '../domain/subcategory.dart';
 import '../application/categorization_service.dart';
 import 'user_rules_repository.dart';
 
-enum AmexSection {
-  none,
-  other,
-  purchases,
-}
-
+enum AmexSection { none, other, purchases }
 
 class TransactionCsvParser {
   TransactionCsvParser(this._categorizationService, this._userRulesRepository);
@@ -238,8 +233,7 @@ class TransactionCsvParser {
       if (row[6] is num) {
         rawAmount = (row[6] as num).toDouble();
       } else {
-        rawAmount =
-            double.tryParse(amountStr.replaceAll(',', '')) ?? 0;
+        rawAmount = double.tryParse(amountStr.replaceAll(',', '')) ?? 0;
       }
 
       // Filter Logic based on Section
@@ -318,7 +312,6 @@ class TransactionCsvParser {
     }
     return expenses;
   }
-
 
   // Generate a deterministic stable ID
   String _generateStableId(

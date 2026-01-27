@@ -31,7 +31,8 @@ class CurrentDate extends _$CurrentDate {
 }
 
 @riverpod
-class DashboardIncludeRenovationAndLoan extends _$DashboardIncludeRenovationAndLoan {
+class DashboardIncludeRenovationAndLoan
+    extends _$DashboardIncludeRenovationAndLoan {
   @override
   bool build() => true;
 
@@ -99,7 +100,9 @@ class _DashboardContent extends ConsumerWidget {
     final expenseSubcategoryTotals = <Category, Map<Subcategory, double>>{};
     final incomeSubcategoryTotals = <Category, Map<Subcategory, double>>{};
 
-    final includeRenovationAndLoan = ref.watch(dashboardIncludeRenovationAndLoanProvider);
+    final includeRenovationAndLoan = ref.watch(
+      dashboardIncludeRenovationAndLoanProvider,
+    );
 
     for (final e in expenses) {
       if (e.excludeFromOverview) continue;
@@ -126,7 +129,7 @@ class _DashboardContent extends ConsumerWidget {
           (val) => val + e.amount.abs(),
           ifAbsent: () => e.amount.abs(),
         );
-        
+
         if (!incomeSubcategoryTotals.containsKey(e.category)) {
           incomeSubcategoryTotals[e.category] = {};
         }
@@ -361,11 +364,10 @@ class _DashboardContent extends ConsumerWidget {
                       ),
                     // Link to list
                     TextButton(
-                      onPressed: () =>
-                          TransactionsListRoute(
-                            category: cat,
-                            filterType: TransactionType.expense,
-                          ).go(context),
+                      onPressed: () => TransactionsListRoute(
+                        category: cat,
+                        filterType: TransactionType.expense,
+                      ).go(context),
                       child: const Text('Visa alla transaktioner'),
                     ),
                   ],
@@ -489,11 +491,10 @@ class _DashboardContent extends ConsumerWidget {
                         ),
                       // Link to list
                       TextButton(
-                        onPressed: () =>
-                            TransactionsListRoute(
-                              category: cat,
-                              filterType: TransactionType.income,
-                            ).go(context),
+                        onPressed: () => TransactionsListRoute(
+                          category: cat,
+                          filterType: TransactionType.income,
+                        ).go(context),
                         child: const Text('Visa alla transaktioner'),
                       ),
                     ],

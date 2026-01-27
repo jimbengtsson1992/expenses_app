@@ -16,10 +16,7 @@ class NetResultBadge extends StatelessWidget {
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 16,
-        vertical: 8,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: isSaved
             ? Colors.green.withValues(alpha: 0.2)

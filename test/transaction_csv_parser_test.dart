@@ -1,4 +1,3 @@
-
 import 'package:expenses/src/features/transactions/application/categorization_service.dart';
 import 'package:expenses/src/features/transactions/data/transaction_csv_parser.dart';
 import 'package:expenses/src/features/transactions/data/user_rules_repository.dart';
@@ -109,7 +108,7 @@ void main() {
         // Let's assume standard variants based on requirements.
       ];
 
-       for (final desc in excludedBetalningDescriptions) {
+      for (final desc in excludedBetalningDescriptions) {
         expect(
           parser.shouldExcludeFromOverview(desc, 100, date),
           true,
@@ -153,8 +152,10 @@ void main() {
       );
     });
 
-    test('parseSasAmexCsv parses transactions and supports multiple sections', () {
-      const csvContent = '''
+    test(
+      'parseSasAmexCsv parses transactions and supports multiple sections',
+      () {
+        const csvContent = '''
 Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
 2025-07-30;2025-07-31;Some Purchase;;SEK;0;100
 ;;Summa utgifter/debiteringar;;;;100
@@ -165,31 +166,37 @@ Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
 ;;Summa avgifter;;;;2630
 ''';
 
-      final idRegistry = <String, int>{};
-      final transactions = parser.parseSasAmexCsv(
-        csvContent,
-        'test.csv',
-        idRegistry,
-      );
+        final idRegistry = <String, int>{};
+        final transactions = parser.parseSasAmexCsv(
+          csvContent,
+          'test.csv',
+          idRegistry,
+        );
 
-      // We expect 3 transactions: Purchase, Fee 1, Fee 2.
-      // If the parser stops at "Summa utgifter", we get 1.
-      expect(transactions.length, 3,
+        // We expect 3 transactions: Purchase, Fee 1, Fee 2.
+        // If the parser stops at "Summa utgifter", we get 1.
+        expect(
+          transactions.length,
+          3,
           reason:
-              'Should parse all sections including fees. Found ${transactions.length}');
+              'Should parse all sections including fees. Found ${transactions.length}',
+        );
 
-      final fee1 = transactions.firstWhere((t) => t.description == 'ÅRSAVGIFT');
-      expect(fee1.amount, -2335.0); // Converted to negative
+        final fee1 = transactions.firstWhere(
+          (t) => t.description == 'ÅRSAVGIFT',
+        );
+        expect(fee1.amount, -2335.0); // Converted to negative
 
-      final fee2 = transactions.firstWhere(
-        (t) => t.description == 'EXTRAKORTSAVGIFT',
-      );
-      expect(fee2.amount, -295.0);
-    });
+        final fee2 = transactions.firstWhere(
+          (t) => t.description == 'EXTRAKORTSAVGIFT',
+        );
+        expect(fee2.amount, -295.0);
+      },
+    );
     test(
-        'parseSasAmexCsv parses "Totalt övriga händelser" but excludes payments (negative)',
-        () {
-      const csvContent = '''
+      'parseSasAmexCsv parses "Totalt övriga händelser" but excludes payments (negative)',
+      () {
+        const csvContent = '''
 Transaktionsexport;;;;;;2026-01-25 16:14:59
 ;;;;;;
 Totalt övriga händelser;;;;;;
@@ -205,27 +212,29 @@ Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
 2026-01-23;2026-01-23;ESPRESSO HOUSE 363;GOETEBORG;SEK;0;58
 ''';
 
-      final transactions = parser.parseSasAmexCsv(
-        csvContent,
-        'amex_test.csv',
-        {},
-      );
+        final transactions = parser.parseSasAmexCsv(
+          csvContent,
+          'amex_test.csv',
+          {},
+        );
 
-      // We expect:
-      // 1. ÅRSAVGIFT (2335 -> became -2335)
-      // 2. EXTRAKORTSAVGIFT (295 -> became -295)
-      // 3. ESPRESSO HOUSE (58 -> became -58)
-      // 4. BETALT BG DATUM (negative value) should be EXCLUDED.
+        // We expect:
+        // 1. ÅRSAVGIFT (2335 -> became -2335)
+        // 2. EXTRAKORTSAVGIFT (295 -> became -295)
+        // 3. ESPRESSO HOUSE (58 -> became -58)
+        // 4. BETALT BG DATUM (negative value) should be EXCLUDED.
 
-      expect(transactions.length, 3);
-      expect(
-          transactions.any((t) => t.description == 'ÅRSAVGIFT'), isTrue);
-      expect(
+        expect(transactions.length, 3);
+        expect(transactions.any((t) => t.description == 'ÅRSAVGIFT'), isTrue);
+        expect(
           transactions.any((t) => t.description == 'EXTRAKORTSAVGIFT'),
-          isTrue);
-      expect(
+          isTrue,
+        );
+        expect(
           transactions.any((t) => t.description.contains('BETALT BG DATUM')),
-          isFalse);
-    });
+          isFalse,
+        );
+      },
+    );
   });
 }
