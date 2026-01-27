@@ -693,8 +693,13 @@ class CategorizationService {
     if (_matches(lowerDesc, ['vasque kemtvatt'])) {
       return (Category.shopping, Subcategory.dryCleaning);
     }
+
+    // Strict match for NK to avoid matching "BANK"
+    if (RegExp(r'\bnk\b', caseSensitive: false).hasMatch(description)) {
+      return (Category.shopping, Subcategory.clothes);
+    }
+
     if (_matches(lowerDesc, [
-      'nk ',
       'mq ',
       'åhlens',
       'hestra',
