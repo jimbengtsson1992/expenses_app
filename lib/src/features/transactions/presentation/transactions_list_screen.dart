@@ -52,7 +52,8 @@ class _TransactionsListScreenState
     _filterCategory = widget.initialCategory;
     _filterType = widget.filterType;
     _filterAccount = widget.initialAccount;
-    _filterExcludeFromOverview = widget.initialExcludeFromOverview;
+    // Default to 'Included' (false) if not specified
+    _filterExcludeFromOverview = widget.initialExcludeFromOverview ?? false;
 
     if (_filterCategory != null) {
       _filterSubcategories = _filterCategory!.subcategories.toSet();
@@ -71,7 +72,8 @@ class _TransactionsListScreenState
         _filterCategory = widget.initialCategory;
         _filterType = widget.filterType;
         _filterAccount = widget.initialAccount;
-        _filterExcludeFromOverview = widget.initialExcludeFromOverview;
+        // Default to 'Included' (false) if not specified
+        _filterExcludeFromOverview = widget.initialExcludeFromOverview ?? false;
         if (_filterCategory != null) {
           _filterSubcategories = _filterCategory!.subcategories.toSet();
         } else {
