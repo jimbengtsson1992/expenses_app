@@ -10,7 +10,6 @@ enum Category {
     Subcategory.broadband,
     Subcategory.cleaning,
     Subcategory.kitchenRenovation,
-    Subcategory.unknown,
     Subcategory.other,
   ]),
 
@@ -21,7 +20,6 @@ enum Category {
     Subcategory.takeaway,
     Subcategory.alcohol,
     Subcategory.coffee,
-    Subcategory.unknown,
     Subcategory.other,
   ]),
 
@@ -34,7 +32,6 @@ enum Category {
     Subcategory.beauty,
     Subcategory.tools,
     Subcategory.dryCleaning,
-    Subcategory.unknown,
     Subcategory.other,
   ]),
 
@@ -45,7 +42,6 @@ enum Category {
     Subcategory.boardGamesBooksAndToys,
     Subcategory.newspapers,
     Subcategory.streaming,
-    Subcategory.unknown,
     Subcategory.other,
   ]),
 
@@ -55,7 +51,6 @@ enum Category {
     Subcategory.doctor,
     Subcategory.beauty,
     Subcategory.supplements,
-    Subcategory.unknown,
     Subcategory.other,
   ]),
 
@@ -64,7 +59,6 @@ enum Category {
     Subcategory.tax,
     Subcategory.csn,
     Subcategory.jimHolding,
-    Subcategory.unknown,
     Subcategory.other,
   ]),
 
@@ -74,7 +68,6 @@ enum Category {
     Subcategory.car,
     Subcategory.fuel,
     Subcategory.parking,
-    Subcategory.unknown,
     Subcategory.other,
   ]),
 
@@ -83,7 +76,6 @@ enum Category {
     Subcategory.interest,
     Subcategory.loan,
     Subcategory.kitchenRenovation,
-    Subcategory.unknown,
     Subcategory.other,
   ]),
 
