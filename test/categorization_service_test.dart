@@ -1696,5 +1696,182 @@ void main() {
         (Category.other, Subcategory.other),
       );
     });
+
+    group('Categorization Updates 2026-01-28', () {
+      test('General Logic (Keywords)', () {
+        // Food/Restaurant
+        expect(service.categorize('ZETTLE_*VILLA ODINSLUN', -100, dummyDate), (Category.food, Subcategory.restaurant));
+        expect(service.categorize('BRASSERIE ISABELLE', -100, dummyDate), (Category.food, Subcategory.restaurant));
+        expect(service.categorize('BARABICU', -100, dummyDate), (Category.food, Subcategory.restaurant));
+        expect(service.categorize('STORKÖKET I GÖT', -100, dummyDate), (Category.food, Subcategory.restaurant));
+
+        // Shopping/Clothes
+        expect(service.categorize('REMANNS HOGTIDSKLADE', -100, dummyDate), (Category.shopping, Subcategory.clothes));
+        expect(service.categorize('TWILFIT AB', -100, dummyDate), (Category.shopping, Subcategory.clothes));
+        expect(service.categorize('SNEAKY STEVE', -100, dummyDate), (Category.shopping, Subcategory.clothes));
+
+        // Health/Gym
+        expect(service.categorize('GOTEBORGSVARVET', -100, dummyDate), (Category.health, Subcategory.gym));
+
+        // Food/Lunch
+        expect(service.categorize('SUNSET FALAFEL', -100, dummyDate), (Category.food, Subcategory.lunch));
+        expect(service.categorize('DELI OCH COFFEE', -100, dummyDate), (Category.food, Subcategory.lunch));
+
+        // Entertainment/Bar
+        expect(service.categorize('CLARION HOTEL POST', -100, dummyDate), (Category.entertainment, Subcategory.bar));
+        expect(service.categorize('FESKEKOERKAN', -100, dummyDate), (Category.entertainment, Subcategory.bar));
+
+        // Food/Coffee
+        expect(service.categorize('DA MATTEO - MAGASINSGA', -100, dummyDate), (Category.food, Subcategory.coffee));
+
+        // Food/Groceries
+        expect(service.categorize('Swish betalning WILLY:S AB', -100, dummyDate), (Category.food, Subcategory.groceries));
+
+        // Other/Other
+        expect(service.categorize('POTTAN - GÖTEBO', -100, dummyDate), (Category.other, Subcategory.other));
+      });
+
+      test('Specific Exceptions (Overrides)', () {
+        // 2025-05-30;2025-06-02;VALLGATAN 12 FA;GOTEBORG;SEK;0;5499 -> Shopping/Gifts
+        expect(
+          service.categorize('VALLGATAN 12 FA', -5499, DateTime(2025, 5, 30)),
+          (Category.shopping, Subcategory.gifts),
+        );
+
+        // 2025-05-29;2025-05-30;KARMA;STOCKHOLM;SEK;0;255 -> Food/Restaurant
+        expect(
+          service.categorize('KARMA', -255, DateTime(2025, 5, 29)),
+          (Category.food, Subcategory.restaurant),
+        );
+
+        // 2025-05-29;2025-05-30;KARMA;STOCKHOLM;SEK;0;189 -> Food/Lunch
+        expect(
+          service.categorize('KARMA', -189, DateTime(2025, 5, 29)),
+          (Category.food, Subcategory.lunch),
+        );
+
+        // 2025/05/28;-2665,00;1127 25 18957;;;Open Banking BG 133-3087 Allgas CMS;2254,25;SEK; -> Housing/KitchenRenovation
+        expect(
+          service.categorize('Open Banking BG 133-3087 Allgas CMS', -2665, DateTime(2025, 5, 28)),
+          (Category.housing, Subcategory.kitchenRenovation),
+        );
+
+        // 2025-05-25;2025-05-26;UNLMTED W/DR JOE DISPE;RAINIER;USD;31.25;309.59 -> Health/Doctor
+        // Note: Amount in CSV is 309.59 SEK (assumed based on context, usually last column is local currency amount or amount in SEK)
+        // The prompt says: "USD;31.25;309.59". 309.59 is likely the SEK amount.
+        expect(
+          service.categorize('UNLMTED W/DR JOE DISPE', -309.59, DateTime(2025, 5, 25)),
+          (Category.health, Subcategory.doctor),
+        );
+
+        // 2025-05-24;2025-05-26;KARAOKE-VERSION;LILLE;EUR;1.99;22.16 -> Other/Other
+        expect(
+          service.categorize('KARAOKE-VERSION', -22.16, DateTime(2025, 5, 24)),
+          (Category.other, Subcategory.other),
+        );
+
+        // 2025-05-21;2025-05-22;STATION LINNE 1;GOTEBORG;SEK;0;105 -> Entertainment/Bar
+        expect(
+          service.categorize('STATION LINNE 1', -105, DateTime(2025, 5, 21)),
+          (Category.entertainment, Subcategory.bar),
+        );
+
+        // 2025-05-21;2025-05-22;STATION LINNE 1;GOTEBORG;SEK;0;295 -> Food/Restaurant
+        expect(
+          service.categorize('STATION LINNE 1', -295, DateTime(2025, 5, 21)),
+          (Category.food, Subcategory.restaurant),
+        );
+
+        // 2025/05/20;-200,00;1127 25 18957;;;Swish betalning RAGNAR, MIRANDA;4486,25;SEK; -> Other/Other
+        expect(
+          service.categorize('Swish betalning RAGNAR, MIRANDA', -200, DateTime(2025, 5, 20)),
+          (Category.other, Subcategory.other),
+        );
+
+        // 2025/05/19;-100,00;1127 25 18949;;;Swish betalning Lukas Gustavsson;4334,80;SEK; -> Other/Other
+        expect(
+          service.categorize('Swish betalning Lukas Gustavsson', -100, DateTime(2025, 5, 19)),
+          (Category.other, Subcategory.other),
+        );
+
+        // 2025-05-18;2025-05-19;TIPTAPP.CO* TIPTAPP.CO;GOTEBORG;SEK;0;789 -> Housing/KitchenRenovation
+        expect(
+          service.categorize('TIPTAPP.CO* TIPTAPP.CO', -789, DateTime(2025, 5, 18)),
+          (Category.housing, Subcategory.kitchenRenovation),
+        );
+
+        // 2025-05-17;2025-05-19;VALLGATAN 12 FA;GOTEBORG;SEK;0;750 -> Shopping/Decor
+        expect(
+          service.categorize('VALLGATAN 12 FA', -750, DateTime(2025, 5, 17)),
+          (Category.shopping, Subcategory.decor),
+        );
+
+        // 2025/05/14;-145,00;1127 25 18949;;;Swish betalning Thomas Boussard;4397,80;SEK; -> Food/Lunch
+        expect(
+          service.categorize('Swish betalning Thomas Boussard', -145, DateTime(2025, 5, 14)),
+          (Category.food, Subcategory.lunch),
+        );
+
+        // 2025/05/13;-145,00;1127 25 18957;;;Autogiro K*flottegulv;4491,15;SEK; -> Housing/KitchenRenovation
+        expect(
+          service.categorize('Autogiro K*flottegulv', -145, DateTime(2025, 5, 13)),
+          (Category.housing, Subcategory.kitchenRenovation),
+        );
+
+        // 2025-05-12;2025-05-13;EDO SUSHI I GOTEBORG A;GOTEBORG;SEK;0;99 -> Food/Lunch
+        expect(
+          service.categorize('EDO SUSHI I GOTEBORG A', -99, DateTime(2025, 5, 12)),
+          (Category.food, Subcategory.lunch),
+        );
+
+        // 2025/05/08;-40,00;1127 25 18957;;;Swish betalning GABRIELLA FOSSUM;4648,15;SEK; -> Other/Other
+        expect(
+          service.categorize('Swish betalning GABRIELLA FOSSUM', -40, DateTime(2025, 5, 8)),
+          (Category.other, Subcategory.other),
+        );
+
+        // 2025/05/07;-145,00;1127 25 18957;;;Swish betalning LINDSTRÖM,VENDELA;4666,15;SEK; -> Food/Lunch
+        expect(
+          service.categorize('Swish betalning LINDSTRÖM,VENDELA', -145, DateTime(2025, 5, 7)),
+          (Category.food, Subcategory.lunch),
+        );
+
+        // 2025-05-07;2025-05-12;BSH HOME APPLIANCES AB;SUNDBYBERG;SEK;0;3807 -> Housing/KitchenRenovation
+        expect(
+          service.categorize('BSH HOME APPLIANCES AB', -3807, DateTime(2025, 5, 7)),
+          (Category.housing, Subcategory.kitchenRenovation),
+        );
+
+        // 2025-05-07;2025-05-09;BAMBA;GOTEBORG;SEK;0;330 -> Food/Lunch
+        expect(
+          service.categorize('BAMBA', -330, DateTime(2025, 5, 7)),
+          (Category.food, Subcategory.lunch),
+        );
+
+        // 2025-05-07;2025-05-09;O/O BAR;GOTEBORG;SEK;0;95 -> Entertainment/Bar
+        expect(
+          service.categorize('O/O BAR', -95, DateTime(2025, 5, 7)),
+          (Category.entertainment, Subcategory.bar),
+        );
+
+        // 2025/05/05;-130,00;1127 25 18949;;;Swish betalning EMMA NIRVIN;4377,80;SEK; -> Food/Lunch
+        expect(
+          service.categorize('Swish betalning EMMA NIRVIN', -130, DateTime(2025, 5, 5)),
+          (Category.food, Subcategory.lunch),
+        );
+
+        // 2025-05-01;2025-05-02;KLARNA*BESLAGONLINE.;BASTAD;SEK;0;7164 -> Housing/KitchenRenovation
+        expect(
+          service.categorize('KLARNA*BESLAGONLINE.', -7164, DateTime(2025, 5, 1)),
+          (Category.housing, Subcategory.kitchenRenovation),
+        );
+
+        // 2025-05-01;2025-05-02;MATSAL STORGATA;KUNGSBACKA;SEK;0;480 -> Food/Restaurant
+        expect(
+          service.categorize('MATSAL STORGATA', -480, DateTime(2025, 5, 1)),
+          (Category.food, Subcategory.restaurant),
+        );
+      });
+    });
   });
 }

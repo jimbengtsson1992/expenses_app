@@ -172,6 +172,155 @@ class CategorizationService {
       return (Category.housing, Subcategory.kitchenRenovation);
     }
 
+    // --- New User Request 2026-01-28 ---
+    if (_matches(description, ['VALLGATAN 12 FA']) &&
+        (amount == -5499) &&
+        date.year == 2025 && // 2025-05-30
+        date.month == 5 &&
+        date.day == 30) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['KARMA']) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 29) {
+      if (amount == -255.0) return (Category.food, Subcategory.restaurant);
+      if (amount == -189.0) return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['Open Banking BG 133-3087 Allgas CMS']) &&
+        (amount == -2665.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 28) {
+      return (Category.housing, Subcategory.kitchenRenovation);
+    }
+    if (_matches(description, ['UNLMTED W/DR JOE DISPE']) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 25) {
+      // Amount differs in request description vs logic sometimes, but description is unique enough here with date
+      return (Category.health, Subcategory.doctor);
+    }
+    if (_matches(description, ['KARAOKE-VERSION']) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 24) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['STATION LINNE 1']) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 21) {
+      if (amount == -105.0) return (Category.entertainment, Subcategory.bar);
+      if (amount == -295.0) return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['Swish betalning RAGNAR, MIRANDA']) &&
+        (amount == -200.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 20) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning Lukas Gustavsson']) &&
+        (amount == -100.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 19) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['TIPTAPP.CO* TIPTAPP.CO']) &&
+        (amount == -789.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 18) {
+      return (Category.housing, Subcategory.kitchenRenovation);
+    }
+    // VALLGATAN 12 FA override #2
+    if (_matches(description, ['VALLGATAN 12 FA']) &&
+        (amount == -750.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 17) {
+      return (Category.shopping, Subcategory.decor);
+    }
+    if (_matches(description, ['Swish betalning Thomas Boussard']) &&
+        (amount == -145.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 14) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['Autogiro K*flottegulv']) &&
+        (amount == -145.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 13) {
+      return (Category.housing, Subcategory.kitchenRenovation);
+    }
+    if (_matches(description, ['EDO SUSHI I GOTEBORG A']) &&
+        (amount == -99.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 12) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['Swish betalning GABRIELLA FOSSUM']) &&
+        (amount == -40.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 8) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning LINDSTRÖM,VENDELA']) &&
+        (amount == -145.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 7) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['BSH HOME APPLIANCES AB']) &&
+        (amount == -3807.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 7) {
+      return (Category.housing, Subcategory.kitchenRenovation);
+    }
+    if (_matches(description, ['BAMBA']) &&
+        (amount == -330.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 7) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['O/O BAR']) &&
+        (amount == -95.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 7) {
+      return (Category.entertainment, Subcategory.bar);
+    }
+    if (_matches(description, ['Swish betalning EMMA NIRVIN']) &&
+        (amount == -130.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 5) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['KLARNA*BESLAGONLINE.']) &&
+        (amount == -7164.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 1) {
+      return (Category.housing, Subcategory.kitchenRenovation);
+    }
+    if (_matches(description, ['MATSAL STORGATA']) &&
+        (amount == -480.0) &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 1) {
+      return (Category.food, Subcategory.restaurant);
+    }
+
     // Specific Overrides Batch 2
     if (_matches(description, ['Kortköp 250726 LEXINGTON HOME GOT']) &&
         (amount == -498.00)) {
@@ -324,6 +473,9 @@ class CategorizationService {
     }
 
     if (_matches(description, ['EVENT BOOKING (RACEID)'])) {
+      return (Category.health, Subcategory.gym);
+    }
+    if (_matches(description, ['GOTEBORGSVARVET'])) {
       return (Category.health, Subcategory.gym);
     }
     if (_matches(description, ['ZETTLE_*VR SNABBTAG SV']) &&
@@ -553,6 +705,10 @@ class CategorizationService {
       return (Category.other, Subcategory.mobileSubscription);
     }
 
+    if (_matches(lowerDesc, ['pottan - götebo'])) {
+      return (Category.other, Subcategory.other);
+    }
+
     // Entertainment - MOVED UP TO PRIORITIZE STREAMING (e.g. HBOMAX vs MAX burger)
     if (_matches(lowerDesc, [
       'bio',
@@ -664,6 +820,7 @@ class CategorizationService {
       'hemkop',
       'hugo ericson ost i sal',
       'krabbesk{rs fisk',
+      'swish betalning willy:s ab',
     ])) {
       return (Category.food, Subcategory.groceries);
     }
@@ -701,6 +858,8 @@ class CategorizationService {
       'jos halsocafe ab',
       'poke corner',
       'pho kim',
+      'sunset falafel',
+      'deli och coffee',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -745,6 +904,10 @@ class CategorizationService {
       'gumman elvira',
       'kajutan saluhallen',
       'blighty food connectio',
+      'zettle_*villa odinslun',
+      'brasserie isabelle',
+      'barabicu',
+      'storköket i göt',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -764,6 +927,11 @@ class CategorizationService {
       'on air game shows swed',
       'champagnebaren',
       'zamenhof',
+      'clarion hotel post',
+      'feskekoerkan', // Can be market hall but user requested bar
+      'station linne 1', // From Override
+      'o/o bar', // From Override
+      'evion hotell &', // From Override
     ])) {
       return (Category.entertainment, Subcategory.bar);
     }
@@ -784,6 +952,7 @@ class CategorizationService {
       'tehuset',
       'kaffelabbet',
       'stenugnsbageriet heden',
+      'da matteo - magasinsga',
       'gelato',
     ])) {
       return (Category.food, Subcategory.coffee);
@@ -798,8 +967,17 @@ class CategorizationService {
       'vacker nk',
       'kicks',
       'belle celine ab',
+      'kicks',
+      'belle celine ab',
     ])) {
       return (Category.shopping, Subcategory.beauty);
+    }
+    if (_matches(lowerDesc, [
+      'remanns hogtidsklade',
+      'twilfit ab',
+      'sneaky steve',
+    ])) {
+      return (Category.shopping, Subcategory.clothes);
     }
     if (_matches(lowerDesc, ['nk kok & design', 'artilleriet store'])) {
       return (Category.shopping, Subcategory.decor);
