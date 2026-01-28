@@ -172,6 +172,101 @@ class CategorizationService {
       return (Category.housing, Subcategory.kitchenRenovation);
     }
 
+    // --- New User Request 2026-01-28 (Specific Exceptions) ---
+    // 1. Other / Other: Kortköp 250425 4051 WHS LS GOT
+    if (_matches(description, ['Kortköp 250425 4051 WHS LS GOT']) &&
+        (amount == -45.00) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 28) {
+      return (Category.other, Subcategory.other);
+    }
+    // 2. Food / Lunch: Q*HTTPS://WWW.DAMMS
+    if (_matches(description, ['Q*HTTPS://WWW.DAMMS']) &&
+        // No amount check in request, but date check is good practice
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 27) {
+      return (Category.food, Subcategory.lunch);
+    }
+    // 3. Other / Other: Swish betalning KARTAL,MIA
+    if (_matches(description, ['Swish betalning KARTAL,MIA']) &&
+        (amount == -180.00) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 21) {
+      return (Category.other, Subcategory.other);
+    }
+    // 4. Other / Other: Swish betalning RAGNAR, MIRANDA
+    if (_matches(description, ['Swish betalning RAGNAR, MIRANDA']) &&
+        (amount == -300.00) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 19) {
+      return (Category.other, Subcategory.other);
+    }
+    // 5. Housing / KitchenRenovation: BJELIN SWEDEN AB
+    if (_matches(description, ['BJELIN SWEDEN AB']) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 18) {
+      return (Category.housing, Subcategory.kitchenRenovation);
+    }
+    // 6. Food / Lunch: Swish betalning NATALIE THORSSON RO
+    if (_matches(description, ['Swish betalning NATALIE THORSSON RO']) &&
+        (amount == -150.00) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 8) {
+      return (Category.food, Subcategory.lunch);
+    }
+    // 7. Shopping / Other: Autogiro K*partykunge
+    if (_matches(description, ['Autogiro K*partykunge']) &&
+        (amount == -368.70) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 8) {
+      return (Category.shopping, Subcategory.other);
+    }
+    // 8. Food / Lunch: ZETTLE_*BLIGHTY FOOD C
+    if (_matches(description, ['ZETTLE_*BLIGHTY FOOD C']) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 5) {
+      return (Category.food, Subcategory.lunch);
+    }
+    // 9. Other / Other: UNHCR
+    if (_matches(description, ['UNHCR']) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 5) {
+      return (Category.other, Subcategory.other);
+    }
+    // 10. Entertainment / VideoGames: ELGIGANTEN.SE
+    if (_matches(description, ['ELGIGANTEN.SE']) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 5) {
+      // Logic for this specific date ONLY, otherwise Elgiganten is usually Shopping/Electronics
+      return (Category.entertainment, Subcategory.videoGames);
+    }
+    // 11. Entertainment / Travel: Swish betalning RICKARD LINDBLAD VO
+    if (_matches(description, ['Swish betalning RICKARD LINDBLAD VO']) &&
+        (amount == -3750.00) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 3) {
+      return (Category.entertainment, Subcategory.travel);
+    }
+    // 12. Entertainment / Other: Swish betalning Cecilia Kihlén
+    if (_matches(description, ['Swish betalning Cecilia Kihlén']) &&
+        (amount == -3390.00) &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 3) {
+      return (Category.entertainment, Subcategory.other);
+    }
+
     // --- New User Request 2026-01-28 ---
     if (_matches(description, ['VALLGATAN 12 FA']) &&
         (amount == -5499) &&
@@ -311,6 +406,10 @@ class CategorizationService {
         date.year == 2025 &&
         date.month == 5 &&
         date.day == 1) {
+      return (Category.housing, Subcategory.kitchenRenovation);
+    }
+    // From 2026-01-28 Request
+    if (_matches(description, ['KLARNA*VITVARUEXPERT'])) {
       return (Category.housing, Subcategory.kitchenRenovation);
     }
     if (_matches(description, ['MATSAL STORGATA']) &&
@@ -694,6 +793,9 @@ class CategorizationService {
       if (_matches(lowerDesc, ['lön', 'salary'])) {
         return (Category.income, Subcategory.salary);
       }
+      if (_matches(description, ['Swish inbetalning LINN RHEGALLÈ'])) {
+        return (Category.income, Subcategory.kitchenRenovation);
+      }
       if (_matches(lowerDesc, ['ränta'])) {
         return (Category.income, Subcategory.interest);
       }
@@ -795,6 +897,22 @@ class CategorizationService {
     }
 
     // Food & Drink
+    // From 2026-01-28 Request
+    if (_matches(lowerDesc, [
+      'loomisp*laterian goteb',
+      'los churros wafels',
+      'bar centro',
+      'loomisp*cafe kvarnpire',
+    ])) {
+      return (Category.food, Subcategory.coffee);
+    }
+    if (_matches(lowerDesc, [
+      'dubbel dubbel surbrunn',
+      'restoria ab - dinner',
+    ])) {
+      return (Category.food, Subcategory.restaurant);
+    }
+
     if (_matches(lowerDesc, [
       'interflora aktiebol',
       'marica roos',
@@ -1058,6 +1176,15 @@ class CategorizationService {
       'hornbach',
     ])) {
       return (Category.shopping, Subcategory.tools);
+    }
+
+    // From 2026-01-28 Request
+    if (_matches(lowerDesc, ['majblommans riksför'])) {
+      return (Category.shopping, Subcategory.other);
+    }
+
+    if (_matches(lowerDesc, ['adoore', 'uniqlo gothenburg'])) {
+      return (Category.shopping, Subcategory.clothes);
     }
 
     if (_matches(lowerDesc, [
