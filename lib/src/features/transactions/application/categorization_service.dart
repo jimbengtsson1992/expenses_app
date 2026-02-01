@@ -18,6 +18,121 @@ class CategorizationService {
     final lowerDesc = description.toLowerCase();
     
     // Specific Overrides
+    // --- New User Request 2026-02-01 ---
+    // Override: GREEN EGG SP. Z O.O. -> Food/Lunch
+    if (_matches(description, ['GREEN EGG SP. Z O.O.']) &&
+        (amount == -178.95) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 30) {
+      return (Category.food, Subcategory.lunch);
+    }
+    // Override: LAGARDERE DUTY FREE G -> Entertainment/Travel
+    if (_matches(description, ['LAGARDERE DUTY FREE G']) &&
+        (amount == -26.71) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 30) {
+      return (Category.entertainment, Subcategory.travel);
+    }
+    // Override: MUZEUM BISTRO -> Entertainment/Travel
+    if (_matches(description, ['MUZEUM BISTRO']) &&
+        (amount == -17.36) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 30) {
+      return (Category.entertainment, Subcategory.travel);
+    }
+    // Override: APTEKA AKSAMITNA -> Other/Other
+    if (_matches(description, ['APTEKA AKSAMITNA']) &&
+        (amount == -101.2) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 29) {
+      return (Category.other, Subcategory.other);
+    }
+    // Override: SEXY SMASH -> Entertainment/Travel
+    if (_matches(description, ['SEXY SMASH']) &&
+        (amount == -251.06) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 29) {
+      return (Category.entertainment, Subcategory.travel);
+    }
+    // Override: Swish betalning S R Larsson Charkut -> Food/Groceries
+    if (_matches(description, ['Swish betalning S R Larsson Charkut']) &&
+        (amount == -89.00) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 28) {
+      return (Category.food, Subcategory.groceries);
+    }
+    // Override: PRIME GRILL GOETEBORG -> Food/Lunch
+    if (_matches(description, ['PRIME GRILL GOETEBORG']) &&
+        (amount == -62.0) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 27) {
+      return (Category.food, Subcategory.lunch);
+    }
+    // Override: Swish betalning GABRIELLA FOSSUM -> Food/Lunch
+    if (_matches(description, ['Swish betalning GABRIELLA FOSSUM']) &&
+        (amount == -100.00) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 27) {
+      return (Category.food, Subcategory.lunch);
+    }
+    // Override: WBDSPORTS -> Other/Other
+    if (_matches(description, ['WBDSPORTS']) &&
+        (amount == -260.0) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 22) {
+      return (Category.other, Subcategory.other);
+    }
+    // Override: BODEGA PARTY -> Shopping/Gifts (1)
+    if (_matches(description, ['BODEGA PARTY']) &&
+        (amount == -517.0) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 21) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    // Override: BODEGA PARTY -> Shopping/Gifts (2)
+    if (_matches(description, ['BODEGA PARTY']) &&
+        (amount == -326.0) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 17) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    // Override: PINCHOS HEDEN -> Food/Coffee
+    if (_matches(description, ['PINCHOS HEDEN']) &&
+        (amount == -75.0) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 14) {
+      return (Category.food, Subcategory.coffee);
+    }
+    // Override: HEMMAKVÄLL HALM -> Other/Other
+    if (_matches(description, ['HEMMAKVÄLL HALM']) &&
+        (amount == -23.9) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 8) {
+      return (Category.other, Subcategory.other);
+    }
+    // Override: Swish betalning Jonna Karlstedt -> Food/Lunch
+    if (_matches(description, ['Swish betalning Jonna Karlstedt']) &&
+        (amount == -150.00) &&
+        date.year == 2025 &&
+        date.month == 3 &&
+        date.day == 5) {
+      return (Category.food, Subcategory.lunch);
+    }
+
+
     if (_matches(description, ['Swish betalning LUNDBERG, CHARLOTTA']) &&
         amount == -155.00 &&
         date.year == 2026 &&
@@ -963,6 +1078,9 @@ class CategorizationService {
       'aurora',
       'stromma sweden',
       'torpa',
+      'klub parlament xi',
+      'sj app',
+      'vr snabbtåg sverige',
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
@@ -1058,6 +1176,7 @@ class CategorizationService {
       'hugo ericson ost i sal',
       'krabbesk{rs fisk',
       'swish betalning willy:s ab',
+      'netto',
     ])) {
       return (Category.food, Subcategory.groceries);
     }
@@ -1067,6 +1186,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['foodora ab', 'indiska hornet'])) {
       return (Category.food, Subcategory.takeaway);
     }
+
     if (_matches(lowerDesc, ['masaki halsosushi ab'])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -1147,6 +1267,8 @@ class CategorizationService {
       'barabicu',
       'storköket i göt',
       'olivia goteborg',
+      'mcd landvetter',
+      'puta madre/basque',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -1418,6 +1540,7 @@ class CategorizationService {
       'fortum',
       'gbg energi',
       'dinel',
+      'betalning bg 5835-1552 göteborg ene',
     ])) {
       return (Category.housing, Subcategory.electricity);
     }
@@ -1471,7 +1594,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['boplats göteborg sw'])) {
       return (Category.fees, Subcategory.other);
     }
-    if (_matches(lowerDesc, ['csn'])) {
+    if (_matches(lowerDesc, ['csn', 'betalning bg 5591-9021 centrala stu'])) {
       return (Category.fees, Subcategory.csn);
     }
 
@@ -1509,7 +1632,7 @@ class CategorizationService {
       return (Category.other, Subcategory.godfather);
     }
 
-    if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk'])) {
+    if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk', 'lastpass.com'])) {
       return (Category.other, Subcategory.other);
     }
 

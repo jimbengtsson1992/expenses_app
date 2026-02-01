@@ -388,4 +388,210 @@ void main() {
       );
     });
   });
+
+  group('CategorizationService - New Rules 2026-02-01', () {
+    test('Keyword Rules', () {
+      // Entertainment / Travel
+      expect(service.categorize('KLUB PARLAMENT XI', -100, dummyDate), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+      expect(service.categorize('SJ APP', -100, dummyDate), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+      expect(service.categorize('VR SNABBTÅG SVERIGE', -100, dummyDate), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+
+      // Food / Groceries
+      expect(service.categorize('NETTO', -100, dummyDate), (
+        Category.food,
+        Subcategory.groceries,
+      ));
+
+      // Food / Takeaway
+      expect(service.categorize('FOODORA AB', -100, dummyDate), (
+        Category.food,
+        Subcategory.takeaway,
+      ));
+
+      // Food / Restaurant
+      expect(service.categorize('MCD LANDVETTER', -100, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('PUTA MADRE/BASQUE', -100, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+
+      // Fees / CSN
+      expect(
+          service.categorize(
+              'Betalning BG 5591-9021 Centrala Stu', -100, dummyDate),
+          (
+            Category.fees,
+            Subcategory.csn,
+          ));
+
+      // Housing / Electricity
+      expect(
+          service.categorize(
+              'Betalning BG 5835-1552 GÖTEBORG ENE', -100, dummyDate),
+          (
+            Category.housing,
+            Subcategory.electricity,
+          ));
+
+      // Other / Other
+      expect(service.categorize('LASTPASS.COM', -100, dummyDate), (
+        Category.other,
+        Subcategory.other,
+      ));
+    });
+
+    test('Specific Overrides 2026-02-01', () {
+      // 1. Food / Lunch: GREEN EGG SP. Z O.O.
+      expect(
+        service.categorize(
+          'GREEN EGG SP. Z O.O.',
+          -178.95,
+          DateTime(2025, 3, 30),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
+
+      // 2. Entertainment / Travel: LAGARDERE DUTY FREE G
+      expect(
+        service.categorize(
+          'LAGARDERE DUTY FREE G',
+          -26.71,
+          DateTime(2025, 3, 30),
+        ),
+        (Category.entertainment, Subcategory.travel),
+      );
+
+      // 3. Entertainment / Travel: MUZEUM BISTRO
+      expect(
+        service.categorize(
+          'MUZEUM BISTRO',
+          -17.36,
+          DateTime(2025, 3, 30),
+        ),
+        (Category.entertainment, Subcategory.travel),
+      );
+
+      // 4. Other / Other: APTEKA AKSAMITNA
+      expect(
+        service.categorize(
+          'APTEKA AKSAMITNA',
+          -101.2,
+          DateTime(2025, 3, 29),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // 5. Entertainment / Travel: SEXY SMASH
+      expect(
+        service.categorize(
+          'SEXY SMASH',
+          -251.06,
+          DateTime(2025, 3, 29),
+        ),
+        (Category.entertainment, Subcategory.travel),
+      );
+
+      // 6. Food / Groceries: Swish betalning S R Larsson Charkut
+      expect(
+        service.categorize(
+          'Swish betalning S R Larsson Charkut',
+          -89.00,
+          DateTime(2025, 3, 28),
+        ),
+        (Category.food, Subcategory.groceries),
+      );
+
+      // 7. Food / Lunch: PRIME GRILL GOETEBORG
+      expect(
+        service.categorize(
+          'PRIME GRILL GOETEBORG',
+          -62.0,
+          DateTime(2025, 3, 27),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
+
+      // 8. Food / Lunch: Swish betalning GABRIELLA FOSSUM
+      expect(
+        service.categorize(
+          'Swish betalning GABRIELLA FOSSUM',
+          -100.00,
+          DateTime(2025, 3, 27),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
+
+      // 9. Other / Other: WBDSPORTS
+      expect(
+        service.categorize(
+          'WBDSPORTS',
+          -260.0,
+          DateTime(2025, 3, 22),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // 10. Shopping / Gifts: BODEGA PARTY (1)
+      expect(
+        service.categorize(
+          'BODEGA PARTY',
+          -517.0,
+          DateTime(2025, 3, 21),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
+
+      // 11. Shopping / Gifts: BODEGA PARTY (2)
+      expect(
+        service.categorize(
+          'BODEGA PARTY',
+          -326.0,
+          DateTime(2025, 3, 17),
+        ),
+        (Category.shopping, Subcategory.gifts),
+      );
+
+      // 12. Food / Coffee: PINCHOS HEDEN
+      expect(
+        service.categorize(
+          'PINCHOS HEDEN',
+          -75.0,
+          DateTime(2025, 3, 14),
+        ),
+        (Category.food, Subcategory.coffee),
+      );
+
+      // 13. Other / Other: HEMMAKVÄLL HALM
+      expect(
+        service.categorize(
+          'HEMMAKVÄLL HALM',
+          -23.9,
+          DateTime(2025, 3, 8),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // 14. Food / Lunch: Swish betalning Jonna Karlstedt
+      expect(
+        service.categorize(
+          'Swish betalning Jonna Karlstedt',
+          -150.00,
+          DateTime(2025, 3, 5),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
+    });
+  });
 }
