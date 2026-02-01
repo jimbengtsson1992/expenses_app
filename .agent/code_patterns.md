@@ -22,6 +22,9 @@ abstract class Expense with _$Expense {
 }
 ```
 
+## Categorization Logic
+Flow & Templates: `.agent/categorization_rules.md`.
+
 ## CSV Parsing
 ### Data Source Detection
 ```dart

@@ -11,7 +11,7 @@
 **MUST** test changes to:
 1. **CSV Parsing**: Any Logic/Regex changes.
 2. **Exclusions**: `excludeFromOverview` logic.
-3. **Categorization**: `CategorizationService` & rules.
+3. **Categorization**: `CategorizationService` & rules. See `.agent/categorization_rules.md`.
 
 ## ⚡️ Quick Context
 - **Stack**: Flutter, Riverpod, GoRouter, Freezed, fl_chart, Intl.

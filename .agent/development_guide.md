@@ -19,7 +19,7 @@ fvm flutter run
 ### Add Category
 1. Add enum case to `Category` in `category.dart`.
    - `newCat('Display', 0xFF..., 'emoji')`.
-2. Update `CategorizationService` with new rules.
+2. Update `CategorizationService` & `test/`. See `.agent/categorization_rules.md`.
 
 ### UI Dev
 - **Files**: `lib/src/features/.../presentation/`.
