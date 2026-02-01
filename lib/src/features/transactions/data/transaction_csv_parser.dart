@@ -382,6 +382,11 @@ class TransactionCsvParser {
       return true;
     }
 
+    if (description.contains('95580391031')) {
+      // Shared Avanza
+      return true;
+    }
+
     // Nordea: 2025/11/16;-25000,00;...;Aktiekapital 1110 31 04004;...
     if (description.contains('Aktiekapital 1110 31 04004') &&
         (amount - -25000.00).abs() < 0.01 &&

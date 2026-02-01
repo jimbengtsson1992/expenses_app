@@ -152,6 +152,17 @@ void main() {
       );
     });
 
+    test('shouldExcludeFromOverview excludes shared Avanza account transfers', () {
+      expect(
+        parser.shouldExcludeFromOverview(
+          'Inbetalning 95580391031',
+          -1000.0,
+          DateTime(2025, 2, 1),
+        ),
+        true,
+      );
+    });
+
     test(
       'parseSasAmexCsv parses transactions and supports multiple sections',
       () {
