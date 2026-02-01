@@ -17,9 +17,22 @@ class CategorizationService {
   ) {
     final lowerDesc = description.toLowerCase();
     
+
+    final specificOverride = _checkSpecificOverrides(description, amount, date);
+    if (specificOverride != null) return specificOverride;
+
+    final keywordRule = _checkKeywordRules(description, amount, date, lowerDesc);
+    if (keywordRule != null) return keywordRule;
+
+    return (Category.other, Subcategory.unknown);
+  }
+
+  (Category, Subcategory)? _checkSpecificOverrides(
+    String description,
+    double amount,
+    DateTime date,
+  ) {
     // Specific Overrides
-    // --- New User Request 2026-02-01 ---
-    // Override: GREEN EGG SP. Z O.O. -> Food/Lunch
     if (_matches(description, ['GREEN EGG SP. Z O.O.']) &&
         (amount == -178.95) &&
         date.year == 2025 &&
@@ -27,7 +40,6 @@ class CategorizationService {
         date.day == 30) {
       return (Category.food, Subcategory.lunch);
     }
-    // Override: LAGARDERE DUTY FREE G -> Entertainment/Travel
     if (_matches(description, ['LAGARDERE DUTY FREE G']) &&
         (amount == -26.71) &&
         date.year == 2025 &&
@@ -35,7 +47,6 @@ class CategorizationService {
         date.day == 30) {
       return (Category.entertainment, Subcategory.travel);
     }
-    // Override: MUZEUM BISTRO -> Entertainment/Travel
     if (_matches(description, ['MUZEUM BISTRO']) &&
         (amount == -17.36) &&
         date.year == 2025 &&
@@ -43,7 +54,6 @@ class CategorizationService {
         date.day == 30) {
       return (Category.entertainment, Subcategory.travel);
     }
-    // Override: APTEKA AKSAMITNA -> Other/Other
     if (_matches(description, ['APTEKA AKSAMITNA']) &&
         (amount == -101.2) &&
         date.year == 2025 &&
@@ -51,7 +61,6 @@ class CategorizationService {
         date.day == 29) {
       return (Category.other, Subcategory.other);
     }
-    // Override: SEXY SMASH -> Entertainment/Travel
     if (_matches(description, ['SEXY SMASH']) &&
         (amount == -251.06) &&
         date.year == 2025 &&
@@ -59,7 +68,6 @@ class CategorizationService {
         date.day == 29) {
       return (Category.entertainment, Subcategory.travel);
     }
-    // Override: Swish betalning S R Larsson Charkut -> Food/Groceries
     if (_matches(description, ['Swish betalning S R Larsson Charkut']) &&
         (amount == -89.00) &&
         date.year == 2025 &&
@@ -67,7 +75,6 @@ class CategorizationService {
         date.day == 28) {
       return (Category.food, Subcategory.groceries);
     }
-    // Override: PRIME GRILL GOETEBORG -> Food/Lunch
     if (_matches(description, ['PRIME GRILL GOETEBORG']) &&
         (amount == -62.0) &&
         date.year == 2025 &&
@@ -75,7 +82,6 @@ class CategorizationService {
         date.day == 27) {
       return (Category.food, Subcategory.lunch);
     }
-    // Override: Swish betalning GABRIELLA FOSSUM -> Food/Lunch
     if (_matches(description, ['Swish betalning GABRIELLA FOSSUM']) &&
         (amount == -100.00) &&
         date.year == 2025 &&
@@ -83,7 +89,6 @@ class CategorizationService {
         date.day == 27) {
       return (Category.food, Subcategory.lunch);
     }
-    // Override: WBDSPORTS -> Other/Other
     if (_matches(description, ['WBDSPORTS']) &&
         (amount == -260.0) &&
         date.year == 2025 &&
@@ -91,7 +96,6 @@ class CategorizationService {
         date.day == 22) {
       return (Category.other, Subcategory.other);
     }
-    // Override: BODEGA PARTY -> Shopping/Gifts (1)
     if (_matches(description, ['BODEGA PARTY']) &&
         (amount == -517.0) &&
         date.year == 2025 &&
@@ -99,7 +103,6 @@ class CategorizationService {
         date.day == 21) {
       return (Category.shopping, Subcategory.gifts);
     }
-    // Override: BODEGA PARTY -> Shopping/Gifts (2)
     if (_matches(description, ['BODEGA PARTY']) &&
         (amount == -326.0) &&
         date.year == 2025 &&
@@ -107,7 +110,6 @@ class CategorizationService {
         date.day == 17) {
       return (Category.shopping, Subcategory.gifts);
     }
-    // Override: PINCHOS HEDEN -> Food/Coffee
     if (_matches(description, ['PINCHOS HEDEN']) &&
         (amount == -75.0) &&
         date.year == 2025 &&
@@ -115,7 +117,6 @@ class CategorizationService {
         date.day == 14) {
       return (Category.food, Subcategory.coffee);
     }
-    // Override: HEMMAKVÄLL HALM -> Other/Other
     if (_matches(description, ['HEMMAKVÄLL HALM']) &&
         (amount == -23.9) &&
         date.year == 2025 &&
@@ -123,7 +124,6 @@ class CategorizationService {
         date.day == 8) {
       return (Category.other, Subcategory.other);
     }
-    // Override: Swish betalning Jonna Karlstedt -> Food/Lunch
     if (_matches(description, ['Swish betalning Jonna Karlstedt']) &&
         (amount == -150.00) &&
         date.year == 2025 &&
@@ -262,8 +262,6 @@ class CategorizationService {
       return (Category.health, Subcategory.doctor);
     }
 
-    // --- New User Request 2026-01-27 ---
-    // Override: Swish betalning Viktor Melin -> Other/Other
     if (_matches(description, ['Swish betalning Viktor Melin']) &&
         (amount == -60.00) &&
         date.year == 2025 &&
@@ -271,7 +269,6 @@ class CategorizationService {
         date.day == 29) {
       return (Category.other, Subcategory.other);
     }
-    // Override: Swish betalning JOAKIM SUNDLING -> Other/Other
     if (_matches(description, ['Swish betalning JOAKIM SUNDLING']) &&
         (amount == -1060.00) &&
         date.year == 2025 &&
@@ -279,7 +276,6 @@ class CategorizationService {
         date.day == 29) {
       return (Category.other, Subcategory.other);
     }
-    // Override: OCHE GOETEBORG AB -> Entertainment/Bar
     if (_matches(description, ['OCHE GOETEBORG AB']) &&
         date.year == 2025 &&
         date.month == 6 &&
@@ -369,9 +365,6 @@ class CategorizationService {
       return (Category.other, Subcategory.other);
     }
 
-    // Specific Overrides (User Requested) - Checked FIRST to allow positive amounts (refunds) or specific exceptions
-    // --- New User Request 2026-01-26 ---
-    // Override: Swish betalning STRANDVERKET I MARS -> Other/Other
     if (_matches(description, ['Swish betalning STRANDVERKET I MARS']) &&
         (amount == -20.00) &&
         date.year == 2025 &&
@@ -379,7 +372,6 @@ class CategorizationService {
         date.day == 12) {
       return (Category.other, Subcategory.other);
     }
-    // Override: Swish betalning GABRIELLA FOSSUM -> Other/Other
     if (_matches(description, ['Swish betalning GABRIELLA FOSSUM']) &&
         (amount == -525.00) &&
         date.year == 2025 &&
@@ -389,7 +381,6 @@ class CategorizationService {
     }
 
 
-    // Override: ROGER NILSSON STAVERSH -> Other/Other
     if (_matches(description, ['ROGER NILSSON STAVERSH']) &&
         (amount == 120.0 || amount == -120.0) &&
         date.year == 2025 &&
@@ -397,7 +388,6 @@ class CategorizationService {
         date.day == 18) {
       return (Category.other, Subcategory.other);
     }
-    // Override: W*ROYALDESIGN.SE -> Shopping/Decor
     if (_matches(description, ['W*ROYALDESIGN.SE']) &&
         (amount == 4668.0 || amount == -4668.0) &&
         date.year == 2025 &&
@@ -405,13 +395,10 @@ class CategorizationService {
         date.day == 5) {
       return (Category.shopping, Subcategory.decor);
     }
-    // Override: SVEA BANK AB -> Housing/KitchenRenovation
     if (_matches(description, ['Kortköp 250625 SVEA BANK AB'])) {
       return (Category.housing, Subcategory.kitchenRenovation);
     }
 
-    // --- New User Request 2026-01-28 (Specific Exceptions) ---
-    // 1. Other / Other: Kortköp 250425 4051 WHS LS GOT
     if (_matches(description, ['Kortköp 250425 4051 WHS LS GOT']) &&
         (amount == -45.00) &&
         date.year == 2025 &&
@@ -419,7 +406,6 @@ class CategorizationService {
         date.day == 28) {
       return (Category.other, Subcategory.other);
     }
-    // 2. Food / Lunch: Q*HTTPS://WWW.DAMMS
     if (_matches(description, ['Q*HTTPS://WWW.DAMMS']) &&
         // No amount check in request, but date check is good practice
         date.year == 2025 &&
@@ -427,7 +413,6 @@ class CategorizationService {
         date.day == 27) {
       return (Category.food, Subcategory.lunch);
     }
-    // 3. Other / Other: Swish betalning KARTAL,MIA
     if (_matches(description, ['Swish betalning KARTAL,MIA']) &&
         (amount == -180.00) &&
         date.year == 2025 &&
@@ -435,7 +420,6 @@ class CategorizationService {
         date.day == 21) {
       return (Category.other, Subcategory.other);
     }
-    // 4. Other / Other: Swish betalning RAGNAR, MIRANDA
     if (_matches(description, ['Swish betalning RAGNAR, MIRANDA']) &&
         (amount == -300.00) &&
         date.year == 2025 &&
@@ -443,14 +427,12 @@ class CategorizationService {
         date.day == 19) {
       return (Category.other, Subcategory.other);
     }
-    // 5. Housing / KitchenRenovation: BJELIN SWEDEN AB
     if (_matches(description, ['BJELIN SWEDEN AB']) &&
         date.year == 2025 &&
         date.month == 4 &&
         date.day == 18) {
       return (Category.housing, Subcategory.kitchenRenovation);
     }
-    // 6. Food / Lunch: Swish betalning NATALIE THORSSON RO
     if (_matches(description, ['Swish betalning NATALIE THORSSON RO']) &&
         (amount == -150.00) &&
         date.year == 2025 &&
@@ -458,7 +440,6 @@ class CategorizationService {
         date.day == 8) {
       return (Category.food, Subcategory.lunch);
     }
-    // 7. Shopping / Other: Autogiro K*partykunge
     if (_matches(description, ['Autogiro K*partykunge']) &&
         (amount == -368.70) &&
         date.year == 2025 &&
@@ -466,21 +447,18 @@ class CategorizationService {
         date.day == 8) {
       return (Category.shopping, Subcategory.other);
     }
-    // 8. Food / Lunch: ZETTLE_*BLIGHTY FOOD C
     if (_matches(description, ['ZETTLE_*BLIGHTY FOOD C']) &&
         date.year == 2025 &&
         date.month == 4 &&
         date.day == 5) {
       return (Category.food, Subcategory.lunch);
     }
-    // 9. Other / Other: UNHCR
     if (_matches(description, ['UNHCR']) &&
         date.year == 2025 &&
         date.month == 4 &&
         date.day == 5) {
       return (Category.other, Subcategory.other);
     }
-    // 10. Entertainment / VideoGames: ELGIGANTEN.SE
     if (_matches(description, ['ELGIGANTEN.SE']) &&
         date.year == 2025 &&
         date.month == 4 &&
@@ -488,7 +466,6 @@ class CategorizationService {
       // Logic for this specific date ONLY, otherwise Elgiganten is usually Shopping/Electronics
       return (Category.entertainment, Subcategory.videoGames);
     }
-    // 11. Entertainment / Travel: Swish betalning RICKARD LINDBLAD VO
     if (_matches(description, ['Swish betalning RICKARD LINDBLAD VO']) &&
         (amount == -3750.00) &&
         date.year == 2025 &&
@@ -496,7 +473,6 @@ class CategorizationService {
         date.day == 3) {
       return (Category.entertainment, Subcategory.travel);
     }
-    // 12. Entertainment / Other: Swish betalning Cecilia Kihlén
     if (_matches(description, ['Swish betalning Cecilia Kihlén']) &&
         (amount == -3390.00) &&
         date.year == 2025 &&
@@ -505,7 +481,6 @@ class CategorizationService {
       return (Category.entertainment, Subcategory.other);
     }
 
-    // --- New User Request 2026-01-28 ---
     if (_matches(description, ['VALLGATAN 12 FA']) &&
         (amount == -5499) &&
         date.year == 2025 && // 2025-05-30
@@ -646,7 +621,6 @@ class CategorizationService {
         date.day == 1) {
       return (Category.housing, Subcategory.kitchenRenovation);
     }
-    // From 2026-01-28 Request
     if (_matches(description, ['KLARNA*VITVARUEXPERT'])) {
       return (Category.housing, Subcategory.kitchenRenovation);
     }
@@ -658,7 +632,6 @@ class CategorizationService {
       return (Category.food, Subcategory.restaurant);
     }
 
-    // Specific Overrides Batch 2
     if (_matches(description, ['Kortköp 250726 LEXINGTON HOME GOT']) &&
         (amount == -498.00)) {
       if (date.year == 2025 && date.month == 7 && date.day == 28) {
@@ -757,7 +730,6 @@ class CategorizationService {
       return (Category.other, Subcategory.other);
     }
 
-    // --- New User Request 2026-01-22 ---
 
     if (_matches(description, ['Swish betalning KUJTIM LENA']) &&
         (amount == -40.00)) {
@@ -772,7 +744,6 @@ class CategorizationService {
       }
     }
 
-    // --- New User Request 2026-01-25 ---
     if (_matches(description, ['Swish betalning LUCAS MALINA']) &&
         (amount == -500.0) &&
         date.year == 2026 &&
@@ -781,7 +752,6 @@ class CategorizationService {
       return (Category.other, Subcategory.other);
     }
 
-    // --- New User Request 2026-01-25 ---
     if (_matches(description, ['MARBODAL']) &&
         (amount == -297.0) &&
         date.year == 2026 &&
@@ -1021,6 +991,15 @@ class CategorizationService {
       return (Category.food, Subcategory.restaurant);
     }
 
+    return null;
+  }
+
+  (Category, Subcategory)? _checkKeywordRules(
+    String description,
+    double amount,
+    DateTime date,
+    String lowerDesc,
+  ) {
     // --- Income (> 0) ---
     if (amount > 0) {
       if (_matches(lowerDesc, ['lön', 'salary'])) {
@@ -1134,7 +1113,6 @@ class CategorizationService {
     }
 
     // Food & Drink
-    // From 2026-01-28 Request
     if (_matches(lowerDesc, [
       'loomisp*laterian goteb',
       'los churros wafels',
@@ -1421,7 +1399,6 @@ class CategorizationService {
       return (Category.shopping, Subcategory.tools);
     }
 
-    // From 2026-01-28 Request
     if (_matches(lowerDesc, ['majblommans riksför'])) {
       return (Category.shopping, Subcategory.other);
     }
@@ -1636,7 +1613,7 @@ class CategorizationService {
       return (Category.other, Subcategory.other);
     }
 
-    return (Category.other, Subcategory.unknown);
+    return null;
   }
 
   bool _matches(String text, List<String> keywords) {
