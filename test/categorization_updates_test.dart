@@ -11,6 +11,205 @@ void main() {
     service = CategorizationService();
   });
 
+  group('CategorizationService - New Rules 2026-02-01', () {
+    test('Keyword Rules', () {
+      expect(service.categorize('OLIVIA GOTEBORG', -100, dummyDate), (
+        Category.food,
+        Subcategory.restaurant,
+      ));
+      expect(service.categorize('HASSELBACKEN', -100, dummyDate), (
+        Category.food,
+        Subcategory.lunch,
+      ));
+      expect(service.categorize('TORPA', -100, dummyDate), (
+        Category.entertainment,
+        Subcategory.travel,
+      ));
+    });
+
+    test('Specific Overrides', () {
+      // 1. Food / Coffee: Swish betalning LUNDBERG, CHARLOTTA
+      expect(
+        service.categorize(
+          'Swish betalning LUNDBERG, CHARLOTTA',
+          -155.00,
+          DateTime(2026, 1, 3),
+        ),
+        (Category.food, Subcategory.coffee),
+      );
+
+      // 2. Health / Doctor: Open Banking BG 5734-9797 Patientfa
+      expect(
+        service.categorize(
+          'Open Banking BG 5734-9797 Patientfa',
+          -100.00,
+          DateTime(2025, 12, 22),
+        ),
+        (Category.health, Subcategory.doctor),
+      );
+
+      // 3. Other / Other: SE0234;GOETEBORG
+      expect(
+        service.categorize(
+          'SE0234;GOETEBORG',
+          552.98,
+          DateTime(2025, 11, 15),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // 4. Other / Other: STUDIO;GOTEBORG
+      expect(
+        service.categorize(
+          'STUDIO;GOTEBORG',
+          521.4,
+          DateTime(2025, 9, 11),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // 5. Other / Other: LOOMISP*STAURANG VASTE;GOTEBORG
+      expect(
+        service.categorize(
+          'LOOMISP*STAURANG VASTE;GOTEBORG',
+          178.0,
+          DateTime(2025, 9, 6),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // 6. Housing / Cleaning: Swish betalning FORTNOX FINANS AB
+      expect(
+        service.categorize(
+          'Swish betalning FORTNOX FINANS AB',
+          -1605.00,
+          DateTime(2025, 8, 15),
+        ),
+        (Category.housing, Subcategory.cleaning),
+      );
+
+      // 7. Food / Lunch: Swish betalning BÄCK, NATALIE
+      expect(
+        service.categorize(
+          'Swish betalning BÄCK, NATALIE',
+          -140.00,
+          DateTime(2025, 8, 19),
+        ),
+        (Category.food, Subcategory.lunch),
+      );
+
+      // 8. Food / Restaurant: Swish betalning DANIEL LENNARTSSON
+      expect(
+        service.categorize(
+          'Swish betalning DANIEL LENNARTSSON',
+          -400.00,
+          DateTime(2025, 8, 23),
+        ),
+        (Category.food, Subcategory.restaurant),
+      );
+
+      // 9. Food / Restaurant: Swish betalning LINDSTRÖM,VENDELA
+      expect(
+        service.categorize(
+          'Swish betalning LINDSTRÖM,VENDELA',
+          -689.50,
+          DateTime(2025, 7, 31),
+        ),
+        (Category.food, Subcategory.restaurant),
+      );
+
+      // 10. Entertainment / Travel: GOTO HUB AB;HELSINGBORG
+      expect(
+        service.categorize(
+          'GOTO HUB AB;HELSINGBORG',
+          1170.0,
+          DateTime(2025, 7, 17),
+        ),
+        (Category.entertainment, Subcategory.travel),
+      );
+
+      // 11. Other / Other: Swish betalning GÖRAN BENGTSSON
+      expect(
+        service.categorize(
+          'Swish betalning GÖRAN BENGTSSON',
+          -85.00,
+          DateTime(2025, 7, 13),
+        ),
+        (Category.other, Subcategory.other),
+      );
+
+      // 12. Entertainment / Travel: ZETTLE_*TVELINGEN AB;GOTEBORG
+      expect(
+        service.categorize(
+          'ZETTLE_*TVELINGEN AB;GOTEBORG',
+          165.0,
+          DateTime(2025, 7, 12),
+        ),
+        (Category.entertainment, Subcategory.travel),
+      );
+
+      // 13. Health / Doctor: 2352 5694 01 75741 (Oct 21)
+      expect(
+        service.categorize(
+          '2352 5694 01 75741',
+          -3100.00,
+          DateTime(2025, 10, 21),
+        ),
+        (Category.health, Subcategory.doctor),
+      );
+
+      // 14. Health / Doctor: 2326 5694 01 75741 (July 8)
+      expect(
+        service.categorize(
+          '2326 5694 01 75741',
+          -3500.00,
+          DateTime(2025, 7, 8),
+        ),
+        (Category.health, Subcategory.doctor),
+      );
+
+      // 15. Food / Restaurant: STORSTUGAN;FJARAS
+      expect(
+        service.categorize(
+          'STORSTUGAN;FJARAS',
+          430.0,
+          DateTime(2025, 5, 1),
+        ),
+        (Category.food, Subcategory.restaurant),
+      );
+
+      // 16. Health / Beauty: Swish betalning DUMAN MELIS
+      expect(
+        service.categorize(
+          'Swish betalning DUMAN MELIS',
+          -1170.00,
+          DateTime(2025, 5, 29),
+        ),
+        (Category.health, Subcategory.beauty),
+      );
+
+      // 17. Other / Godfather: 1år - Lollo 95576770341
+      expect(
+        service.categorize(
+          '1år - Lollo 95576770341',
+          -300.00,
+          DateTime(2025, 4, 7),
+        ),
+        (Category.other, Subcategory.godfather),
+      );
+
+      // 18. Health / Doctor: 2303 5694 01 75741
+      expect(
+        service.categorize(
+          '2303 5694 01 75741',
+          -5344.00,
+          DateTime(2025, 4, 1),
+        ),
+        (Category.health, Subcategory.doctor),
+      );
+    });
+  });
+
   group('CategorizationService - New Rules 2026-01-28', () {
     test('Keyword Rules', () {
       // Food / Coffee

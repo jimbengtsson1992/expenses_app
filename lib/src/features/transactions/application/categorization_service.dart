@@ -16,6 +16,136 @@ class CategorizationService {
     DateTime date,
   ) {
     final lowerDesc = description.toLowerCase();
+    
+    // Specific Overrides
+    if (_matches(description, ['Swish betalning LUNDBERG, CHARLOTTA']) &&
+        amount == -155.00 &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 3) {
+      return (Category.food, Subcategory.coffee);
+    }
+    if (_matches(description, ['Open Banking BG 5734-9797 Patientfa']) &&
+        amount == -100.00 &&
+        date.year == 2025 &&
+        date.month == 12 &&
+        date.day == 22) {
+      return (Category.health, Subcategory.doctor);
+    }
+    if (_matches(description, ['SE0234;GOETEBORG']) &&
+        amount == 552.98 &&
+        date.year == 2025 &&
+        date.month == 11 &&
+        date.day == 15) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['STUDIO;GOTEBORG']) &&
+        amount == 521.4 &&
+        date.year == 2025 &&
+        date.month == 9 &&
+        date.day == 11) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['LOOMISP*STAURANG VASTE;GOTEBORG']) &&
+        // The request says 178, but typically these are matched by fuzzy description if needed
+        // but here description is precise.
+        amount == 178.0 &&
+        date.year == 2025 &&
+        date.month == 9 &&
+        date.day == 6) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning FORTNOX FINANS AB']) &&
+        amount == -1605.00 &&
+        date.year == 2025 &&
+        date.month == 8 &&
+        date.day == 15) {
+      return (Category.housing, Subcategory.cleaning);
+    }
+    if (_matches(description, ['Swish betalning BÄCK, NATALIE']) &&
+        amount == -140.00 &&
+        date.year == 2025 &&
+        date.month == 8 &&
+        date.day == 19) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['Swish betalning DANIEL LENNARTSSON']) &&
+        amount == -400.00 &&
+        date.year == 2025 &&
+        date.month == 8 &&
+        date.day == 23) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['Swish betalning LINDSTRÖM,VENDELA']) &&
+        amount == -689.50 &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 31) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['GOTO HUB AB;HELSINGBORG']) &&
+        amount == 1170.0 &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 17) {
+      return (Category.entertainment, Subcategory.travel);
+    }
+    if (_matches(description, ['Swish betalning GÖRAN BENGTSSON']) &&
+        amount == -85.00 &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 13) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['ZETTLE_*TVELINGEN AB;GOTEBORG']) &&
+        amount == 165.0 &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 12) {
+      return (Category.entertainment, Subcategory.travel);
+    }
+    if (_matches(description, ['2352 5694 01 75741']) &&
+        amount == -3100.00 &&
+        date.year == 2025 &&
+        date.month == 10 &&
+        date.day == 21) {
+      return (Category.health, Subcategory.doctor);
+    }
+    if (_matches(description, ['2326 5694 01 75741']) &&
+        amount == -3500.00 &&
+        date.year == 2025 &&
+        date.month == 7 &&
+        date.day == 8) {
+      return (Category.health, Subcategory.doctor);
+    }
+    if (_matches(description, ['STORSTUGAN;FJARAS']) &&
+        amount == 430.0 &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 1) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['Swish betalning DUMAN MELIS']) &&
+        amount == -1170.00 &&
+        date.year == 2025 &&
+        date.month == 5 &&
+        date.day == 29) {
+      return (Category.health, Subcategory.beauty);
+    }
+    if (_matches(description, ['1år - Lollo 95576770341']) &&
+        amount == -300.00 &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 7) {
+      return (Category.other, Subcategory.godfather);
+    }
+    if (_matches(description, ['2303 5694 01 75741']) &&
+        amount == -5344.00 &&
+        date.year == 2025 &&
+        date.month == 4 &&
+        date.day == 1) {
+      return (Category.health, Subcategory.doctor);
+    }
 
     // --- New User Request 2026-01-27 ---
     // Override: Swish betalning Viktor Melin -> Other/Other
@@ -142,14 +272,7 @@ class CategorizationService {
         date.day == 3) {
       return (Category.other, Subcategory.other);
     }
-    // Override: Swish betalning LINDSTRÖM,VENDELA -> Other/Other
-    if (_matches(description, ['Swish betalning LINDSTRÖM,VENDELA']) &&
-        (amount == -689.50) &&
-        date.year == 2025 &&
-        date.month == 7 &&
-        date.day == 31) {
-      return (Category.other, Subcategory.other);
-    }
+
 
     // Override: ROGER NILSSON STAVERSH -> Other/Other
     if (_matches(description, ['ROGER NILSSON STAVERSH']) &&
@@ -520,12 +643,7 @@ class CategorizationService {
     }
 
     // --- New User Request 2026-01-22 ---
-    if (_matches(description, ['Swish betalning DANIEL LENNARTSSON']) &&
-        (amount == -400.00)) {
-      if (date.year == 2025 && date.month == 8 && date.day == 23) {
-        return (Category.other, Subcategory.other);
-      }
-    }
+
     if (_matches(description, ['Swish betalning KUJTIM LENA']) &&
         (amount == -40.00)) {
       if (date.year == 2025 && date.month == 8 && date.day == 23) {
@@ -844,6 +962,7 @@ class CategorizationService {
       'fc helsing@r',
       'aurora',
       'stromma sweden',
+      'torpa',
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
@@ -978,6 +1097,7 @@ class CategorizationService {
       'pho kim',
       'sunset falafel',
       'deli och coffee',
+      'hasselbacken',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -1026,6 +1146,7 @@ class CategorizationService {
       'brasserie isabelle',
       'barabicu',
       'storköket i göt',
+      'olivia goteborg',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -1388,8 +1509,7 @@ class CategorizationService {
       return (Category.other, Subcategory.godfather);
     }
 
-    // Savings (Removed category, moved to Other)
-    if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk', 'torpa'])) {
+    if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk'])) {
       return (Category.other, Subcategory.other);
     }
 

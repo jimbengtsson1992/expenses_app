@@ -457,7 +457,7 @@ void main() {
           -100.00,
           DateTime(2025, 12, 22),
         ),
-        (Category.other, Subcategory.other),
+        (Category.health, Subcategory.doctor),
       );
 
       // Specific Override: JOHN HENRIC NK GBG
@@ -919,7 +919,7 @@ void main() {
           -400.00,
           DateTime(2025, 8, 23),
         ),
-        (Category.other, Subcategory.other),
+        (Category.food, Subcategory.restaurant),
       );
 
       // Swish betalning KUJTIM LENA
@@ -1100,7 +1100,7 @@ void main() {
           -3100.0,
           DateTime(2025, 10, 21),
         ),
-        (Category.other, Subcategory.other),
+        (Category.health, Subcategory.doctor),
       );
 
       // Row 2: 2025/10/18;-60,00;...Swish betalning Aros Ballroom And L... -> Food/Coffee
@@ -1454,7 +1454,7 @@ void main() {
             -689.50,
             DateTime(2025, 7, 31),
           ),
-          (Category.other, Subcategory.other),
+          (Category.food, Subcategory.restaurant),
         );
       },
     );
