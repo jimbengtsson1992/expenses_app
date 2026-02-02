@@ -6,7 +6,7 @@ import '../../../common_widgets/net_result_badge.dart';
 import '../../../routing/routes.dart';
 
 import '../../../common_widgets/month_selector.dart';
-import '../../dashboard/presentation/dashboard_screen.dart'; // Import provider
+import '../../dashboard/application/current_date_provider.dart';
 import '../data/expenses_providers.dart';
 import '../data/expenses_repository.dart';
 import '../data/user_rules_repository.dart';

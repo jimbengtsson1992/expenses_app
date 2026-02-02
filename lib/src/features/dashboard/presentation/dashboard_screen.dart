@@ -8,31 +8,14 @@ import '../../transactions/domain/subcategory.dart';
 import '../../transactions/domain/transaction.dart';
 import '../../transactions/domain/transaction_type.dart';
 
+import '../application/current_date_provider.dart';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../routing/routes.dart';
 
 import '../../../common_widgets/net_result_badge.dart';
 
 part 'dashboard_screen.g.dart';
-
-// State for selected month (Shared between Dashboard and List for consistency)
-@riverpod
-class CurrentDate extends _$CurrentDate {
-  @override
-  DateTime build() => DateTime.now();
-
-  void previousMonth() {
-    final newDate = DateTime(state.year, state.month - 1);
-    if (newDate.isBefore(DateTime(2024, 12))) {
-      return;
-    }
-    state = newDate;
-  }
-
-  void nextMonth() {
-    state = DateTime(state.year, state.month + 1);
-  }
-}
 
 @riverpod
 class DashboardIncludeRenovationAndLoan
