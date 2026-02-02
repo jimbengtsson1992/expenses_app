@@ -383,7 +383,12 @@ class TransactionCsvParser {
     }
 
     if (description.contains('95580391031')) {
-      // Shared Avanza
+      // Shared Avanza (Savings account)
+      return true;
+    }
+
+    if (description.contains('95580675161')) {
+      // Shared Avanza (ISK)
       return true;
     }
 

@@ -167,6 +167,20 @@ void main() {
     );
 
     test(
+      'shouldExcludeFromOverview excludes new shared Avanza account transfers (95580675161)',
+      () {
+        expect(
+          parser.shouldExcludeFromOverview(
+            '95580675161',
+            -50000.0,
+            DateTime(2025, 2, 27),
+          ),
+          true,
+        );
+      },
+    );
+
+    test(
       'parseSasAmexCsv parses transactions and supports multiple sections',
       () {
         const csvContent = '''
