@@ -37,6 +37,30 @@ class CategorizationService {
     DateTime date,
   ) {
     // Specific Overrides
+    if (_matches(description, ['NEWPORT']) &&
+        (amount == -1032.5 || amount == 1032.5) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        (date.day == 17 || date.day == 19)) {
+      return (Category.shopping, Subcategory.decor);
+    }
+    if (_matches(description, ['NK KOK & DESIGN GBG']) &&
+        (amount == -598.0 || amount == 598.0) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        (date.day == 17 || date.day == 19)) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['ARKET SE0702']) &&
+        (amount == -149.0 || amount == 149.0)) {
+       if (date.year == 2026 && date.month == 1 && (date.day == 16 || date.day == 19)) {
+         return (Category.food, Subcategory.lunch);
+       }
+       if (date.year == 2026 && date.month == 1 && (date.day == 14 || date.day == 15)) {
+         return (Category.food, Subcategory.lunch);
+       }
+    }
+
     if (_matches(description, ['Kortköp 250213 SP BLOMRUM']) &&
         (amount == -650.00) &&
         date.year == 2025 &&
@@ -1275,6 +1299,7 @@ class CategorizationService {
       'deli och coffee',
       'hasselbacken',
       'mu thai street food',
+      'swish betalning karlsson andersson',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -1338,6 +1363,7 @@ class CategorizationService {
       return (Category.food, Subcategory.restaurant);
     }
 
+    // Strict match for 'mat' to avoid matching 'Bankomat'
     // Strict match for 'mat' to avoid matching 'Bankomat'
     if (RegExp(r'\bmat\b', caseSensitive: false).hasMatch(description)) {
       return (Category.food, Subcategory.restaurant);

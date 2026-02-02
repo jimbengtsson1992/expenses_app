@@ -476,5 +476,23 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-02-02 (Request)', () {
+      expectCategory(
+        service,
+        'NEWPORT',
+        -1032.5,
+        DateTime(2026, 1, 17),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'NK KOK & DESIGN GBG',
+        -598.0,
+        DateTime(2026, 1, 19),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+    });
   });
 }

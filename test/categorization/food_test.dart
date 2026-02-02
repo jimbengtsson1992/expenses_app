@@ -657,5 +657,31 @@ void main() {
         Subcategory.bar,
       );
     });
+    test('New Rules 2026-02-02 (Request)', () {
+      expectCategory(
+        service,
+        'Swish betalning KARLSSON ANDERSSON',
+        -100,
+        dummyDate,
+        Category.food,
+        Subcategory.lunch,
+      );
+      expectCategory(
+        service,
+        'ARKET SE0702',
+        -149.0, // Check negative
+        DateTime(2026, 1, 16),
+        Category.food,
+        Subcategory.lunch,
+      );
+      expectCategory(
+        service,
+        'ARKET SE0702',
+        -149.0,
+        DateTime(2026, 1, 14),
+        Category.food,
+        Subcategory.lunch,
+      );
+    });
   });
 }
