@@ -57,6 +57,15 @@ void main() {
         Category.shopping,
         Subcategory.clothes,
       );
+      // New Rules 2026-02-02
+      expectCategory(
+        service,
+        'bymalina',
+        -1500,
+        dummyDate,
+        Category.shopping,
+        Subcategory.clothes,
+      );
 
       // New Rules 2026-01-28
       expectCategory(
@@ -158,6 +167,25 @@ void main() {
         'ARTILLERIET STORE',
         -500,
         dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+      // New Rules 2026-02-02
+      expectCategory(
+        service,
+        'JOTEX SWEDEN AB',
+        -2000,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+
+      // New Rules 2026-02-02
+      expectCategory(
+        service,
+        'Kortköp 250213 SP BLOMRUM',
+        -650.00,
+        DateTime(2025, 2, 14),
         Category.shopping,
         Subcategory.decor,
       );

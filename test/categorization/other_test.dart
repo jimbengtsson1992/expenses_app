@@ -233,6 +233,23 @@ void main() {
         Category.other,
         Subcategory.other,
       );
+      // New Rules 2026-02-02
+      expectCategory(
+        service,
+        'Kortköp 250213 KUNGS GOTTER',
+        -31.00,
+        DateTime(2025, 2, 14),
+        Category.other,
+        Subcategory.other,
+      );
+      expectCategory(
+        service,
+        'POLISEN 1400 GO',
+        -500,
+        DateTime(2025, 2, 10),
+        Category.other,
+        Subcategory.other,
+      );
     });
   });
 }

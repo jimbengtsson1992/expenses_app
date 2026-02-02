@@ -266,6 +266,16 @@ void main() {
         Subcategory.lunch,
       );
 
+      // New Rules 2026-02-02
+      expectCategory(
+        service,
+        'MU THAI STREET FOOD',
+        -125,
+        dummyDate,
+        Category.food,
+        Subcategory.lunch,
+      );
+
       // Specific Overrides for Lunch
       expectCategory(
         service,
@@ -331,6 +341,14 @@ void main() {
         Category.food,
         Subcategory.lunch,
       );
+      expectCategory(
+        service,
+        'Swish betalning IDA BRUSBÄCK',
+        -145.00,
+        DateTime(2025, 2, 11),
+        Category.food,
+        Subcategory.lunch,
+      );
     });
 
     test('Restaurant', () {
@@ -338,6 +356,64 @@ void main() {
         service,
         'Restaurant',
         -500,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+
+      // New Rules 2026-02-02
+      expectCategory(
+        service,
+        'MOONGLOW',
+        -400,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'JEPPES FAMILJEKROG AB',
+        -400,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'Swish betalning HAPPY ORDER AB',
+        -400,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'THE HILLS STOCK',
+        -400,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'MA CUISINE',
+        -400,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'CASPECO',
+        -400,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'MADE IN CHINA',
+        -400,
         dummyDate,
         Category.food,
         Subcategory.restaurant,

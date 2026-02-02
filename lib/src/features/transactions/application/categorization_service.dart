@@ -37,6 +37,49 @@ class CategorizationService {
     DateTime date,
   ) {
     // Specific Overrides
+    if (_matches(description, ['Kortköp 250213 SP BLOMRUM']) &&
+        (amount == -650.00) &&
+        date.year == 2025 &&
+        date.month == 2 &&
+        date.day == 14) {
+      return (Category.shopping, Subcategory.decor);
+    }
+    if (_matches(description, ['Kortköp 250213 KUNGS GOTTER']) &&
+        (amount == -31.00) &&
+        date.year == 2025 &&
+        date.month == 2 &&
+        date.day == 14) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning IDA BRUSBÄCK']) &&
+        (amount == -145.00) &&
+        date.year == 2025 &&
+        date.month == 2 &&
+        date.day == 11) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['POLISEN 1400 GO']) &&
+        (amount == -500.00 || amount == 500.00) &&
+        date.year == 2025 &&
+        date.month == 2 &&
+        (date.day == 10 || date.day == 11)) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning ANDERS GUSTAFSSON']) &&
+        (amount == -85.00) &&
+        date.year == 2025 &&
+        date.month == 2 &&
+        date.day == 4) {
+      return (Category.entertainment, Subcategory.bar);
+    }
+    if (_matches(description, ['Swish betalning VIKTORIA THOLANDER']) &&
+        (amount == -90.00) &&
+        date.year == 2025 &&
+        date.month == 2 &&
+        date.day == 3) {
+      return (Category.entertainment, Subcategory.bar);
+    }
+
     if (_matches(description, ['GREEN EGG SP. Z O.O.']) &&
         (amount == -178.95) &&
         date.year == 2025 &&
@@ -1104,7 +1147,10 @@ class CategorizationService {
     ])) {
       return (Category.entertainment, Subcategory.hobby);
     }
-    if (_matches(lowerDesc, ['akademibokhande'])) {
+    if (_matches(lowerDesc, [
+      'akademibokhande',
+      'bokus.com',
+    ])) {
       return (Category.entertainment, Subcategory.boardGamesBooksAndToys);
     }
     if (_matches(lowerDesc, ['snusbolaget'])) {
@@ -1228,6 +1274,7 @@ class CategorizationService {
       'sunset falafel',
       'deli och coffee',
       'hasselbacken',
+      'mu thai street food',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
@@ -1280,6 +1327,13 @@ class CategorizationService {
       'mcd landvetter',
       'puta madre/basque',
       'fiskekrogen',
+      'moonglow',
+      'jeppes familjekrog ab',
+      'swish betalning happy order ab',
+      'the hills stock',
+      'ma cuisine',
+      'caspeco',
+      'made in china',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -1304,6 +1358,7 @@ class CategorizationService {
       'station linne 1', // From Override
       'o/o bar', // From Override
       'evion hotell &', // From Override
+      'kopps',
     ])) {
       return (Category.entertainment, Subcategory.bar);
     }
@@ -1365,6 +1420,7 @@ class CategorizationService {
       'elboden',
       'althallensfargtapetera',
       'bga.se',
+      'jotex sweden ab',
     ])) {
       return (Category.shopping, Subcategory.decor);
     }
@@ -1404,6 +1460,7 @@ class CategorizationService {
       'dressmann',
       'filippa k',
       'ginatricot',
+      'bymalina',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }

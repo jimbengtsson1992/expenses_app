@@ -135,6 +135,32 @@ void main() {
         Category.entertainment,
         Subcategory.bar,
       );
+
+      // New Rules 2026-02-02
+      expectCategory(
+        service,
+        'KOPPS',
+        -150,
+        dummyDate,
+        Category.entertainment,
+        Subcategory.bar,
+      );
+      expectCategory(
+        service,
+        'Swish betalning ANDERS GUSTAFSSON',
+        -85.00,
+        DateTime(2025, 2, 4),
+        Category.entertainment,
+        Subcategory.bar,
+      );
+      expectCategory(
+        service,
+        'Swish betalning VIKTORIA THOLANDER',
+        -90.00,
+        DateTime(2025, 2, 3),
+        Category.entertainment,
+        Subcategory.bar,
+      );
     });
 
     test('Travel', () {
@@ -255,6 +281,14 @@ void main() {
       expectCategory(
         service,
         'Akademibokhandeln',
+        -199,
+        dummyDate,
+        Category.entertainment,
+        Subcategory.boardGamesBooksAndToys,
+      );
+      expectCategory(
+        service,
+        'BOKUS.COM',
         -199,
         dummyDate,
         Category.entertainment,
