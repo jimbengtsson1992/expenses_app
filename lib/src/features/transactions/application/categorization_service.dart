@@ -94,14 +94,14 @@ class CategorizationService {
         date.year == 2025 &&
         date.month == 2 &&
         date.day == 4) {
-      return (Category.food, Subcategory.bar);
+      return (Category.food, Subcategory.restaurant);
     }
     if (_matches(description, ['Swish betalning VIKTORIA THOLANDER']) &&
         (amount == -90.00) &&
         date.year == 2025 &&
         date.month == 2 &&
         date.day == 3) {
-      return (Category.food, Subcategory.bar);
+      return (Category.food, Subcategory.restaurant);
     }
 
     if (_matches(description, ['GREEN EGG SP. Z O.O.']) &&
@@ -378,7 +378,7 @@ class CategorizationService {
         date.year == 2025 &&
         date.month == 6 &&
         date.day == 29) {
-      return (Category.food, Subcategory.bar);
+      return (Category.food, Subcategory.restaurant);
     }
     // Use strict date/amount for overrides to be safe
     if (_matches(description, ['Swish betalning ANDERSSON,JOHANNA']) &&
@@ -616,7 +616,7 @@ class CategorizationService {
         date.year == 2025 &&
         date.month == 5 &&
         date.day == 21) {
-      if (amount == -105.0) return (Category.food, Subcategory.bar);
+      if (amount == -105.0) return (Category.food, Subcategory.restaurant);
       if (amount == -295.0) return (Category.food, Subcategory.restaurant);
     }
     if (_matches(description, ['Swish betalning RAGNAR, MIRANDA']) &&
@@ -702,7 +702,7 @@ class CategorizationService {
         date.year == 2025 &&
         date.month == 5 &&
         date.day == 7) {
-      return (Category.food, Subcategory.bar);
+      return (Category.food, Subcategory.restaurant);
     }
     if (_matches(description, ['Swish betalning EMMA NIRVIN']) &&
         (amount == -130.0) &&
@@ -952,7 +952,7 @@ class CategorizationService {
         date.year == 2025 &&
         date.month == 11 &&
         date.day == 15) {
-      return (Category.food, Subcategory.bar);
+      return (Category.food, Subcategory.restaurant);
     }
     if (_matches(description, ['GOTEBORG CITY MAT &']) &&
         date.year == 2025 &&
@@ -1201,7 +1201,7 @@ class CategorizationService {
       return (Category.entertainment, Subcategory.streaming);
     }
     if (_matches(description, ['SWAY'])) {
-      return (Category.food, Subcategory.bar);
+      return (Category.food, Subcategory.restaurant);
     }
     if (_matches(lowerDesc, [
       'dn ',
@@ -1386,7 +1386,7 @@ class CategorizationService {
       'evion hotell &', // From Override
       'kopps',
     ])) {
-       return (Category.food, Subcategory.bar);
+      return (Category.food, Subcategory.restaurant);
     }
 
     if (_matches(lowerDesc, [

@@ -587,14 +587,14 @@ void main() {
       );
     });
 
-    test('Bar', () {
+    test('Bar & Club', () {
       expectCategory(
         service,
         'THE MELODY CLUB',
         -200,
         dummyDate,
         Category.food,
-        Subcategory.bar,
+        Subcategory.restaurant,
       );
       expectCategory(
         service,
@@ -602,7 +602,7 @@ void main() {
         -200,
         dummyDate,
         Category.food,
-        Subcategory.bar,
+        Subcategory.restaurant,
       );
 
       // Specific Overrides for Bar
@@ -612,7 +612,7 @@ void main() {
         -96.0,
         DateTime(2025, 11, 15),
         Category.food,
-        Subcategory.bar,
+        Subcategory.restaurant,
       );
       expectCategory(
         service,
@@ -620,7 +620,7 @@ void main() {
         -42.0,
         DateTime(2025, 11, 15),
         Category.food,
-        Subcategory.bar,
+        Subcategory.restaurant,
       );
       expectCategory(
         service,
@@ -628,7 +628,7 @@ void main() {
         -150,
         dummyDate,
         Category.food,
-        Subcategory.bar,
+        Subcategory.restaurant,
       );
 
       // New Rules 2026-02-02
@@ -638,7 +638,7 @@ void main() {
         -150,
         dummyDate,
         Category.food,
-        Subcategory.bar,
+        Subcategory.restaurant,
       );
       expectCategory(
         service,
@@ -646,7 +646,7 @@ void main() {
         -85.00,
         DateTime(2025, 2, 4),
         Category.food,
-        Subcategory.bar,
+        Subcategory.restaurant,
       );
       expectCategory(
         service,
@@ -654,7 +654,7 @@ void main() {
         -90.00,
         DateTime(2025, 2, 3),
         Category.food,
-        Subcategory.bar,
+        Subcategory.restaurant,
       );
     });
     test('New Rules 2026-02-02 (Request)', () {

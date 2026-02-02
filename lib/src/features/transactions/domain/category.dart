@@ -20,7 +20,6 @@ enum Category {
     Subcategory.takeaway,
     Subcategory.alcohol,
     Subcategory.coffee,
-    Subcategory.bar,
     Subcategory.other,
   ]),
 

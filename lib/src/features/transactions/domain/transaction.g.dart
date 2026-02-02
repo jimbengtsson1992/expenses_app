@@ -77,7 +77,6 @@ const _$SubcategoryEnumMap = {
   Subcategory.kitchenRenovation: 'kitchenRenovation',
   Subcategory.groceries: 'groceries',
   Subcategory.restaurant: 'restaurant',
-  Subcategory.bar: 'bar',
   Subcategory.lunch: 'lunch',
   Subcategory.takeaway: 'takeaway',
   Subcategory.alcohol: 'alcohol',
