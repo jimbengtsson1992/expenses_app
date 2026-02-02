@@ -166,6 +166,31 @@ void main() {
       },
     );
 
+    test('shouldExcludeFromOverview excludes specific 2025-02-21 transactions',
+        () {
+      // Swish inbetalning JÜRSS, JENNY
+      expect(
+        parser.shouldExcludeFromOverview(
+          'Swish inbetalning JÜRSS, JENNY',
+          169.0,
+          DateTime(2025, 2, 21),
+        ),
+        true,
+        reason: 'Failed to exclude Swish JÜRSS',
+      );
+
+      // FOODIE
+      expect(
+        parser.shouldExcludeFromOverview(
+          'FOODIE',
+          -169.0,
+          DateTime(2025, 2, 21),
+        ),
+        true,
+        reason: 'Failed to exclude FOODIE',
+      );
+    });
+
     test(
       'shouldExcludeFromOverview excludes new shared Avanza account transfers (95580675161)',
       () {

@@ -220,6 +220,27 @@ class TransactionDetailScreen extends ConsumerWidget {
                       ),
                     ),
                   ListTile(
+                    title: const Text('Hantera visning (AI)'),
+                    subtitle: Text(
+                      ref.watch(userRulesRepositoryProvider).value?.isExcluded(expense.id) ?? false
+                          ? 'Visas: NEJ (Tryck för att inkludera)'
+                          : 'Visas: JA (Tryck för att exkludera)',
+                    ),
+                    trailing: Icon(
+                      ref.watch(userRulesRepositoryProvider).value?.isExcluded(expense.id) ?? false
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onTap: () async {
+                      final repo = await ref.read(
+                        userRulesRepositoryProvider.future,
+                      );
+                      await repo.toggleExclusion(expense.id);
+                      ref.invalidate(userRulesRepositoryProvider);
+                      ref.invalidate(expensesRepositoryProvider);
+                    },
+                  ),
+                  ListTile(
                     title: SelectableText(
                       expense.id,
                       style: const TextStyle(

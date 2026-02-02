@@ -99,6 +99,24 @@ class MockUserRulesRepository extends _i1.Mock
           as Map<String, (_i3.Category, _i4.Subcategory)>);
 
   @override
+  bool isExcluded(String? transactionId) =>
+      (super.noSuchMethod(
+            Invocation.method(#isExcluded, [transactionId]),
+            returnValue: false,
+            returnValueForMissingStub: false,
+          )
+          as bool);
+
+  @override
+  Set<String> getAllExclusions() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllExclusions, []),
+            returnValue: <String>{},
+            returnValueForMissingStub: <String>{},
+          )
+          as Set<String>);
+
+  @override
   _i6.Future<void> addOverride(
     String? transactionId,
     _i3.Category? category,
@@ -132,6 +150,15 @@ class MockUserRulesRepository extends _i1.Mock
   _i6.Future<void> removeRule(String? keyword) =>
       (super.noSuchMethod(
             Invocation.method(#removeRule, [keyword]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> toggleExclusion(String? transactionId) =>
+      (super.noSuchMethod(
+            Invocation.method(#toggleExclusion, [transactionId]),
             returnValue: _i6.Future<void>.value(),
             returnValueForMissingStub: _i6.Future<void>.value(),
           )

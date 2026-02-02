@@ -138,6 +138,7 @@ class _TransactionsListScreenState
     final rulesRepo = await ref.read(userRulesRepositoryProvider.future);
     final rules = rulesRepo.getAllRules();
     final overrides = rulesRepo.getAllOverrides();
+    final exclusions = rulesRepo.getAllExclusions();
 
     // Fetch all transactions to look up details/CSV data for overrides
     // This ensures we have the data even if it's not in the current month view
@@ -154,59 +155,80 @@ class _TransactionsListScreenState
       'IMPORTANT: Create tests for any new or changed logic to prevent regressions.\n',
     );
 
-    // 1. General Rules
-    if (rules.isNotEmpty) {
-      buffer.writeln('### General Logic (Keywords)');
-      // Group by (Category, Subcategory)
-      final groupedRules = <(Category, Subcategory), List<String>>{};
-      for (final entry in rules.entries) {
-        groupedRules.putIfAbsent(entry.value, () => []).add(entry.key);
-      }
+    if (rules.isEmpty && overrides.isEmpty && exclusions.isEmpty) {
+      buffer.clear(); // Clear header
+      buffer.writeln('No rules, overrides, or exclusions saved.');
+    } else {
+      // 1. General Rules
+      if (rules.isNotEmpty) {
+        buffer.writeln('### General Logic (Keywords)');
+        // Group by (Category, Subcategory)
+        final groupedRules = <(Category, Subcategory), List<String>>{};
+        for (final entry in rules.entries) {
+          groupedRules.putIfAbsent(entry.value, () => []).add(entry.key);
+        }
 
-      for (final entry in groupedRules.entries) {
-        final cat = entry.key.$1;
-        final sub = entry.key.$2;
-        final keywords = entry.value.map((k) => "'$k'").join(', ');
-        buffer.writeln(
-          '- Assign **Category.${cat.name}** / **Subcategory.${sub.name}** if description contains: $keywords',
-        );
-      }
-      buffer.writeln();
-    }
-
-    // 2. Overrides
-    if (overrides.isNotEmpty) {
-      buffer.writeln('### Specific Exceptions (Overrides)');
-      for (final entry in overrides.entries) {
-        final id = entry.key;
-        final cat = entry.value.$1;
-        final sub = entry.value.$2;
-
-        final expense = expenseMap[id];
-
-        if (expense != null && expense.rawCsvData != null) {
-          buffer.writeln('- For CSV Row: `${expense.rawCsvData}`');
+        for (final entry in groupedRules.entries) {
+          final cat = entry.key.$1;
+          final sub = entry.key.$2;
+          final keywords = entry.value.map((k) => "'$k'").join(', ');
           buffer.writeln(
-            '  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**',
-          );
-        } else if (expense != null) {
-          buffer.writeln(
-            '- Hardcode Transaction: "${expense.description}" (${expense.date.toString().substring(0, 10)}, ${expense.amount} kr)',
-          );
-          buffer.writeln(
-            '  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**',
-          );
-        } else {
-          buffer.writeln('- Hardcode Transaction ID `$id` (Unknown Details)');
-          buffer.writeln(
-            '  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**',
+            '- Assign **Category.${cat.name}** / **Subcategory.${sub.name}** if description contains: $keywords',
           );
         }
+        buffer.writeln();
       }
-    }
 
-    if (rules.isEmpty && overrides.isEmpty) {
-      buffer.writeln('No rules or overrides saved.');
+      // 2. Overrides
+      if (overrides.isNotEmpty) {
+        buffer.writeln('### Specific Exceptions (Overrides)');
+        for (final entry in overrides.entries) {
+          final id = entry.key;
+          final cat = entry.value.$1;
+          final sub = entry.value.$2;
+
+          final expense = expenseMap[id];
+
+          if (expense != null && expense.rawCsvData != null) {
+            buffer.writeln('- For CSV Row: `${expense.rawCsvData}`');
+            buffer.writeln(
+              '  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**',
+            );
+          } else if (expense != null) {
+            buffer.writeln(
+              '- Hardcode Transaction: "${expense.description}" (${expense.date.toString().substring(0, 10)}, ${expense.amount} kr)',
+            );
+            buffer.writeln(
+              '  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**',
+            );
+          } else {
+            buffer.writeln('- Hardcode Transaction ID `$id` (Unknown Details)');
+            buffer.writeln(
+              '  -> Assign **Category.${cat.name}** / **Subcategory.${sub.name}**',
+            );
+          }
+        }
+        buffer.writeln();
+      }
+
+      // 3. Exclusions
+      if (exclusions.isNotEmpty) {
+        buffer.writeln('### Excluded Transactions');
+        for (final id in exclusions) {
+          final expense = expenseMap[id];
+          if (expense != null) {
+            final dateStr = DateFormat('yyyy-MM-dd').format(expense.date);
+            buffer.writeln(
+              '- Exclude Transaction: "${expense.description}" (Amount: ${expense.amount}, Date: $dateStr)',
+            );
+            buffer.writeln(
+              '  -> Update `shouldExcludeFromOverview` in `transaction_csv_parser.dart`',
+            );
+          } else {
+            buffer.writeln('- Exclude Transaction ID: `$id` (Details unknown)');
+          }
+        }
+      }
     }
 
     final code = buffer.toString();
@@ -225,7 +247,7 @@ class _TransactionsListScreenState
           ),
         ),
         actions: [
-          if (rules.isNotEmpty || overrides.isNotEmpty)
+          if (rules.isNotEmpty || overrides.isNotEmpty || exclusions.isNotEmpty)
             TextButton(
               onPressed: () async {
                 Navigator.of(ctx).pop();

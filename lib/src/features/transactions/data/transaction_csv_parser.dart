@@ -77,21 +77,6 @@ class TransactionCsvParser {
       // Filter Transfers - No longer filter them out completely
       // if (_isInternalTransfer(description)) continue;
 
-      // Determine exclusion
-      final excludeFromOverview = shouldExcludeFromOverview(
-        description,
-        amount,
-        date,
-      );
-
-      // Filter SAS Payments (to avoid dupe)
-      if (description.contains('Betalning BG 595-4300 SAS EUROBONUS')) continue;
-
-      // Determine transaction type: positive = income, negative = expense
-      final type = amount >= 0
-          ? TransactionType.income
-          : TransactionType.expense;
-
       // Generate ID
       final id = _generateStableId(
         date,
@@ -100,6 +85,19 @@ class TransactionCsvParser {
         sourceAccount,
         idRegistry,
       );
+
+      // Determine exclusion
+      final excludeFromOverview =
+          shouldExcludeFromOverview(description, amount, date) ||
+          _userRulesRepository.isExcluded(id);
+
+      // Filter SAS Payments (to avoid dupe)
+      if (description.contains('Betalning BG 595-4300 SAS EUROBONUS')) continue;
+
+      // Determine transaction type: positive = income, negative = expense
+      final type = amount >= 0
+          ? TransactionType.income
+          : TransactionType.expense;
 
       // Categorize Priority:
       // 1. Specific Override (ID based)
@@ -268,11 +266,9 @@ class TransactionCsvParser {
       Subcategory subcategory;
 
       // Determine exclusion
-      final excludeFromOverview = shouldExcludeFromOverview(
-        description,
-        amount,
-        date,
-      );
+      final excludeFromOverview =
+          shouldExcludeFromOverview(description, amount, date) ||
+          _userRulesRepository.isExcluded(id);
 
       final override = _userRulesRepository.getOverride(id);
       if (override != null) {
@@ -440,6 +436,25 @@ class TransactionCsvParser {
         upperDesc.contains('SWISH BETALNING RAGNAR, LOUISE') ||
         upperDesc.contains('SWISH BETALNING BENGTSSON,JIM') ||
         upperDesc.contains('SWISH BETALNING BENGTSSON, JIM')) {
+      return true;
+    }
+
+    // Exclude Swish inbetalning JÜRSS, JENNY
+    if (description.contains('Swish inbetalning JÜRSS, JENNY') &&
+        (amount - 169.0).abs() < 0.01 &&
+        date.year == 2025 &&
+        date.month == 2 &&
+        date.day == 21) {
+      return true;
+    }
+
+    // Exclude FOODIE
+    // Amount -169.0
+    if (description.contains('FOODIE') &&
+        (amount - -169.0).abs() < 0.01 &&
+        date.year == 2025 &&
+        date.month == 2 &&
+        date.day == 21) {
       return true;
     }
 

@@ -21,11 +21,14 @@ class UserRulesRepository {
 
   static const _overridesKey = 'categorization_overrides';
   static const _rulesKey = 'categorization_rules';
+  static const _exclusionsKey = 'categorization_exclusions';
 
   // ID -> {category: 'food', subcategory: 'groceries'}
   Map<String, (Category, Subcategory)> _overridesCache = {};
   // Keyword -> {category: 'food', subcategory: 'groceries'}
   Map<String, (Category, Subcategory)> _rulesCache = {};
+  // Set of ID
+  Set<String> _exclusionsCache = {};
 
   void load() {
     // Load Overrides
@@ -58,6 +61,12 @@ class UserRulesRepository {
         debugPrint('Error loading rules: $e');
       }
     }
+
+    // Load Exclusions
+    final exclusionsList = _prefs.getStringList(_exclusionsKey);
+    if (exclusionsList != null) {
+      _exclusionsCache = exclusionsList.toSet();
+    }
   }
 
   // --- Public Getters (Sync) ---
@@ -87,6 +96,12 @@ class UserRulesRepository {
   Map<String, (Category, Subcategory)> getAllOverrides() =>
       Map.from(_overridesCache);
 
+  bool isExcluded(String transactionId) {
+    return _exclusionsCache.contains(transactionId);
+  }
+
+  Set<String> getAllExclusions() => Set.from(_exclusionsCache);
+
   // --- Public Setters (Async) ---
 
   Future<void> addOverride(
@@ -112,11 +127,22 @@ class UserRulesRepository {
     await _saveRules();
   }
 
+  Future<void> toggleExclusion(String transactionId) async {
+    if (_exclusionsCache.contains(transactionId)) {
+      _exclusionsCache.remove(transactionId);
+    } else {
+      _exclusionsCache.add(transactionId);
+    }
+    await _saveExclusions();
+  }
+
   Future<void> clearAll() async {
     _overridesCache.clear();
     _rulesCache.clear();
+    _exclusionsCache.clear();
     await _prefs.remove(_overridesKey);
     await _prefs.remove(_rulesKey);
+    await _prefs.remove(_exclusionsKey);
   }
 
   // --- Internal Persistence ---
@@ -139,5 +165,9 @@ class UserRulesRepository {
       });
     });
     await _prefs.setString(_rulesKey, jsonEncode(encodable));
+  }
+
+  Future<void> _saveExclusions() async {
+    await _prefs.setStringList(_exclusionsKey, _exclusionsCache.toList());
   }
 }
