@@ -14,7 +14,7 @@
 3. **Categorization**: `CategorizationService` & rules. See `.agent/categorization_rules.md`.
 
 ## ⚡️ Quick Context
-- **Stack**: Flutter, Riverpod, GoRouter, Freezed, fl_chart, Intl.
+- **Stack**: Flutter, Riverpod (Generator), GoRouter, Freezed, fl_chart, Intl.
 - **Data**: `assets/data/*.csv`. Filtered > `2024-12-01`.
 - **Parsing**:
   - **Nordea**: Semicolon, `yyyy/MM/dd`, Filter internal transfers (`_isInternalTransfer`).

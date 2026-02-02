@@ -1,6 +1,8 @@
 # Code Patterns
 
 ## State (Riverpod)
+**MUST** use `riverpod_generator` (`@riverpod`). No manual `Provider`/`StateNotifierProvider`.
+
 ```dart
 @riverpod
 ExpensesRepository expensesRepository(Ref ref) {
