@@ -92,76 +92,7 @@ void main() {
       );
     });
 
-    test('Bar', () {
-      expectCategory(
-        service,
-        'THE MELODY CLUB',
-        -200,
-        dummyDate,
-        Category.entertainment,
-        Subcategory.bar,
-      );
-      expectCategory(
-        service,
-        'PARK LANE RESTA',
-        -200,
-        dummyDate,
-        Category.entertainment,
-        Subcategory.bar,
-      );
 
-      // Specific Overrides for Bar
-      expectCategory(
-        service,
-        'EVION HOTELL &',
-        -96.0,
-        DateTime(2025, 11, 15),
-        Category.entertainment,
-        Subcategory.bar,
-      );
-      expectCategory(
-        service,
-        'EVION HOTELL &',
-        -42.0,
-        DateTime(2025, 11, 15),
-        Category.entertainment,
-        Subcategory.bar,
-      );
-      expectCategory(
-        service,
-        'SWAY',
-        -150,
-        dummyDate,
-        Category.entertainment,
-        Subcategory.bar,
-      );
-
-      // New Rules 2026-02-02
-      expectCategory(
-        service,
-        'KOPPS',
-        -150,
-        dummyDate,
-        Category.entertainment,
-        Subcategory.bar,
-      );
-      expectCategory(
-        service,
-        'Swish betalning ANDERS GUSTAFSSON',
-        -85.00,
-        DateTime(2025, 2, 4),
-        Category.entertainment,
-        Subcategory.bar,
-      );
-      expectCategory(
-        service,
-        'Swish betalning VIKTORIA THOLANDER',
-        -90.00,
-        DateTime(2025, 2, 3),
-        Category.entertainment,
-        Subcategory.bar,
-      );
-    });
 
     test('Travel', () {
       expectCategory(

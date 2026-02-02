@@ -20,6 +20,7 @@ enum Category {
     Subcategory.takeaway,
     Subcategory.alcohol,
     Subcategory.coffee,
+    Subcategory.bar,
     Subcategory.other,
   ]),
 
@@ -37,7 +38,6 @@ enum Category {
   entertainment('Nöje & Fritid', 0xFF9C27B0, '🎉', [
     Subcategory.travel,
     Subcategory.hobby,
-    Subcategory.bar,
     Subcategory.boardGamesBooksAndToys,
     Subcategory.newspapers,
     Subcategory.streaming,
