@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../common_widgets/net_result_badge.dart';
 import '../../../routing/routes.dart';
 
-import '../../../common_widgets/month_selector.dart';
+import '../../shared/presentation/month_selector.dart';
 import '../../dashboard/application/current_date_provider.dart';
 import '../data/expenses_providers.dart';
 import '../data/expenses_repository.dart';
@@ -267,12 +267,7 @@ class _TransactionsListScreenState
 
     return Scaffold(
       appBar: AppBar(
-        title: MonthSelector(
-          currentDate: currentDate,
-          onPrevious: () =>
-              ref.read(currentDateProvider.notifier).previousMonth(),
-          onNext: () => ref.read(currentDateProvider.notifier).nextMonth(),
-        ),
+        title: const MonthSelector(),
         centerTitle: true,
         actions: [
           IconButton(

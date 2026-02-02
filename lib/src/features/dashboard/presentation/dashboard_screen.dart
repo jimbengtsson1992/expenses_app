@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import '../../../common_widgets/month_selector.dart';
+import '../../shared/presentation/month_selector.dart';
 import '../../transactions/data/expenses_providers.dart';
 import '../../transactions/domain/category.dart';
 import '../../transactions/domain/subcategory.dart';
@@ -36,12 +36,7 @@ class DashboardScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: MonthSelector(
-          currentDate: currentDate,
-          onPrevious: () =>
-              ref.read(currentDateProvider.notifier).previousMonth(),
-          onNext: () => ref.read(currentDateProvider.notifier).nextMonth(),
-        ),
+        title: const MonthSelector(),
         actions: [
           Row(
             children: [
