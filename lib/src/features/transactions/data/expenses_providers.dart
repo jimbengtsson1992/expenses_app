@@ -7,7 +7,10 @@ part 'expenses_providers.g.dart';
 @riverpod
 Future<List<Transaction>> expensesList(Ref ref) async {
   final repository = ref.watch(expensesRepositoryProvider);
-  return repository.getExpenses();
+  final expenses = await repository.getExpenses();
+  return expenses
+      .where((e) => e.date.isAfter(DateTime(2024, 11, 30)))
+      .toList();
 }
 
 @riverpod

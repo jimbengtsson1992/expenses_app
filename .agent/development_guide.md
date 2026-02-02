@@ -27,5 +27,5 @@ fvm flutter run
 - **Charts**: Use `fl_chart`.
 
 ## 🐞 Troubleshooting
-- **Missing Transactions**: Check `_startParams` date filter. Check `_isInternalTransfer`.
+- **Missing Transactions**: Check date filter (> 2024-12-01). Check `_isInternalTransfer`.
 - **Gen Error**: `fvm flutter pub run build_runner build --delete-conflicting-outputs`.

@@ -22,7 +22,11 @@ class CurrentDate extends _$CurrentDate {
   DateTime build() => DateTime.now();
 
   void previousMonth() {
-    state = DateTime(state.year, state.month - 1);
+    final newDate = DateTime(state.year, state.month - 1);
+    if (newDate.isBefore(DateTime(2024, 12))) {
+      return;
+    }
+    state = newDate;
   }
 
   void nextMonth() {
