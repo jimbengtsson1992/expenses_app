@@ -48,7 +48,7 @@ final class ExpensesListProvider
   }
 }
 
-String _$expensesListHash() => r'68b9a791a2a1d6bd0f840c8cc7afd38cab3b754c';
+String _$expensesListHash() => r'64029c7d02276e084e6afb6c8bea997a81498263';
 
 @ProviderFor(expensesForMonth)
 final expensesForMonthProvider = ExpensesForMonthFamily._();

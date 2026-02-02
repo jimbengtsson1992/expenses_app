@@ -31,7 +31,6 @@ enum Category {
     Subcategory.decor,
     Subcategory.beauty,
     Subcategory.tools,
-    Subcategory.dryCleaning,
     Subcategory.other,
   ]),
 

@@ -102,6 +102,9 @@ void main() {
       
       // Specific Overrides for Other
       expectCategory(service, 'Autogiro K*partykunge', -368.70, DateTime(2025, 4, 8), Category.shopping, Subcategory.other);
+
+      // Remapped Dry Cleaning
+      expectCategory(service, 'VASQUE KEMTVATT', -200, dummyDate, Category.shopping, Subcategory.other);
     });
   });
 }

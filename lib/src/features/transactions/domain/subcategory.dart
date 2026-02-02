@@ -26,7 +26,6 @@ enum Subcategory {
   decor('Inredning'),
   beauty('Skönhet'),
   tools('Verktyg & Bygg'),
-  dryCleaning('Kemtvätt'),
 
   // --- Nöje & fritid (Entertainment) ---
   travel('Resor'),

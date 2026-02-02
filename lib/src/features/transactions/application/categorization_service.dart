@@ -1336,7 +1336,7 @@ class CategorizationService {
       return (Category.shopping, Subcategory.decor);
     }
     if (_matches(lowerDesc, ['vasque kemtvatt'])) {
-      return (Category.shopping, Subcategory.dryCleaning);
+      return (Category.shopping, Subcategory.other);
     }
 
     // Strict match for NK to avoid matching "BANK"

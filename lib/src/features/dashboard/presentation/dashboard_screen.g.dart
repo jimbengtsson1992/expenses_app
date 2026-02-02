@@ -41,7 +41,7 @@ final class CurrentDateProvider
   }
 }
 
-String _$currentDateHash() => r'986a9338d81bd8adb9fac9bf633ec3ee024faf93';
+String _$currentDateHash() => r'6180da710aba4749973c406d44d37b8c062d1bc5';
 
 abstract class _$CurrentDate extends $Notifier<DateTime> {
   DateTime build();
