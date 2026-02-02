@@ -78,9 +78,15 @@ class _DashboardContent extends ConsumerWidget {
     final categoryTotals = <Category, double>{};
     final incomeCategoryTotals = <Category, double>{};
 
+    final categoryCounts = <Category, int>{};
+    final incomeCategoryCounts = <Category, int>{};
+
     // Map<Category, Map<Subcategory, double>>
     final expenseSubcategoryTotals = <Category, Map<Subcategory, double>>{};
     final incomeSubcategoryTotals = <Category, Map<Subcategory, double>>{};
+
+    final expenseSubcategoryCounts = <Category, Map<Subcategory, int>>{};
+    final incomeSubcategoryCounts = <Category, Map<Subcategory, int>>{};
 
     final includeRenovationAndLoan = ref.watch(
       dashboardIncludeRenovationAndLoanProvider,
@@ -111,14 +117,25 @@ class _DashboardContent extends ConsumerWidget {
           (val) => val + e.amount.abs(),
           ifAbsent: () => e.amount.abs(),
         );
+        incomeCategoryCounts.update(
+          e.category,
+          (val) => val + 1,
+          ifAbsent: () => 1,
+        );
 
         if (!incomeSubcategoryTotals.containsKey(e.category)) {
           incomeSubcategoryTotals[e.category] = {};
+          incomeSubcategoryCounts[e.category] = {};
         }
         incomeSubcategoryTotals[e.category]!.update(
           e.subcategory,
           (val) => val + e.amount.abs(),
           ifAbsent: () => e.amount.abs(),
+        );
+        incomeSubcategoryCounts[e.category]!.update(
+          e.subcategory,
+          (val) => val + 1,
+          ifAbsent: () => 1,
         );
       } else {
         // Expense transaction
@@ -128,14 +145,25 @@ class _DashboardContent extends ConsumerWidget {
           (val) => val + e.amount.abs(),
           ifAbsent: () => e.amount.abs(),
         );
+        categoryCounts.update(
+          e.category,
+          (val) => val + 1,
+          ifAbsent: () => 1,
+        );
 
         if (!expenseSubcategoryTotals.containsKey(e.category)) {
           expenseSubcategoryTotals[e.category] = {};
+          expenseSubcategoryCounts[e.category] = {};
         }
         expenseSubcategoryTotals[e.category]!.update(
           e.subcategory,
           (val) => val + e.amount.abs(),
           ifAbsent: () => e.amount.abs(),
+        );
+        expenseSubcategoryCounts[e.category]!.update(
+          e.subcategory,
+          (val) => val + 1,
+          ifAbsent: () => 1,
         );
       }
     }
@@ -245,6 +273,7 @@ class _DashboardContent extends ConsumerWidget {
           final amount = e.value;
           final percentage = totalExpenses > 0 ? amount / totalExpenses : 0.0;
           final subs = expenseSubcategoryTotals[cat] ?? {};
+          final count = categoryCounts[cat] ?? 0;
 
           // Sort subs by amount
           final sortedSubs = subs.entries.toList()
@@ -283,7 +312,7 @@ class _DashboardContent extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          cat.displayName,
+                          '${cat.displayName} ($count)',
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -314,6 +343,8 @@ class _DashboardContent extends ConsumerWidget {
                             final subData = subEntry.key;
                             final subAmount = subEntry.value;
                             final subName = subData.displayName;
+                            final subCount =
+                                expenseSubcategoryCounts[cat]?[subData] ?? 0;
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
@@ -324,7 +355,7 @@ class _DashboardContent extends ConsumerWidget {
                                   ), // Indent to align text
                                   Expanded(
                                     child: Text(
-                                      subName,
+                                      '$subName ($subCount)',
                                       style: TextStyle(
                                         color: Colors.grey[400],
                                         fontSize: 13,
@@ -371,6 +402,7 @@ class _DashboardContent extends ConsumerWidget {
             final amount = e.value;
             final percentage = totalIncome > 0 ? amount / totalIncome : 0.0;
             final subs = incomeSubcategoryTotals[cat] ?? {};
+            final count = incomeCategoryCounts[cat] ?? 0;
 
             // Sort subs by amount
             final sortedSubs = subs.entries.toList()
@@ -408,7 +440,7 @@ class _DashboardContent extends ConsumerWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            cat.displayName,
+                            '${cat.displayName} ($count)',
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -439,6 +471,8 @@ class _DashboardContent extends ConsumerWidget {
                               final subData = subEntry.key;
                               final subAmount = subEntry.value;
                               final subName = subData.displayName;
+                              final subCount =
+                                  incomeSubcategoryCounts[cat]?[subData] ?? 0;
 
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -451,7 +485,7 @@ class _DashboardContent extends ConsumerWidget {
                                     ), // Indent to align text
                                     Expanded(
                                       child: Text(
-                                        subName,
+                                        '$subName ($subCount)',
                                         style: TextStyle(
                                           color: Colors.grey[400],
                                           fontSize: 13,
