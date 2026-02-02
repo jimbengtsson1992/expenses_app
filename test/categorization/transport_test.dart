@@ -15,17 +15,52 @@ void main() {
 
   group('CategorizationService - Transport', () {
     test('Public Transport', () {
-      expectCategory(service, 'Västtrafik', -35, dummyDate, Category.transport, Subcategory.publicTransport);
-      expectCategory(service, 'Vasttrafik', -35, dummyDate, Category.transport, Subcategory.publicTransport);
-      expectCategory(service, 'HALLANDSTRAFIKE', -35, dummyDate, Category.transport, Subcategory.publicTransport);
+      expectCategory(
+        service,
+        'Västtrafik',
+        -35,
+        dummyDate,
+        Category.transport,
+        Subcategory.publicTransport,
+      );
+      expectCategory(
+        service,
+        'Vasttrafik',
+        -35,
+        dummyDate,
+        Category.transport,
+        Subcategory.publicTransport,
+      );
+      expectCategory(
+        service,
+        'HALLANDSTRAFIKE',
+        -35,
+        dummyDate,
+        Category.transport,
+        Subcategory.publicTransport,
+      );
     });
 
     test('Taxi', () {
-      expectCategory(service, 'Uber Trip', -120, dummyDate, Category.transport, Subcategory.taxi);
+      expectCategory(
+        service,
+        'Uber Trip',
+        -120,
+        dummyDate,
+        Category.transport,
+        Subcategory.taxi,
+      );
     });
 
     test('Fuel', () {
-      expectCategory(service, 'Circle K', -600, dummyDate, Category.transport, Subcategory.fuel);
+      expectCategory(
+        service,
+        'Circle K',
+        -600,
+        dummyDate,
+        Category.transport,
+        Subcategory.fuel,
+      );
     });
   });
 }

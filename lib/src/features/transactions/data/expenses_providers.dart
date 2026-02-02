@@ -8,9 +8,7 @@ part 'expenses_providers.g.dart';
 Future<List<Transaction>> expensesList(Ref ref) async {
   final repository = ref.watch(expensesRepositoryProvider);
   final expenses = await repository.getExpenses();
-  return expenses
-      .where((e) => e.date.isAfter(DateTime(2024, 11, 30)))
-      .toList();
+  return expenses.where((e) => e.date.isAfter(DateTime(2024, 11, 30))).toList();
 }
 
 @riverpod

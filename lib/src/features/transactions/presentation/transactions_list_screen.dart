@@ -513,7 +513,7 @@ class _TransactionsListScreenState
                             label: Text(sub.displayName),
                             selected: isSelected,
                             onSelected: (_) => _toggleSubcategory(sub),
-                            backgroundColor: Colors.grey.shade200,
+                            backgroundColor: Colors.black,
                             selectedColor: Color(
                               _filterCategory!.colorValue,
                             ).withValues(alpha: 0.3),

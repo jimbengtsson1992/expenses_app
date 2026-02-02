@@ -16,12 +16,16 @@ class CategorizationService {
     DateTime date,
   ) {
     final lowerDesc = description.toLowerCase();
-    
 
     final specificOverride = _checkSpecificOverrides(description, amount, date);
     if (specificOverride != null) return specificOverride;
 
-    final keywordRule = _checkKeywordRules(description, amount, date, lowerDesc);
+    final keywordRule = _checkKeywordRules(
+      description,
+      amount,
+      date,
+      lowerDesc,
+    );
     if (keywordRule != null) return keywordRule;
 
     return (Category.other, Subcategory.unknown);
@@ -39,6 +43,34 @@ class CategorizationService {
         date.month == 3 &&
         date.day == 30) {
       return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['Swish betalning Markus Bengtsson']) &&
+        (amount == -1180.00) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 27) {
+      return (Category.shopping, Subcategory.furniture);
+    }
+    if (_matches(description, ['PARKERING GÖTEB']) &&
+        (amount == -518.0) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 25) {
+      return (Category.shopping, Subcategory.furniture);
+    }
+    if (_matches(description, ['PARKERING GÖTEB']) &&
+        (amount == -414.0) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 24) {
+      return (Category.shopping, Subcategory.furniture);
+    }
+    if (_matches(description, ['BONNIER NEWS']) &&
+        (amount == -9.0) &&
+        date.year == 2026 &&
+        date.month == 1 &&
+        date.day == 24) {
+      return (Category.entertainment, Subcategory.streaming);
     }
     if (_matches(description, ['LAGARDERE DUTY FREE G']) &&
         (amount == -26.71) &&
@@ -131,7 +163,6 @@ class CategorizationService {
         date.day == 5) {
       return (Category.food, Subcategory.lunch);
     }
-
 
     if (_matches(description, ['Swish betalning LUNDBERG, CHARLOTTA']) &&
         amount == -155.00 &&
@@ -379,7 +410,6 @@ class CategorizationService {
         date.day == 3) {
       return (Category.other, Subcategory.other);
     }
-
 
     if (_matches(description, ['ROGER NILSSON STAVERSH']) &&
         (amount == 120.0 || amount == -120.0) &&
@@ -729,7 +759,6 @@ class CategorizationService {
         date.day == 5) {
       return (Category.other, Subcategory.other);
     }
-
 
     if (_matches(description, ['Swish betalning KUJTIM LENA']) &&
         (amount == -40.00)) {
@@ -1101,6 +1130,9 @@ class CategorizationService {
     ])) {
       return (Category.entertainment, Subcategory.streaming);
     }
+    if (_matches(description, ['SWAY'])) {
+      return (Category.entertainment, Subcategory.bar);
+    }
     if (_matches(lowerDesc, [
       'dn ',
       'gp ',
@@ -1247,6 +1279,7 @@ class CategorizationService {
       'olivia goteborg',
       'mcd landvetter',
       'puta madre/basque',
+      'fiskekrogen',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -1395,6 +1428,7 @@ class CategorizationService {
       'byggmax',
       'golvvarmeb',
       'hornbach',
+      'flugger ab',
     ])) {
       return (Category.shopping, Subcategory.tools);
     }
@@ -1609,7 +1643,13 @@ class CategorizationService {
       return (Category.other, Subcategory.godfather);
     }
 
-    if (_matches(lowerDesc, ['avanza', 'lysa', 'spar', 'isk', 'lastpass.com'])) {
+    if (_matches(lowerDesc, [
+      'avanza',
+      'lysa',
+      'spar',
+      'isk',
+      'lastpass.com',
+    ])) {
       return (Category.other, Subcategory.other);
     }
 

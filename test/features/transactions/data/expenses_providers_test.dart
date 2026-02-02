@@ -24,45 +24,43 @@ class FakeExpensesRepository implements ExpensesRepository {
 void main() {
   test('expensesListProvider filters transactions before 2024-12-01', () async {
     final tOld = Transaction(
-        id: '1', 
-        date: DateTime(2024, 11, 30), // Should exclude
-        amount: 100, 
-        description: 'Old', 
-        category: Category.shopping, 
-        sourceAccount: Account.sasAmex, 
-        sourceFilename: 'file', 
-        type: TransactionType.expense,
-        subcategory: Subcategory.unknown,
+      id: '1',
+      date: DateTime(2024, 11, 30), // Should exclude
+      amount: 100,
+      description: 'Old',
+      category: Category.shopping,
+      sourceAccount: Account.sasAmex,
+      sourceFilename: 'file',
+      type: TransactionType.expense,
+      subcategory: Subcategory.unknown,
     );
     final tNew = Transaction(
-        id: '2', 
-        date: DateTime(2024, 12, 1), // Should include
-        amount: 100, 
-        description: 'New', 
-        category: Category.shopping, 
-        sourceAccount: Account.sasAmex, 
-        sourceFilename: 'file', 
-        type: TransactionType.expense,
-        subcategory: Subcategory.unknown,
+      id: '2',
+      date: DateTime(2024, 12, 1), // Should include
+      amount: 100,
+      description: 'New',
+      category: Category.shopping,
+      sourceAccount: Account.sasAmex,
+      sourceFilename: 'file',
+      type: TransactionType.expense,
+      subcategory: Subcategory.unknown,
     );
     final tFuture = Transaction(
-        id: '3', 
-        date: DateTime(2025, 1, 1), // Should include
-        amount: 100, 
-        description: 'Future', 
-        category: Category.shopping, 
-        sourceAccount: Account.sasAmex, 
-        sourceFilename: 'file', 
-        type: TransactionType.expense,
-        subcategory: Subcategory.unknown,
+      id: '3',
+      date: DateTime(2025, 1, 1), // Should include
+      amount: 100,
+      description: 'Future',
+      category: Category.shopping,
+      sourceAccount: Account.sasAmex,
+      sourceFilename: 'file',
+      type: TransactionType.expense,
+      subcategory: Subcategory.unknown,
     );
 
     final mockRepo = FakeExpensesRepository([tOld, tNew, tFuture]);
 
     final container = ProviderContainer(
-      overrides: [
-        expensesRepositoryProvider.overrideWithValue(mockRepo),
-      ],
+      overrides: [expensesRepositoryProvider.overrideWithValue(mockRepo)],
     );
 
     final expenses = await container.read(expensesListProvider.future);
