@@ -9,9 +9,9 @@
 KnownRecurringPattern(
   descriptionPattern: 'PATTERN',     // Required: matches if description contains this
   category: Category.housing,        // Required
+  subcategory: Subcategory.rent,     // Required
   type: TransactionType.expense,     // Required: expense or income
   typicalDayOfMonth: 1,              // Optional: expected day (1-31)
-  subcategory: Subcategory.rent,     // Optional
   endDate: DateTime(2025, 6, 30),    // Optional: for cancelled/ended recurring
 ),
 ```
@@ -24,6 +24,7 @@ KnownRecurringPattern(
 KnownRecurringPattern(
   descriptionPattern: 'HYRA',
   category: Category.housing,
+  subcategory: Subcategory.rent,
   type: TransactionType.expense,
   typicalDayOfMonth: 1,
 ),
@@ -32,6 +33,7 @@ KnownRecurringPattern(
 KnownRecurringPattern(
   descriptionPattern: 'LÖN',
   category: Category.income,
+  subcategory: Subcategory.salary,
   type: TransactionType.income,
   typicalDayOfMonth: 25,
 ),
@@ -43,6 +45,7 @@ KnownRecurringPattern(
 KnownRecurringPattern(
   descriptionPattern: 'OLD GYM',
   category: Category.health,
+  subcategory: Subcategory.gym,
   type: TransactionType.expense,
   endDate: DateTime(2025, 6, 30),
 ),

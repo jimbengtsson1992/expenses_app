@@ -7,7 +7,7 @@ import '../../transactions/domain/transaction_type.dart';
 class KnownRecurringPattern {
   final String descriptionPattern;
   final Category category;
-  final Subcategory? subcategory;
+  final Subcategory subcategory;
   final TransactionType type;
   final int? typicalDayOfMonth;
   final DateTime? endDate;
@@ -15,8 +15,8 @@ class KnownRecurringPattern {
   const KnownRecurringPattern({
     required this.descriptionPattern,
     required this.category,
+    required this.subcategory,
     required this.type,
-    this.subcategory,
     this.typicalDayOfMonth,
     this.endDate,
   });
