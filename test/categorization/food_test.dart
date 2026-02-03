@@ -129,6 +129,16 @@ void main() {
         Subcategory.coffee,
       );
 
+      // New Rules 2026-02-03
+      expectCategory(
+        service,
+        'KAMPANILEN BAGERI O',
+        -100,
+        dummyDate,
+        Category.food,
+        Subcategory.coffee,
+      );
+
       // Specific Overrides for Coffee
       expectCategory(
         service,

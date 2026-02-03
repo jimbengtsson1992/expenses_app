@@ -1220,6 +1220,7 @@ class CategorizationService {
       'los churros wafels',
       'bar centro',
       'loomisp*cafe kvarnpire',
+      'kampanilen bageri o',
     ])) {
       return (Category.food, Subcategory.coffee);
     }
