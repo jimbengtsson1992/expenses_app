@@ -246,6 +246,25 @@ void main() {
         Category.entertainment,
         Subcategory.other,
       );
+
+      // Extra Adyen override for 1499.97
+      expectCategory(
+        service,
+        'Swish betalning ADYEN N.V.',
+        -1499.97,
+        DateTime(2025, 1, 5),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+      // Extra Adyen override for -129.0
+      expectCategory(
+        service,
+        'Swish betalning ADYEN N.V.',
+        -129.0,
+        DateTime(2025, 1, 5),
+        Category.entertainment,
+        Subcategory.travel,
+      );
     });
   });
 }

@@ -485,5 +485,31 @@ void main() {
         Subcategory.gifts,
       );
     });
+    test('New Rules 2026-02-03 (Request)', () {
+      expectCategory(
+        service,
+        'KJELL & CO',
+        -200,
+        dummyDate,
+        Category.shopping,
+        Subcategory.electronics,
+      );
+      expectCategory(
+        service,
+        'RITUALS COSMETICS SWED',
+        -300,
+        dummyDate,
+        Category.shopping,
+        Subcategory.beauty,
+      );
+      expectCategory(
+        service,
+        'Smalandsgr',
+        -150,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+    });
   });
 }

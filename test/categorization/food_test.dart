@@ -693,5 +693,49 @@ void main() {
         Subcategory.lunch,
       );
     });
+    test('New Rules 2026-02-03 (Request)', () {
+      expectCategory(
+        service,
+        'Swish betalning TB GÖTEBORG AB',
+        -400,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'SORELLINA',
+        -500,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'OLHALLEN 7 AN',
+        -150,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      
+      // Overrides
+      expectCategory(
+        service,
+        'SWEET*JACY Z HOTEL RES',
+        -195.0, // Assumption based on prompt logic for 0;195 cost
+        DateTime(2025, 1, 26),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'BIKT',
+        -310.0, // Assumption based on prompt logic for 0;310 cost
+        DateTime(2025, 1, 23),
+        Category.food,
+        Subcategory.lunch,
+      );
+    });
   });
 }

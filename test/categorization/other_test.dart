@@ -250,6 +250,16 @@ void main() {
         Category.other,
         Subcategory.other,
       );
+      
+      // New Rules 2026-02-03 (Request)
+      expectCategory(
+        service,
+        'Swish betalning ROBIN WITTLOCK',
+        -350.00,
+        DateTime(2025, 1, 28),
+        Category.other,
+        Subcategory.other,
+      );
     });
   });
 }

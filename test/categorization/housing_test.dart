@@ -163,6 +163,23 @@ void main() {
         Category.housing,
         Subcategory.kitchenRenovation,
       );
+      // New Rules 2026-02-03 (Request)
+      expectCategory(
+        service,
+        'ELGIGANTEN.SE',
+        -21694.00,
+        DateTime(2025, 1, 2),
+        Category.housing,
+        Subcategory.kitchenRenovation,
+      );
+      expectCategory(
+        service,
+        'SVEA*GRANSBYGDEN.S',
+        -14744.25,
+        DateTime(2025, 1, 2),
+        Category.housing,
+        Subcategory.kitchenRenovation,
+      );
     });
   });
 }

@@ -37,6 +37,93 @@ class CategorizationService {
     DateTime date,
   ) {
     // Specific Overrides
+    if (_matches(description, ['Swish betalning ROBIN WITTLOCK']) &&
+        (amount == -350.00) &&
+        date.year == 2025 &&
+        date.month == 1 &&
+        date.day == 28) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['SWEET*JACY Z HOTEL RES']) &&
+        // amount == -195.0 implied
+        date.year == 2025 &&
+        date.month == 1 &&
+        date.day == 26) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['BIKT']) &&
+        // amount == -310.0 implied
+        date.year == 2025 &&
+        date.month == 1 &&
+        date.day == 23) {
+      return (Category.food, Subcategory.lunch);
+    }
+
+    // Italy Trip Jan 2025
+    if (date.year == 2025 && date.month == 1) {
+      if (_matches(description, ['AUTOGRILL ITALIA']) && date.day == 7) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['TRENITALIA']) && date.day == 7) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['4051 WHS LS GOT']) && date.day == 7) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['Swish betalning ADYEN N.V.']) && date.day == 7) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['DR MAX STATUTO']) && date.day == 6) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['LARINASCENTE TRITONE 1']) && date.day == 6) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['SUMUP  *BAR GELATERIA']) && date.day == 6) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['LUFTHANSA RETAIL INMOT']) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['LA RINASCENTE ROMA TRI']) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['LARINASCENTE TRITONE 6']) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['IL NUOVO SOLE SRL']) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['TRENITALIA']) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['CONAD']) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['VIKTUALIENMARKT 2']) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['ATAC TAP&GO']) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['Swish betalning ADYEN N.V.']) &&
+          date.day == 5 &&
+          (amount == -1499.97 || amount == -129.0)) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+
+       if (_matches(description, ['ELGIGANTEN.SE']) &&
+          date.day == 2 &&
+          (amount == -21694.00)) {
+        return (Category.housing, Subcategory.kitchenRenovation);
+      }
+      if (_matches(description, ['SVEA*GRANSBYGDEN.S']) &&
+          date.day == 2 &&
+          (amount == -14744.25)) {
+        return (Category.housing, Subcategory.kitchenRenovation);
+      }
+    }
+
     if (_matches(description, ['NEWPORT']) &&
         (amount == -1032.5 || amount == 1032.5) &&
         date.year == 2026 &&
@@ -1183,19 +1270,24 @@ class CategorizationService {
     if (_matches(lowerDesc, [
       'netflix',
       'spotify',
+      'netflix',
       'hbo',
       'viaplay',
-      'tv4',
       'disney',
-      'youtube',
-      'apple music',
+      'amazonvideo',
+      'youtube premium',
+      'apple.com/bill',
+      'prime video',
       'storytel',
       'audible',
+      'podme',
+      'bonnier news', // Added generic
       'amazon prime',
-      'hbomax',
-      'help.max.com',
     ])) {
       return (Category.entertainment, Subcategory.streaming);
+    }
+    if (_matches(lowerDesc, ['klarna*bonnier-local'])) {
+        return (Category.entertainment, Subcategory.newspapers);
     }
     if (_matches(description, ['SWAY'])) {
       return (Category.food, Subcategory.restaurant);
@@ -1306,17 +1398,24 @@ class CategorizationService {
       'kitchen',
       'restaurant',
       'restaurang',
-      //      'mat', // Moved to strict match
-      'pizza',
+      'pizzeria',
+      'sushi',
       'burger',
-      'starbucks',
+      'thai',
+      'kebab',
       'foodora',
-      'uber eats',
-      'max ',
+      'uber * eats',
+      'max hamburgare',
+      'tugg',
+      'brasserie',
+      'bistro',
+      'korv',
+      'subway',
       'mcdonalds',
+      'burger king',
+      'chopchop',
       'mcdvarbergnord',
       'voyage gbg ab',
-      'chopchop',
       'enoteca sassi',
       'zettle_*jimmy   joan s',
       'skanshof',
@@ -1357,6 +1456,34 @@ class CategorizationService {
       'ma cuisine',
       'caspeco',
       'made in china',
+      'zocalo',
+      'texas longhorn',
+      'jureskogs',
+      'pinchos',
+      'pizza hut',
+      'vapiano',
+      'kfc',
+      'phils burger',
+      'bastard burgers',
+      'brödernas',
+      'shamiat',
+      'falafel',
+      'taco',
+      'panini',
+      'sallad',
+      'diner',
+      'grill',
+      'pub',
+      'klubb',
+      'krog',
+      'nightclub',
+      'lounge',
+      'nattklubb',
+      'bodega',
+      'swish betalning sor', // SORELLINA
+      'tb göteborg',
+      'olhallen',
+      'sorellina',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -1418,8 +1545,7 @@ class CategorizationService {
       'vacker nk',
       'kicks',
       'belle celine ab',
-      'kicks',
-      'belle celine ab',
+      'rituals cosmetics',
     ])) {
       return (Category.shopping, Subcategory.beauty);
     }
@@ -1430,7 +1556,11 @@ class CategorizationService {
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
-    if (_matches(lowerDesc, ['nk kok & design', 'artilleriet store'])) {
+    if (_matches(lowerDesc, [
+      'nk kok & design',
+      'artilleriet store',
+      'smalandsgr',
+    ])) {
       return (Category.shopping, Subcategory.decor);
     }
 
@@ -1496,6 +1626,7 @@ class CategorizationService {
       'apple',
       'power',
       'netonnet',
+      'kjell & co',
     ])) {
       return (Category.shopping, Subcategory.electronics);
     }
@@ -1599,6 +1730,9 @@ class CategorizationService {
       'babyscreen',
       'eliasson psyk',
       'naturalcycles',
+      'studio dental',
+      'k smile',
+      'naprapatcenter',
     ])) {
       return (Category.health, Subcategory.doctor);
     }
