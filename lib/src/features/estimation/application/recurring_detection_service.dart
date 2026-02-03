@@ -35,16 +35,22 @@ class RecurringDetectionService {
       if (matching.isNotEmpty) {
         final avgAmount = matching.map((t) => t.amount.abs()).reduce((a, b) => a + b) / matching.length;
         final typicalDay = pattern.typicalDayOfMonth ?? _calculateTypicalDay(matching);
+        
+        // Calculate typical frequency (transactions per month)
+        final frequency = _calculateMonthlyFrequencyMode(matching);
 
-        results.add(RecurringStatus(
-          descriptionPattern: pattern.descriptionPattern,
-          averageAmount: avgAmount,
-          typicalDayOfMonth: typicalDay,
-          category: pattern.category,
-          subcategory: pattern.subcategory,
-          type: pattern.type,
-          occurrenceCount: matching.length,
-        ));
+        // Add one result for each expected occurrence
+        for (var i = 0; i < frequency; i++) {
+          results.add(RecurringStatus(
+            descriptionPattern: pattern.descriptionPattern,
+            averageAmount: avgAmount,
+            typicalDayOfMonth: typicalDay,
+            category: pattern.category,
+            subcategory: pattern.subcategory,
+            type: pattern.type,
+            occurrenceCount: matching.length,
+          ));
+        }
       }
     }
 
@@ -132,6 +138,38 @@ class RecurringDetectionService {
     if (transactions.isEmpty) return 1;
     final days = transactions.map((t) => t.date.day).toList();
     return (days.reduce((a, b) => a + b) / days.length).round();
+  }
+
+  /// Calculate typical number of transactions per month (returns the mode)
+  int _calculateMonthlyFrequencyMode(List<Transaction> transactions) {
+    if (transactions.isEmpty) return 1;
+
+    // Group counts by month
+    final monthlyCounts = <String, int>{};
+    for (final t in transactions) {
+      final key = '${t.date.year}-${t.date.month}';
+      monthlyCounts.update(key, (v) => v + 1, ifAbsent: () => 1);
+    }
+
+    // Prepare frequency histogram (count -> how many months had this count)
+    final frequencies = <int, int>{};
+    for (final count in monthlyCounts.values) {
+      frequencies.update(count, (v) => v + 1, ifAbsent: () => 1);
+    }
+
+    // Find mode (the count that appears in most months)
+    var mode = 1;
+    var maxOccurrences = 0;
+    
+    for (final entry in frequencies.entries) {
+      // Prefer higher frequency if tied (e.g. if 50% months have 1, 50% have 2, assume 2 is the target)
+      if (entry.value > maxOccurrences || (entry.value == maxOccurrences && entry.key > mode)) {
+        maxOccurrences = entry.value;
+        mode = entry.key;
+      }
+    }
+    
+    return mode;
   }
 
   /// Check if a description is already covered by known patterns

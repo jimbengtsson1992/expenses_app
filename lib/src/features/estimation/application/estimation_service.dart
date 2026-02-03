@@ -63,10 +63,17 @@ class EstimationService {
     // Classify recurring as completed or pending
     final completedRecurring = <RecurringStatus>[];
     final pendingRecurring = <RecurringStatus>[];
+    
+    // Create a pool of transactions to match against (consumable)
+    final matchingPool = currentMonth.toList();
 
     for (final r in recurring) {
-      if (_isPatternCompleted(r, currentMonth)) {
+      final matchIndex = matchingPool.indexWhere((t) => 
+          t.description.toUpperCase().contains(r.descriptionPattern.toUpperCase()));
+
+      if (matchIndex != -1) {
         completedRecurring.add(r);
+        matchingPool.removeAt(matchIndex);
       } else {
         pendingRecurring.add(r);
       }
@@ -211,16 +218,7 @@ class EstimationService {
     );
   }
 
-  /// Check if a recurring pattern has been fulfilled this month
-  bool _isPatternCompleted(RecurringStatus pattern, List<Transaction> currentMonth) {
-    for (final t in currentMonth) {
-      // Match by description pattern
-      if (t.description.toUpperCase().contains(pattern.descriptionPattern.toUpperCase())) {
-        return true;
-      }
-    }
-    return false;
-  }
+
 
   /// Calculate average monthly amounts per category from history
   Map<Category, double> _calculateCategoryAverages(List<Transaction> history) {

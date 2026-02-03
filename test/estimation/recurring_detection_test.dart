@@ -62,6 +62,47 @@ void main() {
       expect(patterns.first.occurrenceCount, 3);
     });
 
+    test('detects multiple occurrences per month based on frequency for known patterns', () {
+      // 2 times per month, matching 'lön' pattern
+      final history = [
+        // Month 1
+        createTestTransaction(
+          description: 'LÖN UTBETALNING',
+          amount: 25000.0,
+          date: DateTime(2025, 1, 15),
+          type: TransactionType.income,
+        ),
+        createTestTransaction(
+          description: 'LÖN UTBETALNING',
+          amount: 25000.0,
+          date: DateTime(2025, 1, 25), // Second payment
+          type: TransactionType.income,
+        ),
+        // Month 2
+        createTestTransaction(
+          description: 'LÖN UTBETALNING',
+          amount: 25000.0,
+          date: DateTime(2025, 2, 15),
+          type: TransactionType.income,
+        ),
+        createTestTransaction(
+          description: 'LÖN UTBETALNING',
+          amount: 25000.0,
+          date: DateTime(2025, 2, 25), // Second payment
+          type: TransactionType.income,
+        ),
+      ];
+
+      final patterns = service.detectRecurringPatterns(history);
+
+      // Should return 2 recurring statuses for lön
+      final salaryPatterns = patterns.where((p) => p.descriptionPattern == 'lön').toList();
+      
+      expect(salaryPatterns.length, 2);
+      expect(salaryPatterns[0].averageAmount, 25000.0);
+      expect(salaryPatterns[1].averageAmount, 25000.0);
+    });
+
     test('does not detect one-time transactions', () {
       final history = [
         createTestTransaction(
