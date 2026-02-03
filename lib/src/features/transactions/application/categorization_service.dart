@@ -1033,9 +1033,6 @@ class CategorizationService {
         amount == -1299) {
       return (Category.shopping, Subcategory.gifts);
     }
-    if (_matches(description, ['KLARNA SMALANDSGRAN']) && amount == -1315) {
-      return (Category.shopping, Subcategory.other);
-    }
     if (_matches(description, ['ELLOS AB']) && amount == -3148.1) {
       return (Category.shopping, Subcategory.furniture);
     }

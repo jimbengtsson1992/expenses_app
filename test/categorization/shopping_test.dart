@@ -437,15 +437,6 @@ void main() {
     });
 
     test('Other (Shopping)', () {
-      expectCategory(
-        service,
-        'KLARNA SMALANDSGRAN',
-        -1315,
-        dummyDate,
-        Category.shopping,
-        Subcategory.other,
-      );
-
       // New Rules 2026-01-28
       expectCategory(
         service,
