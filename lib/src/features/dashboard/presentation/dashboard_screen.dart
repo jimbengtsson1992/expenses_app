@@ -172,6 +172,10 @@ class _DashboardContent extends ConsumerWidget {
 
     final netResult = totalIncome - totalExpenses;
 
+    final estimatedNetResult = estimate != null
+        ? estimate!.estimatedIncome - estimate!.estimatedExpenses
+        : null;
+
     // Include categories from estimates that have estimated values but no actuals yet
     if (estimate != null) {
       for (final entry in estimate!.categoryEstimates.entries) {
@@ -303,6 +307,37 @@ class _DashboardContent extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 NetResultBadge(netResult: netResult),
+                if (estimatedNetResult != null) ...[
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: estimatedNetResult! >= 0
+                          ? Colors.green.withValues(alpha: 0.1)
+                          : Colors.red.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: estimatedNetResult! >= 0
+                            ? Colors.green.withValues(alpha: 0.2)
+                            : Colors.red.withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      'Prognos: ${estimatedNetResult! >= 0 ? '+' : ''}${currency.format(estimatedNetResult)}',
+                      style: TextStyle(
+                        color: estimatedNetResult! >= 0
+                            ? Colors.green
+                            : Colors.red,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
