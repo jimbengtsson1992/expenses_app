@@ -37,6 +37,13 @@ class CategorizationService {
     DateTime date,
   ) {
     // Specific Overrides
+    if (_matches(description, ['NORDISKA KOK']) &&
+        // amount == 6760.0 implied
+        date.year == 2025 &&
+        date.month == 10 &&
+        date.day == 28) {
+      return (Category.income, Subcategory.kitchenRenovation);
+    }
     if (_matches(description, ['Swish betalning ROBIN WITTLOCK']) &&
         (amount == -350.00) &&
         date.year == 2025 &&

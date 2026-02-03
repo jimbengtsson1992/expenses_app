@@ -55,6 +55,16 @@ void main() {
         Category.income,
         Subcategory.kitchenRenovation,
       );
+
+      // New Rules 2026-02-03 (Nordiska Kok Override)
+      expectCategory(
+        service,
+        '3016 05 24377;;NORDISKA KOK',
+        6760.00,
+        DateTime(2025, 10, 28),
+        Category.income,
+        Subcategory.kitchenRenovation,
+      );
     });
 
     test('Other (Income)', () {
