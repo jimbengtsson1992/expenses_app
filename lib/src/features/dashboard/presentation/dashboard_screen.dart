@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import '../../shared/presentation/month_selector.dart';
+import '../../shared/presentation/period_selector.dart';
 import '../../transactions/data/expenses_providers.dart';
 import '../../transactions/domain/category.dart';
 import '../../transactions/domain/subcategory.dart';
 import '../../transactions/domain/transaction.dart';
 import '../../transactions/domain/transaction_type.dart';
 
-import '../application/current_date_provider.dart';
+import '../application/date_period_provider.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../routing/routes.dart';
@@ -31,12 +31,12 @@ class DashboardScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentDate = ref.watch(currentDateProvider);
-    final expensesAsync = ref.watch(expensesForMonthProvider(currentDate));
+    final currentPeriod = ref.watch(datePeriodProvider);
+    final expensesAsync = ref.watch(expensesForPeriodProvider(currentPeriod));
 
     return Scaffold(
       appBar: AppBar(
-        title: const MonthSelector(),
+        title: const PeriodSelector(),
         actions: [
           Row(
             children: [

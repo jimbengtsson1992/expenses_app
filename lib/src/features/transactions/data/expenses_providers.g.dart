@@ -50,10 +50,10 @@ final class ExpensesListProvider
 
 String _$expensesListHash() => r'64029c7d02276e084e6afb6c8bea997a81498263';
 
-@ProviderFor(expensesForMonth)
-final expensesForMonthProvider = ExpensesForMonthFamily._();
+@ProviderFor(expensesForPeriod)
+final expensesForPeriodProvider = ExpensesForPeriodFamily._();
 
-final class ExpensesForMonthProvider
+final class ExpensesForPeriodProvider
     extends
         $FunctionalProvider<
           AsyncValue<List<Transaction>>,
@@ -63,23 +63,23 @@ final class ExpensesForMonthProvider
     with
         $FutureModifier<List<Transaction>>,
         $FutureProvider<List<Transaction>> {
-  ExpensesForMonthProvider._({
-    required ExpensesForMonthFamily super.from,
-    required DateTime super.argument,
+  ExpensesForPeriodProvider._({
+    required ExpensesForPeriodFamily super.from,
+    required DatePeriod super.argument,
   }) : super(
          retry: null,
-         name: r'expensesForMonthProvider',
+         name: r'expensesForPeriodProvider',
          isAutoDispose: true,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
 
   @override
-  String debugGetCreateSourceHash() => _$expensesForMonthHash();
+  String debugGetCreateSourceHash() => _$expensesForPeriodHash();
 
   @override
   String toString() {
-    return r'expensesForMonthProvider'
+    return r'expensesForPeriodProvider'
         ''
         '($argument)';
   }
@@ -92,13 +92,13 @@ final class ExpensesForMonthProvider
 
   @override
   FutureOr<List<Transaction>> create(Ref ref) {
-    final argument = this.argument as DateTime;
-    return expensesForMonth(ref, argument);
+    final argument = this.argument as DatePeriod;
+    return expensesForPeriod(ref, argument);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ExpensesForMonthProvider && other.argument == argument;
+    return other is ExpensesForPeriodProvider && other.argument == argument;
   }
 
   @override
@@ -107,24 +107,24 @@ final class ExpensesForMonthProvider
   }
 }
 
-String _$expensesForMonthHash() => r'05a981bebe75a0d9e6905e1f6b3a31d6f2b01070';
+String _$expensesForPeriodHash() => r'987728f01c85357acb99544d68bbc19e1bcb9faa';
 
-final class ExpensesForMonthFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<List<Transaction>>, DateTime> {
-  ExpensesForMonthFamily._()
+final class ExpensesForPeriodFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<Transaction>>, DatePeriod> {
+  ExpensesForPeriodFamily._()
     : super(
         retry: null,
-        name: r'expensesForMonthProvider',
+        name: r'expensesForPeriodProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
         isAutoDispose: true,
       );
 
-  ExpensesForMonthProvider call(DateTime month) =>
-      ExpensesForMonthProvider._(argument: month, from: this);
+  ExpensesForPeriodProvider call(DatePeriod period) =>
+      ExpensesForPeriodProvider._(argument: period, from: this);
 
   @override
-  String toString() => r'expensesForMonthProvider';
+  String toString() => r'expensesForPeriodProvider';
 }
 
 @ProviderFor(expenseById)

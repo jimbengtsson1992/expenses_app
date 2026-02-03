@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../domain/transaction.dart';
+import '../../dashboard/domain/date_period.dart';
 import 'expenses_repository.dart';
 
 part 'expenses_providers.g.dart';
@@ -12,11 +13,14 @@ Future<List<Transaction>> expensesList(Ref ref) async {
 }
 
 @riverpod
-Future<List<Transaction>> expensesForMonth(Ref ref, DateTime month) async {
+Future<List<Transaction>> expensesForPeriod(Ref ref, DatePeriod period) async {
   final expenses = await ref.watch(expensesListProvider.future);
-  return expenses
-      .where((e) => e.date.year == month.year && e.date.month == month.month)
-      .toList();
+  return expenses.where((e) {
+    return period.map(
+      month: (p) => e.date.year == p.year && e.date.month == p.month,
+      year: (p) => e.date.year == p.year,
+    );
+  }).toList();
 }
 
 @riverpod

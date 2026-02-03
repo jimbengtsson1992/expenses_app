@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'current_date_provider.dart';
+part of 'date_period_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,51 +9,52 @@ part of 'current_date_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(CurrentDate)
-final currentDateProvider = CurrentDateProvider._();
+@ProviderFor(DatePeriodNotifier)
+final datePeriodProvider = DatePeriodNotifierProvider._();
 
-final class CurrentDateProvider
-    extends $NotifierProvider<CurrentDate, DateTime> {
-  CurrentDateProvider._()
+final class DatePeriodNotifierProvider
+    extends $NotifierProvider<DatePeriodNotifier, DatePeriod> {
+  DatePeriodNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'currentDateProvider',
+        name: r'datePeriodProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$currentDateHash();
+  String debugGetCreateSourceHash() => _$datePeriodNotifierHash();
 
   @$internal
   @override
-  CurrentDate create() => CurrentDate();
+  DatePeriodNotifier create() => DatePeriodNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DateTime value) {
+  Override overrideWithValue(DatePeriod value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<DateTime>(value),
+      providerOverride: $SyncValueProvider<DatePeriod>(value),
     );
   }
 }
 
-String _$currentDateHash() => r'c8d321c3f7992ebc0f6b31d6d0e0414b0962f9f7';
+String _$datePeriodNotifierHash() =>
+    r'd195bbd424a59baa3d5f712fae2f7f91d0244ac6';
 
-abstract class _$CurrentDate extends $Notifier<DateTime> {
-  DateTime build();
+abstract class _$DatePeriodNotifier extends $Notifier<DatePeriod> {
+  DatePeriod build();
   @$mustCallSuper
   @override
   void runBuild() {
-    final ref = this.ref as $Ref<DateTime, DateTime>;
+    final ref = this.ref as $Ref<DatePeriod, DatePeriod>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<DateTime, DateTime>,
-              DateTime,
+              AnyNotifier<DatePeriod, DatePeriod>,
+              DatePeriod,
               Object?,
               Object?
             >;

@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import '../../../common_widgets/net_result_badge.dart';
 import '../../../routing/routes.dart';
 
-import '../../shared/presentation/month_selector.dart';
-import '../../dashboard/application/current_date_provider.dart';
+import '../../shared/presentation/period_selector.dart';
+import '../../dashboard/application/date_period_provider.dart';
 import '../data/expenses_providers.dart';
 import '../data/expenses_repository.dart';
 import '../data/user_rules_repository.dart';
@@ -284,12 +284,12 @@ class _TransactionsListScreenState
 
   @override
   Widget build(BuildContext context) {
-    final currentDate = ref.watch(currentDateProvider);
-    final expensesAsync = ref.watch(expensesForMonthProvider(currentDate));
+    final currentPeriod = ref.watch(datePeriodProvider);
+    final expensesAsync = ref.watch(expensesForPeriodProvider(currentPeriod));
 
     return Scaffold(
       appBar: AppBar(
-        title: const MonthSelector(),
+        title: const PeriodSelector(),
         centerTitle: true,
         actions: [
           IconButton(
