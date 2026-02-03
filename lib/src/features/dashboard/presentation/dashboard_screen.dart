@@ -259,7 +259,7 @@ class _DashboardContent extends ConsumerWidget {
                                 '→ ${currency.format(estimate!.estimatedIncome)}',
                                 style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(
-                                      color: Colors.greenAccent.withValues(alpha: 0.7),
+                                      color: Colors.greenAccent.withValues(alpha: 0.9),
                                       fontStyle: FontStyle.italic,
                                     ),
                               ),
@@ -294,7 +294,7 @@ class _DashboardContent extends ConsumerWidget {
                                 '→ ${currency.format(estimate!.estimatedExpenses)}',
                                 style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(
-                                      color: Colors.grey.withValues(alpha: 0.7),
+                                      color: Colors.grey.withValues(alpha: 0.9),
                                       fontStyle: FontStyle.italic,
                                     ),
                               ),
@@ -315,21 +315,21 @@ class _DashboardContent extends ConsumerWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: estimatedNetResult! >= 0
+                      color: estimatedNetResult >= 0
                           ? Colors.green.withValues(alpha: 0.1)
                           : Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: estimatedNetResult! >= 0
+                        color: estimatedNetResult >= 0
                             ? Colors.green.withValues(alpha: 0.2)
                             : Colors.red.withValues(alpha: 0.2),
                         width: 1,
                       ),
                     ),
                     child: Text(
-                      'Prognos: ${estimatedNetResult! >= 0 ? '+' : ''}${currency.format(estimatedNetResult)}',
+                      'Prognos: ${estimatedNetResult >= 0 ? '+' : ''}${currency.format(estimatedNetResult)}',
                       style: TextStyle(
-                        color: estimatedNetResult! >= 0
+                        color: estimatedNetResult >= 0
                             ? Colors.green
                             : Colors.red,
                         fontWeight: FontWeight.w500,
@@ -428,7 +428,7 @@ class _DashboardContent extends ConsumerWidget {
                               '→ ${currency.format(estimate!.categoryEstimates[cat]!.estimated)}',
                               style: TextStyle(
                                 fontSize: 11,
-                                color: Colors.grey.withValues(alpha: 0.7),
+                                color: Colors.grey.withValues(alpha: 0.9),
                                 fontStyle: FontStyle.italic,
                               ),
                             ),
@@ -492,8 +492,8 @@ class _DashboardContent extends ConsumerWidget {
                                         Text(
                                           '→ ${currency.format(subEstimate.estimated)}',
                                           style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey.withValues(alpha: 0.5),
+                                            fontSize: 11,
+                                            color: Colors.grey.withValues(alpha: 0.9),
                                             fontStyle: FontStyle.italic,
                                           ),
                                         ),
@@ -603,7 +603,7 @@ class _DashboardContent extends ConsumerWidget {
                                 '→ ${currency.format(estimate!.categoryEstimates[cat]!.estimated)}',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.greenAccent.withValues(alpha: 0.7),
+                                  color: Colors.greenAccent.withValues(alpha: 0.9),
                                   fontStyle: FontStyle.italic,
                                 ),
                               ),
@@ -669,8 +669,8 @@ class _DashboardContent extends ConsumerWidget {
                                           Text(
                                             '→ ${currency.format(subEstimate.estimated)}',
                                             style: TextStyle(
-                                              fontSize: 10,
-                                              color: Colors.greenAccent.withValues(alpha: 0.5),
+                                              fontSize: 11,
+                                              color: Colors.greenAccent.withValues(alpha: 0.9),
                                               fontStyle: FontStyle.italic,
                                             ),
                                           ),

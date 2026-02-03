@@ -151,52 +151,53 @@ class EstimationService {
     for (final cat in Category.values) {
       final actual = categoryActuals[cat] ?? 0;
       final historicalAvg = categoryAverages[cat] ?? 0;
-      
-      // Calculate category estimate
-      double estimated = actual;
-      
-      // Add pending recurring for this category
-      for (final r in pendingRecurring.where((r) => r.category == cat)) {
-        estimated += r.averageAmount;
-      }
-      
-      // Add variable estimate if no recurring
-      if (!recurring.any((r) => r.category == cat)) {
-        estimated += historicalAvg * remainingRatio;
+
+      final subEstimates = <Subcategory, SubcategoryEstimate>{};
+      final catSubActuals = subcategoryActuals[cat] ?? {};
+      final catSubAverages = subcategoryAverages[cat] ?? {};
+
+      // Calculate pending recurring subcategories for this category
+      final catPendingRecurring =
+          pendingRecurring.where((r) => r.category == cat);
+
+      // Include all subcategories with actuals, historical data, or pending recurring
+      final allSubs = {...catSubActuals.keys, ...catSubAverages.keys};
+      for (final r in catPendingRecurring) {
+        allSubs.add(r.subcategory ?? Subcategory.unknown);
       }
 
-      if (actual > 0 || estimated > 0 || historicalAvg > 0) {
-        // Calculate subcategory estimates
-        final subEstimates = <Subcategory, SubcategoryEstimate>{};
-        final catSubActuals = subcategoryActuals[cat] ?? {};
-        final catSubAverages = subcategoryAverages[cat] ?? {};
-        
-        // Include all subcategories with actuals or historical data
-        final allSubs = {...catSubActuals.keys, ...catSubAverages.keys};
-        for (final sub in allSubs) {
-          final subActual = catSubActuals[sub] ?? 0;
-          final subHistAvg = catSubAverages[sub] ?? 0;
-          
-          double subEstimated = subActual;
-          // Add pending recurring for this subcategory
-          for (final r in pendingRecurring.where((r) => r.category == cat && r.subcategory == sub)) {
-            subEstimated += r.averageAmount;
-          }
-          // Add variable estimate if no recurring for this subcategory
-          if (!recurring.any((r) => r.category == cat && r.subcategory == sub)) {
-            subEstimated += subHistAvg * remainingRatio;
-          }
-          
-          if (subActual > 0 || subEstimated > 0 || subHistAvg > 0) {
-            subEstimates[sub] = SubcategoryEstimate(
-              subcategory: sub,
-              actual: subActual,
-              estimated: subEstimated,
-              historicalAverage: subHistAvg,
-            );
-          }
+      for (final sub in allSubs) {
+        final subActual = catSubActuals[sub] ?? 0;
+        final subHistAvg = catSubAverages[sub] ?? 0;
+
+        double subEstimated = subActual;
+        // Add pending recurring for this subcategory
+        for (final r in catPendingRecurring.where(
+            (r) => (r.subcategory ?? Subcategory.unknown) == sub)) {
+          subEstimated += r.averageAmount;
         }
-        
+        // Add variable estimate if no recurring for this subcategory
+        if (!recurring.any((r) =>
+            r.category == cat &&
+            (r.subcategory ?? Subcategory.unknown) == sub)) {
+          subEstimated += subHistAvg * remainingRatio;
+        }
+
+        if (subActual > 0 || subEstimated > 0 || subHistAvg > 0) {
+          subEstimates[sub] = SubcategoryEstimate(
+            subcategory: sub,
+            actual: subActual,
+            estimated: subEstimated,
+            historicalAverage: subHistAvg,
+          );
+        }
+      }
+
+      // Calculate category estimate from sum of sub estimates
+      final estimated =
+          subEstimates.values.fold(0.0, (sum, e) => sum + e.estimated);
+
+      if (actual > 0 || estimated > 0 || historicalAvg > 0) {
         categoryEstimates[cat] = CategoryEstimate(
           category: cat,
           actual: actual,
