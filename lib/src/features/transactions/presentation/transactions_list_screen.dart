@@ -37,6 +37,8 @@ class TransactionsListScreen extends ConsumerStatefulWidget {
 class _TransactionsListScreenState
     extends ConsumerState<TransactionsListScreen> {
   late TextEditingController _searchController;
+  late TextEditingController _minAmountController;
+  late TextEditingController _maxAmountController;
   TransactionType? _filterType;
   Category? _filterCategory;
   Account? _filterAccount;
@@ -47,6 +49,8 @@ class _TransactionsListScreenState
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+    _minAmountController = TextEditingController();
+    _maxAmountController = TextEditingController();
 
     // Initialize filters from widget params
     _filterCategory = widget.initialCategory;
@@ -120,12 +124,16 @@ class _TransactionsListScreenState
   @override
   void dispose() {
     _searchController.dispose();
+    _minAmountController.dispose();
+    _maxAmountController.dispose();
     super.dispose();
   }
 
   void _clearFilters() {
     setState(() {
       _searchController.clear();
+      _minAmountController.clear();
+      _maxAmountController.clear();
       _filterType = null;
       _filterCategory = null;
       _filterAccount = null;
@@ -312,6 +320,22 @@ class _TransactionsListScreenState
                 .toList();
           }
 
+          // 1.5 Value Filter
+          final minVal = double.tryParse(_minAmountController.text);
+          final maxVal = double.tryParse(_maxAmountController.text);
+
+          if (minVal != null) {
+            filteredExpenses = filteredExpenses
+                .where((e) => e.amount.abs() >= minVal)
+                .toList();
+          }
+
+          if (maxVal != null) {
+            filteredExpenses = filteredExpenses
+                .where((e) => e.amount.abs() <= maxVal)
+                .toList();
+          }
+
           // 2. Type Filter
           if (_filterType != null) {
             filteredExpenses = filteredExpenses
@@ -425,6 +449,48 @@ class _TransactionsListScreenState
                                   setState(() => _filterType = val),
                             ),
                           ),
+                          // Min Amount Filter
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: SizedBox(
+                              width: 80,
+                              child: TextField(
+                                controller: _minAmountController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  hintText: 'Min kr',
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 12,
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (val) => setState(() {}),
+                              ),
+                            ),
+                          ),
+                          // Max Amount Filter
+                          Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: SizedBox(
+                              width: 80,
+                              child: TextField(
+                                controller: _maxAmountController,
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  hintText: 'Max kr',
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 12,
+                                  ),
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (val) => setState(() {}),
+                              ),
+                            ),
+                          ),
                           // Category Filter
                           Padding(
                             padding: const EdgeInsets.only(right: 8),
@@ -499,7 +565,9 @@ class _TransactionsListScreenState
                           if (_filterType != null ||
                               _filterCategory != null ||
                               _filterAccount != null ||
-                              _filterExcludeFromOverview != null)
+                              _filterExcludeFromOverview != null ||
+                              _minAmountController.text.isNotEmpty ||
+                              _maxAmountController.text.isNotEmpty)
                             TextButton(
                               onPressed: _clearFilters,
                               child: const Text('Rensa'),
