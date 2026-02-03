@@ -37,12 +37,136 @@ class KnownRecurringPattern {
 /// Known recurring patterns - add patterns here via AI agent prompts.
 /// See .agent/recurring_rules.md for documentation.
 const List<KnownRecurringPattern> knownRecurringPatterns = [
-  // TODO: Add patterns via AI agent prompts
-  // Example:
-  // KnownRecurringPattern(
-  //   descriptionPattern: 'HYRA',
-  //   category: Category.housing,
-  //   type: TransactionType.expense,
-  //   typicalDayOfMonth: 1,
-  // ),
+  // Housing
+  KnownRecurringPattern(
+    descriptionPattern: 'Autogiro Verisure',
+    category: Category.housing,
+    subcategory: Subcategory.security,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 30,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'Autogiro GBG ENERGI',
+    category: Category.housing,
+    subcategory: Subcategory.electricity,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 30,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'Autogiro DINEL',
+    category: Category.housing,
+    subcategory: Subcategory.electricity,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 30,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'Autogiro TELE2',
+    category: Category.housing,
+    subcategory: Subcategory.broadband,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 28,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'Omsättning lån',
+    category: Category.housing,
+    subcategory: Subcategory.mortgage,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 27,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'Betalning BG 5164-5877 HÖJDENA BRF',
+    category: Category.housing,
+    subcategory: Subcategory.brfFee,
+    type: TransactionType.expense,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'Autogiro IF SKADEFÖRS',
+    category: Category.housing,
+    subcategory: Subcategory.homeInsurance,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 1,
+  ),
+
+  // Health
+  KnownRecurringPattern(
+    descriptionPattern: 'Autogiro FYSIKEN',
+    category: Category.health,
+    subcategory: Subcategory.gym,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 28,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'SATS KOMPASSEN',
+    category: Category.health,
+    subcategory: Subcategory.gym,
+    type: TransactionType.expense,
+  ),
+
+  // Fees
+  KnownRecurringPattern(
+    descriptionPattern: 'Autogiro CSN',
+    category: Category.fees,
+    subcategory: Subcategory.csn,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 30,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'Nordea Vardagspaket',
+    category: Category.fees,
+    subcategory: Subcategory.bankFees,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 1,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'Avgift extra kort',
+    category: Category.fees,
+    subcategory: Subcategory.bankFees,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 1,
+  ),
+
+  // Other
+  KnownRecurringPattern(
+    descriptionPattern: 'hallon',
+    category: Category.other,
+    subcategory: Subcategory.mobileSubscription,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 2,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'jim fadder',
+    category: Category.other,
+    subcategory: Subcategory.godfather,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 26,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'gudmor lollo',
+    category: Category.other,
+    subcategory: Subcategory.godfather,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 24,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'apple.com/bill',
+    category: Category.other,
+    subcategory: Subcategory.mobileSubscription,
+    type: TransactionType.expense,
+  ),
+  KnownRecurringPattern(
+    descriptionPattern: 'nordea liv',
+    category: Category.other,
+    subcategory: Subcategory.personalInsurance,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 1,
+  ),
+
+  // Income
+  KnownRecurringPattern(
+    descriptionPattern: 'lön',
+    category: Category.income,
+    subcategory: Subcategory.salary,
+    type: TransactionType.income,
+    typicalDayOfMonth: 24,
+  ),
 ];
