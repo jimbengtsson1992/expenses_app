@@ -49,6 +49,7 @@ class EstimationService {
     final currentMonth = allTransactions.where((t) =>
         t.date.year == year && t.date.month == month).toList();
     final history = allTransactions.where((t) {
+      if (t.excludeFromOverview) return false;
       final txMonthEnd = DateTime(t.date.year, t.date.month + 1, 0);
       return txMonthEnd.isBefore(DateTime(year, month));
     }).toList();

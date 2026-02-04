@@ -16,3 +16,17 @@ bool isExcludedFromEstimates(Category category, Subcategory subcategory) {
     (e) => e.category == category && e.subcategory == subcategory,
   );
 }
+
+/// Category/Subcategory combinations that should be excluded from
+/// variable forecast (historical average projection) but NOT from
+/// actuals or recurring items.
+const excludedFromVariableForecast = [
+  (category: Category.income, subcategory: Subcategory.other),
+];
+
+/// Check if excluded from variable forecast
+bool isExcludedFromVariableForecast(Category category, Subcategory subcategory) {
+  return excludedFromVariableForecast.any(
+    (e) => e.category == category && e.subcategory == subcategory,
+  );
+}
