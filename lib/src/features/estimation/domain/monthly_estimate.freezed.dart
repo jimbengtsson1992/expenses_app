@@ -848,7 +848,7 @@ as double,
 /// @nodoc
 mixin _$RecurringStatus {
 
- String get descriptionPattern; double get averageAmount; int? get typicalDayOfMonth; Category get category; Subcategory? get subcategory; TransactionType get type; int get occurrenceCount;
+ String get descriptionPattern; double get averageAmount; int? get typicalDayOfMonth; Category get category; Subcategory get subcategory; TransactionType get type; int get occurrenceCount;
 /// Create a copy of RecurringStatus
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -879,7 +879,7 @@ abstract mixin class $RecurringStatusCopyWith<$Res>  {
   factory $RecurringStatusCopyWith(RecurringStatus value, $Res Function(RecurringStatus) _then) = _$RecurringStatusCopyWithImpl;
 @useResult
 $Res call({
- String descriptionPattern, double averageAmount, int? typicalDayOfMonth, Category category, Subcategory? subcategory, TransactionType type, int occurrenceCount
+ String descriptionPattern, double averageAmount, int? typicalDayOfMonth, Category category, Subcategory subcategory, TransactionType type, int occurrenceCount
 });
 
 
@@ -896,14 +896,14 @@ class _$RecurringStatusCopyWithImpl<$Res>
 
 /// Create a copy of RecurringStatus
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? descriptionPattern = null,Object? averageAmount = null,Object? typicalDayOfMonth = freezed,Object? category = null,Object? subcategory = freezed,Object? type = null,Object? occurrenceCount = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? descriptionPattern = null,Object? averageAmount = null,Object? typicalDayOfMonth = freezed,Object? category = null,Object? subcategory = null,Object? type = null,Object? occurrenceCount = null,}) {
   return _then(_self.copyWith(
 descriptionPattern: null == descriptionPattern ? _self.descriptionPattern : descriptionPattern // ignore: cast_nullable_to_non_nullable
 as String,averageAmount: null == averageAmount ? _self.averageAmount : averageAmount // ignore: cast_nullable_to_non_nullable
 as double,typicalDayOfMonth: freezed == typicalDayOfMonth ? _self.typicalDayOfMonth : typicalDayOfMonth // ignore: cast_nullable_to_non_nullable
 as int?,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as Category,subcategory: freezed == subcategory ? _self.subcategory : subcategory // ignore: cast_nullable_to_non_nullable
-as Subcategory?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as Category,subcategory: null == subcategory ? _self.subcategory : subcategory // ignore: cast_nullable_to_non_nullable
+as Subcategory,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as TransactionType,occurrenceCount: null == occurrenceCount ? _self.occurrenceCount : occurrenceCount // ignore: cast_nullable_to_non_nullable
 as int,
   ));
@@ -990,7 +990,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String descriptionPattern,  double averageAmount,  int? typicalDayOfMonth,  Category category,  Subcategory? subcategory,  TransactionType type,  int occurrenceCount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String descriptionPattern,  double averageAmount,  int? typicalDayOfMonth,  Category category,  Subcategory subcategory,  TransactionType type,  int occurrenceCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecurringStatus() when $default != null:
 return $default(_that.descriptionPattern,_that.averageAmount,_that.typicalDayOfMonth,_that.category,_that.subcategory,_that.type,_that.occurrenceCount);case _:
@@ -1011,7 +1011,7 @@ return $default(_that.descriptionPattern,_that.averageAmount,_that.typicalDayOfM
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String descriptionPattern,  double averageAmount,  int? typicalDayOfMonth,  Category category,  Subcategory? subcategory,  TransactionType type,  int occurrenceCount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String descriptionPattern,  double averageAmount,  int? typicalDayOfMonth,  Category category,  Subcategory subcategory,  TransactionType type,  int occurrenceCount)  $default,) {final _that = this;
 switch (_that) {
 case _RecurringStatus():
 return $default(_that.descriptionPattern,_that.averageAmount,_that.typicalDayOfMonth,_that.category,_that.subcategory,_that.type,_that.occurrenceCount);case _:
@@ -1031,7 +1031,7 @@ return $default(_that.descriptionPattern,_that.averageAmount,_that.typicalDayOfM
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String descriptionPattern,  double averageAmount,  int? typicalDayOfMonth,  Category category,  Subcategory? subcategory,  TransactionType type,  int occurrenceCount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String descriptionPattern,  double averageAmount,  int? typicalDayOfMonth,  Category category,  Subcategory subcategory,  TransactionType type,  int occurrenceCount)?  $default,) {final _that = this;
 switch (_that) {
 case _RecurringStatus() when $default != null:
 return $default(_that.descriptionPattern,_that.averageAmount,_that.typicalDayOfMonth,_that.category,_that.subcategory,_that.type,_that.occurrenceCount);case _:
@@ -1053,7 +1053,7 @@ class _RecurringStatus implements RecurringStatus {
 @override final  double averageAmount;
 @override final  int? typicalDayOfMonth;
 @override final  Category category;
-@override final  Subcategory? subcategory;
+@override final  Subcategory subcategory;
 @override final  TransactionType type;
 @override final  int occurrenceCount;
 
@@ -1087,7 +1087,7 @@ abstract mixin class _$RecurringStatusCopyWith<$Res> implements $RecurringStatus
   factory _$RecurringStatusCopyWith(_RecurringStatus value, $Res Function(_RecurringStatus) _then) = __$RecurringStatusCopyWithImpl;
 @override @useResult
 $Res call({
- String descriptionPattern, double averageAmount, int? typicalDayOfMonth, Category category, Subcategory? subcategory, TransactionType type, int occurrenceCount
+ String descriptionPattern, double averageAmount, int? typicalDayOfMonth, Category category, Subcategory subcategory, TransactionType type, int occurrenceCount
 });
 
 
@@ -1104,14 +1104,14 @@ class __$RecurringStatusCopyWithImpl<$Res>
 
 /// Create a copy of RecurringStatus
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? descriptionPattern = null,Object? averageAmount = null,Object? typicalDayOfMonth = freezed,Object? category = null,Object? subcategory = freezed,Object? type = null,Object? occurrenceCount = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? descriptionPattern = null,Object? averageAmount = null,Object? typicalDayOfMonth = freezed,Object? category = null,Object? subcategory = null,Object? type = null,Object? occurrenceCount = null,}) {
   return _then(_RecurringStatus(
 descriptionPattern: null == descriptionPattern ? _self.descriptionPattern : descriptionPattern // ignore: cast_nullable_to_non_nullable
 as String,averageAmount: null == averageAmount ? _self.averageAmount : averageAmount // ignore: cast_nullable_to_non_nullable
 as double,typicalDayOfMonth: freezed == typicalDayOfMonth ? _self.typicalDayOfMonth : typicalDayOfMonth // ignore: cast_nullable_to_non_nullable
 as int?,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as Category,subcategory: freezed == subcategory ? _self.subcategory : subcategory // ignore: cast_nullable_to_non_nullable
-as Subcategory?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
+as Category,subcategory: null == subcategory ? _self.subcategory : subcategory // ignore: cast_nullable_to_non_nullable
+as Subcategory,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as TransactionType,occurrenceCount: null == occurrenceCount ? _self.occurrenceCount : occurrenceCount // ignore: cast_nullable_to_non_nullable
 as int,
   ));

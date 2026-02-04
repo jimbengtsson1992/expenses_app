@@ -1,7 +1,6 @@
 import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:expenses/src/features/transactions/domain/subcategory.dart';
 import 'package:expenses/src/features/transactions/domain/transaction.dart';
-import 'package:expenses/src/features/transactions/domain/transaction_type.dart';
 import 'package:expenses/src/features/estimation/application/recurring_detection_service.dart';
 import 'package:expenses/src/features/shared/domain/excluded_from_estimates.dart';
 
@@ -118,7 +117,9 @@ class EstimationExplainer {
       }
     } else {
       double totalSum = 0;
-      monthlyTotals.values.forEach((v) => totalSum += v);
+      for (final v in monthlyTotals.values) {
+        totalSum += v;
+      }
       final average = totalSum / monthlyTotals.length;
 
       buffer.writeln('HISTORICAL DATA:');
@@ -141,7 +142,7 @@ class EstimationExplainer {
       // 3. Calculate Variable Estimate
       final anyRecurringForSub = recurring.any((r) => 
         r.category == category && 
-        (r.subcategory ?? Subcategory.unknown) == subcategory
+        r.subcategory == subcategory
       );
 
       double variableEst = 0;

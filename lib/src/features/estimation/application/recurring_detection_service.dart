@@ -11,6 +11,15 @@ RecurringDetectionService recurringDetectionService(Ref ref) {
 }
 
 class RecurringDetectionService {
+  /// Minimum number of occurrences required to detect a recurring pattern.
+  static const int minOccurrencesForRecurring = 3;
+
+  /// Maximum allowed variance in transaction amounts (10%).
+  static const double maxAmountVarianceRatio = 0.10;
+
+  /// Maximum allowed variance in day of month (±3 days).
+  static const int maxDayVariance = 3;
+
   /// Detects recurring transactions from historical data.
   /// Combines known patterns with auto-detected fixed-amount transactions.
   List<RecurringStatus> detectRecurringPatterns(
@@ -30,26 +39,33 @@ class RecurringDetectionService {
       }
 
       // Find all historical transactions matching this pattern
-      final matching = history.where((t) => pattern.matches(t.description)).toList();
+      final matching = history
+          .where((t) => pattern.matches(t.description))
+          .toList();
 
       if (matching.isNotEmpty) {
-        final avgAmount = matching.map((t) => t.amount.abs()).reduce((a, b) => a + b) / matching.length;
-        final typicalDay = pattern.typicalDayOfMonth ?? _calculateTypicalDay(matching);
-        
+        final avgAmount =
+            matching.map((t) => t.amount.abs()).reduce((a, b) => a + b) /
+            matching.length;
+        final typicalDay =
+            pattern.typicalDayOfMonth ?? _calculateTypicalDay(matching);
+
         // Calculate typical frequency (transactions per month)
         final frequency = _calculateMonthlyFrequencyMode(matching);
 
         // Add one result for each expected occurrence
         for (var i = 0; i < frequency; i++) {
-          results.add(RecurringStatus(
-            descriptionPattern: pattern.descriptionPattern,
-            averageAmount: avgAmount,
-            typicalDayOfMonth: typicalDay,
-            category: pattern.category,
-            subcategory: pattern.subcategory,
-            type: pattern.type,
-            occurrenceCount: matching.length,
-          ));
+          results.add(
+            RecurringStatus(
+              descriptionPattern: pattern.descriptionPattern,
+              averageAmount: avgAmount,
+              typicalDayOfMonth: typicalDay,
+              category: pattern.category,
+              subcategory: pattern.subcategory,
+              type: pattern.type,
+              occurrenceCount: matching.length,
+            ),
+          );
         }
       }
     }
@@ -78,11 +94,13 @@ class RecurringDetectionService {
     for (final entry in groups.entries) {
       final transactions = entry.value;
 
-      // Need at least 3 occurrences to be reliable recurring pattern
-      if (transactions.length < 3) continue;
+      // Need at least minOccurrencesForRecurring occurrences to be reliable
+      if (transactions.length < minOccurrencesForRecurring) continue;
 
       // Skip if already covered by known patterns
-      if (_isAlreadyCovered(transactions.first.description, alreadyKnown)) continue;
+      if (_isAlreadyCovered(transactions.first.description, alreadyKnown)) {
+        continue;
+      }
 
       // Check if amounts are similar (within 10%)
       if (!_hasSimilarAmounts(transactions)) continue;
@@ -93,19 +111,23 @@ class RecurringDetectionService {
       // Require transactions to span at least 2 distinct months
       if (!_spansMultipleMonths(transactions)) continue;
 
-      final avgAmount = transactions.map((t) => t.amount.abs()).reduce((a, b) => a + b) / transactions.length;
+      final avgAmount =
+          transactions.map((t) => t.amount.abs()).reduce((a, b) => a + b) /
+          transactions.length;
       final typicalDay = _calculateTypicalDay(transactions);
       final first = transactions.first;
 
-      results.add(RecurringStatus(
-        descriptionPattern: entry.key,
-        averageAmount: avgAmount,
-        typicalDayOfMonth: typicalDay,
-        category: first.category,
-        subcategory: first.subcategory,
-        type: first.type,
-        occurrenceCount: transactions.length,
-      ));
+      results.add(
+        RecurringStatus(
+          descriptionPattern: entry.key,
+          averageAmount: avgAmount,
+          typicalDayOfMonth: typicalDay,
+          category: first.category,
+          subcategory: first.subcategory,
+          type: first.type,
+          occurrenceCount: transactions.length,
+        ),
+      );
     }
 
     return results;
@@ -120,20 +142,22 @@ class RecurringDetectionService {
         .trim();
   }
 
-  /// Check if transactions have similar amounts (within 10%)
+  /// Check if transactions have similar amounts (within maxAmountVarianceRatio)
   bool _hasSimilarAmounts(List<Transaction> transactions) {
     if (transactions.isEmpty) return false;
     final amounts = transactions.map((t) => t.amount.abs()).toList();
     final avg = amounts.reduce((a, b) => a + b) / amounts.length;
-    return amounts.every((a) => (a - avg).abs() / avg <= 0.10);
+    return amounts.every(
+      (a) => (a - avg).abs() / avg <= maxAmountVarianceRatio,
+    );
   }
 
-  /// Check if transactions fall on similar days of month (within ±3 days)
+  /// Check if transactions fall on similar days of month (within ±maxDayVariance days)
   bool _hasSimilarDays(List<Transaction> transactions) {
     if (transactions.isEmpty) return false;
     final days = transactions.map((t) => t.date.day).toList();
     final avgDay = days.reduce((a, b) => a + b) / days.length;
-    return days.every((d) => (d - avgDay).abs() <= 3);
+    return days.every((d) => (d - avgDay).abs() <= maxDayVariance);
   }
 
   /// Check if transactions span at least 2 distinct months
@@ -172,21 +196,24 @@ class RecurringDetectionService {
     // Find mode (the count that appears in most months)
     var mode = 1;
     var maxOccurrences = 0;
-    
+
     for (final entry in frequencies.entries) {
       // Prefer higher frequency if tied (e.g. if 50% months have 1, 50% have 2, assume 2 is the target)
-      if (entry.value > maxOccurrences || (entry.value == maxOccurrences && entry.key > mode)) {
+      if (entry.value > maxOccurrences ||
+          (entry.value == maxOccurrences && entry.key > mode)) {
         maxOccurrences = entry.value;
         mode = entry.key;
       }
     }
-    
+
     return mode;
   }
 
   /// Check if a description is already covered by known patterns
   bool _isAlreadyCovered(String description, List<RecurringStatus> known) {
     final normalized = _normalizeDescription(description);
-    return known.any((k) => normalized.contains(k.descriptionPattern.toUpperCase()));
+    return known.any(
+      (k) => normalized.contains(k.descriptionPattern.toUpperCase()),
+    );
   }
 }

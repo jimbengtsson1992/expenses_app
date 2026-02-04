@@ -11,6 +11,6 @@ Future<MonthlyEstimate?> monthlyEstimate(Ref ref, DatePeriod period) async {
   final allTransactions = await ref.watch(expensesListProvider.future);
   final service = ref.watch(estimationServiceProvider);
   final now = DateTime.now();
-  
+
   return service.calculateEstimate(period, allTransactions, now);
 }

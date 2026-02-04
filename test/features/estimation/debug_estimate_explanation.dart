@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
@@ -7,10 +8,7 @@ import 'package:expenses/src/features/transactions/data/user_rules_repository.da
 import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:expenses/src/features/transactions/domain/subcategory.dart';
 import 'package:expenses/src/features/transactions/domain/transaction.dart';
-import 'package:expenses/src/features/transactions/domain/transaction_type.dart';
 import 'package:expenses/src/features/estimation/application/recurring_detection_service.dart';
-import 'package:expenses/src/features/estimation/domain/monthly_estimate.dart';
-import 'package:expenses/src/features/shared/domain/excluded_from_estimates.dart'; // Ensure this is available
 
 class FakeUserRulesRepository extends Fake implements UserRulesRepository {
   @override
@@ -58,8 +56,8 @@ void main() async {
     }
 
     // 3. Define Context
-    final targetYear = 2026;
-    final targetMonth = 2;
+    const targetYear = 2026;
+    const targetMonth = 2;
     // Current day based on runtime of test, but here we hardcode "now" for consistency with previous run or just use consistent date. 
     // In previous run "now" was DateTime(2026, 2, 4).
     final now = DateTime(2026, 2, 4);
@@ -70,8 +68,8 @@ void main() async {
     }).toList();
 
     // target category
-    final targetCategory = Category.income;
-    final targetSubcategory = Subcategory.other;
+    const targetCategory = Category.income;
+    const targetSubcategory = Subcategory.other;
 
     print('\n========================================');
     print('ESTIMATE DEBUG REPORT: ${targetCategory.name}/${targetSubcategory.name}');
@@ -144,7 +142,9 @@ void main() async {
       print('No historical data found.');
     } else {
       double totalSum = 0;
-      monthlyTotals.values.forEach((v) => totalSum += v);
+      for (final v in monthlyTotals.values) {
+        totalSum += v;
+      }
       final average = totalSum / monthlyTotals.length;
 
       print('HISTORICAL DATA:');
@@ -170,7 +170,7 @@ void main() async {
       // Does ANY recurring pattern exist for income/other?
       final anyRecurringForSub = recurring.any((r) => 
         r.category == targetCategory && 
-        (r.subcategory ?? Subcategory.unknown) == targetSubcategory
+        r.subcategory == targetSubcategory
       );
 
       double variableEst = 0;

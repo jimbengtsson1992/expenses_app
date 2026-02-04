@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_print
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:expenses/src/features/transactions/data/transaction_csv_parser.dart';
@@ -55,8 +56,8 @@ void main() async {
     }
 
     // 3. Define Context (Matching debug_estimate_explanation.dart)
-    final targetYear = 2026;
-    final targetMonth = 2;
+    const targetYear = 2026;
+    const targetMonth = 2;
     // Hardcoded "now" for consistency, but you can change this
     final now = DateTime(2026, 2, 4);
 

@@ -46,7 +46,7 @@ abstract class RecurringStatus with _$RecurringStatus {
     required double averageAmount,
     required int? typicalDayOfMonth,
     required Category category,
-    required Subcategory? subcategory,
+    required Subcategory subcategory,
     required TransactionType type,
     required int occurrenceCount,
   }) = _RecurringStatus;

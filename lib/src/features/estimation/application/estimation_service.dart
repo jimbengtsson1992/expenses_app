@@ -28,7 +28,8 @@ class EstimationService {
   ) {
     // Only works for month periods
     return period.map(
-      month: (p) => _calculateMonthEstimate(p.year, p.month, allTransactions, now),
+      month: (p) =>
+          _calculateMonthEstimate(p.year, p.month, allTransactions, now),
       year: (_) => null,
     );
   }
@@ -46,8 +47,9 @@ class EstimationService {
     }
 
     // Split transactions
-    final currentMonth = allTransactions.where((t) =>
-        t.date.year == year && t.date.month == month).toList();
+    final currentMonth = allTransactions
+        .where((t) => t.date.year == year && t.date.month == month)
+        .toList();
     final history = allTransactions.where((t) {
       if (t.excludeFromOverview) return false;
       final txMonthEnd = DateTime(t.date.year, t.date.month + 1, 0);
@@ -64,13 +66,16 @@ class EstimationService {
     // Classify recurring as completed or pending
     final completedRecurring = <RecurringStatus>[];
     final pendingRecurring = <RecurringStatus>[];
-    
+
     // Create a pool of transactions to match against (consumable)
     final matchingPool = currentMonth.toList();
 
     for (final r in recurring) {
-      final matchIndex = matchingPool.indexWhere((t) => 
-          t.description.toUpperCase().contains(r.descriptionPattern.toUpperCase()));
+      final matchIndex = matchingPool.indexWhere(
+        (t) => t.description.toUpperCase().contains(
+          r.descriptionPattern.toUpperCase(),
+        ),
+      );
 
       if (matchIndex != -1) {
         completedRecurring.add(r);
@@ -90,7 +95,7 @@ class EstimationService {
       if (t.excludeFromOverview) continue;
       // Exclude renovation/loan from estimates
       if (isExcludedFromEstimates(t.category, t.subcategory)) continue;
-      
+
       if (t.type == TransactionType.income) {
         actualIncome += t.amount.abs();
       } else {
@@ -115,7 +120,9 @@ class EstimationService {
 
     // For variable categories, pro-rate based on day of month
     final daysInMonth = DateTime(year, month + 1, 0).day;
-    final currentDay = (year == now.year && month == now.month) ? now.day : daysInMonth;
+    final currentDay = (year == now.year && month == now.month)
+        ? now.day
+        : daysInMonth;
     final remainingRatio = (daysInMonth - currentDay) / daysInMonth;
 
     // Build category estimates
@@ -129,13 +136,14 @@ class EstimationService {
       final catSubAverages = subcategoryAverages[cat] ?? {};
 
       // Calculate pending recurring subcategories for this category
-      final catPendingRecurring =
-          pendingRecurring.where((r) => r.category == cat);
+      final catPendingRecurring = pendingRecurring.where(
+        (r) => r.category == cat,
+      );
 
       // Include all subcategories with actuals, historical data, or pending recurring
       final allSubs = {...catSubActuals.keys, ...catSubAverages.keys};
       for (final r in catPendingRecurring) {
-        allSubs.add(r.subcategory ?? Subcategory.unknown);
+        allSubs.add(r.subcategory);
       }
 
       for (final sub in allSubs) {
@@ -145,13 +153,12 @@ class EstimationService {
         double subEstimated = subActual;
         // Add pending recurring for this subcategory
         for (final r in catPendingRecurring.where(
-            (r) => (r.subcategory ?? Subcategory.unknown) == sub)) {
+          (r) => r.subcategory == sub,
+        )) {
           subEstimated += r.averageAmount;
         }
         // Add variable estimate if no recurring for this subcategory
-        if (!recurring.any((r) =>
-            r.category == cat &&
-            (r.subcategory ?? Subcategory.unknown) == sub)) {
+        if (!recurring.any((r) => r.category == cat && r.subcategory == sub)) {
           subEstimated += subHistAvg * remainingRatio;
         }
 
@@ -166,8 +173,10 @@ class EstimationService {
       }
 
       // Calculate category estimate from sum of sub estimates
-      final estimated =
-          subEstimates.values.fold(0.0, (sum, e) => sum + e.estimated);
+      final estimated = subEstimates.values.fold(
+        0.0,
+        (sum, e) => sum + e.estimated,
+      );
 
       if (actual > 0 || estimated > 0 || historicalAvg > 0) {
         categoryEstimates[cat] = CategoryEstimate(
@@ -182,7 +191,8 @@ class EstimationService {
 
     // Calculate totals from category estimates to ensure consistency
     // between top-level values and per-category breakdown
-    final finalEstimatedIncome = categoryEstimates[Category.income]?.estimated ?? actualIncome;
+    final finalEstimatedIncome =
+        categoryEstimates[Category.income]?.estimated ?? actualIncome;
     final finalEstimatedExpenses = categoryEstimates.entries
         .where((e) => e.key != Category.income)
         .fold(0.0, (sum, e) => sum + e.value.estimated);
@@ -197,8 +207,6 @@ class EstimationService {
       completedRecurring: completedRecurring,
     );
   }
-
-
 
   /// Calculate average monthly amounts per category from history
   Map<Category, double> _calculateCategoryAverages(List<Transaction> history) {
@@ -238,7 +246,9 @@ class EstimationService {
   }
 
   /// Calculate average monthly amounts per subcategory from history
-  Map<Category, Map<Subcategory, double>> _calculateSubcategoryAverages(List<Transaction> history) {
+  Map<Category, Map<Subcategory, double>> _calculateSubcategoryAverages(
+    List<Transaction> history,
+  ) {
     if (history.isEmpty) return {};
 
     // Group by month
