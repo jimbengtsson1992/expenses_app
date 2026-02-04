@@ -194,5 +194,50 @@ void main() {
       expect(patterns.length, 1);
       expect(patterns.first.typicalDayOfMonth, 1);
     });
+
+    test('does not detect transactions on the same day as recurring', () {
+      // Two transactions on the exact same day (the actual bug case)
+      final history = [
+        createTestTransaction(
+          description: 'COFFEE SHOP',
+          amount: -35.0,
+          date: DateTime(2025, 4, 15),
+        ),
+        createTestTransaction(
+          description: 'COFFEE SHOP',
+          amount: -37.0,
+          date: DateTime(2025, 4, 15),
+        ),
+      ];
+
+      final patterns = service.detectRecurringPatterns(history);
+
+      expect(patterns, isEmpty); // Should NOT be detected as recurring
+    });
+
+    test('does not detect transactions only in a single month as recurring', () {
+      // Multiple transactions in the same month on different days
+      final history = [
+        createTestTransaction(
+          description: 'COFFEE SHOP',
+          amount: -35.0,
+          date: DateTime(2025, 4, 1),
+        ),
+        createTestTransaction(
+          description: 'COFFEE SHOP',
+          amount: -36.0,
+          date: DateTime(2025, 4, 15),
+        ),
+        createTestTransaction(
+          description: 'COFFEE SHOP',
+          amount: -37.0,
+          date: DateTime(2025, 4, 28),
+        ),
+      ];
+
+      final patterns = service.detectRecurringPatterns(history);
+
+      expect(patterns, isEmpty); // Should NOT be detected as recurring
+    });
   });
 }

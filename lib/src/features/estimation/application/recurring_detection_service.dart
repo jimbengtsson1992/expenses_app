@@ -90,6 +90,9 @@ class RecurringDetectionService {
       // Check if dates fall on similar day of month
       if (!_hasSimilarDays(transactions)) continue;
 
+      // Require transactions to span at least 2 distinct months
+      if (!_spansMultipleMonths(transactions)) continue;
+
       final avgAmount = transactions.map((t) => t.amount.abs()).reduce((a, b) => a + b) / transactions.length;
       final typicalDay = _calculateTypicalDay(transactions);
       final first = transactions.first;
@@ -131,6 +134,15 @@ class RecurringDetectionService {
     final days = transactions.map((t) => t.date.day).toList();
     final avgDay = days.reduce((a, b) => a + b) / days.length;
     return days.every((d) => (d - avgDay).abs() <= 3);
+  }
+
+  /// Check if transactions span at least 2 distinct months
+  bool _spansMultipleMonths(List<Transaction> transactions) {
+    if (transactions.isEmpty) return false;
+    final months = transactions
+        .map((t) => '${t.date.year}-${t.date.month}')
+        .toSet();
+    return months.length >= 2;
   }
 
   /// Calculate typical day of month from transactions
