@@ -78,8 +78,8 @@ class RecurringDetectionService {
     for (final entry in groups.entries) {
       final transactions = entry.value;
 
-      // Need at least 2 occurrences
-      if (transactions.length < 2) continue;
+      // Need at least 3 occurrences to be reliable recurring pattern
+      if (transactions.length < 3) continue;
 
       // Skip if already covered by known patterns
       if (_isAlreadyCovered(transactions.first.description, alreadyKnown)) continue;
