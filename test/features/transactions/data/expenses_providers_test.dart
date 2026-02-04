@@ -1,7 +1,6 @@
 import 'package:expenses/src/features/transactions/data/expenses_providers.dart';
 import 'package:expenses/src/features/transactions/data/expenses_repository.dart';
 import 'package:expenses/src/features/transactions/domain/transaction.dart';
-import 'package:expenses/src/features/transactions/domain/transaction_type.dart';
 import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:expenses/src/features/transactions/domain/subcategory.dart';
 import 'package:expenses/src/features/transactions/domain/account.dart';
@@ -31,7 +30,6 @@ void main() {
       category: Category.shopping,
       sourceAccount: Account.sasAmex,
       sourceFilename: 'file',
-      type: TransactionType.expense,
       subcategory: Subcategory.unknown,
     );
     final tNew = Transaction(
@@ -42,7 +40,6 @@ void main() {
       category: Category.shopping,
       sourceAccount: Account.sasAmex,
       sourceFilename: 'file',
-      type: TransactionType.expense,
       subcategory: Subcategory.unknown,
     );
     final tFuture = Transaction(
@@ -53,7 +50,6 @@ void main() {
       category: Category.shopping,
       sourceAccount: Account.sasAmex,
       sourceFilename: 'file',
-      type: TransactionType.expense,
       subcategory: Subcategory.unknown,
     );
 

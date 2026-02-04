@@ -13,14 +13,20 @@ ExpensesRepository expensesRepository(Ref ref) {
 ## Models (Freezed)
 ```dart
 @freezed
-abstract class Expense with _$Expense {
-  const factory Expense({
+abstract class Transaction with _$Transaction {
+  const Transaction._(); // Required for custom getters
+
+  const factory Transaction({
     required String id,
     required DateTime date,
     required double amount,
     // ...
-  }) = _Expense;
-  factory Expense.fromJson(Map<String, dynamic> json) => _$ExpenseFromJson(json);
+  }) = _Transaction;
+  
+  factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
+
+  // Computed getters (derive from stored fields)
+  TransactionType get type => amount >= 0 ? TransactionType.income : TransactionType.expense;
 }
 ```
 

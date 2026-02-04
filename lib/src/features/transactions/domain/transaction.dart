@@ -9,6 +9,8 @@ part 'transaction.g.dart';
 
 @freezed
 abstract class Transaction with _$Transaction {
+  const Transaction._(); // Required for custom getters
+
   const factory Transaction({
     required String id,
     required DateTime date,
@@ -17,7 +19,6 @@ abstract class Transaction with _$Transaction {
     required Category category,
     required Account sourceAccount,
     required String sourceFilename,
-    required TransactionType type,
     @Default(Subcategory.unknown) Subcategory subcategory,
     @Default(false) bool excludeFromOverview,
     String? rawCsvData,
@@ -25,4 +26,8 @@ abstract class Transaction with _$Transaction {
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
+
+  /// Derived from amount: positive = income, negative = expense
+  TransactionType get type =>
+      amount >= 0 ? TransactionType.income : TransactionType.expense;
 }

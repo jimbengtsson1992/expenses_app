@@ -4,7 +4,6 @@ import 'package:csv/csv.dart';
 import 'package:intl/intl.dart';
 
 import '../domain/transaction.dart';
-import '../domain/transaction_type.dart';
 import '../domain/account.dart';
 import '../domain/category.dart';
 import '../domain/subcategory.dart';
@@ -94,10 +93,7 @@ class TransactionCsvParser {
       // Filter SAS Payments (to avoid dupe)
       if (description.contains('Betalning BG 595-4300 SAS EUROBONUS')) continue;
 
-      // Determine transaction type: positive = income, negative = expense
-      final type = amount >= 0
-          ? TransactionType.income
-          : TransactionType.expense;
+
 
       // Categorize Priority:
       // 1. Specific Override (ID based)
@@ -137,7 +133,7 @@ class TransactionCsvParser {
           subcategory: subcategory,
           sourceAccount: sourceAccount,
           sourceFilename: filename,
-          type: type,
+
           excludeFromOverview: excludeFromOverview,
           rawCsvData: row.join(';'),
         ),
@@ -300,7 +296,7 @@ class TransactionCsvParser {
           subcategory: subcategory,
           sourceAccount: sourceAccount,
           sourceFilename: filename,
-          type: TransactionType.expense,
+
           excludeFromOverview: excludeFromOverview,
           rawCsvData: row.join(';'),
         ),
