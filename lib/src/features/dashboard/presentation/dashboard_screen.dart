@@ -7,6 +7,9 @@ import '../../transactions/domain/category.dart';
 import '../../transactions/domain/subcategory.dart';
 import '../../transactions/domain/transaction.dart';
 import '../../transactions/domain/transaction_type.dart';
+import '../../estimation/application/monthly_estimate_provider.dart';
+import '../../estimation/domain/monthly_estimate.dart';
+import '../../shared/domain/excluded_from_estimates.dart';
 
 import '../application/date_period_provider.dart';
 
@@ -57,7 +60,14 @@ class DashboardScreen extends ConsumerWidget {
         centerTitle: true,
       ),
       body: expensesAsync.when(
-        data: (expenses) => _DashboardContent(expenses: expenses),
+        data: (expenses) {
+          final estimateAsync = ref.watch(monthlyEstimateProvider(currentPeriod));
+          return estimateAsync.when(
+            data: (estimate) => _DashboardContent(expenses: expenses, estimate: estimate),
+            loading: () => _DashboardContent(expenses: expenses, estimate: null),
+            error: (_, __) => _DashboardContent(expenses: expenses, estimate: null),
+          );
+        },
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
@@ -66,8 +76,9 @@ class DashboardScreen extends ConsumerWidget {
 }
 
 class _DashboardContent extends ConsumerWidget {
-  const _DashboardContent({required this.expenses});
+  const _DashboardContent({required this.expenses, this.estimate});
   final List<Transaction> expenses;
+  final MonthlyEstimate? estimate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -96,16 +107,7 @@ class _DashboardContent extends ConsumerWidget {
       if (e.excludeFromOverview) continue;
 
       if (!includeRenovationAndLoan) {
-        if (e.category == Category.housing &&
-            e.subcategory == Subcategory.kitchenRenovation) {
-          continue;
-        }
-        if (e.category == Category.income &&
-            e.subcategory == Subcategory.loan) {
-          continue;
-        }
-        if (e.category == Category.income &&
-            e.subcategory == Subcategory.kitchenRenovation) {
+        if (isExcludedFromEstimates(e.category, e.subcategory)) {
           continue;
         }
       }
@@ -170,9 +172,37 @@ class _DashboardContent extends ConsumerWidget {
 
     final netResult = totalIncome - totalExpenses;
 
+    final estimatedNetResult = estimate != null
+        ? estimate!.estimatedIncome - estimate!.estimatedExpenses
+        : null;
+
+    // Include categories from estimates that have estimated values but no actuals yet
+    if (estimate != null) {
+      for (final entry in estimate!.categoryEstimates.entries) {
+        final cat = entry.key;
+        final catEstimate = entry.value;
+        // Add category with 0 actual if it has an estimated value but isn't in actuals
+        if (cat != Category.income && 
+            !categoryTotals.containsKey(cat) && 
+            catEstimate.estimated > 0) {
+          categoryTotals[cat] = 0;
+        }
+        if (cat == Category.income && 
+            !incomeCategoryTotals.containsKey(cat) && 
+            catEstimate.estimated > 0) {
+          incomeCategoryTotals[cat] = 0;
+        }
+      }
+    }
+
     // Sort categories
     final sortedCategories = categoryTotals.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
+      ..sort((a, b) {
+        // Sort by estimated value if available, otherwise actual
+        final aVal = estimate?.categoryEstimates[a.key]?.estimated ?? a.value;
+        final bVal = estimate?.categoryEstimates[b.key]?.estimated ?? b.value;
+        return bVal.compareTo(aVal);
+      });
 
     final sortedIncomeCategories = incomeCategoryTotals.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
@@ -223,6 +253,17 @@ class _DashboardContent extends ConsumerWidget {
                                     color: Colors.greenAccent,
                                   ),
                             ),
+                            if (estimate != null) ...[                            
+                              const SizedBox(height: 4),
+                              Text(
+                                '→ ${currency.format(estimate!.estimatedIncome)}',
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Colors.greenAccent.withValues(alpha: 0.9),
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                              ),
+                            ],
                           ],
                         ),
                       ),
@@ -247,6 +288,17 @@ class _DashboardContent extends ConsumerWidget {
                               style: Theme.of(context).textTheme.headlineSmall
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
+                            if (estimate != null) ...[                            
+                              const SizedBox(height: 4),
+                              Text(
+                                '→ ${currency.format(estimate!.estimatedExpenses)}',
+                                style: Theme.of(context).textTheme.bodySmall
+                                    ?.copyWith(
+                                      color: Colors.grey.withValues(alpha: 0.9),
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                              ),
+                            ],
                           ],
                         ),
                       ),
@@ -255,6 +307,37 @@ class _DashboardContent extends ConsumerWidget {
                 ),
                 const SizedBox(height: 16),
                 NetResultBadge(netResult: netResult),
+                if (estimatedNetResult != null) ...[
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: estimatedNetResult >= 0
+                          ? Colors.green.withValues(alpha: 0.1)
+                          : Colors.red.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: estimatedNetResult >= 0
+                            ? Colors.green.withValues(alpha: 0.2)
+                            : Colors.red.withValues(alpha: 0.2),
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      'Prognos: ${estimatedNetResult >= 0 ? '+' : ''}${currency.format(estimatedNetResult)}',
+                      style: TextStyle(
+                        color: estimatedNetResult >= 0
+                            ? Colors.green
+                            : Colors.red,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -272,12 +355,28 @@ class _DashboardContent extends ConsumerWidget {
           final cat = e.key;
           final amount = e.value;
           final percentage = totalExpenses > 0 ? amount / totalExpenses : 0.0;
-          final subs = expenseSubcategoryTotals[cat] ?? {};
+          final subs = Map<Subcategory, double>.from(expenseSubcategoryTotals[cat] ?? {});
           final count = categoryCounts[cat] ?? 0;
 
-          // Sort subs by amount
+          // Include subcategories from estimates that have no actual transactions
+          if (estimate != null) {
+            final catEstimate = estimate!.categoryEstimates[cat];
+            if (catEstimate != null) {
+              for (final subEntry in catEstimate.subcategoryEstimates.entries) {
+                if (!subs.containsKey(subEntry.key) && subEntry.value.estimated > 0) {
+                  subs[subEntry.key] = 0; // Add with 0 actual
+                }
+              }
+            }
+          }
+
+          // Sort subs by estimated value if available, otherwise actual
           final sortedSubs = subs.entries.toList()
-            ..sort((a, b) => b.value.compareTo(a.value));
+            ..sort((a, b) {
+              final aEst = estimate?.categoryEstimates[cat]?.subcategoryEstimates[a.key]?.estimated ?? a.value;
+              final bEst = estimate?.categoryEstimates[cat]?.subcategoryEstimates[b.key]?.estimated ?? b.value;
+              return bEst.compareTo(aEst);
+            });
 
           return Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -316,9 +415,24 @@ class _DashboardContent extends ConsumerWidget {
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                       ),
-                      Text(
-                        currency.format(amount),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            currency.format(amount),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          if (estimate?.categoryEstimates[cat] != null &&
+                              estimate!.categoryEstimates[cat]!.estimated > amount)
+                            Text(
+                              '→ ${currency.format(estimate!.categoryEstimates[cat]!.estimated)}',
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Colors.grey.withValues(alpha: 0.9),
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                        ],
                       ),
                     ],
                   ),
@@ -345,6 +459,7 @@ class _DashboardContent extends ConsumerWidget {
                             final subName = subData.displayName;
                             final subCount =
                                 expenseSubcategoryCounts[cat]?[subData] ?? 0;
+                            final subEstimate = estimate?.categoryEstimates[cat]?.subcategoryEstimates[subData];
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
@@ -362,12 +477,27 @@ class _DashboardContent extends ConsumerWidget {
                                       ),
                                     ),
                                   ),
-                                  Text(
-                                    currency.format(subAmount),
-                                    style: TextStyle(
-                                      color: Colors.grey[400],
-                                      fontSize: 13,
-                                    ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        currency.format(subAmount),
+                                        style: TextStyle(
+                                          color: Colors.grey[400],
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                      if (subEstimate != null &&
+                                          subEstimate.estimated > subAmount)
+                                        Text(
+                                          '→ ${currency.format(subEstimate.estimated)}',
+                                          style: TextStyle(
+                                            fontSize: 11,
+                                            color: Colors.grey.withValues(alpha: 0.9),
+                                            fontStyle: FontStyle.italic,
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -401,12 +531,28 @@ class _DashboardContent extends ConsumerWidget {
             final cat = e.key;
             final amount = e.value;
             final percentage = totalIncome > 0 ? amount / totalIncome : 0.0;
-            final subs = incomeSubcategoryTotals[cat] ?? {};
+            final subs = Map<Subcategory, double>.from(incomeSubcategoryTotals[cat] ?? {});
             final count = incomeCategoryCounts[cat] ?? 0;
 
-            // Sort subs by amount
+            // Include subcategories from estimates that have no actual transactions
+            if (estimate != null) {
+              final catEstimate = estimate!.categoryEstimates[cat];
+              if (catEstimate != null) {
+                for (final subEntry in catEstimate.subcategoryEstimates.entries) {
+                  if (!subs.containsKey(subEntry.key) && subEntry.value.estimated > 0) {
+                    subs[subEntry.key] = 0; // Add with 0 actual
+                  }
+                }
+              }
+            }
+
+            // Sort subs by estimated value if available, otherwise actual
             final sortedSubs = subs.entries.toList()
-              ..sort((a, b) => b.value.compareTo(a.value));
+              ..sort((a, b) {
+                final aEst = estimate?.categoryEstimates[cat]?.subcategoryEstimates[a.key]?.estimated ?? a.value;
+                final bEst = estimate?.categoryEstimates[cat]?.subcategoryEstimates[b.key]?.estimated ?? b.value;
+                return bEst.compareTo(aEst);
+              });
 
             return Padding(
               padding: const EdgeInsets.only(bottom: 8),
@@ -444,9 +590,24 @@ class _DashboardContent extends ConsumerWidget {
                             style: const TextStyle(fontWeight: FontWeight.w600),
                           ),
                         ),
-                        Text(
-                          currency.format(amount),
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              currency.format(amount),
+                              style: const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            if (estimate?.categoryEstimates[cat] != null &&
+                                estimate!.categoryEstimates[cat]!.estimated > amount)
+                              Text(
+                                '→ ${currency.format(estimate!.categoryEstimates[cat]!.estimated)}',
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.greenAccent.withValues(alpha: 0.9),
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                          ],
                         ),
                       ],
                     ),
@@ -473,6 +634,7 @@ class _DashboardContent extends ConsumerWidget {
                               final subName = subData.displayName;
                               final subCount =
                                   incomeSubcategoryCounts[cat]?[subData] ?? 0;
+                              final subEstimate = estimate?.categoryEstimates[cat]?.subcategoryEstimates[subData];
 
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -492,12 +654,27 @@ class _DashboardContent extends ConsumerWidget {
                                         ),
                                       ),
                                     ),
-                                    Text(
-                                      currency.format(subAmount),
-                                      style: TextStyle(
-                                        color: Colors.grey[400],
-                                        fontSize: 13,
-                                      ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          currency.format(subAmount),
+                                          style: TextStyle(
+                                            color: Colors.grey[400],
+                                            fontSize: 13,
+                                          ),
+                                        ),
+                                        if (subEstimate != null &&
+                                            subEstimate.estimated > subAmount)
+                                          Text(
+                                            '→ ${currency.format(subEstimate.estimated)}',
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: Colors.greenAccent.withValues(alpha: 0.9),
+                                              fontStyle: FontStyle.italic,
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ],
                                 ),
