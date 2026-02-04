@@ -3,8 +3,7 @@
 ## 🚨 MANDATES
 1. **New recurring patterns** → Add to `lib/src/features/estimation/domain/known_recurring.dart`
 2. **One-time/unusual expenses** → Add to `excludedFromEstimates` in `lib/src/features/shared/domain/excluded_from_estimates.dart`
-3. **Exclude from variable forecast** (but keep actuals) → Add to `excludedFromVariableForecast`
-4. **Test changes** → Run tests in `test/features/estimation/`
+3. **Test changes** → Run tests in `test/features/estimation/`
 
 ## 📊 How Estimation Works
 `EstimationService` calculates monthly estimates for incomplete months:
@@ -21,14 +20,6 @@ Skip from ALL estimate calculations (unusual one-time items):
 const excludedFromEstimates = [
   (category: Category.housing, subcategory: Subcategory.kitchenRenovation),
   (category: Category.income, subcategory: Subcategory.loan),
-];
-```
-
-### `excludedFromVariableForecast` - Actuals only
-Show actual transactions but don't project forward:
-```dart
-const excludedFromVariableForecast = [
-  (category: Category.income, subcategory: Subcategory.other),
 ];
 ```
 

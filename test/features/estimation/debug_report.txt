@@ -1,5 +1,5 @@
 ESTIMATION DEBUG REPORT
-Generated at: 2026-02-04 18:13:41.475062
+Generated at: 2026-02-04 18:20:38.995802
 Period: 2026-02
 =================================================================
 
@@ -1225,6 +1225,16 @@ Period: 2026-02
 ========================================
 
 RECURRING PATTERNS FOUND:
+  - Pattern: "spotify"
+    Avg Amount: 122.85
+    Typical Day: 18
+    Source Transactions:
+      2026-01-18: -129.0 - SPOTIFY P3E8032732
+      2025-12-18: -129.0 - SPOTIFY P3D89E7989
+      2025-11-18: -129.0 - SPOTIFY P3C8515FE4
+      2025-10-18: -129.0 - SPOTIFY P3B976EF2B
+      2025-09-18: -129.0 - SPOTIFY P3AA7FC64C
+
   - Pattern: "HELP.HBOMAX.COM"
     Avg Amount: 68.50
     Typical Day: 28
@@ -1255,7 +1265,7 @@ RECURRING PATTERNS FOUND:
       2025-10-06: -69.0 - AMAZON PRIME
       2025-09-06: -69.0 - AMAZON PRIME
 
-Total Recurring Estimate: 336.50
+Total Recurring Estimate: 459.35
 
 HISTORICAL DATA:
   Total in History: 5625.50
@@ -1286,7 +1296,7 @@ VARIABLE ESTIMATE CALCULATION:
   Logic: Skipped because recurring patterns exist for this subcategory.
 
 ========================================
-FINAL ESTIMATE: 336.50
+FINAL ESTIMATE: 459.35
 ========================================
 
 
