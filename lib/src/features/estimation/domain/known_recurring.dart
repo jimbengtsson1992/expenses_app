@@ -161,6 +161,15 @@ const List<KnownRecurringPattern> knownRecurringPatterns = [
     typicalDayOfMonth: 1,
   ),
 
+  // Entertainment
+  KnownRecurringPattern(
+    descriptionPattern: 'spotify',
+    category: Category.entertainment,
+    subcategory: Subcategory.streaming,
+    type: TransactionType.expense,
+    typicalDayOfMonth: 18,
+  ),
+
   // Income
   KnownRecurringPattern(
     descriptionPattern: 'lön',
