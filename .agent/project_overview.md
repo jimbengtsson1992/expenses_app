@@ -21,3 +21,4 @@ Personal expense tracker for 1 user. Imports CSVs (Nordea, Amex), auto-categoriz
 - **Transfer Filter**: Excludes internal transfers between hardcoded accounts (`1127 25 18949`, etc).
 - **Deduplication**: Filters "Bill Payments" in Amex to avoid double counting from Nordea.
 - **Date Filter**: Hardcoded start date (`2024-12-01`).
+- **Estimation**: Predicts month-end totals via `EstimationService`. See `.agent/estimation_rules.md`.

@@ -54,5 +54,12 @@ KnownRecurringPattern(
 ## 🔍 Common Description Patterns
 - Housing: `HYRA`, `BOSTADSRÄTT`
 - Fees: `VATTENFALL`, `TELIA`, `FÖRSÄKRING`
-- Income: `LÖN`, `SALARY`
+- Income: `LÖN`, `SALARY`, `WERKS`
 - Health: `SATS`, `GYM`
+- Subscriptions: `SPOTIFY`, `NETFLIX`
+
+## 🤖 Auto-Detection
+Beyond known patterns, `RecurringDetectionService` finds patterns automatically:
+- **Threshold**: 3+ occurrences spanning multiple months
+- **Excludes**: Internal transfers
+- See `.agent/estimation_rules.md` for full estimation logic.
