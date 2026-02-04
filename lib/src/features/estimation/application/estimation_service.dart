@@ -113,39 +113,10 @@ class EstimationService {
     final categoryAverages = _calculateCategoryAverages(history);
     final subcategoryAverages = _calculateSubcategoryAverages(history);
 
-    // Calculate estimates
-    double estimatedIncome = actualIncome;
-    double estimatedExpenses = actualExpenses;
-
-    // Add pending recurring items
-    for (final r in pendingRecurring) {
-      if (r.type == TransactionType.income) {
-        estimatedIncome += r.averageAmount;
-      } else {
-        estimatedExpenses += r.averageAmount;
-      }
-    }
-
     // For variable categories, pro-rate based on day of month
     final daysInMonth = DateTime(year, month + 1, 0).day;
     final currentDay = (year == now.year && month == now.month) ? now.day : daysInMonth;
     final remainingRatio = (daysInMonth - currentDay) / daysInMonth;
-
-    for (final cat in Category.values) {
-      final historicalAvg = categoryAverages[cat] ?? 0;
-      
-      // Skip categories with known recurring patterns - they're handled above
-      final hasKnownRecurring = recurring.any((r) => r.category == cat);
-      if (hasKnownRecurring) continue;
-
-      // Estimate remaining variable spending
-      final estimatedRemaining = historicalAvg * remainingRatio;
-      if (cat == Category.income) {
-        estimatedIncome += estimatedRemaining;
-      } else if (estimatedRemaining > 0) {
-        estimatedExpenses += estimatedRemaining;
-      }
-    }
 
     // Build category estimates
     final categoryEstimates = <Category, CategoryEstimate>{};
@@ -209,11 +180,18 @@ class EstimationService {
       }
     }
 
+    // Calculate totals from category estimates to ensure consistency
+    // between top-level values and per-category breakdown
+    final finalEstimatedIncome = categoryEstimates[Category.income]?.estimated ?? actualIncome;
+    final finalEstimatedExpenses = categoryEstimates.entries
+        .where((e) => e.key != Category.income)
+        .fold(0.0, (sum, e) => sum + e.value.estimated);
+
     return MonthlyEstimate(
       actualIncome: actualIncome,
       actualExpenses: actualExpenses,
-      estimatedIncome: estimatedIncome,
-      estimatedExpenses: estimatedExpenses,
+      estimatedIncome: finalEstimatedIncome,
+      estimatedExpenses: finalEstimatedExpenses,
       categoryEstimates: categoryEstimates,
       pendingRecurring: pendingRecurring,
       completedRecurring: completedRecurring,
