@@ -86,12 +86,6 @@ const List<KnownRecurringPattern> knownRecurringPatterns = [
     type: TransactionType.expense,
     typicalDayOfMonth: 1,
   ),
-  KnownRecurringPattern(
-    descriptionPattern: 'RENAHUS GÖTE',
-    category: Category.housing,
-    subcategory: Subcategory.cleaning,
-    type: TransactionType.expense,
-  ),
 
   // Health
   KnownRecurringPattern(
