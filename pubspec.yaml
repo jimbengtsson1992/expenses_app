@@ -43,9 +43,12 @@ dependencies:
   intl: ^0.20.2
   csv: ^6.0.0
   fl_chart: ^1.1.1
-  google_fonts: ^7.0.0
+  google_fonts: ^6.3.3
   crypto: ^3.0.7
   shared_preferences: ^2.5.4
+  firebase_core: ^4.4.0
+  firebase_ai: ^3.7.0
+  flutter_ai_toolkit: ^1.0.0
 
 dev_dependencies:
   flutter_test:
