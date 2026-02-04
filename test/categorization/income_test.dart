@@ -31,6 +31,15 @@ void main() {
         Category.income,
         Subcategory.salary,
       );
+      // New Rule 2026-02-04
+       expectCategory(
+        service,
+        'WERKS',
+        50000,
+        dummyDate,
+        Category.income,
+        Subcategory.salary,
+      );
     });
 
     test('Loan', () {

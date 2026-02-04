@@ -1189,7 +1189,7 @@ class CategorizationService {
   ) {
     // --- Income (> 0) ---
     if (amount > 0) {
-      if (_matches(lowerDesc, ['lön', 'salary'])) {
+      if (_matches(lowerDesc, ['lön', 'salary', 'werks'])) {
         return (Category.income, Subcategory.salary);
       }
       if (_matches(description, ['Swish inbetalning LINN RHEGALLÈ'])) {
