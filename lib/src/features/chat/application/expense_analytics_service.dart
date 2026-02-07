@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import '../../shared/domain/excluded_from_estimates.dart';
 import '../../transactions/data/expenses_providers.dart';
 import '../../transactions/domain/transaction.dart';
 import '../../transactions/domain/category.dart';
@@ -10,13 +11,32 @@ part 'expense_analytics_service.g.dart';
 @riverpod
 Future<ExpenseAnalytics> expenseAnalytics(Ref ref) async {
   final transactions = await ref.watch(expensesListProvider.future);
-  return ExpenseAnalyticsService().analyze(transactions);
+  // Filter out excluded transactions and those excluded from estimates
+  final filtered = transactions
+      .where((t) =>
+          !t.excludeFromOverview &&
+          !isExcludedFromEstimates(t.category, t.subcategory))
+      .toList();
+  return ExpenseAnalyticsService().analyze(filtered);
+}
+
+/// Analytics for transactions that are excluded from regular estimates
+/// (one-time/unusual expenses like kitchen renovations, loans)
+@riverpod
+Future<ExpenseAnalytics> excludedExpenseAnalytics(Ref ref) async {
+  final transactions = await ref.watch(expensesListProvider.future);
+  // Only include transactions that are excluded from estimates
+  final excluded = transactions
+      .where((t) =>
+          !t.excludeFromOverview &&
+          isExcludedFromEstimates(t.category, t.subcategory))
+      .toList();
+  return ExpenseAnalyticsService().analyze(excluded);
 }
 
 class ExpenseAnalyticsService {
   ExpenseAnalytics analyze(List<Transaction> transactions) {
-    // Filter out excluded transactions
-    final filtered = transactions.where((t) => !t.excludeFromOverview).toList();
+    final filtered = transactions;
 
     // Group by month
     final monthlyData = <String, List<Transaction>>{};

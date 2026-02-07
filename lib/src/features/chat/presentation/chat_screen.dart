@@ -11,6 +11,7 @@ class ChatScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final analyticsAsync = ref.watch(expenseAnalyticsProvider);
+    final excludedAnalyticsAsync = ref.watch(excludedExpenseAnalyticsProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -18,7 +19,19 @@ class ChatScreen extends ConsumerWidget {
         centerTitle: true,
       ),
       body: analyticsAsync.when(
-        data: (analytics) => _ChatView(analytics: analytics),
+        data: (analytics) => excludedAnalyticsAsync.when(
+          data: (excludedAnalytics) => _ChatView(
+            analytics: analytics,
+            excludedAnalytics: excludedAnalytics,
+          ),
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (e, _) => Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('Fel: $e', textAlign: TextAlign.center),
+            ),
+          ),
+        ),
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(
           child: Padding(
@@ -32,8 +45,12 @@ class ChatScreen extends ConsumerWidget {
 }
 
 class _ChatView extends StatefulWidget {
-  const _ChatView({required this.analytics});
+  const _ChatView({
+    required this.analytics,
+    required this.excludedAnalytics,
+  });
   final ExpenseAnalytics analytics;
+  final ExpenseAnalytics excludedAnalytics;
 
   @override
   State<_ChatView> createState() => _ChatViewState();
@@ -57,7 +74,13 @@ class _ChatViewState extends State<_ChatView> {
     return '''
 Du är en hjälpsam ekonomisk assistent som analyserar utgiftsdata för en privatperson.
 
+## Transaktioner (inkluderas alltid i svar)
 ${widget.analytics.toMarkdownPrompt()}
+
+## Exkluderade transaktioner (engångshändelser)
+Följande är engångs- eller ovanliga transaktioner som köksrenovering och lån.
+Inkludera ENDAST denna data om användaren specifikt frågar om det (t.ex. "köksrenovering", "lån", "engångsutgifter", "alla utgifter", "totalt inklusive allt").
+${widget.excludedAnalytics.toMarkdownPrompt()}
 
 REGLER:
 - Svara alltid på svenska
@@ -66,6 +89,7 @@ REGLER:
 - Om användaren frågar om något som inte finns i datan, säg det tydligt
 - Formatera svar med punktlistor när det passar
 - Avrunda belopp till hela kronor
+- Inkludera INTE exkluderade transaktioner i svar om användaren inte specifikt frågar om dem
 ''';
   }
 
@@ -83,10 +107,10 @@ REGLER:
         // User message: purple bubble with white text
         userMessageStyle: UserMessageStyle(
           decoration: BoxDecoration(
-            color: colorScheme.primary,
+            color: Colors.white,
             borderRadius: BorderRadius.circular(18),
           ),
-          textStyle: const TextStyle(color: Colors.white),
+          textStyle: const TextStyle(color: Colors.black),
         ),
         // AI message: white bubble with dark text
         llmMessageStyle: LlmMessageStyle(
