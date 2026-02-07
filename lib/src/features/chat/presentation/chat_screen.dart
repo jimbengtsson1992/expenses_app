@@ -4,6 +4,7 @@ import 'package:flutter_ai_toolkit/flutter_ai_toolkit.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../application/expense_analytics_service.dart';
 import '../domain/expense_analytics.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 
 class ChatScreen extends ConsumerWidget {
   const ChatScreen({super.key});
@@ -104,24 +105,30 @@ REGLER:
       style: LlmChatViewStyle(
         // Dark background matching other screens
         backgroundColor: colorScheme.surface,
-        // User message: purple bubble with white text
+        // User message: primary container (blue) with on-primary-container text
         userMessageStyle: UserMessageStyle(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(18),
           ),
-          textStyle: const TextStyle(color: Colors.black),
+          textStyle: TextStyle(
+            color: colorScheme.onPrimaryContainer,
+          ),
         ),
-        // AI message: white bubble with dark text
+        // AI message: surface container (grey) with on-surface text
         llmMessageStyle: LlmMessageStyle(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colorScheme.surfaceContainerHigh,
             borderRadius: BorderRadius.circular(18),
           ),
+          markdownStyle: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
+            p: TextStyle(color: colorScheme.onSurface),
+          ),
         ),
+
         // Input field: dark themed with white text
         chatInputStyle: ChatInputStyle(
-          textStyle: const TextStyle(color: Colors.white),
+          textStyle: TextStyle(color: colorScheme.onSurface),
           backgroundColor: colorScheme.surfaceContainerHighest,
           hintText: 'Skriv din fråga...',
           decoration: BoxDecoration(
