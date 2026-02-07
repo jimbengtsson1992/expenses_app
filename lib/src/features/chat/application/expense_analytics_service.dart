@@ -3,6 +3,7 @@ import '../../shared/domain/excluded_from_estimates.dart';
 import '../../transactions/data/expenses_providers.dart';
 import '../../transactions/domain/transaction.dart';
 import '../../transactions/domain/category.dart';
+import '../../transactions/domain/subcategory.dart';
 import '../../transactions/domain/transaction_type.dart';
 import '../domain/expense_analytics.dart';
 
@@ -55,16 +56,23 @@ class ExpenseAnalyticsService {
       double income = 0;
       double expenses = 0;
       final categoryBreakdown = <Category, double>{};
+      final subcategoryBreakdown = <Subcategory, double>{};
 
       for (final t in entry.value) {
         if (t.type == TransactionType.income) {
           income += t.amount.abs();
         } else {
           expenses += t.amount.abs();
+          final amount = t.amount.abs();
           categoryBreakdown.update(
             t.category,
-            (v) => v + t.amount.abs(),
-            ifAbsent: () => t.amount.abs(),
+            (v) => v + amount,
+            ifAbsent: () => amount,
+          );
+          subcategoryBreakdown.update(
+            t.subcategory,
+            (v) => v + amount,
+            ifAbsent: () => amount,
           );
         }
       }
@@ -75,6 +83,7 @@ class ExpenseAnalyticsService {
         income: income,
         expenses: expenses,
         categoryBreakdown: categoryBreakdown,
+        subcategoryBreakdown: subcategoryBreakdown,
       ));
     }
 
@@ -96,11 +105,23 @@ class ExpenseAnalyticsService {
       }
     }
 
+    // Generate compact transaction list for LLM context
+    // Format: YYYY-MM-DD;Amount;Category;Subcategory;Description
+    final compactTransactions = filtered.map((t) {
+      final date = '${t.date.year}-${t.date.month}-${t.date.day}';
+      final amount = t.amount.round();
+      final cat = t.category.displayName;
+      final sub = t.subcategory.displayName;
+      final desc = t.description.replaceAll(';', ','); // Escape delimiters
+      return '$date;$amount;$cat;$sub;$desc';
+    }).toList();
+
     return ExpenseAnalytics(
       monthSummaries: monthSummaries,
       categoryTotals: categoryTotals,
       totalIncome: totalIncome,
       totalExpenses: totalExpenses,
+      compactTransactions: compactTransactions,
     );
   }
 }

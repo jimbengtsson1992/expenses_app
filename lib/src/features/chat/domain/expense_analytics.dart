@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import '../../transactions/domain/category.dart';
+import '../../transactions/domain/subcategory.dart';
 
 part 'expense_analytics.freezed.dart';
 
@@ -12,6 +13,7 @@ abstract class MonthSummary with _$MonthSummary {
     required double income,
     required double expenses,
     required Map<Category, double> categoryBreakdown,
+    required Map<Subcategory, double> subcategoryBreakdown,
   }) = _MonthSummary;
 }
 
@@ -25,6 +27,7 @@ abstract class ExpenseAnalytics with _$ExpenseAnalytics {
     required Map<Category, double> categoryTotals,
     required double totalIncome,
     required double totalExpenses,
+    required List<String> compactTransactions,
   }) = _ExpenseAnalytics;
 
   /// Convert analytics to a markdown string for LLM context
@@ -56,6 +59,15 @@ abstract class ExpenseAnalytics with _$ExpenseAnalytics {
         buffer.writeln(
             '  - ${cat.key.displayName}: ${cat.value.toStringAsFixed(0)} kr');
       }
+
+      // Top 5 subcategories for this month
+      final sortedSubcats = m.subcategoryBreakdown.entries.toList()
+        ..sort((a, b) => b.value.compareTo(a.value));
+      for (final sub in sortedSubcats.take(5)) {
+        buffer.writeln(
+            '    * ${sub.key.displayName}: ${sub.value.toStringAsFixed(0)} kr');
+      }
+
       buffer.writeln('');
     }
 
@@ -64,6 +76,13 @@ abstract class ExpenseAnalytics with _$ExpenseAnalytics {
     buffer.writeln('- Totala utgifter: ${totalExpenses.toStringAsFixed(0)} kr');
     buffer.writeln(
         '- Nettoresultat: ${(totalIncome - totalExpenses).toStringAsFixed(0)} kr');
+
+    buffer.writeln('');
+    buffer.writeln('## Transaktioner (CSV-format)');
+    buffer.writeln('Datum;Belopp;Kategori;Underkategori;Beskrivning');
+    for (final t in compactTransactions) {
+      buffer.writeln(t);
+    }
 
     return buffer.toString();
   }

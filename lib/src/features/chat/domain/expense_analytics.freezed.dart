@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MonthSummary {
 
- int get year; int get month; double get income; double get expenses; Map<Category, double> get categoryBreakdown;
+ int get year; int get month; double get income; double get expenses; Map<Category, double> get categoryBreakdown; Map<Subcategory, double> get subcategoryBreakdown;
 /// Create a copy of MonthSummary
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $MonthSummaryCopyWith<MonthSummary> get copyWith => _$MonthSummaryCopyWithImpl<M
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MonthSummary&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.income, income) || other.income == income)&&(identical(other.expenses, expenses) || other.expenses == expenses)&&const DeepCollectionEquality().equals(other.categoryBreakdown, categoryBreakdown));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MonthSummary&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.income, income) || other.income == income)&&(identical(other.expenses, expenses) || other.expenses == expenses)&&const DeepCollectionEquality().equals(other.categoryBreakdown, categoryBreakdown)&&const DeepCollectionEquality().equals(other.subcategoryBreakdown, subcategoryBreakdown));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,year,month,income,expenses,const DeepCollectionEquality().hash(categoryBreakdown));
+int get hashCode => Object.hash(runtimeType,year,month,income,expenses,const DeepCollectionEquality().hash(categoryBreakdown),const DeepCollectionEquality().hash(subcategoryBreakdown));
 
 @override
 String toString() {
-  return 'MonthSummary(year: $year, month: $month, income: $income, expenses: $expenses, categoryBreakdown: $categoryBreakdown)';
+  return 'MonthSummary(year: $year, month: $month, income: $income, expenses: $expenses, categoryBreakdown: $categoryBreakdown, subcategoryBreakdown: $subcategoryBreakdown)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $MonthSummaryCopyWith<$Res>  {
   factory $MonthSummaryCopyWith(MonthSummary value, $Res Function(MonthSummary) _then) = _$MonthSummaryCopyWithImpl;
 @useResult
 $Res call({
- int year, int month, double income, double expenses, Map<Category, double> categoryBreakdown
+ int year, int month, double income, double expenses, Map<Category, double> categoryBreakdown, Map<Subcategory, double> subcategoryBreakdown
 });
 
 
@@ -62,14 +62,15 @@ class _$MonthSummaryCopyWithImpl<$Res>
 
 /// Create a copy of MonthSummary
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? year = null,Object? month = null,Object? income = null,Object? expenses = null,Object? categoryBreakdown = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? year = null,Object? month = null,Object? income = null,Object? expenses = null,Object? categoryBreakdown = null,Object? subcategoryBreakdown = null,}) {
   return _then(_self.copyWith(
 year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
 as int,month: null == month ? _self.month : month // ignore: cast_nullable_to_non_nullable
 as int,income: null == income ? _self.income : income // ignore: cast_nullable_to_non_nullable
 as double,expenses: null == expenses ? _self.expenses : expenses // ignore: cast_nullable_to_non_nullable
 as double,categoryBreakdown: null == categoryBreakdown ? _self.categoryBreakdown : categoryBreakdown // ignore: cast_nullable_to_non_nullable
-as Map<Category, double>,
+as Map<Category, double>,subcategoryBreakdown: null == subcategoryBreakdown ? _self.subcategoryBreakdown : subcategoryBreakdown // ignore: cast_nullable_to_non_nullable
+as Map<Subcategory, double>,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int year,  int month,  double income,  double expenses,  Map<Category, double> categoryBreakdown)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int year,  int month,  double income,  double expenses,  Map<Category, double> categoryBreakdown,  Map<Subcategory, double> subcategoryBreakdown)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MonthSummary() when $default != null:
-return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categoryBreakdown);case _:
+return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categoryBreakdown,_that.subcategoryBreakdown);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categor
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int year,  int month,  double income,  double expenses,  Map<Category, double> categoryBreakdown)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int year,  int month,  double income,  double expenses,  Map<Category, double> categoryBreakdown,  Map<Subcategory, double> subcategoryBreakdown)  $default,) {final _that = this;
 switch (_that) {
 case _MonthSummary():
-return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categoryBreakdown);case _:
+return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categoryBreakdown,_that.subcategoryBreakdown);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -195,10 +196,10 @@ return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categor
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int year,  int month,  double income,  double expenses,  Map<Category, double> categoryBreakdown)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int year,  int month,  double income,  double expenses,  Map<Category, double> categoryBreakdown,  Map<Subcategory, double> subcategoryBreakdown)?  $default,) {final _that = this;
 switch (_that) {
 case _MonthSummary() when $default != null:
-return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categoryBreakdown);case _:
+return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categoryBreakdown,_that.subcategoryBreakdown);case _:
   return null;
 
 }
@@ -210,7 +211,7 @@ return $default(_that.year,_that.month,_that.income,_that.expenses,_that.categor
 
 
 class _MonthSummary implements MonthSummary {
-  const _MonthSummary({required this.year, required this.month, required this.income, required this.expenses, required final  Map<Category, double> categoryBreakdown}): _categoryBreakdown = categoryBreakdown;
+  const _MonthSummary({required this.year, required this.month, required this.income, required this.expenses, required final  Map<Category, double> categoryBreakdown, required final  Map<Subcategory, double> subcategoryBreakdown}): _categoryBreakdown = categoryBreakdown,_subcategoryBreakdown = subcategoryBreakdown;
   
 
 @override final  int year;
@@ -224,6 +225,13 @@ class _MonthSummary implements MonthSummary {
   return EqualUnmodifiableMapView(_categoryBreakdown);
 }
 
+ final  Map<Subcategory, double> _subcategoryBreakdown;
+@override Map<Subcategory, double> get subcategoryBreakdown {
+  if (_subcategoryBreakdown is EqualUnmodifiableMapView) return _subcategoryBreakdown;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_subcategoryBreakdown);
+}
+
 
 /// Create a copy of MonthSummary
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +243,16 @@ _$MonthSummaryCopyWith<_MonthSummary> get copyWith => __$MonthSummaryCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MonthSummary&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.income, income) || other.income == income)&&(identical(other.expenses, expenses) || other.expenses == expenses)&&const DeepCollectionEquality().equals(other._categoryBreakdown, _categoryBreakdown));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MonthSummary&&(identical(other.year, year) || other.year == year)&&(identical(other.month, month) || other.month == month)&&(identical(other.income, income) || other.income == income)&&(identical(other.expenses, expenses) || other.expenses == expenses)&&const DeepCollectionEquality().equals(other._categoryBreakdown, _categoryBreakdown)&&const DeepCollectionEquality().equals(other._subcategoryBreakdown, _subcategoryBreakdown));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,year,month,income,expenses,const DeepCollectionEquality().hash(_categoryBreakdown));
+int get hashCode => Object.hash(runtimeType,year,month,income,expenses,const DeepCollectionEquality().hash(_categoryBreakdown),const DeepCollectionEquality().hash(_subcategoryBreakdown));
 
 @override
 String toString() {
-  return 'MonthSummary(year: $year, month: $month, income: $income, expenses: $expenses, categoryBreakdown: $categoryBreakdown)';
+  return 'MonthSummary(year: $year, month: $month, income: $income, expenses: $expenses, categoryBreakdown: $categoryBreakdown, subcategoryBreakdown: $subcategoryBreakdown)';
 }
 
 
@@ -255,7 +263,7 @@ abstract mixin class _$MonthSummaryCopyWith<$Res> implements $MonthSummaryCopyWi
   factory _$MonthSummaryCopyWith(_MonthSummary value, $Res Function(_MonthSummary) _then) = __$MonthSummaryCopyWithImpl;
 @override @useResult
 $Res call({
- int year, int month, double income, double expenses, Map<Category, double> categoryBreakdown
+ int year, int month, double income, double expenses, Map<Category, double> categoryBreakdown, Map<Subcategory, double> subcategoryBreakdown
 });
 
 
@@ -272,14 +280,15 @@ class __$MonthSummaryCopyWithImpl<$Res>
 
 /// Create a copy of MonthSummary
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? year = null,Object? month = null,Object? income = null,Object? expenses = null,Object? categoryBreakdown = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? year = null,Object? month = null,Object? income = null,Object? expenses = null,Object? categoryBreakdown = null,Object? subcategoryBreakdown = null,}) {
   return _then(_MonthSummary(
 year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
 as int,month: null == month ? _self.month : month // ignore: cast_nullable_to_non_nullable
 as int,income: null == income ? _self.income : income // ignore: cast_nullable_to_non_nullable
 as double,expenses: null == expenses ? _self.expenses : expenses // ignore: cast_nullable_to_non_nullable
 as double,categoryBreakdown: null == categoryBreakdown ? _self._categoryBreakdown : categoryBreakdown // ignore: cast_nullable_to_non_nullable
-as Map<Category, double>,
+as Map<Category, double>,subcategoryBreakdown: null == subcategoryBreakdown ? _self._subcategoryBreakdown : subcategoryBreakdown // ignore: cast_nullable_to_non_nullable
+as Map<Subcategory, double>,
   ));
 }
 
@@ -289,7 +298,7 @@ as Map<Category, double>,
 /// @nodoc
 mixin _$ExpenseAnalytics {
 
- List<MonthSummary> get monthSummaries; Map<Category, double> get categoryTotals; double get totalIncome; double get totalExpenses;
+ List<MonthSummary> get monthSummaries; Map<Category, double> get categoryTotals; double get totalIncome; double get totalExpenses; List<String> get compactTransactions;
 /// Create a copy of ExpenseAnalytics
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -300,16 +309,16 @@ $ExpenseAnalyticsCopyWith<ExpenseAnalytics> get copyWith => _$ExpenseAnalyticsCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExpenseAnalytics&&const DeepCollectionEquality().equals(other.monthSummaries, monthSummaries)&&const DeepCollectionEquality().equals(other.categoryTotals, categoryTotals)&&(identical(other.totalIncome, totalIncome) || other.totalIncome == totalIncome)&&(identical(other.totalExpenses, totalExpenses) || other.totalExpenses == totalExpenses));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ExpenseAnalytics&&const DeepCollectionEquality().equals(other.monthSummaries, monthSummaries)&&const DeepCollectionEquality().equals(other.categoryTotals, categoryTotals)&&(identical(other.totalIncome, totalIncome) || other.totalIncome == totalIncome)&&(identical(other.totalExpenses, totalExpenses) || other.totalExpenses == totalExpenses)&&const DeepCollectionEquality().equals(other.compactTransactions, compactTransactions));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(monthSummaries),const DeepCollectionEquality().hash(categoryTotals),totalIncome,totalExpenses);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(monthSummaries),const DeepCollectionEquality().hash(categoryTotals),totalIncome,totalExpenses,const DeepCollectionEquality().hash(compactTransactions));
 
 @override
 String toString() {
-  return 'ExpenseAnalytics(monthSummaries: $monthSummaries, categoryTotals: $categoryTotals, totalIncome: $totalIncome, totalExpenses: $totalExpenses)';
+  return 'ExpenseAnalytics(monthSummaries: $monthSummaries, categoryTotals: $categoryTotals, totalIncome: $totalIncome, totalExpenses: $totalExpenses, compactTransactions: $compactTransactions)';
 }
 
 
@@ -320,7 +329,7 @@ abstract mixin class $ExpenseAnalyticsCopyWith<$Res>  {
   factory $ExpenseAnalyticsCopyWith(ExpenseAnalytics value, $Res Function(ExpenseAnalytics) _then) = _$ExpenseAnalyticsCopyWithImpl;
 @useResult
 $Res call({
- List<MonthSummary> monthSummaries, Map<Category, double> categoryTotals, double totalIncome, double totalExpenses
+ List<MonthSummary> monthSummaries, Map<Category, double> categoryTotals, double totalIncome, double totalExpenses, List<String> compactTransactions
 });
 
 
@@ -337,13 +346,14 @@ class _$ExpenseAnalyticsCopyWithImpl<$Res>
 
 /// Create a copy of ExpenseAnalytics
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? monthSummaries = null,Object? categoryTotals = null,Object? totalIncome = null,Object? totalExpenses = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? monthSummaries = null,Object? categoryTotals = null,Object? totalIncome = null,Object? totalExpenses = null,Object? compactTransactions = null,}) {
   return _then(_self.copyWith(
 monthSummaries: null == monthSummaries ? _self.monthSummaries : monthSummaries // ignore: cast_nullable_to_non_nullable
 as List<MonthSummary>,categoryTotals: null == categoryTotals ? _self.categoryTotals : categoryTotals // ignore: cast_nullable_to_non_nullable
 as Map<Category, double>,totalIncome: null == totalIncome ? _self.totalIncome : totalIncome // ignore: cast_nullable_to_non_nullable
 as double,totalExpenses: null == totalExpenses ? _self.totalExpenses : totalExpenses // ignore: cast_nullable_to_non_nullable
-as double,
+as double,compactTransactions: null == compactTransactions ? _self.compactTransactions : compactTransactions // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -428,10 +438,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<MonthSummary> monthSummaries,  Map<Category, double> categoryTotals,  double totalIncome,  double totalExpenses)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<MonthSummary> monthSummaries,  Map<Category, double> categoryTotals,  double totalIncome,  double totalExpenses,  List<String> compactTransactions)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ExpenseAnalytics() when $default != null:
-return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_that.totalExpenses);case _:
+return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_that.totalExpenses,_that.compactTransactions);case _:
   return orElse();
 
 }
@@ -449,10 +459,10 @@ return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<MonthSummary> monthSummaries,  Map<Category, double> categoryTotals,  double totalIncome,  double totalExpenses)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<MonthSummary> monthSummaries,  Map<Category, double> categoryTotals,  double totalIncome,  double totalExpenses,  List<String> compactTransactions)  $default,) {final _that = this;
 switch (_that) {
 case _ExpenseAnalytics():
-return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_that.totalExpenses);case _:
+return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_that.totalExpenses,_that.compactTransactions);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -469,10 +479,10 @@ return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<MonthSummary> monthSummaries,  Map<Category, double> categoryTotals,  double totalIncome,  double totalExpenses)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<MonthSummary> monthSummaries,  Map<Category, double> categoryTotals,  double totalIncome,  double totalExpenses,  List<String> compactTransactions)?  $default,) {final _that = this;
 switch (_that) {
 case _ExpenseAnalytics() when $default != null:
-return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_that.totalExpenses);case _:
+return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_that.totalExpenses,_that.compactTransactions);case _:
   return null;
 
 }
@@ -484,7 +494,7 @@ return $default(_that.monthSummaries,_that.categoryTotals,_that.totalIncome,_tha
 
 
 class _ExpenseAnalytics extends ExpenseAnalytics {
-  const _ExpenseAnalytics({required final  List<MonthSummary> monthSummaries, required final  Map<Category, double> categoryTotals, required this.totalIncome, required this.totalExpenses}): _monthSummaries = monthSummaries,_categoryTotals = categoryTotals,super._();
+  const _ExpenseAnalytics({required final  List<MonthSummary> monthSummaries, required final  Map<Category, double> categoryTotals, required this.totalIncome, required this.totalExpenses, required final  List<String> compactTransactions}): _monthSummaries = monthSummaries,_categoryTotals = categoryTotals,_compactTransactions = compactTransactions,super._();
   
 
  final  List<MonthSummary> _monthSummaries;
@@ -503,6 +513,13 @@ class _ExpenseAnalytics extends ExpenseAnalytics {
 
 @override final  double totalIncome;
 @override final  double totalExpenses;
+ final  List<String> _compactTransactions;
+@override List<String> get compactTransactions {
+  if (_compactTransactions is EqualUnmodifiableListView) return _compactTransactions;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_compactTransactions);
+}
+
 
 /// Create a copy of ExpenseAnalytics
 /// with the given fields replaced by the non-null parameter values.
@@ -514,16 +531,16 @@ _$ExpenseAnalyticsCopyWith<_ExpenseAnalytics> get copyWith => __$ExpenseAnalytic
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ExpenseAnalytics&&const DeepCollectionEquality().equals(other._monthSummaries, _monthSummaries)&&const DeepCollectionEquality().equals(other._categoryTotals, _categoryTotals)&&(identical(other.totalIncome, totalIncome) || other.totalIncome == totalIncome)&&(identical(other.totalExpenses, totalExpenses) || other.totalExpenses == totalExpenses));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ExpenseAnalytics&&const DeepCollectionEquality().equals(other._monthSummaries, _monthSummaries)&&const DeepCollectionEquality().equals(other._categoryTotals, _categoryTotals)&&(identical(other.totalIncome, totalIncome) || other.totalIncome == totalIncome)&&(identical(other.totalExpenses, totalExpenses) || other.totalExpenses == totalExpenses)&&const DeepCollectionEquality().equals(other._compactTransactions, _compactTransactions));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_monthSummaries),const DeepCollectionEquality().hash(_categoryTotals),totalIncome,totalExpenses);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_monthSummaries),const DeepCollectionEquality().hash(_categoryTotals),totalIncome,totalExpenses,const DeepCollectionEquality().hash(_compactTransactions));
 
 @override
 String toString() {
-  return 'ExpenseAnalytics(monthSummaries: $monthSummaries, categoryTotals: $categoryTotals, totalIncome: $totalIncome, totalExpenses: $totalExpenses)';
+  return 'ExpenseAnalytics(monthSummaries: $monthSummaries, categoryTotals: $categoryTotals, totalIncome: $totalIncome, totalExpenses: $totalExpenses, compactTransactions: $compactTransactions)';
 }
 
 
@@ -534,7 +551,7 @@ abstract mixin class _$ExpenseAnalyticsCopyWith<$Res> implements $ExpenseAnalyti
   factory _$ExpenseAnalyticsCopyWith(_ExpenseAnalytics value, $Res Function(_ExpenseAnalytics) _then) = __$ExpenseAnalyticsCopyWithImpl;
 @override @useResult
 $Res call({
- List<MonthSummary> monthSummaries, Map<Category, double> categoryTotals, double totalIncome, double totalExpenses
+ List<MonthSummary> monthSummaries, Map<Category, double> categoryTotals, double totalIncome, double totalExpenses, List<String> compactTransactions
 });
 
 
@@ -551,13 +568,14 @@ class __$ExpenseAnalyticsCopyWithImpl<$Res>
 
 /// Create a copy of ExpenseAnalytics
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? monthSummaries = null,Object? categoryTotals = null,Object? totalIncome = null,Object? totalExpenses = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? monthSummaries = null,Object? categoryTotals = null,Object? totalIncome = null,Object? totalExpenses = null,Object? compactTransactions = null,}) {
   return _then(_ExpenseAnalytics(
 monthSummaries: null == monthSummaries ? _self._monthSummaries : monthSummaries // ignore: cast_nullable_to_non_nullable
 as List<MonthSummary>,categoryTotals: null == categoryTotals ? _self._categoryTotals : categoryTotals // ignore: cast_nullable_to_non_nullable
 as Map<Category, double>,totalIncome: null == totalIncome ? _self.totalIncome : totalIncome // ignore: cast_nullable_to_non_nullable
 as double,totalExpenses: null == totalExpenses ? _self.totalExpenses : totalExpenses // ignore: cast_nullable_to_non_nullable
-as double,
+as double,compactTransactions: null == compactTransactions ? _self._compactTransactions : compactTransactions // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
