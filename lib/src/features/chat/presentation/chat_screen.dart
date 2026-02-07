@@ -124,6 +124,34 @@ REGLER:
           markdownStyle: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
             p: TextStyle(color: colorScheme.onSurface),
           ),
+          iconColor: colorScheme.onSurfaceVariant,
+          iconDecoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            shape: BoxShape.circle,
+          ),
+        ),
+
+        addButtonStyle: ActionButtonStyle(
+          icon: Icons.add,
+          iconColor: colorScheme.onSurface,
+          iconDecoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            shape: BoxShape.circle,
+          ),
+        ),
+        recordButtonStyle: ActionButtonStyle(
+          iconColor: colorScheme.onSurface,
+          iconDecoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            shape: BoxShape.circle,
+          ),
+        ),
+        submitButtonStyle: ActionButtonStyle(
+          iconColor: colorScheme.onSurface,
+          iconDecoration: BoxDecoration(
+            color: colorScheme.surfaceContainerHighest,
+            shape: BoxShape.circle,
+          ),
         ),
 
         // Input field: dark themed with white text
