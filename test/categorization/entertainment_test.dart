@@ -135,6 +135,14 @@ void main() {
         Category.entertainment,
         Subcategory.travel,
       );
+      expectCategory(
+        service,
+        'Hallandstrafiken',
+        -100,
+        dummyDate,
+        Category.entertainment,
+        Subcategory.travel,
+      );
 
       // Specific Overrides for Travel
       expectCategory(

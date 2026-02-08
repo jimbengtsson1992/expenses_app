@@ -1255,6 +1255,7 @@ class CategorizationService {
       'klub parlament xi',
       'sj app',
       'vr snabbtåg sverige',
+      'hallandstrafike',
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
