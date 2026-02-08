@@ -5,7 +5,7 @@ description: Converts an Amex/SAS XLSX transaction export to the semicolon-delim
 
 # Convert XLSX to CSV
 
-This skill converts Excel transaction files (commonly from Amex/SAS) into a semicolon-delimited CSV format. It handles date formatting (`yyyy-MM-dd`) ensures the structure matches what the `transaction_csv_parser.dart` expects.
+This skill converts Excel transaction files (commonly from Amex/SAS) into a semicolon-delimited CSV format. It handles date formatting (`yyyy-MM-dd`) and merges new data with existing CSV files to preserve history.
 
 ## Requirements
 
@@ -35,3 +35,31 @@ python3 .agent/skills/convert_xlsx_to_csv/convert.py assets/transactions.xlsx as
 - Dates are forced to `yyyy-MM-dd` format.
 - Output uses `;` as delimiter.
 - Output is UTF-8 encoded.
+- If the output CSV already exists, the script merges the new data with the existing data, removing duplicates and sorting by date.
+
+## Testing & Validation
+
+### Validate Output
+The script automatically validates the output file (checks for duplicates and sorting) after conversion. You can skip this check with `--no-validate`:
+
+```bash
+python3 .agent/skills/convert_xlsx_to_csv/convert.py <input.xlsx> <output.csv> --no-validate
+```
+
+### Run Unit Tests
+A test suite is available to verify merging, deduplication, and header cleaning logic:
+
+```bash
+python3 .agent/skills/convert_xlsx_to_csv/test_convert.py
+```
+
+## Recommended Workflow
+
+For best results, use a single canonical CSV file to build up your transaction history:
+
+```bash
+# 1. Download new transactions as .xlsx
+# 2. Manually move the file to: assets/data/latest_export.xlsx (or similar name)
+# 3. Run conversion against the main history file:
+python3 .agent/skills/convert_xlsx_to_csv/convert.py assets/data/latest_export.xlsx assets/data/amex_transactions.csv
+```
