@@ -291,5 +291,22 @@ Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
         );
       },
     );
+
+    test('should filter transactions before 2024-12-01', () {
+      const csvContent = '''
+Bokföringsdag;Belopp;Avsändare;Mottagare;Namn;Rubrik;Saldo;Valuta;
+2024/12/01;100,00;;;Mottagare;December Transaction;0;SEK;
+2024/11/30;100,00;;;Mottagare;November Transaction;0;SEK;
+''';
+      final idRegistry = <String, int>{};
+      final transactions = parser.parseNordeaCsv(
+        csvContent,
+        'PERSONKONTO 1234 56 78901.csv',
+        idRegistry,
+      );
+
+      expect(transactions.length, 1);
+      expect(transactions.first.description, 'December Transaction');
+    });
   });
 }

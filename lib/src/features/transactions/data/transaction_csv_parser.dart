@@ -18,7 +18,7 @@ class TransactionCsvParser {
   final CategorizationService _categorizationService;
   final UserRulesRepository _userRulesRepository;
 
-  static final _startParams = DateTime(2025, 1, 1);
+  static final _startParams = DateTime(2024, 12, 1);
 
   List<Transaction> parseNordeaCsv(
     String content,
