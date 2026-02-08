@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "372595918792",
+    "project_id": "jim-expenses",
+    "storage_bucket": "jim-expenses.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:372595918792:android:2e9d84880147588d2b22fd",
+        "android_client_info": {
+          "package_name": "com.expenses.expenses"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9SfiSobVpsc7mm_FvaPW5k_Sx9uRDJT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -15,7 +15,7 @@ class MyApp extends ConsumerWidget {
       title: 'Utgifter',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6750A4),
+          seedColor: const Color(0xFF2196F3),
           brightness: Brightness.dark, // Default to dark mode as per design
         ),
         useMaterial3: true,

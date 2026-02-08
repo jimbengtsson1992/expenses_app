@@ -40,7 +40,6 @@ void main() {
       subcategory: subcategory,
       sourceAccount: Account.gemensamt,
       sourceFilename: 'test.csv',
-      type: amount < 0 ? TransactionType.expense : TransactionType.income,
       excludeFromOverview: excludeFromOverview,
     );
   }

@@ -34,6 +34,11 @@ RouteBase get $bottomNavigationShell => StatefulShellRouteData.$route(
         ),
       ],
     ),
+    StatefulShellBranchData.$branch(
+      routes: [
+        GoRouteData.$route(path: '/chat', factory: $ChatRoute._fromState),
+      ],
+    ),
   ],
 );
 
@@ -157,6 +162,26 @@ mixin $ExpenseDetailRoute on GoRouteData {
   String get location => GoRouteData.$location(
     '/transactions/detail/${Uri.encodeComponent(_self.id)}',
   );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin $ChatRoute on GoRouteData {
+  static ChatRoute _fromState(GoRouterState state) => const ChatRoute();
+
+  @override
+  String get location => GoRouteData.$location('/chat');
 
   @override
   void go(BuildContext context) => context.go(location);

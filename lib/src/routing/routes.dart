@@ -1,6 +1,7 @@
 import 'package:expenses/src/features/dashboard/presentation/dashboard_screen.dart';
 import 'package:expenses/src/features/transactions/presentation/transaction_detail_screen.dart';
 import 'package:expenses/src/features/transactions/presentation/transactions_list_screen.dart';
+import 'package:expenses/src/features/chat/presentation/chat_screen.dart';
 import 'package:expenses/src/features/transactions/domain/account.dart';
 import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:expenses/src/features/transactions/domain/transaction_type.dart';
@@ -25,6 +26,9 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
         ),
       ],
     ),
+    TypedStatefulShellBranch<ChatBranch>(
+      routes: [TypedGoRoute<ChatRoute>(path: '/chat')],
+    ),
   ],
 )
 class BottomNavigationShell extends StatefulShellRouteData {
@@ -48,6 +52,10 @@ class DashboardBranch extends StatefulShellBranchData {
 
 class TransactionsBranch extends StatefulShellBranchData {
   const TransactionsBranch();
+}
+
+class ChatBranch extends StatefulShellBranchData {
+  const ChatBranch();
 }
 
 @immutable
@@ -96,5 +104,15 @@ class ExpenseDetailRoute extends GoRouteData with $ExpenseDetailRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return TransactionDetailScreen(expenseId: id);
+  }
+}
+
+@immutable
+class ChatRoute extends GoRouteData with $ChatRoute {
+  const ChatRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const NoTransitionPage(child: ChatScreen());
   }
 }

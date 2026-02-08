@@ -3,7 +3,6 @@ import 'package:expenses/src/features/estimation/application/recurring_detection
 import 'package:expenses/src/features/transactions/domain/transaction.dart';
 import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:expenses/src/features/transactions/domain/subcategory.dart';
-import 'package:expenses/src/features/transactions/domain/transaction_type.dart';
 import 'package:expenses/src/features/transactions/domain/account.dart';
 
 void main() {
@@ -18,7 +17,6 @@ void main() {
     required double amount,
     required DateTime date,
     Category category = Category.other,
-    TransactionType type = TransactionType.expense,
   }) {
     return Transaction(
       id: 'test-${date.millisecondsSinceEpoch}',
@@ -29,7 +27,6 @@ void main() {
       subcategory: Subcategory.unknown,
       sourceAccount: Account.jimPersonkonto,
       sourceFilename: 'test.csv',
-      type: type,
     );
   }
 
@@ -70,26 +67,26 @@ void main() {
           description: 'LÖN UTBETALNING',
           amount: 25000.0,
           date: DateTime(2025, 1, 15),
-          type: TransactionType.income,
+
         ),
         createTestTransaction(
           description: 'LÖN UTBETALNING',
           amount: 25000.0,
           date: DateTime(2025, 1, 25), // Second payment
-          type: TransactionType.income,
+
         ),
         // Month 2
         createTestTransaction(
           description: 'LÖN UTBETALNING',
           amount: 25000.0,
           date: DateTime(2025, 2, 15),
-          type: TransactionType.income,
+
         ),
         createTestTransaction(
           description: 'LÖN UTBETALNING',
           amount: 25000.0,
           date: DateTime(2025, 2, 25), // Second payment
-          type: TransactionType.income,
+
         ),
       ];
 
