@@ -44,6 +44,102 @@ class CategorizationService {
         date.day == 28) {
       return (Category.income, Subcategory.kitchenRenovation);
     }
+
+    // December 2024 Overrides
+    if (date.year == 2024 && date.month == 12) {
+      if (_matches(description, ['JYSK STENALYCKAN']) &&
+          (amount == -269.0) &&
+          date.day == 29) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['LAGERHAUS HALMSTAD HAL']) &&
+          date.day == 29) {
+        if (amount == -59.0) return (Category.shopping, Subcategory.tools);
+        if (amount == -867.0) return (Category.shopping, Subcategory.tools);
+      }
+      if (_matches(description, ['FOODMARKET I HALMSTAD']) &&
+          date.day == 29) {
+        if (amount == -165.0) return (Category.food, Subcategory.restaurant);
+        if (amount == -140.0) return (Category.food, Subcategory.restaurant);
+      }
+      if (_matches(description, ['ZETTLE_*CHOCOLATERIAN']) &&
+          (amount == -165.0) &&
+          date.day == 28) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['Swish betalning CITYMAIL SWEDEN AB']) &&
+          (amount == -29.0) &&
+          date.day == 27) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['VALLGATAN 12 FA'])) {
+        if (date.day == 26 && amount == -2800.0) {
+          return (Category.shopping, Subcategory.clothes);
+        }
+        if (date.day == 22 && amount == -2200.0) {
+          return (Category.shopping, Subcategory.clothes);
+        }
+      }
+      if (_matches(description, ['Kortköp 241222 Gothenburg']) &&
+          (amount == -2500.0) &&
+          date.day == 23) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['Swish betalning GJÖRLING I SVERIGE']) &&
+          (amount == -780.0) &&
+          date.day == 23) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['RICHMONDHOTEL']) &&
+          (amount == -2468.67) &&
+          date.day == 14) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['TIVOLI AS']) &&
+          (amount == -285.56) &&
+          date.day == 14) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['TIVOLI INDG. - 922960']) &&
+          (amount == -317.29) &&
+          date.day == 14) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['TESALON TIVOLI']) &&
+          (amount == -134.84) &&
+          date.day == 14) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (date.day == 15) {
+        if (_matches(description, ['Swish betalning JOHAN ROOS']) &&
+            amount == -1480.0) {
+          return (Category.entertainment, Subcategory.travel);
+        }
+        if (_matches(description, ['Swish betalning GÖRAN BENGTSSON']) &&
+            amount == -190.0) {
+          return (Category.entertainment, Subcategory.travel);
+        }
+        if (_matches(description, ['Swish betalning CARINA BENGTSSON']) &&
+            amount == -500.0) {
+          return (Category.entertainment, Subcategory.travel);
+        }
+      }
+      if (_matches(description, ['Swish betalning HOFMANN, JOHN']) &&
+          (amount == -170.0) &&
+          date.day == 6) {
+        return (Category.food, Subcategory.lunch);
+      }
+      if (_matches(description, ['Swish betalning LISA KRISTENSSON']) &&
+          (amount == -150.0) &&
+          date.day == 4) {
+        return (Category.food, Subcategory.lunch);
+      }
+      if (_matches(description, ['BOPLATS GÖTEBOR']) &&
+          (amount == -200.0) &&
+          date.day == 1) {
+        return (Category.other, Subcategory.other);
+      }
+    }
     if (_matches(description, ['Swish betalning ROBIN WITTLOCK']) &&
         (amount == -350.00) &&
         date.year == 2025 &&
@@ -156,6 +252,11 @@ class CategorizationService {
       if (date.year == 2026 &&
           date.month == 1 &&
           (date.day == 14 || date.day == 15)) {
+        return (Category.food, Subcategory.lunch);
+      }
+      if (date.year == 2026 && 
+          date.month == 2 && 
+          (date.day == 5 || date.day == 6)) {
         return (Category.food, Subcategory.lunch);
       }
     }
@@ -1296,6 +1397,7 @@ class CategorizationService {
       'podme',
       'bonnier news', // Added generic
       'amazon prime',
+      'help.max.com',
     ])) {
       return (Category.entertainment, Subcategory.streaming);
     }
@@ -1384,6 +1486,7 @@ class CategorizationService {
       'banh mi shop',
       'harmoni dumplings',
       'pastor - stora saluhal',
+      'pastor - stora saluh',
       'velic,ajla',
       'deli and coffee',
       'swish inbetalning sehlin,marianne',
@@ -1566,6 +1669,8 @@ class CategorizationService {
       'remanns hogtidsklade',
       'twilfit ab',
       'sneaky steve',
+      'samsoee  samsoee',
+      'j.lindeberg ab',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }

@@ -737,5 +737,67 @@ void main() {
         Subcategory.lunch,
       );
     });
+    test('New Rules 2026-02-08 (Request)', () {
+      // General
+      expectCategory(
+        service,
+        'PASTOR - STORA SALUH',
+        -120.0,
+        DateTime(2025, 1, 1),
+        Category.food,
+        Subcategory.lunch,
+      );
+
+      // Overrides
+      expectCategory(
+        service,
+        'FOODMARKET I HALMSTAD',
+        -165.0,
+        DateTime(2024, 12, 29),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'FOODMARKET I HALMSTAD',
+        -140.0,
+        DateTime(2024, 12, 29),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'ZETTLE_*CHOCOLATERIAN',
+        -165.0,
+        DateTime(2024, 12, 28),
+        Category.food,
+        Subcategory.coffee,
+      );
+      expectCategory(
+        service,
+        'Swish betalning HOFMANN, JOHN',
+        -170.0,
+        DateTime(2024, 12, 6),
+        Category.food,
+        Subcategory.lunch,
+      );
+      expectCategory(
+        service,
+        'Swish betalning LISA KRISTENSSON',
+        -150.0,
+        DateTime(2024, 12, 4),
+        Category.food,
+        Subcategory.lunch,
+      );
+      // Request 2026-02-09
+      expectCategory(
+        service,
+        'ARKET SE0702',
+        -149.0,
+        DateTime(2026, 2, 5),
+        Category.food,
+        Subcategory.lunch,
+      );
+    });
   });
 }

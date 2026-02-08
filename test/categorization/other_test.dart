@@ -261,5 +261,39 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-02-08 (Request)', () {
+      expectCategory(
+        service,
+        'Swish betalning CITYMAIL SWEDEN AB',
+        -29.0,
+        DateTime(2024, 12, 27),
+        Category.other,
+        Subcategory.other,
+      );
+      expectCategory(
+        service,
+        'Kortköp 241222 Gothenburg',
+        -2500.0,
+        DateTime(2024, 12, 23),
+        Category.other,
+        Subcategory.other,
+      );
+      expectCategory(
+        service,
+        'Swish betalning GJÖRLING I SVERIGE',
+        -780.0,
+        DateTime(2024, 12, 23),
+        Category.other,
+        Subcategory.other,
+      );
+      expectCategory(
+        service,
+        'BOPLATS GÖTEBOR',
+        -200.0,
+        DateTime(2024, 12, 1),
+        Category.other,
+        Subcategory.other,
+      );
+    });
   });
 }

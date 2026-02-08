@@ -272,5 +272,76 @@ void main() {
         Subcategory.travel,
       );
     });
+
+
+    test('Streaming Overrides', () {
+      expectCategory(
+        service,
+        'HELP.MAX.COM',
+        -100.0,
+        DateTime(2025, 1, 1),
+        Category.entertainment,
+        Subcategory.streaming,
+      );
+    });
+
+    test('Travel Overrides', () {
+      expectCategory(
+        service,
+        'RICHMONDHOTEL',
+        -2468.67,
+        DateTime(2024, 12, 14),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+      expectCategory(
+        service,
+        'Swish betalning JOHAN ROOS',
+        -1480.0,
+        DateTime(2024, 12, 15),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+      expectCategory(
+        service,
+        'Swish betalning GÖRAN BENGTSSON',
+        -190.0,
+        DateTime(2024, 12, 15),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+      expectCategory(
+        service,
+        'Swish betalning CARINA BENGTSSON',
+        -500.0,
+        DateTime(2024, 12, 15),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+      expectCategory(
+        service,
+        'TIVOLI AS',
+        -285.56,
+        DateTime(2024, 12, 14),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+      expectCategory(
+        service,
+        'TIVOLI INDG. - 922960',
+        -317.29,
+        DateTime(2024, 12, 14),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+      expectCategory(
+        service,
+        'TESALON TIVOLI',
+        -134.84,
+        DateTime(2024, 12, 14),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+    });
   });
 }

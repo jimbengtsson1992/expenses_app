@@ -511,5 +511,66 @@ void main() {
         Subcategory.decor,
       );
     });
+    test('New Rules 2026-02-08 (Request)', () {
+      // General
+      expectCategory(
+        service,
+        'SAMSOEE  SAMSOEE',
+        -500.0,
+        DateTime(2025, 1, 1),
+        Category.shopping,
+        Subcategory.clothes,
+      );
+      expectCategory(
+        service,
+        'J.LINDEBERG AB',
+        -500.0,
+        DateTime(2025, 1, 1),
+        Category.shopping,
+        Subcategory.clothes,
+      );
+
+      // Overrides
+      expectCategory(
+        service,
+        'JYSK STENALYCKAN',
+        -269.0,
+        DateTime(2024, 12, 29),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'LAGERHAUS HALMSTAD HAL',
+        -59.0,
+        DateTime(2024, 12, 29),
+        Category.shopping,
+        Subcategory.tools,
+      );
+      expectCategory(
+        service,
+        'LAGERHAUS HALMSTAD HAL',
+        -867.0,
+        DateTime(2024, 12, 29),
+        Category.shopping,
+        Subcategory.tools,
+      );
+      expectCategory(
+        service,
+        'VALLGATAN 12 FA',
+        -2800.0,
+        DateTime(2024, 12, 26),
+        Category.shopping,
+        Subcategory.clothes,
+      );
+      expectCategory(
+        service,
+        'VALLGATAN 12 FA',
+        -2200.0,
+        DateTime(2024, 12, 22),
+        Category.shopping,
+        Subcategory.clothes,
+      );
+    });
   });
 }

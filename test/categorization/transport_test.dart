@@ -36,8 +36,8 @@ void main() {
         'HALLANDSTRAFIKE',
         -35,
         dummyDate,
-        Category.transport,
-        Subcategory.publicTransport,
+        Category.entertainment,
+        Subcategory.travel,
       );
     });
 
