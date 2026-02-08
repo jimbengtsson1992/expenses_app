@@ -105,6 +105,7 @@ REGLER:
       style: LlmChatViewStyle(
         // Dark background matching other screens
         backgroundColor: colorScheme.surface,
+        progressIndicatorColor: colorScheme.onSurface,
         // User message: primary container (blue) with on-primary-container text
         userMessageStyle: UserMessageStyle(
           decoration: BoxDecoration(
