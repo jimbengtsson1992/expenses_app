@@ -77,7 +77,8 @@ class CategorizationService {
       if (_matches(description, ['4051 WHS LS GOT']) && date.day == 7) {
         return (Category.entertainment, Subcategory.travel);
       }
-      if (_matches(description, ['Swish betalning ADYEN N.V.']) && date.day == 7) {
+      if (_matches(description, ['Swish betalning ADYEN N.V.']) &&
+          date.day == 7) {
         return (Category.entertainment, Subcategory.travel);
       }
       if (_matches(description, ['DR MAX STATUTO']) && date.day == 6) {
@@ -119,7 +120,7 @@ class CategorizationService {
         return (Category.entertainment, Subcategory.travel);
       }
 
-       if (_matches(description, ['ELGIGANTEN.SE']) &&
+      if (_matches(description, ['ELGIGANTEN.SE']) &&
           date.day == 2 &&
           (amount == -21694.00)) {
         return (Category.housing, Subcategory.kitchenRenovation);
@@ -147,12 +148,16 @@ class CategorizationService {
     }
     if (_matches(description, ['ARKET SE0702']) &&
         (amount == -149.0 || amount == 149.0)) {
-       if (date.year == 2026 && date.month == 1 && (date.day == 16 || date.day == 19)) {
-         return (Category.food, Subcategory.lunch);
-       }
-       if (date.year == 2026 && date.month == 1 && (date.day == 14 || date.day == 15)) {
-         return (Category.food, Subcategory.lunch);
-       }
+      if (date.year == 2026 &&
+          date.month == 1 &&
+          (date.day == 16 || date.day == 19)) {
+        return (Category.food, Subcategory.lunch);
+      }
+      if (date.year == 2026 &&
+          date.month == 1 &&
+          (date.day == 14 || date.day == 15)) {
+        return (Category.food, Subcategory.lunch);
+      }
     }
 
     if (_matches(description, ['Kortköp 250213 SP BLOMRUM']) &&
@@ -1192,6 +1197,9 @@ class CategorizationService {
       if (_matches(lowerDesc, ['lön', 'salary', 'werks'])) {
         return (Category.income, Subcategory.salary);
       }
+      if (_matches(lowerDesc, ['skatt'])) {
+        return (Category.income, Subcategory.tax);
+      }
       if (_matches(description, ['Swish inbetalning LINN RHEGALLÈ'])) {
         return (Category.income, Subcategory.kitchenRenovation);
       }
@@ -1262,10 +1270,7 @@ class CategorizationService {
     ])) {
       return (Category.entertainment, Subcategory.hobby);
     }
-    if (_matches(lowerDesc, [
-      'akademibokhande',
-      'bokus.com',
-    ])) {
+    if (_matches(lowerDesc, ['akademibokhande', 'bokus.com'])) {
       return (Category.entertainment, Subcategory.boardGamesBooksAndToys);
     }
     if (_matches(lowerDesc, ['snusbolaget'])) {
@@ -1294,7 +1299,7 @@ class CategorizationService {
       return (Category.entertainment, Subcategory.streaming);
     }
     if (_matches(lowerDesc, ['klarna*bonnier-local'])) {
-        return (Category.entertainment, Subcategory.newspapers);
+      return (Category.entertainment, Subcategory.newspapers);
     }
     if (_matches(description, ['SWAY'])) {
       return (Category.food, Subcategory.restaurant);

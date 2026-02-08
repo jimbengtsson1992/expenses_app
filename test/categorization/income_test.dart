@@ -32,13 +32,32 @@ void main() {
         Subcategory.salary,
       );
       // New Rule 2026-02-04
-       expectCategory(
+      expectCategory(
         service,
         'WERKS',
         50000,
         dummyDate,
         Category.income,
         Subcategory.salary,
+      );
+    });
+
+    test('Tax (Income)', () {
+      expectCategory(
+        service,
+        'Återb. Skatt',
+        5000,
+        dummyDate,
+        Category.income,
+        Subcategory.tax,
+      );
+      expectCategory(
+        service,
+        'Skatteverket',
+        10000,
+        dummyDate,
+        Category.income,
+        Subcategory.tax,
       );
     });
 
