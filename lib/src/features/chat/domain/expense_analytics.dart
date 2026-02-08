@@ -50,14 +50,16 @@ abstract class ExpenseAnalytics with _$ExpenseAnalytics {
       final netResult = m.income - m.expenses;
       final netSign = netResult >= 0 ? '+' : '';
       buffer.writeln(
-          '### $monthName ${m.year}: Inkomst ${m.income.toStringAsFixed(0)} kr, Utgifter ${m.expenses.toStringAsFixed(0)} kr (Netto: $netSign${netResult.toStringAsFixed(0)} kr)');
+        '### $monthName ${m.year}: Inkomst ${m.income.toStringAsFixed(0)} kr, Utgifter ${m.expenses.toStringAsFixed(0)} kr (Netto: $netSign${netResult.toStringAsFixed(0)} kr)',
+      );
 
       // Top 3 categories for this month
       final sortedCats = m.categoryBreakdown.entries.toList()
         ..sort((a, b) => b.value.compareTo(a.value));
       for (final cat in sortedCats.take(5)) {
         buffer.writeln(
-            '  - ${cat.key.displayName}: ${cat.value.toStringAsFixed(0)} kr');
+          '  - ${cat.key.displayName}: ${cat.value.toStringAsFixed(0)} kr',
+        );
       }
 
       // Top 5 subcategories for this month
@@ -65,7 +67,8 @@ abstract class ExpenseAnalytics with _$ExpenseAnalytics {
         ..sort((a, b) => b.value.compareTo(a.value));
       for (final sub in sortedSubcats.take(5)) {
         buffer.writeln(
-            '    * ${sub.key.displayName}: ${sub.value.toStringAsFixed(0)} kr');
+          '    * ${sub.key.displayName}: ${sub.value.toStringAsFixed(0)} kr',
+        );
       }
 
       buffer.writeln('');
@@ -75,7 +78,8 @@ abstract class ExpenseAnalytics with _$ExpenseAnalytics {
     buffer.writeln('- Total inkomst: ${totalIncome.toStringAsFixed(0)} kr');
     buffer.writeln('- Totala utgifter: ${totalExpenses.toStringAsFixed(0)} kr');
     buffer.writeln(
-        '- Nettoresultat: ${(totalIncome - totalExpenses).toStringAsFixed(0)} kr');
+      '- Nettoresultat: ${(totalIncome - totalExpenses).toStringAsFixed(0)} kr',
+    );
 
     buffer.writeln('');
     buffer.writeln('## Transaktioner (CSV-format)');
@@ -101,7 +105,7 @@ abstract class ExpenseAnalytics with _$ExpenseAnalytics {
       'September',
       'Oktober',
       'November',
-      'December'
+      'December',
     ];
     return names[month];
   }

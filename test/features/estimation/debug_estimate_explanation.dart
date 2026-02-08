@@ -16,7 +16,7 @@ class FakeUserRulesRepository extends Fake implements UserRulesRepository {
 
   @override
   (Category, Subcategory)? getRule(String description) => null;
-  
+
   @override
   bool isExcluded(String id) => false;
 }
@@ -26,11 +26,16 @@ void main() async {
     // 1. Setup Services
     final categorizationService = CategorizationService();
     final userRulesRepository = FakeUserRulesRepository();
-    final parser = TransactionCsvParser(categorizationService, userRulesRepository);
+    final parser = TransactionCsvParser(
+      categorizationService,
+      userRulesRepository,
+    );
     final recurringService = RecurringDetectionService();
 
     // 2. Load Data
-    final dataDir = Directory('/Users/jimbengtsson/Documents/src/expenses/assets/data');
+    final dataDir = Directory(
+      '/Users/jimbengtsson/Documents/src/expenses/assets/data',
+    );
     if (!await dataDir.exists()) {
       print('Data directory not found!');
       return;
@@ -44,10 +49,14 @@ void main() async {
         final content = await file.readAsString();
         final filename = file.uri.pathSegments.last;
         try {
-          if (filename.contains('transactions')) { 
-            allTransactions.addAll(parser.parseSasAmexCsv(content, filename, idRegistry));
+          if (filename.contains('transactions')) {
+            allTransactions.addAll(
+              parser.parseSasAmexCsv(content, filename, idRegistry),
+            );
           } else {
-            allTransactions.addAll(parser.parseNordeaCsv(content, filename, idRegistry));
+            allTransactions.addAll(
+              parser.parseNordeaCsv(content, filename, idRegistry),
+            );
           }
         } catch (e) {
           print('Error parsing $filename: $e');
@@ -58,7 +67,7 @@ void main() async {
     // 3. Define Context
     const targetYear = 2026;
     const targetMonth = 2;
-    // Current day based on runtime of test, but here we hardcode "now" for consistency with previous run or just use consistent date. 
+    // Current day based on runtime of test, but here we hardcode "now" for consistency with previous run or just use consistent date.
     // In previous run "now" was DateTime(2026, 2, 4).
     final now = DateTime(2026, 2, 4);
 
@@ -72,24 +81,29 @@ void main() async {
     const targetSubcategory = Subcategory.other;
 
     print('\n========================================');
-    print('ESTIMATE DEBUG REPORT: ${targetCategory.name}/${targetSubcategory.name}');
+    print(
+      'ESTIMATE DEBUG REPORT: ${targetCategory.name}/${targetSubcategory.name}',
+    );
     print('Period: $targetYear-${targetMonth.toString().padLeft(2, '0')}');
     print('========================================\n');
 
     // 4. Analyze Recurring
     // FIX HYPOTHESIS: Filter excluded transactions from history
     final cleanHistory = history.where((t) => !t.excludeFromOverview).toList();
-    
+
     final recurring = recurringService.detectRecurringPatterns(
       cleanHistory,
       forYear: targetYear,
       forMonth: targetMonth,
     );
 
-    final matchingRecurring = recurring.where((r) => 
-      r.category == targetCategory && 
-      (r.subcategory == targetSubcategory)
-    ).toList();
+    final matchingRecurring = recurring
+        .where(
+          (r) =>
+              r.category == targetCategory &&
+              (r.subcategory == targetSubcategory),
+        )
+        .toList();
 
     double recurringTotal = 0;
     if (matchingRecurring.isNotEmpty) {
@@ -99,23 +113,27 @@ void main() async {
         print('    Avg Amount: ${r.averageAmount.toStringAsFixed(2)}');
         print('    Typical Day: ${r.typicalDayOfMonth}');
         print('    Source Transactions:');
-        
+
         // Find matching transactions to verify why they were detected
         final matches = history.where((t) {
-            final desc = t.description.toUpperCase();
-            final pat = r.descriptionPattern.toUpperCase();
-            return desc.contains(pat);
+          final desc = t.description.toUpperCase();
+          final pat = r.descriptionPattern.toUpperCase();
+          return desc.contains(pat);
         }).toList();
-        
+
         matches.sort((a, b) => b.date.compareTo(a.date));
         for (final m in matches.take(5)) {
-             print('      ${m.date.toString().substring(0, 10)}: ${m.amount} - ${m.description}');
+          print(
+            '      ${m.date.toString().substring(0, 10)}: ${m.amount} - ${m.description}',
+          );
         }
         if (matches.isEmpty) {
-            print('      (No fuzzy matches found - likely strict auto-detect normalization)');
+          print(
+            '      (No fuzzy matches found - likely strict auto-detect normalization)',
+          );
         }
         print('');
-        
+
         recurringTotal += r.averageAmount;
       }
     } else {
@@ -125,17 +143,24 @@ void main() async {
 
     // 5. Analyze Historical Average (Variable logic)
     // Filter history for this subcategory
-    final subHistory = history.where((t) => 
-      t.category == targetCategory && 
-      t.subcategory == targetSubcategory && 
-      !t.excludeFromOverview // && !excludedFromEstimates (renovation etc)
-    ).toList();
-    
+    final subHistory = history
+        .where(
+          (t) =>
+              t.category == targetCategory &&
+              t.subcategory == targetSubcategory &&
+              !t.excludeFromOverview, // && !excludedFromEstimates (renovation etc)
+        )
+        .toList();
+
     // Group by month
     final monthlyTotals = <String, double>{};
     for (final t in subHistory) {
-         final key = '${t.date.year}-${t.date.month}';
-         monthlyTotals.update(key, (v) => v + t.amount.abs(), ifAbsent: () => t.amount.abs());
+      final key = '${t.date.year}-${t.date.month}';
+      monthlyTotals.update(
+        key,
+        (v) => v + t.amount.abs(),
+        ifAbsent: () => t.amount.abs(),
+      );
     }
 
     if (monthlyTotals.isEmpty) {
@@ -151,26 +176,28 @@ void main() async {
       print('  Total in History: ${totalSum.toStringAsFixed(2)}');
       print('  Months with data: ${monthlyTotals.length}');
       print('  Historical Average: ${average.toStringAsFixed(2)}');
-      
+
       // Breakdown of months
       print('  Monthly Breakdown (Last 12 months with data):');
       final sortedKeys = monthlyTotals.keys.toList()..sort();
       for (final key in sortedKeys.reversed.take(12)) {
-         print('    $key: ${monthlyTotals[key]!.toStringAsFixed(2)}');
+        print('    $key: ${monthlyTotals[key]!.toStringAsFixed(2)}');
       }
 
       print('\n  Top 5 Contributing Transactions:');
       subHistory.sort((a, b) => b.amount.abs().compareTo(a.amount.abs()));
       for (final t in subHistory.take(5)) {
-        print('    ${t.date.toString().substring(0, 10)}: ${t.amount} - ${t.description}');
+        print(
+          '    ${t.date.toString().substring(0, 10)}: ${t.amount} - ${t.description}',
+        );
       }
-      
+
       // 6. Calculate Variable Estimate
-      
+
       // Does ANY recurring pattern exist for income/other?
-      final anyRecurringForSub = recurring.any((r) => 
-        r.category == targetCategory && 
-        r.subcategory == targetSubcategory
+      final anyRecurringForSub = recurring.any(
+        (r) =>
+            r.category == targetCategory && r.subcategory == targetSubcategory,
       );
 
       double variableEst = 0;
@@ -178,25 +205,33 @@ void main() async {
         // Variable logic applies
         final daysInMonth = DateTime(targetYear, targetMonth + 1, 0).day; // 28
         final currentDay = now.day; // 4
-        final remainingRatio = (daysInMonth - currentDay) / daysInMonth; 
-        
+        final remainingRatio = (daysInMonth - currentDay) / daysInMonth;
+
         variableEst = average * remainingRatio;
-        
+
         print('\nVARIABLE ESTIMATE CALCULATION:');
-        print('  Logic: No recurring patterns found, using historical average pro-rated.');
+        print(
+          '  Logic: No recurring patterns found, using historical average pro-rated.',
+        );
         print('  Note: Income variable estimate applies to remaining days?');
-        
+
         print('  Days in Month: $daysInMonth');
         print('  Current Day: $currentDay');
         print('  Remaining Ratio: ${remainingRatio.toStringAsFixed(4)}');
-        print('  Calculation: ${average.toStringAsFixed(2)} * $remainingRatio = ${variableEst.toStringAsFixed(2)}');
+        print(
+          '  Calculation: ${average.toStringAsFixed(2)} * $remainingRatio = ${variableEst.toStringAsFixed(2)}',
+        );
       } else {
         print('\nVARIABLE ESTIMATE CALCULATION:');
-        print('  Logic: Skipped because recurring patterns exist for this subcategory.');
+        print(
+          '  Logic: Skipped because recurring patterns exist for this subcategory.',
+        );
       }
-      
+
       print('\n========================================');
-      print('FINAL ESTIMATE: ${(recurringTotal + variableEst).toStringAsFixed(2)}');
+      print(
+        'FINAL ESTIMATE: ${(recurringTotal + variableEst).toStringAsFixed(2)}',
+      );
       print('========================================');
     }
   });

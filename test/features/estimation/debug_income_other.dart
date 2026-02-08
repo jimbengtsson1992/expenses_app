@@ -15,7 +15,7 @@ class FakeUserRulesRepository extends Fake implements UserRulesRepository {
 
   @override
   (Category, Subcategory)? getRule(String description) => null;
-  
+
   @override
   bool isExcluded(String id) => false;
 }
@@ -24,9 +24,14 @@ void main() async {
   test('Analyze Income/Other Transactions', () async {
     final categorizationService = CategorizationService();
     final userRulesRepository = FakeUserRulesRepository();
-    final parser = TransactionCsvParser(categorizationService, userRulesRepository);
-    
-    final dataDir = Directory('/Users/jimbengtsson/Documents/src/expenses/assets/data');
+    final parser = TransactionCsvParser(
+      categorizationService,
+      userRulesRepository,
+    );
+
+    final dataDir = Directory(
+      '/Users/jimbengtsson/Documents/src/expenses/assets/data',
+    );
     if (!await dataDir.exists()) {
       print('Data directory not found!');
       return;
@@ -39,12 +44,17 @@ void main() async {
       if (file is File && file.path.endsWith('.csv')) {
         final content = await file.readAsString();
         final filename = file.uri.pathSegments.last;
-        
+
         try {
-          if (filename.contains('transactions')) { // Amex/SAS usually starts with 'transactions-'
-            allTransactions.addAll(parser.parseSasAmexCsv(content, filename, idRegistry));
+          if (filename.contains('transactions')) {
+            // Amex/SAS usually starts with 'transactions-'
+            allTransactions.addAll(
+              parser.parseSasAmexCsv(content, filename, idRegistry),
+            );
           } else {
-            allTransactions.addAll(parser.parseNordeaCsv(content, filename, idRegistry));
+            allTransactions.addAll(
+              parser.parseNordeaCsv(content, filename, idRegistry),
+            );
           }
         } catch (e) {
           print('Error parsing $filename: $e');
@@ -53,12 +63,15 @@ void main() async {
     }
 
     // Filter for Income / Other
-    final incomeOther = allTransactions.where((t) => 
-      t.type == TransactionType.income && 
-      t.category == Category.income && 
-      t.subcategory == Subcategory.other &&
-      !t.excludeFromOverview
-    ).toList();
+    final incomeOther = allTransactions
+        .where(
+          (t) =>
+              t.type == TransactionType.income &&
+              t.category == Category.income &&
+              t.subcategory == Subcategory.other &&
+              !t.excludeFromOverview,
+        )
+        .toList();
 
     // Group by month
     final monthlyTotals = <String, double>{};
@@ -66,7 +79,11 @@ void main() async {
 
     for (final t in incomeOther) {
       final key = '${t.date.year}-${t.date.month.toString().padLeft(2, '0')}';
-      monthlyTotals.update(key, (v) => v + t.amount.abs(), ifAbsent: () => t.amount.abs());
+      monthlyTotals.update(
+        key,
+        (v) => v + t.amount.abs(),
+        ifAbsent: () => t.amount.abs(),
+      );
       monthlyTransactions.putIfAbsent(key, () => []);
       monthlyTransactions[key]!.add(t);
     }
@@ -75,13 +92,15 @@ void main() async {
     final sortedKeys = monthlyTotals.keys.toList()..sort();
     for (final key in sortedKeys) {
       print('$key: ${monthlyTotals[key]!.toStringAsFixed(2)}');
-      
+
       // Print transactions for that month
       print('  Transactions:');
       final txs = monthlyTransactions[key]!;
       txs.sort((a, b) => (b.amount.abs() as double).compareTo(a.amount.abs()));
       for (final t in txs) {
-        print('    ${t.date.toString().substring(0, 10)}: ${t.amount} - ${t.description}');
+        print(
+          '    ${t.date.toString().substring(0, 10)}: ${t.amount} - ${t.description}',
+        );
       }
     }
   });

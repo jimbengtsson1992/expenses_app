@@ -250,7 +250,7 @@ void main() {
         Category.other,
         Subcategory.other,
       );
-      
+
       // New Rules 2026-02-03 (Request)
       expectCategory(
         service,

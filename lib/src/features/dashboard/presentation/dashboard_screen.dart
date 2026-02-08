@@ -61,11 +61,16 @@ class DashboardScreen extends ConsumerWidget {
       ),
       body: expensesAsync.when(
         data: (expenses) {
-          final estimateAsync = ref.watch(monthlyEstimateProvider(currentPeriod));
+          final estimateAsync = ref.watch(
+            monthlyEstimateProvider(currentPeriod),
+          );
           return estimateAsync.when(
-            data: (estimate) => _DashboardContent(expenses: expenses, estimate: estimate),
-            loading: () => _DashboardContent(expenses: expenses, estimate: null),
-            error: (_, __) => _DashboardContent(expenses: expenses, estimate: null),
+            data: (estimate) =>
+                _DashboardContent(expenses: expenses, estimate: estimate),
+            loading: () =>
+                _DashboardContent(expenses: expenses, estimate: null),
+            error: (_, __) =>
+                _DashboardContent(expenses: expenses, estimate: null),
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -147,11 +152,7 @@ class _DashboardContent extends ConsumerWidget {
           (val) => val + e.amount.abs(),
           ifAbsent: () => e.amount.abs(),
         );
-        categoryCounts.update(
-          e.category,
-          (val) => val + 1,
-          ifAbsent: () => 1,
-        );
+        categoryCounts.update(e.category, (val) => val + 1, ifAbsent: () => 1);
 
         if (!expenseSubcategoryTotals.containsKey(e.category)) {
           expenseSubcategoryTotals[e.category] = {};
@@ -182,13 +183,13 @@ class _DashboardContent extends ConsumerWidget {
         final cat = entry.key;
         final catEstimate = entry.value;
         // Add category with 0 actual if it has an estimated value but isn't in actuals
-        if (cat != Category.income && 
-            !categoryTotals.containsKey(cat) && 
+        if (cat != Category.income &&
+            !categoryTotals.containsKey(cat) &&
             catEstimate.estimated > 0) {
           categoryTotals[cat] = 0;
         }
-        if (cat == Category.income && 
-            !incomeCategoryTotals.containsKey(cat) && 
+        if (cat == Category.income &&
+            !incomeCategoryTotals.containsKey(cat) &&
             catEstimate.estimated > 0) {
           incomeCategoryTotals[cat] = 0;
         }
@@ -253,13 +254,15 @@ class _DashboardContent extends ConsumerWidget {
                                     color: Colors.greenAccent,
                                   ),
                             ),
-                            if (estimate != null) ...[                            
+                            if (estimate != null) ...[
                               const SizedBox(height: 4),
                               Text(
                                 '→ ${currency.format(estimate!.estimatedIncome)}',
                                 style: Theme.of(context).textTheme.bodySmall
                                     ?.copyWith(
-                                      color: Colors.greenAccent.withValues(alpha: 0.9),
+                                      color: Colors.greenAccent.withValues(
+                                        alpha: 0.9,
+                                      ),
                                       fontStyle: FontStyle.italic,
                                     ),
                               ),
@@ -288,7 +291,7 @@ class _DashboardContent extends ConsumerWidget {
                               style: Theme.of(context).textTheme.headlineSmall
                                   ?.copyWith(fontWeight: FontWeight.bold),
                             ),
-                            if (estimate != null) ...[                            
+                            if (estimate != null) ...[
                               const SizedBox(height: 4),
                               Text(
                                 '→ ${currency.format(estimate!.estimatedExpenses)}',
@@ -355,7 +358,9 @@ class _DashboardContent extends ConsumerWidget {
           final cat = e.key;
           final amount = e.value;
           final percentage = totalExpenses > 0 ? amount / totalExpenses : 0.0;
-          final subs = Map<Subcategory, double>.from(expenseSubcategoryTotals[cat] ?? {});
+          final subs = Map<Subcategory, double>.from(
+            expenseSubcategoryTotals[cat] ?? {},
+          );
           final count = categoryCounts[cat] ?? 0;
 
           // Include subcategories from estimates that have no actual transactions
@@ -363,7 +368,8 @@ class _DashboardContent extends ConsumerWidget {
             final catEstimate = estimate!.categoryEstimates[cat];
             if (catEstimate != null) {
               for (final subEntry in catEstimate.subcategoryEstimates.entries) {
-                if (!subs.containsKey(subEntry.key) && subEntry.value.estimated > 0) {
+                if (!subs.containsKey(subEntry.key) &&
+                    subEntry.value.estimated > 0) {
                   subs[subEntry.key] = 0; // Add with 0 actual
                 }
               }
@@ -373,8 +379,18 @@ class _DashboardContent extends ConsumerWidget {
           // Sort subs by estimated value if available, otherwise actual
           final sortedSubs = subs.entries.toList()
             ..sort((a, b) {
-              final aEst = estimate?.categoryEstimates[cat]?.subcategoryEstimates[a.key]?.estimated ?? a.value;
-              final bEst = estimate?.categoryEstimates[cat]?.subcategoryEstimates[b.key]?.estimated ?? b.value;
+              final aEst =
+                  estimate
+                      ?.categoryEstimates[cat]
+                      ?.subcategoryEstimates[a.key]
+                      ?.estimated ??
+                  a.value;
+              final bEst =
+                  estimate
+                      ?.categoryEstimates[cat]
+                      ?.subcategoryEstimates[b.key]
+                      ?.estimated ??
+                  b.value;
               return bEst.compareTo(aEst);
             });
 
@@ -423,7 +439,8 @@ class _DashboardContent extends ConsumerWidget {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           if (estimate?.categoryEstimates[cat] != null &&
-                              estimate!.categoryEstimates[cat]!.estimated > amount)
+                              estimate!.categoryEstimates[cat]!.estimated >
+                                  amount)
                             Text(
                               '→ ${currency.format(estimate!.categoryEstimates[cat]!.estimated)}',
                               style: TextStyle(
@@ -459,7 +476,9 @@ class _DashboardContent extends ConsumerWidget {
                             final subName = subData.displayName;
                             final subCount =
                                 expenseSubcategoryCounts[cat]?[subData] ?? 0;
-                            final subEstimate = estimate?.categoryEstimates[cat]?.subcategoryEstimates[subData];
+                            final subEstimate = estimate
+                                ?.categoryEstimates[cat]
+                                ?.subcategoryEstimates[subData];
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
@@ -493,7 +512,9 @@ class _DashboardContent extends ConsumerWidget {
                                           '→ ${currency.format(subEstimate.estimated)}',
                                           style: TextStyle(
                                             fontSize: 11,
-                                            color: Colors.grey.withValues(alpha: 0.9),
+                                            color: Colors.grey.withValues(
+                                              alpha: 0.9,
+                                            ),
                                             fontStyle: FontStyle.italic,
                                           ),
                                         ),
@@ -531,15 +552,19 @@ class _DashboardContent extends ConsumerWidget {
             final cat = e.key;
             final amount = e.value;
             final percentage = totalIncome > 0 ? amount / totalIncome : 0.0;
-            final subs = Map<Subcategory, double>.from(incomeSubcategoryTotals[cat] ?? {});
+            final subs = Map<Subcategory, double>.from(
+              incomeSubcategoryTotals[cat] ?? {},
+            );
             final count = incomeCategoryCounts[cat] ?? 0;
 
             // Include subcategories from estimates that have no actual transactions
             if (estimate != null) {
               final catEstimate = estimate!.categoryEstimates[cat];
               if (catEstimate != null) {
-                for (final subEntry in catEstimate.subcategoryEstimates.entries) {
-                  if (!subs.containsKey(subEntry.key) && subEntry.value.estimated > 0) {
+                for (final subEntry
+                    in catEstimate.subcategoryEstimates.entries) {
+                  if (!subs.containsKey(subEntry.key) &&
+                      subEntry.value.estimated > 0) {
                     subs[subEntry.key] = 0; // Add with 0 actual
                   }
                 }
@@ -549,8 +574,18 @@ class _DashboardContent extends ConsumerWidget {
             // Sort subs by estimated value if available, otherwise actual
             final sortedSubs = subs.entries.toList()
               ..sort((a, b) {
-                final aEst = estimate?.categoryEstimates[cat]?.subcategoryEstimates[a.key]?.estimated ?? a.value;
-                final bEst = estimate?.categoryEstimates[cat]?.subcategoryEstimates[b.key]?.estimated ?? b.value;
+                final aEst =
+                    estimate
+                        ?.categoryEstimates[cat]
+                        ?.subcategoryEstimates[a.key]
+                        ?.estimated ??
+                    a.value;
+                final bEst =
+                    estimate
+                        ?.categoryEstimates[cat]
+                        ?.subcategoryEstimates[b.key]
+                        ?.estimated ??
+                    b.value;
                 return bEst.compareTo(aEst);
               });
 
@@ -595,15 +630,20 @@ class _DashboardContent extends ConsumerWidget {
                           children: [
                             Text(
                               currency.format(amount),
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             if (estimate?.categoryEstimates[cat] != null &&
-                                estimate!.categoryEstimates[cat]!.estimated > amount)
+                                estimate!.categoryEstimates[cat]!.estimated >
+                                    amount)
                               Text(
                                 '→ ${currency.format(estimate!.categoryEstimates[cat]!.estimated)}',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: Colors.greenAccent.withValues(alpha: 0.9),
+                                  color: Colors.greenAccent.withValues(
+                                    alpha: 0.9,
+                                  ),
                                   fontStyle: FontStyle.italic,
                                 ),
                               ),
@@ -634,7 +674,9 @@ class _DashboardContent extends ConsumerWidget {
                               final subName = subData.displayName;
                               final subCount =
                                   incomeSubcategoryCounts[cat]?[subData] ?? 0;
-                              final subEstimate = estimate?.categoryEstimates[cat]?.subcategoryEstimates[subData];
+                              final subEstimate = estimate
+                                  ?.categoryEstimates[cat]
+                                  ?.subcategoryEstimates[subData];
 
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -655,7 +697,8 @@ class _DashboardContent extends ConsumerWidget {
                                       ),
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: [
                                         Text(
                                           currency.format(subAmount),
@@ -670,7 +713,8 @@ class _DashboardContent extends ConsumerWidget {
                                             '→ ${currency.format(subEstimate.estimated)}',
                                             style: TextStyle(
                                               fontSize: 11,
-                                              color: Colors.greenAccent.withValues(alpha: 0.9),
+                                              color: Colors.greenAccent
+                                                  .withValues(alpha: 0.9),
                                               fontStyle: FontStyle.italic,
                                             ),
                                           ),

@@ -92,8 +92,6 @@ void main() {
       );
     });
 
-
-
     test('Travel', () {
       expectCategory(
         service,

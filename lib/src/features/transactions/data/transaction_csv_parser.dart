@@ -93,8 +93,6 @@ class TransactionCsvParser {
       // Filter SAS Payments (to avoid dupe)
       if (description.contains('Betalning BG 595-4300 SAS EUROBONUS')) continue;
 
-
-
       // Categorize Priority:
       // 1. Specific Override (ID based)
       // 2. User Rule (Description based)

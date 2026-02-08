@@ -718,7 +718,7 @@ void main() {
         Category.food,
         Subcategory.restaurant,
       );
-      
+
       // Overrides
       expectCategory(
         service,

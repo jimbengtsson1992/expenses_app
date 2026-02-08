@@ -12,22 +12,23 @@ void main() {
       const analytics = ExpenseAnalytics(
         monthSummaries: [
           MonthSummary(
-              year: 2024,
-              month: 1,
-              income: 25000,
-              expenses: 1000,
-              categoryBreakdown: {Category.food: 500, Category.transport: 500},
-              subcategoryBreakdown: {
-                Subcategory.coffee: 500,
-                Subcategory.taxi: 500
-              })
+            year: 2024,
+            month: 1,
+            income: 25000,
+            expenses: 1000,
+            categoryBreakdown: {Category.food: 500, Category.transport: 500},
+            subcategoryBreakdown: {
+              Subcategory.coffee: 500,
+              Subcategory.taxi: 500,
+            },
+          ),
         ],
         categoryTotals: {},
         totalIncome: 25000,
         totalExpenses: 1000,
         compactTransactions: [
           '2024-01-15;500;Mat & Dryck;Kaffe & Fika;Espresso House',
-          '2024-01-16;500;Transport;Taxi & Voi;Uber'
+          '2024-01-16;500;Transport;Taxi & Voi;Uber',
         ],
       );
 
@@ -38,10 +39,16 @@ void main() {
       expect(prompt, contains('* Taxi & Voi: 500 kr'));
 
       // Verify CSV Header
-      expect(prompt, contains('Datum;Belopp;Kategori;Underkategori;Beskrivning'));
+      expect(
+        prompt,
+        contains('Datum;Belopp;Kategori;Underkategori;Beskrivning'),
+      );
 
       // Verify CSV Content
-      expect(prompt, contains('2024-01-15;500;Mat & Dryck;Kaffe & Fika;Espresso House'));
+      expect(
+        prompt,
+        contains('2024-01-15;500;Mat & Dryck;Kaffe & Fika;Espresso House'),
+      );
       expect(prompt, contains('2024-01-16;500;Transport;Taxi & Voi;Uber'));
     });
   });
@@ -83,11 +90,17 @@ void main() {
       // Verify Compact Transactions
       expect(analytics.compactTransactions.length, 2);
       // Format: YYYY-MM-DD;Amount;Category;Subcategory;Description
-      // Note: Amount is absolute value or signed? 
-      // In service: amount = t.amount.round(). 
+      // Note: Amount is absolute value or signed?
+      // In service: amount = t.amount.round().
       // Since amount is -500, round() is -500.
-      expect(analytics.compactTransactions[0], '2024-1-15;-500;Mat & Dryck;Kaffe & Fika;Espresso House');
-      expect(analytics.compactTransactions[1], '2024-1-16;-500;Transport;Taxi & Voi;Uber');
+      expect(
+        analytics.compactTransactions[0],
+        '2024-1-15;-500;Mat & Dryck;Kaffe & Fika;Espresso House',
+      );
+      expect(
+        analytics.compactTransactions[1],
+        '2024-1-16;-500;Transport;Taxi & Voi;Uber',
+      );
     });
   });
 }

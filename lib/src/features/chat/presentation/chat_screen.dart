@@ -15,10 +15,7 @@ class ChatScreen extends ConsumerWidget {
     final excludedAnalyticsAsync = ref.watch(excludedExpenseAnalyticsProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fråga om utgifter'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Fråga om utgifter'), centerTitle: true),
       body: analyticsAsync.when(
         data: (analytics) => excludedAnalyticsAsync.when(
           data: (excludedAnalytics) => _ChatView(
@@ -46,10 +43,7 @@ class ChatScreen extends ConsumerWidget {
 }
 
 class _ChatView extends StatefulWidget {
-  const _ChatView({
-    required this.analytics,
-    required this.excludedAnalytics,
-  });
+  const _ChatView({required this.analytics, required this.excludedAnalytics});
   final ExpenseAnalytics analytics;
   final ExpenseAnalytics excludedAnalytics;
 
@@ -112,9 +106,7 @@ REGLER:
             color: colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(18),
           ),
-          textStyle: TextStyle(
-            color: colorScheme.onPrimaryContainer,
-          ),
+          textStyle: TextStyle(color: colorScheme.onPrimaryContainer),
         ),
         // AI message: surface container (grey) with on-surface text
         llmMessageStyle: LlmMessageStyle(
@@ -122,9 +114,9 @@ REGLER:
             color: colorScheme.surfaceContainerHigh,
             borderRadius: BorderRadius.circular(18),
           ),
-          markdownStyle: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-            p: TextStyle(color: colorScheme.onSurface),
-          ),
+          markdownStyle: MarkdownStyleSheet.fromTheme(
+            Theme.of(context),
+          ).copyWith(p: TextStyle(color: colorScheme.onSurface)),
           iconColor: colorScheme.onSurfaceVariant,
           iconDecoration: BoxDecoration(
             color: colorScheme.surfaceContainerHighest,

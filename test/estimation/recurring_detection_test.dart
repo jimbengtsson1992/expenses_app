@@ -59,46 +59,47 @@ void main() {
       expect(patterns.first.occurrenceCount, 3);
     });
 
-    test('detects multiple occurrences per month based on frequency for known patterns', () {
-      // 2 times per month, matching 'lön' pattern
-      final history = [
-        // Month 1
-        createTestTransaction(
-          description: 'LÖN UTBETALNING',
-          amount: 25000.0,
-          date: DateTime(2025, 1, 15),
+    test(
+      'detects multiple occurrences per month based on frequency for known patterns',
+      () {
+        // 2 times per month, matching 'lön' pattern
+        final history = [
+          // Month 1
+          createTestTransaction(
+            description: 'LÖN UTBETALNING',
+            amount: 25000.0,
+            date: DateTime(2025, 1, 15),
+          ),
+          createTestTransaction(
+            description: 'LÖN UTBETALNING',
+            amount: 25000.0,
+            date: DateTime(2025, 1, 25), // Second payment
+          ),
+          // Month 2
+          createTestTransaction(
+            description: 'LÖN UTBETALNING',
+            amount: 25000.0,
+            date: DateTime(2025, 2, 15),
+          ),
+          createTestTransaction(
+            description: 'LÖN UTBETALNING',
+            amount: 25000.0,
+            date: DateTime(2025, 2, 25), // Second payment
+          ),
+        ];
 
-        ),
-        createTestTransaction(
-          description: 'LÖN UTBETALNING',
-          amount: 25000.0,
-          date: DateTime(2025, 1, 25), // Second payment
+        final patterns = service.detectRecurringPatterns(history);
 
-        ),
-        // Month 2
-        createTestTransaction(
-          description: 'LÖN UTBETALNING',
-          amount: 25000.0,
-          date: DateTime(2025, 2, 15),
+        // Should return 2 recurring statuses for lön
+        final salaryPatterns = patterns
+            .where((p) => p.descriptionPattern == 'lön')
+            .toList();
 
-        ),
-        createTestTransaction(
-          description: 'LÖN UTBETALNING',
-          amount: 25000.0,
-          date: DateTime(2025, 2, 25), // Second payment
-
-        ),
-      ];
-
-      final patterns = service.detectRecurringPatterns(history);
-
-      // Should return 2 recurring statuses for lön
-      final salaryPatterns = patterns.where((p) => p.descriptionPattern == 'lön').toList();
-      
-      expect(salaryPatterns.length, 2);
-      expect(salaryPatterns[0].averageAmount, 25000.0);
-      expect(salaryPatterns[1].averageAmount, 25000.0);
-    });
+        expect(salaryPatterns.length, 2);
+        expect(salaryPatterns[0].averageAmount, 25000.0);
+        expect(salaryPatterns[1].averageAmount, 25000.0);
+      },
+    );
 
     test('does not detect one-time transactions', () {
       final history = [
@@ -212,30 +213,33 @@ void main() {
       expect(patterns, isEmpty); // Should NOT be detected as recurring
     });
 
-    test('does not detect transactions only in a single month as recurring', () {
-      // Multiple transactions in the same month on different days
-      final history = [
-        createTestTransaction(
-          description: 'COFFEE SHOP',
-          amount: -35.0,
-          date: DateTime(2025, 4, 1),
-        ),
-        createTestTransaction(
-          description: 'COFFEE SHOP',
-          amount: -36.0,
-          date: DateTime(2025, 4, 15),
-        ),
-        createTestTransaction(
-          description: 'COFFEE SHOP',
-          amount: -37.0,
-          date: DateTime(2025, 4, 28),
-        ),
-      ];
+    test(
+      'does not detect transactions only in a single month as recurring',
+      () {
+        // Multiple transactions in the same month on different days
+        final history = [
+          createTestTransaction(
+            description: 'COFFEE SHOP',
+            amount: -35.0,
+            date: DateTime(2025, 4, 1),
+          ),
+          createTestTransaction(
+            description: 'COFFEE SHOP',
+            amount: -36.0,
+            date: DateTime(2025, 4, 15),
+          ),
+          createTestTransaction(
+            description: 'COFFEE SHOP',
+            amount: -37.0,
+            date: DateTime(2025, 4, 28),
+          ),
+        ];
 
-      final patterns = service.detectRecurringPatterns(history);
+        final patterns = service.detectRecurringPatterns(history);
 
-      expect(patterns, isEmpty); // Should NOT be detected as recurring
-    });
+        expect(patterns, isEmpty); // Should NOT be detected as recurring
+      },
+    );
 
     test('does not auto-detect recurring with only 2 occurrences', () {
       // Only 2 transactions across 2 months - should NOT be detected
@@ -259,8 +263,12 @@ void main() {
       final banhMiPatterns = patterns.where(
         (p) => p.descriptionPattern.toUpperCase().contains('BANH MI'),
       );
-      expect(banhMiPatterns, isEmpty,
-          reason: 'Transactions with only 2 occurrences should not be auto-detected as recurring');
+      expect(
+        banhMiPatterns,
+        isEmpty,
+        reason:
+            'Transactions with only 2 occurrences should not be auto-detected as recurring',
+      );
     });
 
     test('auto-detects recurring with 3+ occurrences across multiple months', () {
@@ -288,85 +296,107 @@ void main() {
       final subscriptionPatterns = patterns.where(
         (p) => p.descriptionPattern.toUpperCase().contains('SUBSCRIPTION'),
       );
-      expect(subscriptionPatterns.length, 1,
-          reason: 'Transactions with 3+ occurrences across multiple months should be detected as recurring');
+      expect(
+        subscriptionPatterns.length,
+        1,
+        reason:
+            'Transactions with 3+ occurrences across multiple months should be detected as recurring',
+      );
       expect(subscriptionPatterns.first.occurrenceCount, 3);
       expect(subscriptionPatterns.first.averageAmount, 99.0);
     });
 
-    test('handles both known recurring and auto-detected patterns in same category/subcategory', () {
-      // Test that:
-      // 1. Known recurring patterns (e.g., 'spotify') are detected via knownRecurringPatterns
-      // 2. Auto-detected patterns (e.g., 'CUSTOM STREAMING SERVICE') are also detected
-      // 3. Both coexist without duplication or interference
+    test(
+      'handles both known recurring and auto-detected patterns in same category/subcategory',
+      () {
+        // Test that:
+        // 1. Known recurring patterns (e.g., 'spotify') are detected via knownRecurringPatterns
+        // 2. Auto-detected patterns (e.g., 'CUSTOM STREAMING SERVICE') are also detected
+        // 3. Both coexist without duplication or interference
 
-      final history = [
-        // Known recurring: Spotify (matches 'spotify' pattern in knownRecurringPatterns)
-        createTestTransaction(
-          description: 'SPOTIFY P3E8032732',
-          amount: -129.0,
-          date: DateTime(2025, 1, 18),
-          category: Category.entertainment,
-        ),
-        createTestTransaction(
-          description: 'SPOTIFY P3D89E7989',
-          amount: -129.0,
-          date: DateTime(2025, 2, 18),
-          category: Category.entertainment,
-        ),
-        createTestTransaction(
-          description: 'SPOTIFY P3C8515FE4',
-          amount: -129.0,
-          date: DateTime(2025, 3, 18),
-          category: Category.entertainment,
-        ),
+        final history = [
+          // Known recurring: Spotify (matches 'spotify' pattern in knownRecurringPatterns)
+          createTestTransaction(
+            description: 'SPOTIFY P3E8032732',
+            amount: -129.0,
+            date: DateTime(2025, 1, 18),
+            category: Category.entertainment,
+          ),
+          createTestTransaction(
+            description: 'SPOTIFY P3D89E7989',
+            amount: -129.0,
+            date: DateTime(2025, 2, 18),
+            category: Category.entertainment,
+          ),
+          createTestTransaction(
+            description: 'SPOTIFY P3C8515FE4',
+            amount: -129.0,
+            date: DateTime(2025, 3, 18),
+            category: Category.entertainment,
+          ),
 
-        // Auto-detected: A custom streaming service (not in knownRecurringPatterns)
-        // Same description, consistent amounts, should be auto-detected
-        createTestTransaction(
-          description: 'CUSTOM STREAMING SVC',
-          amount: -79.0,
-          date: DateTime(2025, 1, 5),
-          category: Category.entertainment,
-        ),
-        createTestTransaction(
-          description: 'CUSTOM STREAMING SVC',
-          amount: -79.0,
-          date: DateTime(2025, 2, 5),
-          category: Category.entertainment,
-        ),
-        createTestTransaction(
-          description: 'CUSTOM STREAMING SVC',
-          amount: -79.0,
-          date: DateTime(2025, 3, 5),
-          category: Category.entertainment,
-        ),
-      ];
+          // Auto-detected: A custom streaming service (not in knownRecurringPatterns)
+          // Same description, consistent amounts, should be auto-detected
+          createTestTransaction(
+            description: 'CUSTOM STREAMING SVC',
+            amount: -79.0,
+            date: DateTime(2025, 1, 5),
+            category: Category.entertainment,
+          ),
+          createTestTransaction(
+            description: 'CUSTOM STREAMING SVC',
+            amount: -79.0,
+            date: DateTime(2025, 2, 5),
+            category: Category.entertainment,
+          ),
+          createTestTransaction(
+            description: 'CUSTOM STREAMING SVC',
+            amount: -79.0,
+            date: DateTime(2025, 3, 5),
+            category: Category.entertainment,
+          ),
+        ];
 
-      final patterns = service.detectRecurringPatterns(history);
+        final patterns = service.detectRecurringPatterns(history);
 
-      // Find Spotify pattern (known recurring)
-      final spotifyPatterns = patterns.where(
-        (p) => p.descriptionPattern.toLowerCase().contains('spotify'),
-      ).toList();
-      expect(spotifyPatterns.length, 1,
-          reason: 'Spotify should be detected via known recurring patterns');
-      expect(spotifyPatterns.first.averageAmount, 129.0);
+        // Find Spotify pattern (known recurring)
+        final spotifyPatterns = patterns
+            .where(
+              (p) => p.descriptionPattern.toLowerCase().contains('spotify'),
+            )
+            .toList();
+        expect(
+          spotifyPatterns.length,
+          1,
+          reason: 'Spotify should be detected via known recurring patterns',
+        );
+        expect(spotifyPatterns.first.averageAmount, 129.0);
 
-      // Find custom streaming pattern (auto-detected)
-      final customPatterns = patterns.where(
-        (p) => p.descriptionPattern.toUpperCase().contains('CUSTOM STREAMING'),
-      ).toList();
-      expect(customPatterns.length, 1,
-          reason: 'Custom streaming service should be auto-detected');
-      expect(customPatterns.first.averageAmount, 79.0);
+        // Find custom streaming pattern (auto-detected)
+        final customPatterns = patterns
+            .where(
+              (p) => p.descriptionPattern.toUpperCase().contains(
+                'CUSTOM STREAMING',
+              ),
+            )
+            .toList();
+        expect(
+          customPatterns.length,
+          1,
+          reason: 'Custom streaming service should be auto-detected',
+        );
+        expect(customPatterns.first.averageAmount, 79.0);
 
-      // Both patterns should be present (total >= 2 for entertainment)
-      final entertainmentPatterns = patterns.where(
-        (p) => p.category == Category.entertainment,
-      ).toList();
-      expect(entertainmentPatterns.length, greaterThanOrEqualTo(2),
-          reason: 'Both known and auto-detected patterns should coexist');
-    });
+        // Both patterns should be present (total >= 2 for entertainment)
+        final entertainmentPatterns = patterns
+            .where((p) => p.category == Category.entertainment)
+            .toList();
+        expect(
+          entertainmentPatterns.length,
+          greaterThanOrEqualTo(2),
+          reason: 'Both known and auto-detected patterns should coexist',
+        );
+      },
+    );
   });
 }

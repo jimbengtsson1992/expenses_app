@@ -14,9 +14,11 @@ Future<ExpenseAnalytics> expenseAnalytics(Ref ref) async {
   final transactions = await ref.watch(expensesListProvider.future);
   // Filter out excluded transactions and those excluded from estimates
   final filtered = transactions
-      .where((t) =>
-          !t.excludeFromOverview &&
-          !isExcludedFromEstimates(t.category, t.subcategory))
+      .where(
+        (t) =>
+            !t.excludeFromOverview &&
+            !isExcludedFromEstimates(t.category, t.subcategory),
+      )
       .toList();
   return ExpenseAnalyticsService().analyze(filtered);
 }
@@ -28,9 +30,11 @@ Future<ExpenseAnalytics> excludedExpenseAnalytics(Ref ref) async {
   final transactions = await ref.watch(expensesListProvider.future);
   // Only include transactions that are excluded from estimates
   final excluded = transactions
-      .where((t) =>
-          !t.excludeFromOverview &&
-          isExcludedFromEstimates(t.category, t.subcategory))
+      .where(
+        (t) =>
+            !t.excludeFromOverview &&
+            isExcludedFromEstimates(t.category, t.subcategory),
+      )
       .toList();
   return ExpenseAnalyticsService().analyze(excluded);
 }
@@ -77,14 +81,16 @@ class ExpenseAnalyticsService {
         }
       }
 
-      monthSummaries.add(MonthSummary(
-        year: year,
-        month: month,
-        income: income,
-        expenses: expenses,
-        categoryBreakdown: categoryBreakdown,
-        subcategoryBreakdown: subcategoryBreakdown,
-      ));
+      monthSummaries.add(
+        MonthSummary(
+          year: year,
+          month: month,
+          income: income,
+          expenses: expenses,
+          categoryBreakdown: categoryBreakdown,
+          subcategoryBreakdown: subcategoryBreakdown,
+        ),
+      );
     }
 
     // Calculate totals

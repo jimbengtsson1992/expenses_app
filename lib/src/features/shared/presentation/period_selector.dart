@@ -23,18 +23,24 @@ class PeriodSelector extends ConsumerWidget {
               icon: const Icon(Icons.chevron_left),
             ),
             GestureDetector(
-                onTap: () => notifier.toggleMode(),
-                child: SizedBox(
+              onTap: () => notifier.toggleMode(),
+              child: SizedBox(
                 width: 120,
                 child: Column(
                   children: [
                     Text(
                       _formatPeriod(currentPeriod),
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                       textAlign: TextAlign.center,
                     ),
-                     Text(
-                      currentPeriod.map(month: (_) => 'Tryck för år', year: (_) => 'Tryck för månad'),
+                    Text(
+                      currentPeriod.map(
+                        month: (_) => 'Tryck för år',
+                        year: (_) => 'Tryck för månad',
+                      ),
                       style: const TextStyle(fontSize: 10, color: Colors.grey),
                       textAlign: TextAlign.center,
                     ),
@@ -54,7 +60,8 @@ class PeriodSelector extends ConsumerWidget {
 
   String _formatPeriod(DatePeriod period) {
     return period.map(
-      month: (p) => DateFormat('MMM yyyy', 'sv').format(DateTime(p.year, p.month)),
+      month: (p) =>
+          DateFormat('MMM yyyy', 'sv').format(DateTime(p.year, p.month)),
       year: (p) => p.year.toString(),
     );
   }

@@ -222,12 +222,20 @@ class TransactionDetailScreen extends ConsumerWidget {
                   ListTile(
                     title: const Text('Hantera visning (AI)'),
                     subtitle: Text(
-                      ref.watch(userRulesRepositoryProvider).value?.isExcluded(expense.id) ?? false
+                      ref
+                                  .watch(userRulesRepositoryProvider)
+                                  .value
+                                  ?.isExcluded(expense.id) ??
+                              false
                           ? 'Visas: NEJ (Tryck för att inkludera)'
                           : 'Visas: JA (Tryck för att exkludera)',
                     ),
                     trailing: Icon(
-                      ref.watch(userRulesRepositoryProvider).value?.isExcluded(expense.id) ?? false
+                      ref
+                                  .watch(userRulesRepositoryProvider)
+                                  .value
+                                  ?.isExcluded(expense.id) ??
+                              false
                           ? Icons.visibility
                           : Icons.visibility_off,
                     ),

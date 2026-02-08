@@ -46,9 +46,13 @@ void main() {
 
   group('calculateEstimate - Entry Point', () {
     test('returns null for DatePeriod.year', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       const period = DatePeriod.year(2025);
       final now = DateTime(2025, 6, 15);
@@ -59,9 +63,13 @@ void main() {
     });
 
     test('returns null for completed past month', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       const period = DatePeriod.month(2025, 1); // January 2025
       final now = DateTime(2025, 3, 15); // March 2025
@@ -72,9 +80,13 @@ void main() {
     });
 
     test('returns MonthlyEstimate for current month', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       const period = DatePeriod.month(2025, 3);
       final now = DateTime(2025, 3, 15);
@@ -85,9 +97,13 @@ void main() {
     });
 
     test('returns MonthlyEstimate for future month', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       const period = DatePeriod.month(2025, 6); // June 2025
       final now = DateTime(2025, 3, 15); // March 2025
@@ -100,29 +116,36 @@ void main() {
 
   group('Actuals Calculation', () {
     test('correctly sums income and expense transactions', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 2, 15);
       const period = DatePeriod.month(2025, 2);
 
       final transactions = [
         createTransaction(
-            date: DateTime(2025, 2, 5),
-            amount: 5000,
-            category: Category.income,
-            subcategory: Subcategory.salary),
+          date: DateTime(2025, 2, 5),
+          amount: 5000,
+          category: Category.income,
+          subcategory: Subcategory.salary,
+        ),
         createTransaction(
-            date: DateTime(2025, 2, 10),
-            amount: -200,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 2, 10),
+          amount: -200,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
         createTransaction(
-            date: DateTime(2025, 2, 12),
-            amount: -100,
-            category: Category.food,
-            subcategory: Subcategory.restaurant),
+          date: DateTime(2025, 2, 12),
+          amount: -100,
+          category: Category.food,
+          subcategory: Subcategory.restaurant,
+        ),
       ];
 
       final result = service.calculateEstimate(period, transactions, now);
@@ -133,25 +156,31 @@ void main() {
     });
 
     test('excludes transactions with excludeFromOverview = true', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 2, 15);
       const period = DatePeriod.month(2025, 2);
 
       final transactions = [
         createTransaction(
-            date: DateTime(2025, 2, 5),
-            amount: 5000,
-            category: Category.income,
-            subcategory: Subcategory.salary),
+          date: DateTime(2025, 2, 5),
+          amount: 5000,
+          category: Category.income,
+          subcategory: Subcategory.salary,
+        ),
         createTransaction(
-            date: DateTime(2025, 2, 10),
-            amount: -200,
-            category: Category.food,
-            subcategory: Subcategory.groceries,
-            excludeFromOverview: true), // Excluded
+          date: DateTime(2025, 2, 10),
+          amount: -200,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+          excludeFromOverview: true,
+        ), // Excluded
       ];
 
       final result = service.calculateEstimate(period, transactions, now);
@@ -161,58 +190,73 @@ void main() {
       expect(result.actualExpenses, 0); // The 200 expense is excluded
     });
 
-    test('excludes isExcludedFromEstimates categories (housing/kitchenRenovation)',
-        () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+    test(
+      'excludes isExcludedFromEstimates categories (housing/kitchenRenovation)',
+      () {
+        when(
+          mockRecurringService.detectRecurringPatterns(
+            any,
+            forYear: anyNamed('forYear'),
+            forMonth: anyNamed('forMonth'),
+          ),
+        ).thenReturn([]);
 
-      final now = DateTime(2025, 2, 15);
-      const period = DatePeriod.month(2025, 2);
+        final now = DateTime(2025, 2, 15);
+        const period = DatePeriod.month(2025, 2);
 
-      final transactions = [
-        createTransaction(
+        final transactions = [
+          createTransaction(
             date: DateTime(2025, 2, 5),
             amount: -50000,
             category: Category.housing,
-            subcategory: Subcategory.kitchenRenovation), // Excluded
-        createTransaction(
+            subcategory: Subcategory.kitchenRenovation,
+          ), // Excluded
+          createTransaction(
             date: DateTime(2025, 2, 10),
             amount: -200,
             category: Category.food,
-            subcategory: Subcategory.groceries),
-      ];
+            subcategory: Subcategory.groceries,
+          ),
+        ];
 
-      final result = service.calculateEstimate(period, transactions, now);
+        final result = service.calculateEstimate(period, transactions, now);
 
-      expect(result, isNotNull);
-      expect(result!.actualExpenses, 200); // Only groceries counted
-    });
+        expect(result, isNotNull);
+        expect(result!.actualExpenses, 200); // Only groceries counted
+      },
+    );
 
     test('populates categoryActuals correctly', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 2, 15);
       const period = DatePeriod.month(2025, 2);
 
       final transactions = [
         createTransaction(
-            date: DateTime(2025, 2, 5),
-            amount: -200,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 2, 5),
+          amount: -200,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
         createTransaction(
-            date: DateTime(2025, 2, 10),
-            amount: -100,
-            category: Category.food,
-            subcategory: Subcategory.restaurant),
+          date: DateTime(2025, 2, 10),
+          amount: -100,
+          category: Category.food,
+          subcategory: Subcategory.restaurant,
+        ),
         createTransaction(
-            date: DateTime(2025, 2, 12),
-            amount: -50,
-            category: Category.transport,
-            subcategory: Subcategory.publicTransport),
+          date: DateTime(2025, 2, 12),
+          amount: -50,
+          category: Category.transport,
+          subcategory: Subcategory.publicTransport,
+        ),
       ];
 
       final result = service.calculateEstimate(period, transactions, now);
@@ -235,20 +279,25 @@ void main() {
         occurrenceCount: 5,
       );
 
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: 2025, forMonth: 2))
-          .thenReturn([recurringPattern]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: 2025,
+          forMonth: 2,
+        ),
+      ).thenReturn([recurringPattern]);
 
       final now = DateTime(2025, 2, 20);
       const period = DatePeriod.month(2025, 2);
 
       final transactions = [
         createTransaction(
-            date: DateTime(2025, 2, 15),
-            amount: -179,
-            category: Category.entertainment,
-            subcategory: Subcategory.streaming,
-            description: 'Netflix Premium'),
+          date: DateTime(2025, 2, 15),
+          amount: -179,
+          category: Category.entertainment,
+          subcategory: Subcategory.streaming,
+          description: 'Netflix Premium',
+        ),
       ];
 
       final result = service.calculateEstimate(period, transactions, now);
@@ -269,9 +318,13 @@ void main() {
         occurrenceCount: 5,
       );
 
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: 2025, forMonth: 2))
-          .thenReturn([recurringPattern]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: 2025,
+          forMonth: 2,
+        ),
+      ).thenReturn([recurringPattern]);
 
       final now = DateTime(2025, 2, 10);
       const period = DatePeriod.month(2025, 2);
@@ -304,9 +357,13 @@ void main() {
         occurrenceCount: 12,
       );
 
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: 2025, forMonth: 2))
-          .thenReturn([incomeRecurring, expenseRecurring]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: 2025,
+          forMonth: 2,
+        ),
+      ).thenReturn([incomeRecurring, expenseRecurring]);
 
       final now = DateTime(2025, 2, 1);
       const period = DatePeriod.month(2025, 2);
@@ -339,9 +396,13 @@ void main() {
         occurrenceCount: 5,
       );
 
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: 2025, forMonth: 2))
-          .thenReturn([pattern1, pattern2]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: 2025,
+          forMonth: 2,
+        ),
+      ).thenReturn([pattern1, pattern2]);
 
       final now = DateTime(2025, 2, 25);
       const period = DatePeriod.month(2025, 2);
@@ -349,11 +410,12 @@ void main() {
       // Only one Coop transaction in current month
       final transactions = [
         createTransaction(
-            date: DateTime(2025, 2, 12),
-            amount: -500,
-            category: Category.food,
-            subcategory: Subcategory.groceries,
-            description: 'Coop Stora'),
+          date: DateTime(2025, 2, 12),
+          amount: -500,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+          description: 'Coop Stora',
+        ),
       ];
 
       final result = service.calculateEstimate(period, transactions, now);
@@ -366,9 +428,13 @@ void main() {
 
   group('Variable Spending Pro-rating', () {
     test('calculates correct remainingRatio for mid-month', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       // Feb 2025 has 28 days, day 14 = halfway
       final now = DateTime(2025, 2, 14);
@@ -377,10 +443,11 @@ void main() {
       // History: 1000 SEK/month food
       final history = [
         createTransaction(
-            date: DateTime(2025, 1, 15),
-            amount: -1000,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 1, 15),
+          amount: -1000,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
       ];
 
       final result = service.calculateEstimate(period, history, now);
@@ -404,9 +471,13 @@ void main() {
         occurrenceCount: 5,
       );
 
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: 2025, forMonth: 2))
-          .thenReturn([recurringPattern]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: 2025,
+          forMonth: 2,
+        ),
+      ).thenReturn([recurringPattern]);
 
       final now = DateTime(2025, 2, 1);
       const period = DatePeriod.month(2025, 2);
@@ -414,10 +485,11 @@ void main() {
       // History with entertainment spending
       final history = [
         createTransaction(
-            date: DateTime(2025, 1, 15),
-            amount: -179,
-            category: Category.entertainment,
-            subcategory: Subcategory.streaming),
+          date: DateTime(2025, 1, 15),
+          amount: -179,
+          category: Category.entertainment,
+          subcategory: Subcategory.streaming,
+        ),
       ];
 
       final result = service.calculateEstimate(period, history, now);
@@ -434,9 +506,13 @@ void main() {
 
   group('Historical Average Calculation', () {
     test('returns correct averages across multiple months', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 3, 15);
       const period = DatePeriod.month(2025, 3);
@@ -445,16 +521,18 @@ void main() {
       final history = [
         // January: 1000 food
         createTransaction(
-            date: DateTime(2025, 1, 15),
-            amount: -1000,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 1, 15),
+          amount: -1000,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
         // February: 2000 food
         createTransaction(
-            date: DateTime(2025, 2, 15),
-            amount: -2000,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 2, 15),
+          amount: -2000,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
       ];
 
       final result = service.calculateEstimate(period, history, now);
@@ -468,25 +546,31 @@ void main() {
     });
 
     test('excludes excludeFromOverview transactions from history', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 3, 15);
       const period = DatePeriod.month(2025, 3);
 
       final history = [
         createTransaction(
-            date: DateTime(2025, 1, 15),
-            amount: -1000,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 1, 15),
+          amount: -1000,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
         createTransaction(
-            date: DateTime(2025, 2, 15),
-            amount: -5000,
-            category: Category.food,
-            subcategory: Subcategory.groceries,
-            excludeFromOverview: true), // Excluded
+          date: DateTime(2025, 2, 15),
+          amount: -5000,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+          excludeFromOverview: true,
+        ), // Excluded
       ];
 
       final result = service.calculateEstimate(period, history, now);
@@ -502,9 +586,13 @@ void main() {
 
   group('Subcategory Estimates', () {
     test('calculates correct subcategory estimates', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 2, 14);
       const period = DatePeriod.month(2025, 2);
@@ -512,15 +600,17 @@ void main() {
       // History with multiple subcategories
       final history = [
         createTransaction(
-            date: DateTime(2025, 1, 10),
-            amount: -600,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 1, 10),
+          amount: -600,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
         createTransaction(
-            date: DateTime(2025, 1, 20),
-            amount: -400,
-            category: Category.food,
-            subcategory: Subcategory.restaurant),
+          date: DateTime(2025, 1, 20),
+          amount: -400,
+          category: Category.food,
+          subcategory: Subcategory.restaurant,
+        ),
       ];
 
       final result = service.calculateEstimate(period, history, now);
@@ -548,9 +638,13 @@ void main() {
 
   group('Edge Cases', () {
     test('handles empty transaction history', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 2, 15);
       const period = DatePeriod.month(2025, 2);
@@ -565,9 +659,13 @@ void main() {
     });
 
     test('handles first day of month correctly', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 2, 1);
       const period = DatePeriod.month(2025, 2);
@@ -575,10 +673,11 @@ void main() {
       // History from previous month
       final history = [
         createTransaction(
-            date: DateTime(2025, 1, 15),
-            amount: -1000,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 1, 15),
+          amount: -1000,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
       ];
 
       final result = service.calculateEstimate(period, history, now);
@@ -592,9 +691,13 @@ void main() {
     });
 
     test('handles last day of month correctly', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 2, 28);
       const period = DatePeriod.month(2025, 2);
@@ -602,10 +705,11 @@ void main() {
       // Some actuals in current month
       final transactions = [
         createTransaction(
-            date: DateTime(2025, 2, 15),
-            amount: -500,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2025, 2, 15),
+          amount: -500,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
       ];
 
       final result = service.calculateEstimate(period, transactions, now);
@@ -621,9 +725,13 @@ void main() {
     });
 
     test('handles 31-day month correctly', () {
-      when(mockRecurringService.detectRecurringPatterns(any,
-              forYear: anyNamed('forYear'), forMonth: anyNamed('forMonth')))
-          .thenReturn([]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
 
       final now = DateTime(2025, 1, 16); // Mid-January (31 days)
       const period = DatePeriod.month(2025, 1);
@@ -631,10 +739,11 @@ void main() {
       // History from December
       final history = [
         createTransaction(
-            date: DateTime(2024, 12, 15),
-            amount: -3100,
-            category: Category.food,
-            subcategory: Subcategory.groceries),
+          date: DateTime(2024, 12, 15),
+          amount: -3100,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
       ];
 
       final result = service.calculateEstimate(period, history, now);
@@ -650,60 +759,75 @@ void main() {
 
   // Existing test - kept for backward compatibility
   test(
-      'Category estimate should equal sum of subcategory estimates when mixed recurring/variable exists',
-      () {
-    final now = DateTime(2025, 2, 15);
-    const period = DatePeriod.month(2025, 2);
+    'Category estimate should equal sum of subcategory estimates when mixed recurring/variable exists',
+    () {
+      final now = DateTime(2025, 2, 15);
+      const period = DatePeriod.month(2025, 2);
 
-    final history = [
-      createTransaction(
+      final history = [
+        createTransaction(
           date: DateTime(2025, 1, 15),
           amount: -1000,
           category: Category.food,
           subcategory: Subcategory.restaurant,
-          description: 'Tasty Burger'),
-    ];
+          description: 'Tasty Burger',
+        ),
+      ];
 
-    final currentMonthTrans = <Transaction>[];
-    final allTransactions = [...history, ...currentMonthTrans];
+      final currentMonthTrans = <Transaction>[];
+      final allTransactions = [...history, ...currentMonthTrans];
 
-    const recurringPattern = RecurringStatus(
-      descriptionPattern: 'Coop',
-      averageAmount: 500,
-      typicalDayOfMonth: 20,
-      category: Category.food,
-      subcategory: Subcategory.groceries,
-      type: TransactionType.expense,
-      occurrenceCount: 5,
-    );
+      const recurringPattern = RecurringStatus(
+        descriptionPattern: 'Coop',
+        averageAmount: 500,
+        typicalDayOfMonth: 20,
+        category: Category.food,
+        subcategory: Subcategory.groceries,
+        type: TransactionType.expense,
+        occurrenceCount: 5,
+      );
 
-    when(mockRecurringService.detectRecurringPatterns(any,
-            forYear: 2025, forMonth: 2))
-        .thenReturn([recurringPattern]);
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: 2025,
+          forMonth: 2,
+        ),
+      ).thenReturn([recurringPattern]);
 
-    final result = service.calculateEstimate(period, allTransactions, now);
+      final result = service.calculateEstimate(period, allTransactions, now);
 
-    expect(result, isNotNull);
+      expect(result, isNotNull);
 
-    final foodEstimate = result!.categoryEstimates[Category.food];
-    expect(foodEstimate, isNotNull);
+      final foodEstimate = result!.categoryEstimates[Category.food];
+      expect(foodEstimate, isNotNull);
 
-    final groceriesEst =
-        foodEstimate!.subcategoryEstimates[Subcategory.groceries];
-    expect(groceriesEst?.estimated, 500,
+      final groceriesEst =
+          foodEstimate!.subcategoryEstimates[Subcategory.groceries];
+      expect(
+        groceriesEst?.estimated,
+        500,
         reason:
-            'Groceries should be 500 (Recurring) but was ${groceriesEst?.estimated}');
+            'Groceries should be 500 (Recurring) but was ${groceriesEst?.estimated}',
+      );
 
-    final restaurantsEst =
-        foodEstimate.subcategoryEstimates[Subcategory.restaurant];
-    expect(restaurantsEst, isNotNull);
-    const expectedRestVar = 1000.0 * (13 / 28);
-    expect(restaurantsEst!.estimated, closeTo(expectedRestVar, 0.1),
-        reason: 'Restaurants should be variable estimate');
+      final restaurantsEst =
+          foodEstimate.subcategoryEstimates[Subcategory.restaurant];
+      expect(restaurantsEst, isNotNull);
+      const expectedRestVar = 1000.0 * (13 / 28);
+      expect(
+        restaurantsEst!.estimated,
+        closeTo(expectedRestVar, 0.1),
+        reason: 'Restaurants should be variable estimate',
+      );
 
-    const expectedTotal = 500 + expectedRestVar;
-    expect(foodEstimate.estimated, closeTo(expectedTotal, 0.1),
+      const expectedTotal = 500 + expectedRestVar;
+      expect(
+        foodEstimate.estimated,
+        closeTo(expectedTotal, 0.1),
         reason:
-            'Category Estimate (${foodEstimate.estimated}) should equal sum of subcategories ($expectedTotal)');
-  });
+            'Category Estimate (${foodEstimate.estimated}) should equal sum of subcategories ($expectedTotal)',
+      );
+    },
+  );
 }
