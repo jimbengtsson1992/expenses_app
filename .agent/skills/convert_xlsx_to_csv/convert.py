@@ -2,7 +2,7 @@ import pandas as pd
 import sys
 import os
 
-def convert_xlsx_to_csv(input_path, output_path):
+def convert_xlsx_to_csv(input_path, output_path, merge_source=None):
     try:
         # Read the Excel file without assuming a header, to preserve original structure
         # We need the metadata from the top, but for the dataframe we want the actual data
@@ -66,13 +66,16 @@ def convert_xlsx_to_csv(input_path, output_path):
 
         df_new = clean_df(df_new)
         
-        # Check if output file exists to merge history
-        if os.path.exists(output_path):
+        # Determine source for merging
+        merge_file = merge_source if merge_source else (output_path if os.path.exists(output_path) else None)
+        
+        if merge_file:
             try:
+                print(f"Merging with existing history from '{merge_file}'...")
                 # Read existing CSV
                 # separator is ';'
                 # Header is on row 4 usually in the output (lines 0,1,2 are metadata)
-                df_old = pd.read_csv(output_path, sep=';', skiprows=3, encoding='utf-8')
+                df_old = pd.read_csv(merge_file, sep=';', skiprows=3, encoding='utf-8')
                 
                 df_old = clean_df(df_old)
                 
@@ -83,7 +86,7 @@ def convert_xlsx_to_csv(input_path, output_path):
                 df_final = df_final.drop_duplicates()
                 
             except Exception as e:
-                print(f"Warning: Could not read existing file '{output_path}' for merging: {e}")
+                print(f"Warning: Could not read file '{merge_file}' for merging: {e}")
                 print("Proceeding with new data only.")
                 df_final = df_new
         else:
@@ -94,34 +97,20 @@ def convert_xlsx_to_csv(input_path, output_path):
         if 'Datum' in df_final.columns:
              df_final = df_final.sort_values(by='Datum', ascending=False)
 
-        # Write to CSV
+        # Safe Atomic Update Logic
+        temp_output_path = output_path + ".tmp"
+        
+        # Write to temp file first
         # We need to construct the file with the metadata header.
         # We'll use the metadata from the NEW file (the XLSX) since that's the latest export.
         
-        
         # Read the raw excel again just to get lines 0-2 (metadata)
-        # Or simpler: Just hardcode or read the first few rows separately.
-        # Let's read the first 3 rows of the XLSX to get the metadata headers.
         df_meta = pd.read_excel(input_path, header=None, nrows=3, engine='openpyxl')
         
-        # Write metadata first
-        with open(output_path, 'w', encoding='utf-8') as f:
-            # metadata to csv string manually to ensure format
-            # pandas to_csv might quote things, we want to match the weird format
-            # The previous file seemed to just dump the rows.
-            # Let's imitate what the previous script did roughly, but more controlled.
-            # The previous script did `df.to_csv(..., header=False)`.
-            # If we want to preserve the exact top 3 lines structure from the XLSX:
-            
-            # Convert metadata df to csv string blocks
-            # But wait, the previous script read the WHOLE thing as one dataframe and just dumped it.
-            # That meant the column headers were just row 4 of the dataframe.
-            
-            # Let's do this:
+        with open(temp_output_path, 'w', encoding='utf-8') as f:
             # 1. Write the 3 metadata rows from df_meta
             for i in range(len(df_meta)):
                 # Cleanup line 3 (index 2) to avoid "Totalt övriga händelser"
-                # which triggers AmexSection.other in parser and filters out negative purchases (refunds).
                 row_vals = df_meta.iloc[i].fillna('').astype(str).tolist()
                 
                 # If any cell contains "Totalt övriga", blank it out or replace
@@ -138,7 +127,36 @@ def convert_xlsx_to_csv(input_path, output_path):
             
             # 2. Write the df_final with headers
             df_final.to_csv(f, sep=';', index=False, encoding='utf-8')
+            
+        # Verification & Swap
+        old_count = 0
+        if os.path.exists(output_path):
+             try:
+                 df_existing_check = pd.read_csv(output_path, sep=';', skiprows=3, encoding='utf-8')
+                 old_count = len(df_existing_check)
+             except:
+                 pass # Might be corrupted or empty, proceed safely
 
+        new_count = len(df_final)
+        
+        # Safety Check: Do not overwrite if we lost data coverage
+        # Exception: explicit merge_source might mean we are intentionally building a new file, 
+        # but if we are targeting an EXISTING file, we expect growth.
+        if os.path.exists(output_path) and new_count < old_count:
+             print(f"CRITICAL ERROR: New file has fewer rows ({new_count}) than existing file ({old_count}). Aborting safe update.")
+             if os.path.exists(temp_output_path):
+                 os.remove(temp_output_path)
+             sys.exit(1)
+             
+        # Perform Swap
+        if os.path.exists(output_path):
+            backup_path = output_path + ".bak"
+            if os.path.exists(backup_path):
+                os.remove(backup_path) # Rotate old backup
+            os.rename(output_path, backup_path)
+            print(f"Backed up existing file to '{backup_path}'")
+            
+        os.rename(temp_output_path, output_path)
         print(f"Successfully converted '{input_path}' to '{output_path}' (merged {len(df_final)} records)")
         
     except Exception as e:
@@ -146,47 +164,67 @@ def convert_xlsx_to_csv(input_path, output_path):
         sys.exit(1)
 
 
-if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python3 convert.py <input_xlsx_path> <output_csv_path> [--no-validate]")
-        sys.exit(1)
+def validate_csv(file_path):
+    print(f"\nValidating '{file_path}'...")
+    try:
+        df = pd.read_csv(file_path, sep=';', skiprows=3, encoding='utf-8')
         
-    input_file = sys.argv[1]
-    output_file = sys.argv[2]
-    # Default to True, disable if --no-validate is present
-    validate = "--no-validate" not in sys.argv
-    
-    if not os.path.exists(input_file):
-        print(f"Error: Input file '{input_file}' not found.")
-        sys.exit(1)
+        is_valid = True
         
-    convert_xlsx_to_csv(input_file, output_file)
-    
-    if validate:
-        print("\nValidating output...")
-        try:
-            df = pd.read_csv(output_file, sep=';', skiprows=3, encoding='utf-8')
+        # Check for duplicates
+        dupes = df[df.duplicated()]
+        if not dupes.empty:
+            print(f"WARNING: Found {len(dupes)} duplicate rows!")
+            print(dupes)
+            is_valid = False
+        else:
+            print("No duplicate rows found.")
             
-            # Check for duplicates
-            # Consider all columns
-            dupes = df[df.duplicated()]
-            if not dupes.empty:
-                print(f"WARNING: Found {len(dupes)} duplicate rows!")
-                print(dupes)
+        # Check sorting
+        if 'Datum' in df.columns:
+            dates = pd.to_datetime(df['Datum'], errors='coerce')
+            if dates.is_monotonic_decreasing:
+                 print("Sorting: OK (Descending)")
             else:
-                print("No duplicate rows found.")
-                
-            # Check sorting
-            if 'Datum' in df.columns:
-                # Convert to datetime for comparison
-                dates = pd.to_datetime(df['Datum'], errors='coerce')
-                # Check if monotonic decreasing
-                if dates.is_monotonic_decreasing:
-                     print("Sorting: OK (Descending)")
-                else:
-                     print("WARNING: Data is not strictly sorted descending by Date.")
-            
-            print("Validation complete.")
-            
-        except Exception as e:
-            print(f"Validation failed: {e}")
+                 print("WARNING: Data is not strictly sorted descending by Date.")
+                 # We might not want to fail validation just for sorting if it's not critical, 
+                 # but usually it is for this app. Let's keep it as a warning but maybe not delete backup?
+                 # tailored to user request: "confirmed that no old data is from the conversion"
+                 # Deduplication is the main "data integrity" check for "no old data is lost" (or rather, no duplicates created).
+                 # Let's be strict.
+                 is_valid = False
+        
+        print("Validation complete.")
+        return is_valid
+        
+    except Exception as e:
+        print(f"Validation failed with error: {e}")
+        return False
+
+import argparse
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Convert XLSX transaction export to CSV.")
+    parser.add_argument("input_file", help="Path to the input XLSX file")
+    parser.add_argument("output_file", help="Path to the output CSV file")
+    parser.add_argument("--merge-source", help="Path to an existing CSV file to merge history from", default=None)
+    parser.add_argument("--no-validate", action="store_true", help="Skip validation steps")
+    
+    args = parser.parse_args()
+    
+    if not os.path.exists(args.input_file):
+        print(f"Error: Input file '{args.input_file}' not found.")
+        sys.exit(1)
+
+    convert_xlsx_to_csv(args.input_file, args.output_file, merge_source=args.merge_source)
+    
+    if not args.no_validate:
+        if validate_csv(args.output_file):
+            # Validation passed, remove backup
+            backup_path = args.output_file + ".bak"
+            if os.path.exists(backup_path):
+                os.remove(backup_path)
+                print(f"Validation passed. Backup file '{backup_path}' deleted.")
+        else:
+            print("Validation failed (issues found). Backup file preserved.")
+            sys.exit(1)
