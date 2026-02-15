@@ -572,5 +572,48 @@ void main() {
         Subcategory.clothes,
       );
     });
+    test('New Rules 2026-02-15 (Request)', () {
+      // Exceptions
+      expectCategory(
+        service,
+        'Kortköp 260213 SP BLOMRUM',
+        -650.00,
+        DateTime(2026, 2, 14),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+      expectCategory(
+        service,
+        'Kortköp 260213 AHLENS Goeteborg Kun',
+        -600.00,
+        DateTime(2026, 2, 14),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+      expectCategory(
+        service,
+        'Kortköp 260213 NK INREDNING',
+        -1298.00,
+        DateTime(2026, 2, 14),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+      expectCategory(
+        service,
+        'Kortköp 260213 GINA TRICOT',
+        -468.95,
+        DateTime(2026, 2, 14),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+      expectCategory(
+        service,
+        'Swish betalning WALLEY',
+        -2160.00,
+        DateTime(2026, 2, 8),
+        Category.shopping,
+        Subcategory.decor,
+      );
+    });
   });
 }

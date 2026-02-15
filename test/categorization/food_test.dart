@@ -799,5 +799,34 @@ void main() {
         Subcategory.lunch,
       );
     });
+    test('New Rules 2026-02-15 (Request)', () {
+      // Keywords
+      expectCategory(
+        service,
+        'TRATTORIA FONTANA DI T',
+        -100, // Dummy amount
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'GOURMETKORV GRONSAKSTO',
+        -100, // Dummy amount
+        dummyDate,
+        Category.food,
+        Subcategory.lunch,
+      );
+
+      // Exceptions
+      expectCategory(
+        service,
+        'BLOMSTERLANDET',
+        -30.0, // Amex inverted assumption: 30.0 -> -30.0
+        DateTime(2026, 2, 7),
+        Category.food,
+        Subcategory.coffee,
+      );
+    });
   });
 }

@@ -45,6 +45,34 @@ class CategorizationService {
       return (Category.income, Subcategory.kitchenRenovation);
     }
 
+    // Valentines 2026 Overrides
+    if (date.year == 2026 && date.month == 2) {
+        if (_matches(description, ['Kortköp 260213 SP BLOMRUM']) && 
+            date.day == 14) {
+            return (Category.shopping, Subcategory.gifts);
+        }
+        if (_matches(description, ['Kortköp 260213 AHLENS Goeteborg Kun']) && 
+            date.day == 14) {
+            return (Category.shopping, Subcategory.gifts);
+        }
+        if (_matches(description, ['Kortköp 260213 NK INREDNING']) && 
+            date.day == 14) {
+            return (Category.shopping, Subcategory.gifts);
+        }
+        if (_matches(description, ['Kortköp 260213 GINA TRICOT']) && 
+            date.day == 14) {
+            return (Category.shopping, Subcategory.gifts);
+        }
+        if (_matches(description, ['Swish betalning WALLEY']) && 
+            date.day == 8) {
+            return (Category.shopping, Subcategory.decor);
+        }
+        if (_matches(description, ['BLOMSTERLANDET']) && 
+            (date.day == 7 || date.day == 9)) {
+            return (Category.food, Subcategory.coffee);
+        }
+    }
+
     // December 2024 Overrides
     if (date.year == 2024 && date.month == 12) {
       if (_matches(description, ['JYSK STENALYCKAN']) &&
@@ -1311,6 +1339,10 @@ class CategorizationService {
     }
 
     // --- Expenses (<= 0) ---
+    if (_matches(description, ['TRATTORIA FONTANA DI T'])) {
+      return (Category.food, Subcategory.restaurant);
+    }
+
     if (_matches(lowerDesc, ['apple.com/bill'])) {
       return (Category.other, Subcategory.mobileSubscription);
     }
@@ -1506,6 +1538,7 @@ class CategorizationService {
       'hasselbacken',
       'mu thai street food',
       'swish betalning karlsson andersson',
+      'gourmetkorv gronsaksto',
     ])) {
       return (Category.food, Subcategory.lunch);
     }
