@@ -113,6 +113,24 @@ void main() {
         Category.shopping,
         Subcategory.clothes,
       );
+
+      // New Rules 2026-02-22
+      expectCategory(
+        service,
+        'BABYSAM',
+        -500,
+        dummyDate,
+        Category.shopping,
+        Subcategory.clothes,
+      );
+      expectCategory(
+        service,
+        'LEXINGTON HOME GOT',
+        -758.0,
+        DateTime(2026, 2, 13),
+        Category.shopping,
+        Subcategory.clothes,
+      );
     });
 
     test('Electronics', () {

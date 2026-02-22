@@ -289,6 +289,14 @@ class CategorizationService {
       }
     }
 
+    if (_matches(description, ['LEXINGTON HOME GOT']) &&
+        (amount == -758.0 || amount == 758.0) &&
+        date.year == 2026 &&
+        date.month == 2 &&
+        (date.day == 13 || date.day == 16)) {
+      return (Category.shopping, Subcategory.clothes);
+    }
+
     if (_matches(description, ['Kortköp 250213 SP BLOMRUM']) &&
         (amount == -650.00) &&
         date.year == 2025 &&
@@ -1766,6 +1774,7 @@ class CategorizationService {
       'filippa k',
       'ginatricot',
       'bymalina',
+      'babysam',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
@@ -1815,6 +1824,9 @@ class CategorizationService {
     }
 
     // Transport
+    if (_matches(lowerDesc, ['fordonssk', 'bilia'])) {
+      return (Category.transport, Subcategory.car);
+    }
     if (_matches(lowerDesc, ['uber', 'bolt', 'taxi', 'voi se'])) {
       return (Category.transport, Subcategory.taxi);
     }

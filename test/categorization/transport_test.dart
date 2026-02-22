@@ -14,6 +14,25 @@ void main() {
   });
 
   group('CategorizationService - Transport', () {
+    test('Car', () {
+      expectCategory(
+        service,
+        'FORDONSSK',
+        -500,
+        dummyDate,
+        Category.transport,
+        Subcategory.car,
+      );
+      expectCategory(
+        service,
+        'BILIA',
+        -500,
+        dummyDate,
+        Category.transport,
+        Subcategory.car,
+      );
+    });
+
     test('Public Transport', () {
       expectCategory(
         service,
