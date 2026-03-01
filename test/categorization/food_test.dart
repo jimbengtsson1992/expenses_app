@@ -828,5 +828,39 @@ void main() {
         Subcategory.coffee,
       );
     });
+    test('New Rules 2026-03-01 (Request)', () {
+      expectCategory(
+        service,
+        'Swish betalning NATALIE THORSSON RO',
+        -450.0,
+        DateTime(2026, 2, 25),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'Swish betalning Peter Hedström',
+        -155.0,
+        DateTime(2026, 2, 25),
+        Category.food,
+        Subcategory.lunch,
+      );
+      expectCategory(
+        service,
+        'ZETTLE_*CHOCOLATERIAN',
+        -404.0,
+        DateTime(2026, 2, 21),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'Swish betalning RAGNAR, CAMILLA',
+        -300.0,
+        DateTime(2026, 2, 26),
+        Category.food,
+        Subcategory.takeaway,
+      );
+    });
   });
 }

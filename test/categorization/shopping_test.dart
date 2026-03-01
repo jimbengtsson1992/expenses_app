@@ -633,5 +633,31 @@ void main() {
         Subcategory.decor,
       );
     });
+    test('New Rules 2026-03-01 (Request)', () {
+      expectCategory(
+        service,
+        'BUTIK NORRVIKEN',
+        -838.0,
+        DateTime(2026, 2, 21),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+      expectCategory(
+        service,
+        'Swish betalning RAGNAR, CAMILLA',
+        -668.0,
+        DateTime(2026, 2, 27),
+        Category.shopping,
+        Subcategory.beauty,
+      );
+      expectCategory(
+        service,
+        'Autogiro K*babyland.s',
+        -1183.0,
+        DateTime(2026, 2, 25),
+        Category.shopping,
+        Subcategory.decor,
+      );
+    });
   });
 }

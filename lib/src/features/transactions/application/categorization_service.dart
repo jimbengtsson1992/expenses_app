@@ -45,7 +45,7 @@ class CategorizationService {
       return (Category.income, Subcategory.kitchenRenovation);
     }
 
-    // Valentines 2026 Overrides
+    // February 2026 Overrides
     if (date.year == 2026 && date.month == 2) {
         if (_matches(description, ['Kortköp 260213 SP BLOMRUM']) && 
             date.day == 14) {
@@ -70,6 +70,34 @@ class CategorizationService {
         if (_matches(description, ['BLOMSTERLANDET']) && 
             (date.day == 7 || date.day == 9)) {
             return (Category.food, Subcategory.coffee);
+        }
+        if (_matches(description, ['Swish betalning NATALIE THORSSON RO']) && 
+            amount == -450.0 && date.day == 25) {
+            return (Category.food, Subcategory.restaurant);
+        }
+        if (_matches(description, ['Swish betalning Peter Hedström']) && 
+            amount == -155.0 && date.day == 25) {
+            return (Category.food, Subcategory.lunch);
+        }
+        if (_matches(description, ['ZETTLE_*CHOCOLATERIAN']) && 
+            amount == -404.0 && date.day == 21) {
+            return (Category.food, Subcategory.restaurant);
+        }
+        if (_matches(description, ['BUTIK NORRVIKEN']) && 
+            amount == -838.0 && date.day == 21) {
+            return (Category.shopping, Subcategory.gifts);
+        }
+        if (_matches(description, ['Swish betalning RAGNAR, CAMILLA']) && 
+            amount == -668.0 && date.day == 27) {
+            return (Category.shopping, Subcategory.beauty);
+        }
+        if (_matches(description, ['Swish betalning RAGNAR, CAMILLA']) && 
+            amount == -300.0 && date.day == 26) {
+            return (Category.food, Subcategory.takeaway);
+        }
+        if (_matches(description, ['Autogiro K*babyland.s']) && 
+            amount == -1183.0 && date.day == 25) {
+            return (Category.shopping, Subcategory.decor);
         }
     }
 
