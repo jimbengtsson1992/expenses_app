@@ -862,5 +862,16 @@ void main() {
         Subcategory.takeaway,
       );
     });
+    test('New Rules 2026-03-04 (Request)', () {
+      // Override
+      expectCategory(
+        service,
+        'FOODIE',
+        -169.0,
+        DateTime(2026, 2, 27),
+        Category.food,
+        Subcategory.lunch,
+      );
+    });
   });
 }

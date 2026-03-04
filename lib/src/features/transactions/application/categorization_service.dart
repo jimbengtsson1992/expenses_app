@@ -47,6 +47,14 @@ class CategorizationService {
 
     // February 2026 Overrides
     if (date.year == 2026 && date.month == 2) {
+        if (_matches(description, ['FLORAMORAOCHKRUKATOSAB']) && 
+            amount == -269.0 && date.day == 28) {
+            return (Category.shopping, Subcategory.gifts);
+        }
+        if (_matches(description, ['FOODIE']) && 
+            amount == -169.0 && date.day == 27) {
+            return (Category.food, Subcategory.lunch);
+        }
         if (_matches(description, ['Kortköp 260213 SP BLOMRUM']) && 
             date.day == 14) {
             return (Category.shopping, Subcategory.gifts);
@@ -1747,6 +1755,7 @@ class CategorizationService {
       'nk kok & design',
       'artilleriet store',
       'smalandsgr',
+      'floramoraochkrukatosab',
     ])) {
       return (Category.shopping, Subcategory.decor);
     }

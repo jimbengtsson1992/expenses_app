@@ -659,5 +659,25 @@ void main() {
         Subcategory.decor,
       );
     });
+    test('New Rules 2026-03-04 (Request)', () {
+      // Keyword
+      expectCategory(
+        service,
+        'FLORAMORAOCHKRUKATOSAB',
+        -100.0,
+        DateTime(2026, 3, 1),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      // Override
+      expectCategory(
+        service,
+        'FLORAMORAOCHKRUKATOSAB',
+        -269.0,
+        DateTime(2026, 2, 28),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+    });
   });
 }
