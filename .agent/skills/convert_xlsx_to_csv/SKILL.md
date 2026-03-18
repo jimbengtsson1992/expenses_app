@@ -52,6 +52,7 @@ pip3 install -r .agent/skills/convert_xlsx_to_csv/requirements.txt
 - Output uses `;` as delimiter.
 - Output is UTF-8 encoded.
 - **Merging & Deduplication**: The script merges new data with the existing CSV history. Duplicates are identified using a subset of core fields (`[Datum, Specifikation, Ort, Valuta, Utl. belopp, Belopp]`) *ignoring* `Bokfört`. If a collision occurs between a pending transaction (empty `Bokfört`) and a cleared one (has `Bokfört`), the cleared transaction is kept.
+- **Sorting**: Output is strictly sorted by `Datum` (descending), followed by `Specifikation` (ascending) and `Belopp` (ascending) to maintain a highly stable history and prevent old rows from swapping places.
 - **Credit Card Payments**: Rows classified as payments to the credit card (containing "Inbetalning", negative amount, and empty location) are automatically filtered out.
 
 ## Testing & Validation

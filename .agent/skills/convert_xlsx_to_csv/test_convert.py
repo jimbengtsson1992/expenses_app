@@ -89,6 +89,32 @@ class TestConvert(unittest.TestCase):
         self.assertEqual(df.iloc[0]['Specifikation'], 'Transaction C') # Sorted desc?
         self.assertEqual(df.iloc[2]['Specifikation'], 'Transaction A')
 
+    def test_stable_sorting_same_date(self):
+        # Create transactions on the exact same date
+        # Sorting should be: Datum (desc), Spec (asc), Belopp (asc)
+        data = [
+            ['2026-03-01', '2026-03-02', 'Zebra', 'City', 'SEK', 0, 50.0],
+            ['2026-03-01', '2026-03-02', 'Alpha', 'City', 'SEK', 0, 100.0],
+            ['2026-03-01', '2026-03-02', 'Alpha', 'City', 'SEK', 0, -20.0]
+        ]
+        self.create_dummy_xlsx(data)
+        
+        convert_xlsx_to_csv(self.xlsx_path, self.csv_path)
+        
+        df = pd.read_csv(self.csv_path, sep=';', skiprows=3)
+        self.assertEqual(len(df), 3)
+        
+        # Expected order:
+        # 1. Alpha, -20.0 (Datum desc, Spec asc, Belopp asc)
+        # 2. Alpha, 100.0
+        # 3. Zebra, 50.0
+        self.assertEqual(df.iloc[0]['Specifikation'], 'Alpha')
+        self.assertEqual(df.iloc[0]['Belopp'], -20.0)
+        self.assertEqual(df.iloc[1]['Specifikation'], 'Alpha')
+        self.assertEqual(df.iloc[1]['Belopp'], 100.0)
+        self.assertEqual(df.iloc[2]['Specifikation'], 'Zebra')
+        self.assertEqual(df.iloc[2]['Belopp'], 50.0)
+
     def test_header_cleaning(self):
         # Metadata with "Totalt övriga händelser"
         data = [['2026-02-01', '2026-02-02', 'Test', 'City', 'SEK', 0, 100]]

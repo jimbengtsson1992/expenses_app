@@ -109,9 +109,20 @@ def convert_xlsx_to_csv(input_path, output_path, merge_source=None):
             df_final = df_new
 
         
-        # Sort by Datum descending
+        # Sort by Datum descending, then Specifikation ascending, then Belopp ascending
+        sort_cols = ['Datum']
+        ascending_flags = [False]
+        
+        if 'Specifikation' in df_final.columns:
+            sort_cols.append('Specifikation')
+            ascending_flags.append(True)
+            
+        if 'Belopp' in df_final.columns:
+            sort_cols.append('Belopp')
+            ascending_flags.append(True)
+
         if 'Datum' in df_final.columns:
-             df_final = df_final.sort_values(by='Datum', ascending=False)
+             df_final = df_final.sort_values(by=sort_cols, ascending=ascending_flags)
 
         # Safe Atomic Update Logic
         temp_output_path = output_path + ".tmp"
