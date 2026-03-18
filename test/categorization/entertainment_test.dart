@@ -90,6 +90,14 @@ void main() {
         Category.entertainment,
         Subcategory.videoGames,
       );
+      expectCategory(
+        service,
+        'STEAM PURCHASE',
+        -20.0,
+        dummyDate,
+        Category.entertainment,
+        Subcategory.videoGames,
+      );
     });
 
     test('Travel', () {

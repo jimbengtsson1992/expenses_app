@@ -67,6 +67,7 @@ enum Category {
     Subcategory.car,
     Subcategory.fuel,
     Subcategory.parking,
+    Subcategory.congestionTax,
     Subcategory.other,
   ]),
 

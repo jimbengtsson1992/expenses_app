@@ -716,5 +716,15 @@ void main() {
         Subcategory.gifts,
       );
     });
+    test('New Rules 2026-03-18 (Request)', () {
+      expectCategory(
+        service,
+        'BABY WORLD BACKAPLAN',
+        -1496.95,
+        DateTime(2026, 3, 14),
+        Category.shopping,
+        Subcategory.clothes,
+      );
+    });
   });
 }

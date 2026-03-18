@@ -53,6 +53,7 @@ enum Subcategory {
   car('Bil'),
   fuel('Drivmedel'),
   parking('Parkering'),
+  congestionTax('Trängselskatt'),
 
   // --- Inkomst (Income) ---
   salary('Lön'),

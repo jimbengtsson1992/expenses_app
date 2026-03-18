@@ -47,6 +47,14 @@ class CategorizationService {
 
     // March 2026 Overrides
     if (date.year == 2026 && date.month == 3) {
+      if (_matches(description, ['JACY\'Z HOTEL &']) &&
+          amount == -105.0 && date.day == 10) {
+        return (Category.food, Subcategory.restaurant);
+      }
+      if (_matches(description, ['BABY WORLD BACKAPLAN']) &&
+          amount == -1496.95 && date.day == 14) {
+        return (Category.shopping, Subcategory.clothes);
+      }
       if (_matches(description, ['THELINS GRAND CAFE']) &&
           amount == -209.0 && date.day == 8) {
         return (Category.food, Subcategory.coffee);
@@ -1491,7 +1499,7 @@ class CategorizationService {
     if (_matches(lowerDesc, ['snusbolaget'])) {
       return (Category.entertainment, Subcategory.snuff);
     }
-    if (_matches(lowerDesc, ['nintendo'])) {
+    if (_matches(lowerDesc, ['nintendo', 'steam purchase'])) {
       return (Category.entertainment, Subcategory.videoGames);
     }
     if (_matches(lowerDesc, [
@@ -1698,6 +1706,7 @@ class CategorizationService {
       'brödernas',
       'shamiat',
       'falafel',
+      'underground golf goteb',
       'taco',
       'panini',
       'sallad',
@@ -1950,6 +1959,13 @@ class CategorizationService {
       'betalning bg 5488-2303 gbg stad/int',
     ])) {
       return (Category.transport, Subcategory.parking);
+    }
+    if (_matches(lowerDesc, [
+      'trängselskatt',
+      'trängselsk',
+      'epass24',
+    ])) {
+      return (Category.transport, Subcategory.congestionTax);
     }
 
     // Health

@@ -81,6 +81,33 @@ void main() {
         Subcategory.fuel,
       );
     });
+
+    test('Congestion Tax', () {
+      expectCategory(
+        service,
+        'TRÄNGSELSKATT',
+        -150,
+        dummyDate,
+        Category.transport,
+        Subcategory.congestionTax,
+      );
+      expectCategory(
+        service,
+        'Open Banking BG 282-4647 TRÄNGSELSK',
+        -41,
+        dummyDate,
+        Category.transport,
+        Subcategory.congestionTax,
+      );
+      expectCategory(
+        service,
+        'EPASS24',
+        -150,
+        dummyDate,
+        Category.transport,
+        Subcategory.congestionTax,
+      );
+    });
     test('New Rules (March 2026)', () {
       // General
       expectCategory(

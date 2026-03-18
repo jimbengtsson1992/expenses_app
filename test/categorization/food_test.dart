@@ -915,5 +915,23 @@ void main() {
         Subcategory.restaurant,
       );
     });
+    test('New Rules 2026-03-18 (Request)', () {
+      expectCategory(
+        service,
+        'UNDERGROUND GOLF GOTEB',
+        -100,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'JACY\'Z HOTEL &',
+        -105.0,
+        DateTime(2026, 3, 10),
+        Category.food,
+        Subcategory.restaurant,
+      );
+    });
   });
 }
