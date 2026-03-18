@@ -45,6 +45,42 @@ class CategorizationService {
       return (Category.income, Subcategory.kitchenRenovation);
     }
 
+    // March 2026 Overrides
+    if (date.year == 2026 && date.month == 3) {
+      if (_matches(description, ['THELINS GRAND CAFE']) &&
+          amount == -209.0 && date.day == 8) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['OKQ8']) &&
+          amount == -42.0 && date.day == 8) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['PARKADEN']) &&
+          amount == -20.0 && date.day == 8) {
+        return (Category.transport, Subcategory.parking);
+      }
+      if (_matches(description, ['Swish betalning JOHANSSON,MARCUS']) &&
+          amount == -170.0 && date.day == 7) {
+        return (Category.entertainment, Subcategory.hobby);
+      }
+      if (_matches(description, ['ZETTLE_*CARPENTER HILL']) &&
+          amount == -288.0 && date.day == 7) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['THE FISHERY']) &&
+          amount == -150.0 && date.day == 7) {
+        return (Category.food, Subcategory.restaurant);
+      }
+      if (_matches(description, ['THE FISHERY']) &&
+          amount == -210.0 && date.day == 7) {
+        return (Category.food, Subcategory.restaurant);
+      }
+      if (_matches(description, ['NK KIDS & TEENS GBG']) &&
+          amount == -129.0 && date.day == 1) {
+        return (Category.shopping, Subcategory.gifts);
+      }
+    }
+
     // February 2026 Overrides
     if (date.year == 2026 && date.month == 2) {
         if (_matches(description, ['FLORAMORAOCHKRUKATOSAB']) && 
@@ -1433,6 +1469,7 @@ class CategorizationService {
       'sj app',
       'vr snabbtåg sverige',
       'hallandstrafike',
+      'clarionhotel',
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }
@@ -1771,6 +1808,9 @@ class CategorizationService {
       'althallensfargtapetera',
       'bga.se',
       'jotex sweden ab',
+      'svenskt tenn',
+      'designtorget ostra h',
+      'boutique tinna',
     ])) {
       return (Category.shopping, Subcategory.decor);
     }
@@ -1861,7 +1901,11 @@ class CategorizationService {
     }
 
     // Transport
-    if (_matches(lowerDesc, ['fordonssk', 'bilia'])) {
+    if (_matches(lowerDesc, [
+      'fordonssk',
+      'bilia',
+      'betalning bg 317-2434 ziklo bank ab',
+    ])) {
       return (Category.transport, Subcategory.car);
     }
     if (_matches(lowerDesc, ['uber', 'bolt', 'taxi', 'voi se'])) {
@@ -1898,7 +1942,13 @@ class CategorizationService {
     ])) {
       return (Category.transport, Subcategory.fuel);
     }
-    if (_matches(lowerDesc, ['parkering', 'easypark', 'aimo', 'parkster'])) {
+    if (_matches(lowerDesc, [
+      'parkering',
+      'easypark',
+      'aimo',
+      'parkster',
+      'betalning bg 5488-2303 gbg stad/int',
+    ])) {
       return (Category.transport, Subcategory.parking);
     }
 
@@ -1998,7 +2048,10 @@ class CategorizationService {
       return (Category.housing, Subcategory.kitchenRenovation);
     }
 
-    if (_matches(lowerDesc, ['renahus'])) {
+    if (_matches(lowerDesc, [
+      'renahus',
+      'betalning bg 5020-7042 fortnox fina',
+    ])) {
       return (Category.housing, Subcategory.cleaning);
     }
 

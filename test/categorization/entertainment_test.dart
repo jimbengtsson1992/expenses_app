@@ -343,5 +343,26 @@ void main() {
         Subcategory.travel,
       );
     });
+    test('New Rules (March 2026)', () {
+      // General
+      expectCategory(
+        service,
+        'CLARIONHOTEL',
+        -100,
+        dummyDate,
+        Category.entertainment,
+        Subcategory.travel,
+      );
+
+      // Overrides
+      expectCategory(
+        service,
+        'Swish betalning JOHANSSON,MARCUS',
+        -170.0,
+        DateTime(2026, 3, 7),
+        Category.entertainment,
+        Subcategory.hobby,
+      );
+    });
   });
 }

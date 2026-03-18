@@ -873,5 +873,47 @@ void main() {
         Subcategory.lunch,
       );
     });
+    test('New Rules (March 2026)', () {
+      expectCategory(
+        service,
+        'THELINS GRAND CAFE',
+        -209.0,
+        DateTime(2026, 3, 8),
+        Category.food,
+        Subcategory.coffee,
+      );
+      expectCategory(
+        service,
+        'OKQ8',
+        -42.0,
+        DateTime(2026, 3, 8),
+        Category.food,
+        Subcategory.coffee,
+      );
+      expectCategory(
+        service,
+        'ZETTLE_*CARPENTER HILL',
+        -288.0,
+        DateTime(2026, 3, 7),
+        Category.food,
+        Subcategory.coffee,
+      );
+      expectCategory(
+        service,
+        'THE FISHERY',
+        -150.0,
+        DateTime(2026, 3, 7),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'THE FISHERY',
+        -210.0,
+        DateTime(2026, 3, 7),
+        Category.food,
+        Subcategory.restaurant,
+      );
+    });
   });
 }

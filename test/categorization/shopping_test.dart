@@ -679,5 +679,42 @@ void main() {
         Subcategory.gifts,
       );
     });
+    test('New Rules (March 2026 Update)', () {
+      // General
+      expectCategory(
+        service,
+        'SVENSKT TENN',
+        -100,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'DESIGNTORGET OSTRA H',
+        -100,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'BOUTIQUE TINNA',
+        -100,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+
+      // Overrides
+      expectCategory(
+        service,
+        'NK KIDS & TEENS GBG',
+        -129.0,
+        DateTime(2026, 3, 1),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+    });
   });
 }

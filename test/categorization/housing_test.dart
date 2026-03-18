@@ -181,5 +181,15 @@ void main() {
         Subcategory.kitchenRenovation,
       );
     });
+    test('New Rules (March 2026)', () {
+      expectCategory(
+        service,
+        'Betalning BG 5020-7042 Fortnox Fina',
+        -100,
+        dummyDate,
+        Category.housing,
+        Subcategory.cleaning,
+      );
+    });
   });
 }

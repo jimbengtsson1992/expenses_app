@@ -81,5 +81,34 @@ void main() {
         Subcategory.fuel,
       );
     });
+    test('New Rules (March 2026)', () {
+      // General
+      expectCategory(
+        service,
+        'Betalning BG 5488-2303 Gbg Stad/Int',
+        -50,
+        dummyDate,
+        Category.transport,
+        Subcategory.parking,
+      );
+      expectCategory(
+        service,
+        'Betalning BG 317-2434 Ziklo Bank AB',
+        -200,
+        dummyDate,
+        Category.transport,
+        Subcategory.car,
+      );
+      
+      // Overrides
+      expectCategory(
+        service,
+        'PARKADEN',
+        -20.0,
+        DateTime(2026, 3, 8),
+        Category.transport,
+        Subcategory.parking,
+      );
+    });
   });
 }
