@@ -200,5 +200,31 @@ class TestConvert(unittest.TestCase):
             expected = ';'.join(map(str, tx))
             self.assertIn(expected, content, f"Transaction missing: {expected}")
 
+    def test_filter_inbetalning(self):
+        # Data containing a real payment (should be filtered) and a fake one (should be kept)
+        data = [
+            ['2026-02-01', '2026-02-02', 'Inbetalning', '', 'SEK', 0, -100.0], # True payment (filtered)
+            ['2026-02-02', '2026-02-03', 'Inbetalning avgift', 'CITY', 'SEK', 0, -50.0], # Has location (kept)
+            ['2026-02-03', '2026-02-04', 'Inbetalning', '', 'SEK', 0, 200.0], # Positive amount (kept)
+            ['2026-02-04', '2026-02-05', 'Valid Expense', 'CITY', 'SEK', 0, 200.0] # Unrelated (kept)
+        ]
+        self.create_dummy_xlsx(data)
+        
+        convert_xlsx_to_csv(self.xlsx_path, self.csv_path)
+        
+        df = pd.read_csv(self.csv_path, sep=';', skiprows=3)
+        self.assertEqual(len(df), 3)
+        specs = df['Specifikation'].tolist()
+        
+        # 'Inbetalning' payment was filtered out, but the 'Inbetalning' expense (positive amount) was kept.
+        # Wait, the third row has exactly 'Inbetalning' as Specifikation, which would match `assertIn` if we just check for the string.
+        # Let's count occurrences or check the exact values remaining.
+        # Original rows had distinct Datum. Let's check Datum.
+        dates = df['Datum'].tolist()
+        self.assertNotIn('2026-02-01', dates)
+        self.assertIn('2026-02-02', dates)
+        self.assertIn('2026-02-03', dates)
+        self.assertIn('2026-02-04', dates)
+
 if __name__ == '__main__':
     unittest.main()

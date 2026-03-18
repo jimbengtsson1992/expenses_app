@@ -48,10 +48,11 @@ pip3 install -r .agent/skills/convert_xlsx_to_csv/requirements.txt
 ## Notes
 
 - The script reads the XLSX with `header=None` to preserve the exact row structure (including metadata rows at the top).
-- Dates are forced to `yyyy-MM-dd` format.
+- Dates (`Datum` and `Bokfört`) are forced to `yyyy-MM-dd` format to ensure seamless merging.
 - Output uses `;` as delimiter.
 - Output is UTF-8 encoded.
-- If the output CSV already exists, the script merges the new data with the existing data, removing duplicates and sorting by date.
+- **Merging & Deduplication**: The script merges new data with the existing CSV history. Duplicates are identified using a subset of core fields (`[Datum, Specifikation, Ort, Valuta, Utl. belopp, Belopp]`) *ignoring* `Bokfört`. If a collision occurs between a pending transaction (empty `Bokfört`) and a cleared one (has `Bokfört`), the cleared transaction is kept.
+- **Credit Card Payments**: Rows classified as payments to the credit card (containing "Inbetalning", negative amount, and empty location) are automatically filtered out.
 
 ## Testing & Validation
 

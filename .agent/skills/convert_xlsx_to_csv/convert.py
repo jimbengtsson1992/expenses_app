@@ -43,6 +43,10 @@ def convert_xlsx_to_csv(input_path, output_path, merge_source=None):
              df['Datum'] = pd.to_datetime(df['Datum'], errors='coerce').dt.strftime('%Y-%m-%d')
              df = df.dropna(subset=['Datum']) # Drop rows that failed date parsing
              
+             # Normalize Bokfört
+             if 'Bokfört' in df.columns:
+                 df['Bokfört'] = pd.to_datetime(df['Bokfört'], errors='coerce').dt.strftime('%Y-%m-%d')
+             
              # Normalize Belopp (Amount)
              # Should be 'Belopp' column. Check if it exists.
              if 'Belopp' in df.columns:
@@ -61,6 +65,14 @@ def convert_xlsx_to_csv(input_path, output_path, merge_source=None):
                  for col in cols_to_fix:
                      if col in df.columns:
                          df[col] = df[col].apply(clean_amount).astype(float)
+             
+             # Filter out Credit Card Payments (Inbetalning)
+             # Strategy: Specifikation contains 'Inbetalning' AND Belopp < 0 AND Ort is empty
+             if 'Specifikation' in df.columns and 'Belopp' in df.columns and 'Ort' in df.columns:
+                 is_inbetalning = df['Specifikation'].astype(str).str.contains('Inbetalning', case=False, na=False)
+                 is_negative = df['Belopp'] < 0
+                 is_empty_ort = df['Ort'].isna() | (df['Ort'] == '')
+                 df = df[~(is_inbetalning & is_negative & is_empty_ort)]
              
              return df
 
@@ -83,7 +95,11 @@ def convert_xlsx_to_csv(input_path, output_path, merge_source=None):
                 df_final = pd.concat([df_new, df_old])
                 
                 # Drop duplicates
-                df_final = df_final.drop_duplicates()
+                # Priority: Keep rows with a filled Bokfört over those with NaN
+                # so that a pending transaction gets upgraded to a cleared one instead of duplicating
+                df_final = df_final.sort_values(by=['Bokfört'], ascending=False, na_position='last')
+                dedup_cols = ['Datum', 'Specifikation', 'Ort', 'Valuta', 'Utl. belopp', 'Belopp']
+                df_final = df_final.drop_duplicates(subset=[col for col in dedup_cols if col in df_final.columns], keep='first')
                 
             except Exception as e:
                 print(f"Warning: Could not read file '{merge_file}' for merging: {e}")
