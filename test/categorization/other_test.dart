@@ -295,5 +295,23 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-04-03 (Request)', () {
+      expectCategory(
+        service,
+        'UNHCR',
+        -10.0,
+        DateTime(2026, 3, 19),
+        Category.other,
+        Subcategory.other,
+      );
+      expectCategory(
+        service,
+        'Autogiro K*Beans Clot',
+        -189.0,
+        DateTime(2026, 3, 17),
+        Category.other,
+        Subcategory.other,
+      );
+    });
   });
 }

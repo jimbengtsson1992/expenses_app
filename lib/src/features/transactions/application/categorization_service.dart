@@ -87,6 +87,46 @@ class CategorizationService {
           amount == -129.0 && date.day == 1) {
         return (Category.shopping, Subcategory.gifts);
       }
+      if (_matches(description, ['KLARNA AB']) &&
+          (amount == -359.0 || amount == 359.0) && date.day == 22) {
+        return (Category.health, Subcategory.pharmacy);
+      }
+      if (_matches(description, ['LE CREUSET FREE']) &&
+          (amount == -2844.4 || amount == 2844.4) && date.day == 21) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['BUNCHERY BY BLOMRUM']) &&
+          (amount == -199.0 || amount == 199.0) && date.day == 20) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['SE0234']) &&
+          (amount == -229.0 || amount == 229.0) && date.day == 19) {
+        return (Category.shopping, Subcategory.clothes);
+      }
+      if (_matches(description, ['UNHCR']) &&
+          (amount == -10.0 || amount == 10.0) && date.day == 19) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['ARKET SE0702']) &&
+          (amount == -149.0 || amount == 149.0) && date.day == 19) {
+        return (Category.food, Subcategory.lunch);
+      }
+      if (_matches(description, ['Autogiro K*Beans Clot']) &&
+          (amount == -189.0 || amount == 189.0) && date.day == 17) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['PROSHOP.SE']) &&
+          (amount == -1347.0 || amount == 1347.0) && date.day == 15) {
+        return (Category.shopping, Subcategory.tools);
+      }
+      if (_matches(description, ['SVEA BANK AB']) &&
+          (amount == -6694.0 || amount == 6694.0) && date.day == 11) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['SE0234']) &&
+          (amount == -929.0 || amount == 929.0) && date.day == 19) {
+        return (Category.shopping, Subcategory.decor);
+      }
     }
 
     // February 2026 Overrides
@@ -1427,6 +1467,10 @@ class CategorizationService {
     }
 
     // --- Expenses (<= 0) ---
+    if (_matches(description, ['DOBRUK, EDYTA'])) {
+      return (Category.health, Subcategory.beauty);
+    }
+
     if (_matches(description, ['TRATTORIA FONTANA DI T'])) {
       return (Category.food, Subcategory.restaurant);
     }

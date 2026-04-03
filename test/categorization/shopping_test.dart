@@ -726,5 +726,55 @@ void main() {
         Subcategory.clothes,
       );
     });
+    test('New Rules 2026-04-03 (Request)', () {
+      expectCategory(
+        service,
+        'LE CREUSET FREE',
+        -2844.4,
+        DateTime(2026, 3, 21),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'BUNCHERY BY BLOMRUM',
+        -199.0,
+        DateTime(2026, 3, 20),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'SE0234',
+        -229.0,
+        DateTime(2026, 3, 19),
+        Category.shopping,
+        Subcategory.clothes,
+      );
+      expectCategory(
+        service,
+        'PROSHOP.SE',
+        -1347.0,
+        DateTime(2026, 3, 15),
+        Category.shopping,
+        Subcategory.tools,
+      );
+      expectCategory(
+        service,
+        'SVEA BANK AB',
+        -6694.0,
+        DateTime(2026, 3, 11),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'SE0234',
+        -929.0,
+        DateTime(2026, 3, 19),
+        Category.shopping,
+        Subcategory.decor,
+      );
+    });
   });
 }

@@ -31,6 +31,14 @@ void main() {
         Category.health,
         Subcategory.beauty,
       );
+      expectCategory(
+        service,
+        'Kortköp 230912 DOBRUK, EDYTA',
+        -550,
+        dummyDate,
+        Category.health,
+        Subcategory.beauty,
+      );
 
       // Specific Overrides for Beauty
       expectCategory(
@@ -60,6 +68,16 @@ void main() {
         'Apoteket AB',
         -120,
         dummyDate,
+        Category.health,
+        Subcategory.pharmacy,
+      );
+
+      // Specific Overrides for Pharmacy
+      expectCategory(
+        service,
+        'KLARNA AB',
+        -359.0,
+        DateTime(2026, 3, 22),
         Category.health,
         Subcategory.pharmacy,
       );

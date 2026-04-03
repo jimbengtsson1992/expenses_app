@@ -933,5 +933,15 @@ void main() {
         Subcategory.restaurant,
       );
     });
+    test('New Rules 2026-04-03 (Request)', () {
+      expectCategory(
+        service,
+        'ARKET SE0702',
+        -149.0,
+        DateTime(2026, 3, 19),
+        Category.food,
+        Subcategory.lunch,
+      );
+    });
   });
 }
