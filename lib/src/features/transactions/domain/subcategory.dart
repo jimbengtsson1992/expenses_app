@@ -25,6 +25,7 @@ enum Subcategory {
   decor('Inredning'),
   beauty('Skönhet'),
   tools('Verktyg & Bygg'),
+  baby('Baby & Barn'),
 
   // --- Nöje & fritid (Entertainment) ---
   travel('Resor'),
