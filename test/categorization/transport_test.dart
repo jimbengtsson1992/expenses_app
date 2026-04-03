@@ -137,5 +137,15 @@ void main() {
         Subcategory.parking,
       );
     });
+    test('New Rules 2026-04-03 (Request)', () {
+      expectCategory(
+        service,
+        'MJUK BILTVATT',
+        -200.0,
+        dummyDate,
+        Category.transport,
+        Subcategory.car,
+      );
+    });
   });
 }

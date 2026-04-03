@@ -775,6 +775,30 @@ void main() {
         Category.shopping,
         Subcategory.decor,
       );
+      expectCategory(
+        service,
+        'LINDEX',
+        -929.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.clothes,
+      );
+      expectCategory(
+        service,
+        'BUNCHERY BY BLOMRUM',
+        -550.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'Open banking 99602600817064',
+        -18995.0,
+        DateTime(2026, 3, 30),
+        Category.shopping,
+        Subcategory.baby,
+      );
     });
   });
 }

@@ -942,6 +942,22 @@ void main() {
         Category.food,
         Subcategory.lunch,
       );
+      expectCategory(
+        service,
+        'EGG AND MILK',
+        -150.0,
+        dummyDate,
+        Category.food,
+        Subcategory.restaurant,
+      );
+      expectCategory(
+        service,
+        'Swish betalning SJÖSTRAND BÄCK, NAT',
+        -150.0,
+        dummyDate,
+        Category.food,
+        Subcategory.lunch,
+      );
     });
   });
 }

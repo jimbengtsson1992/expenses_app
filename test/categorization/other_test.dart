@@ -312,6 +312,22 @@ void main() {
         Category.other,
         Subcategory.other,
       );
+      expectCategory(
+        service,
+        'LOOMISP*SEVEN VENDING',
+        -35.0,
+        DateTime(2026, 3, 31),
+        Category.other,
+        Subcategory.other,
+      );
+      expectCategory(
+        service,
+        'LOOMISP*SEVEN VENDING',
+        -35.0,
+        DateTime(2026, 4, 1),
+        Category.other,
+        Subcategory.other,
+      );
     });
   });
 }

@@ -372,5 +372,15 @@ void main() {
         Subcategory.hobby,
       );
     });
+    test('New Rules 2026-04-03 (Request)', () {
+      expectCategory(
+        service,
+        'TV4 AKTIEBOLAG',
+        -129.0,
+        dummyDate,
+        Category.entertainment,
+        Subcategory.streaming,
+      );
+    });
   });
 }

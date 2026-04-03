@@ -127,6 +127,19 @@ class CategorizationService {
           (amount == -929.0 || amount == 929.0) && date.day == 19) {
         return (Category.shopping, Subcategory.decor);
       }
+      if (_matches(description, ['Open banking 99602600817064']) && date.day == 30) {
+        return (Category.shopping, Subcategory.baby);
+      }
+      if (_matches(description, ['LOOMISP*SEVEN VENDING']) && date.day == 31) {
+        return (Category.other, Subcategory.other);
+      }
+    }
+
+    // April 2026 Overrides
+    if (date.year == 2026 && date.month == 4) {
+      if (_matches(description, ['LOOMISP*SEVEN VENDING']) && date.day == 1) {
+        return (Category.other, Subcategory.other);
+      }
     }
 
     // February 2026 Overrides
@@ -1563,6 +1576,7 @@ class CategorizationService {
       'bonnier news', // Added generic
       'amazon prime',
       'help.max.com',
+      'tv4 aktiebolag',
     ])) {
       return (Category.entertainment, Subcategory.streaming);
     }
@@ -1596,6 +1610,7 @@ class CategorizationService {
     if (_matches(lowerDesc, [
       'dubbel dubbel surbrunn',
       'restoria ab - dinner',
+      'egg and milk',
     ])) {
       return (Category.food, Subcategory.restaurant);
     }
@@ -1637,7 +1652,7 @@ class CategorizationService {
       return (Category.food, Subcategory.takeaway);
     }
 
-    if (_matches(lowerDesc, ['masaki halsosushi ab'])) {
+    if (_matches(lowerDesc, ['masaki halsosushi ab', 'swish betalning sjöstrand bäck, nat'])) {
       return (Category.food, Subcategory.lunch);
     }
     if (_matches(lowerDesc, [
@@ -1864,6 +1879,7 @@ class CategorizationService {
       'svenskt tenn',
       'designtorget ostra h',
       'boutique tinna',
+      'bunchery by blomrum',
     ])) {
       return (Category.shopping, Subcategory.decor);
     }
@@ -1905,6 +1921,7 @@ class CategorizationService {
       'ginatricot',
       'bymalina',
       'babysam',
+      'lindex',
     ])) {
       return (Category.shopping, Subcategory.clothes);
     }
@@ -1958,6 +1975,7 @@ class CategorizationService {
       'fordonssk',
       'bilia',
       'betalning bg 317-2434 ziklo bank ab',
+      'mjuk biltvatt',
     ])) {
       return (Category.transport, Subcategory.car);
     }
