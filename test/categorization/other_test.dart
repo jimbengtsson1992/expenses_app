@@ -328,6 +328,22 @@ void main() {
         Category.other,
         Subcategory.other,
       );
+      expectCategory(
+        service,
+        'Swish betalning RAGNAR, MIRANDA',
+        -2500.0,
+        DateTime(2026, 4, 3),
+        Category.other,
+        Subcategory.other,
+      );
+      expectCategory(
+        service,
+        'Swish betalning RAGNAR, MIRANDA',
+        -500.0,
+        DateTime(2026, 4, 2),
+        Category.other,
+        Subcategory.other,
+      );
     });
   });
 }

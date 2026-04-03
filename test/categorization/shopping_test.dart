@@ -791,6 +791,14 @@ void main() {
         Category.shopping,
         Subcategory.baby,
       );
+      expectCategory(
+        service,
+        'Swish betalning FIRMA JUAN FERNANDE',
+        -500.0,
+        DateTime(2026, 4, 1),
+        Category.shopping,
+        Subcategory.decor,
+      );
     });
 
     test('Baby', () {

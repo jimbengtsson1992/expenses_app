@@ -136,6 +136,18 @@ class CategorizationService {
       if (_matches(description, ['LOOMISP*SEVEN VENDING']) && date.day == 1) {
         return (Category.other, Subcategory.other);
       }
+      if (_matches(description, ['Swish betalning FIRMA JUAN FERNANDE']) && amount == -500.0 && date.day == 1) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['Swish betalning RAGNAR, MIRANDA']) && amount == -2500.0 && date.day == 3) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['Swish betalning RAGNAR, MIRANDA']) && amount == -500.0 && date.day == 2) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['Open banking 48521300790']) && amount == -1256.0 && date.day == 2) {
+        return (Category.housing, Subcategory.cleaning);
+      }
     }
 
     // February 2026 Overrides
