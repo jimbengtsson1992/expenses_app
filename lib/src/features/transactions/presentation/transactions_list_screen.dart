@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -284,6 +285,36 @@ class _TransactionsListScreenState
               );
             },
             child: const Text('Kopiera Prompt'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              try {
+                final file = File('/Users/jimbengtsson/Desktop/rules_prompt.txt');
+                await file.writeAsString(code);
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Sparat till Skrivbordet (rules_prompt.txt)')),
+                  );
+                }
+              } catch (e) {
+                try {
+                  final file = File('rules_prompt.txt');
+                  await file.writeAsString(code);
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Sparat till rules_prompt.txt (lokalt)')),
+                    );
+                  }
+                } catch (e2) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Kunde inte spara: $e2')),
+                    );
+                  }
+                }
+              }
+            },
+            child: const Text('Spara till fil'),
           ),
         ],
       ),
