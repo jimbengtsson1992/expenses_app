@@ -51,10 +51,6 @@ class CategorizationService {
           amount == -105.0 && date.day == 10) {
         return (Category.food, Subcategory.restaurant);
       }
-      if (_matches(description, ['BABY WORLD BACKAPLAN']) &&
-          amount == -1496.95 && date.day == 14) {
-        return (Category.shopping, Subcategory.clothes);
-      }
       if (_matches(description, ['THELINS GRAND CAFE']) &&
           amount == -209.0 && date.day == 8) {
         return (Category.food, Subcategory.coffee);
@@ -1887,6 +1883,14 @@ class CategorizationService {
       return (Category.shopping, Subcategory.other);
     }
 
+    if (_matches(lowerDesc, [
+      'babyland',
+      'baby world',
+      'babysam',
+    ])) {
+      return (Category.shopping, Subcategory.baby);
+    }
+
     // Strict match for NK to avoid matching "BANK"
     if (RegExp(r'\bnk\b', caseSensitive: false).hasMatch(description)) {
       return (Category.shopping, Subcategory.clothes);
@@ -1920,7 +1924,6 @@ class CategorizationService {
       'filippa k',
       'ginatricot',
       'bymalina',
-      'babysam',
       'lindex',
     ])) {
       return (Category.shopping, Subcategory.clothes);

@@ -117,14 +117,6 @@ void main() {
       // New Rules 2026-02-22
       expectCategory(
         service,
-        'BABYSAM',
-        -500,
-        dummyDate,
-        Category.shopping,
-        Subcategory.clothes,
-      );
-      expectCategory(
-        service,
         'LEXINGTON HOME GOT',
         -758.0,
         DateTime(2026, 2, 13),
@@ -723,7 +715,7 @@ void main() {
         -1496.95,
         DateTime(2026, 3, 14),
         Category.shopping,
-        Subcategory.clothes,
+        Subcategory.baby,
       );
     });
     test('New Rules 2026-04-03 (Request)', () {
@@ -796,6 +788,33 @@ void main() {
         'Open banking 99602600817064',
         -18995.0,
         DateTime(2026, 3, 30),
+        Category.shopping,
+        Subcategory.baby,
+      );
+    });
+
+    test('Baby', () {
+      expectCategory(
+        service,
+        'Autogiro K*babyland.s',
+        -550.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.baby,
+      );
+      expectCategory(
+        service,
+        'BABY WORLD',
+        -100.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.baby,
+      );
+      expectCategory(
+        service,
+        'BABYSAM',
+        -100.0,
+        dummyDate,
         Category.shopping,
         Subcategory.baby,
       );
