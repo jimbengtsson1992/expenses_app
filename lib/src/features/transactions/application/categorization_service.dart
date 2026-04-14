@@ -148,6 +148,24 @@ class CategorizationService {
       if (_matches(description, ['Open banking 48521300790']) && amount == -1256.0 && date.day == 2) {
         return (Category.housing, Subcategory.cleaning);
       }
+      if (_matches(description, ['VITA DUVAN']) && (amount == -660.0 || amount == 660.0) && date.day == 3) {
+        return (Category.food, Subcategory.lunch);
+      }
+      if (_matches(description, ['YOGIBOOST HALLARNA']) && (amount == -39.0 || amount == 39.0) && date.day == 4) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['STENBOLAGET SVE']) && (amount == -784.26 || amount == 784.26) && date.day == 11) {
+        return (Category.shopping, Subcategory.tools);
+      }
+      if (_matches(description, ['SP RUBIO MONOCOAT']) && (amount == -150.3 || amount == 150.3) && date.day == 11) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['KLARNA AB']) && (amount == -1990.0 || amount == 1990.0) && date.day == 11) {
+        return (Category.shopping, Subcategory.baby);
+      }
+      if (_matches(description, ['WIKIMEDIA']) && (amount == -33.0 || amount == 33.0) && date.day == 12) {
+        return (Category.other, Subcategory.other);
+      }
     }
 
     // February 2026 Overrides
@@ -1869,6 +1887,9 @@ class CategorizationService {
       'artilleriet store',
       'smalandsgr',
       'floramoraochkrukatosab',
+      'granit 40412',
+      'stuckatur i sve',
+      'blomrum',
     ])) {
       return (Category.shopping, Subcategory.decor);
     }
@@ -1899,6 +1920,7 @@ class CategorizationService {
       'babyland',
       'baby world',
       'babysam',
+      'jollyroom',
     ])) {
       return (Category.shopping, Subcategory.baby);
     }
@@ -1912,7 +1934,6 @@ class CategorizationService {
       'mq ',
       'åhlens',
       'hestra',
-      'blomrum',
       'hm ',
       'h&m',
       'zara',
@@ -2034,6 +2055,7 @@ class CategorizationService {
       'aimo',
       'parkster',
       'betalning bg 5488-2303 gbg stad/int',
+      '5488-2303 gbg stad',
     ])) {
       return (Category.transport, Subcategory.parking);
     }

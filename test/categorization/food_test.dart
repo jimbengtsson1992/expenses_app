@@ -959,5 +959,23 @@ void main() {
         Subcategory.lunch,
       );
     });
+    test('New Rules 2026-04-14 (Request)', () {
+      expectCategory(
+        service,
+        'VITA DUVAN',
+        -660.0,
+        DateTime(2026, 4, 3),
+        Category.food,
+        Subcategory.lunch,
+      );
+      expectCategory(
+        service,
+        'YOGIBOOST HALLARNA',
+        -39.0,
+        DateTime(2026, 4, 4),
+        Category.food,
+        Subcategory.coffee,
+      );
+    });
   });
 }

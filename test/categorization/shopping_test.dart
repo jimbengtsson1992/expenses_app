@@ -827,5 +827,66 @@ void main() {
         Subcategory.baby,
       );
     });
+    test('New Rules 2026-04-14 (Request)', () {
+      // Keywords
+      expectCategory(
+        service,
+        'GRANIT 40412',
+        -100.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'STUCKATUR I SVE',
+        -100.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'BLOMRUM',
+        -100.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'JOLLYROOM',
+        -100.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.baby,
+      );
+
+      // Overrides
+      expectCategory(
+        service,
+        'STENBOLAGET SVE',
+        -784.26,
+        DateTime(2026, 4, 11),
+        Category.shopping,
+        Subcategory.tools,
+      );
+      expectCategory(
+        service,
+        'SP RUBIO MONOCOAT',
+        -150.3,
+        DateTime(2026, 4, 11),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      expectCategory(
+        service,
+        'KLARNA AB',
+        -1990.0,
+        DateTime(2026, 4, 11),
+        Category.shopping,
+        Subcategory.baby,
+      );
+    });
   });
 }

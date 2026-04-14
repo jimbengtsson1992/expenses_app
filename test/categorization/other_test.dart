@@ -345,5 +345,15 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-04-14 (Request)', () {
+      expectCategory(
+        service,
+        'WIKIMEDIA',
+        -33.0,
+        DateTime(2026, 4, 12),
+        Category.other,
+        Subcategory.other,
+      );
+    });
   });
 }

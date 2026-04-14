@@ -147,5 +147,15 @@ void main() {
         Subcategory.car,
       );
     });
+    test('New Rules 2026-04-14 (Request)', () {
+      expectCategory(
+        service,
+        '5488-2303 Gbg Stad',
+        -50.0,
+        dummyDate,
+        Category.transport,
+        Subcategory.parking,
+      );
+    });
   });
 }
