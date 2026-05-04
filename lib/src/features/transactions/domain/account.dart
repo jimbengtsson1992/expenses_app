@@ -7,6 +7,7 @@ enum Account {
   gemensamt('Gemensamt', '3016 05 24377'),
   gemensamtSpar('Gemensamt Spar', '3016 28 91415'),
   sasAmex('SAS Amex', '595-4300'),
+  carPay('CarPay', '5347-9499'),
   unknown('Okänd', null);
 
   const Account(this.displayName, this.accountNumber);

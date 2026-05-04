@@ -56,6 +56,7 @@ const _$AccountEnumMap = {
   Account.gemensamt: 'gemensamt',
   Account.gemensamtSpar: 'gemensamtSpar',
   Account.sasAmex: 'sasAmex',
+  Account.carPay: 'carPay',
   Account.unknown: 'unknown',
 };
 
@@ -81,6 +82,7 @@ const _$SubcategoryEnumMap = {
   Subcategory.decor: 'decor',
   Subcategory.beauty: 'beauty',
   Subcategory.tools: 'tools',
+  Subcategory.baby: 'baby',
   Subcategory.travel: 'travel',
   Subcategory.hobby: 'hobby',
   Subcategory.boardGamesBooksAndToys: 'boardGamesBooksAndToys',
@@ -101,6 +103,7 @@ const _$SubcategoryEnumMap = {
   Subcategory.car: 'car',
   Subcategory.fuel: 'fuel',
   Subcategory.parking: 'parking',
+  Subcategory.congestionTax: 'congestionTax',
   Subcategory.salary: 'salary',
   Subcategory.interest: 'interest',
   Subcategory.loan: 'loan',
