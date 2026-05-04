@@ -822,7 +822,7 @@ void main() {
       expectCategory(
         service,
         'BLOMSTERLANDET',
-        -30.0, // Amex inverted assumption: 30.0 -> -30.0
+        -30.0, // Mastercard inverted assumption: 30.0 -> -30.0
         DateTime(2026, 2, 7),
         Category.food,
         Subcategory.coffee,

@@ -50,7 +50,7 @@ class ExpensesRepository {
       } else {
         // Assume SAS/Transaction export
         allExpenses.addAll(
-          parser.parseSasAmexCsv(content, filename, idRegistry),
+          parser.parseSasMastercardCsv(content, filename, idRegistry),
         );
       }
     }

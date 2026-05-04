@@ -28,7 +28,7 @@ void main() {
       amount: 100,
       description: 'Old',
       category: Category.shopping,
-      sourceAccount: Account.sasAmex,
+      sourceAccount: Account.sasMastercard,
       sourceFilename: 'file',
       subcategory: Subcategory.unknown,
     );
@@ -38,7 +38,7 @@ void main() {
       amount: 100,
       description: 'New',
       category: Category.shopping,
-      sourceAccount: Account.sasAmex,
+      sourceAccount: Account.sasMastercard,
       sourceFilename: 'file',
       subcategory: Subcategory.unknown,
     );
@@ -48,7 +48,7 @@ void main() {
       amount: 100,
       description: 'Future',
       category: Category.shopping,
-      sourceAccount: Account.sasAmex,
+      sourceAccount: Account.sasMastercard,
       sourceFilename: 'file',
       subcategory: Subcategory.unknown,
     );

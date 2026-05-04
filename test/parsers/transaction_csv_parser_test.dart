@@ -208,7 +208,7 @@ void main() {
     );
 
     test(
-      'parseSasAmexCsv parses transactions and supports multiple sections',
+      'parseSasMastercardCsv parses transactions and supports multiple sections',
       () {
         const csvContent = '''
 Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
@@ -222,7 +222,7 @@ Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
 ''';
 
         final idRegistry = <String, int>{};
-        final transactions = parser.parseSasAmexCsv(
+        final transactions = parser.parseSasMastercardCsv(
           csvContent,
           'test.csv',
           idRegistry,
@@ -249,7 +249,7 @@ Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
       },
     );
     test(
-      'parseSasAmexCsv parses "Totalt övriga händelser" but excludes payments (negative)',
+      'parseSasMastercardCsv parses "Totalt övriga händelser" but excludes payments (negative)',
       () {
         const csvContent = '''
 Transaktionsexport;;;;;;2026-01-25 16:14:59
@@ -267,9 +267,9 @@ Datum;Bokfört;Specifikation;Ort;Valuta;Utl. belopp;Belopp
 2026-01-23;2026-01-23;ESPRESSO HOUSE 363;GOETEBORG;SEK;0;58
 ''';
 
-        final transactions = parser.parseSasAmexCsv(
+        final transactions = parser.parseSasMastercardCsv(
           csvContent,
-          'amex_test.csv',
+          'mastercard_test.csv',
           {},
         );
 

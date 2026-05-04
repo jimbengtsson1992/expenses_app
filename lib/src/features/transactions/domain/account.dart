@@ -6,7 +6,7 @@ enum Account {
   louiseVardagskonto('Louise Vardagskonto', '3016 28 92519'),
   gemensamt('Gemensamt', '3016 05 24377'),
   gemensamtSpar('Gemensamt Spar', '3016 28 91415'),
-  sasAmex('SAS Amex', '595-4300'),
+  sasMastercard('SAS Mastercard', '595-4300'),
   carPay('CarPay', '5347-9499'),
   unknown('Okänd', null);
 

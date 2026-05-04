@@ -37,10 +37,10 @@ Flow & Templates: `.agent/categorization_rules.md`.
 ### Data Source Detection
 ```dart
 if (filename.contains('PERSONKONTO')) parseNordea(content);
-else if (filename.contains('SAS AMEX')) parseAmex(content);
+else if (filename.contains('SAS MASTERCARD')) parseMastercard(content);
 ```
 
-### Amex Section Parsing
+### Mastercard Section Parsing
 ```dart
 // "Köp/uttag" section only
 if (col[2] == 'Specifikation') inSection = true;
@@ -49,7 +49,7 @@ if (col[2].startsWith('Summa')) inSection = false;
 
 ### Amount Handling
 - **Nordea**: `double.parse(s.replaceAll(',', '.'))`
-- **Amex**: Invert sign (Positive in CSV = Expense). `s.replaceAll(',', '')` (thousands sep is space/comma, decimal is point).
+- **Mastercard**: Invert sign (Positive in CSV = Expense). `s.replaceAll(',', '')` (thousands sep is space/comma, decimal is point).
 
 ## Internal Transfers
 Filter if desc matches `_myAccounts` list in `ExpensesRepository`.

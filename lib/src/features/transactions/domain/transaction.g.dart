@@ -55,7 +55,7 @@ const _$AccountEnumMap = {
   Account.louiseVardagskonto: 'louiseVardagskonto',
   Account.gemensamt: 'gemensamt',
   Account.gemensamtSpar: 'gemensamtSpar',
-  Account.sasAmex: 'sasAmex',
+  Account.sasMastercard: 'sasMastercard',
   Account.carPay: 'carPay',
   Account.unknown: 'unknown',
 };

@@ -18,4 +18,4 @@
 - **Data**: `assets/data/*.csv`. Filtered > `2024-12-01`.
 - **Parsing**:
   - **Nordea**: Semicolon, `yyyy/MM/dd`, Filter internal transfers (`_isInternalTransfer`).
-  - **Amex**: Semicolon, `yyyy-MM-dd`, Section-based ("Köp/uttag"), Inverted amounts.
+  - **Mastercard**: Semicolon, `yyyy-MM-dd`, Section-based ("Köp/uttag"), Inverted amounts.

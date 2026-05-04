@@ -51,7 +51,7 @@ void main() async {
         try {
           if (filename.contains('transactions')) {
             allTransactions.addAll(
-              parser.parseSasAmexCsv(content, filename, idRegistry),
+              parser.parseSasMastercardCsv(content, filename, idRegistry),
             );
           } else {
             allTransactions.addAll(

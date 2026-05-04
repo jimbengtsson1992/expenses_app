@@ -47,9 +47,9 @@ void main() async {
 
         try {
           if (filename.contains('transactions')) {
-            // Amex/SAS usually starts with 'transactions-'
+            // SAS Mastercard usually starts with 'transactions-'
             allTransactions.addAll(
-              parser.parseSasAmexCsv(content, filename, idRegistry),
+              parser.parseSasMastercardCsv(content, filename, idRegistry),
             );
           } else {
             allTransactions.addAll(
