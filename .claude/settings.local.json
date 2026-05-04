@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(dart run build_runner:*)",
-      "Bash(flutter test:*)"
-    ]
-  }
-}
