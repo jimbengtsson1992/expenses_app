@@ -308,5 +308,81 @@ Bokföringsdag;Belopp;Avsändare;Mottagare;Namn;Rubrik;Saldo;Valuta;
       expect(transactions.length, 1);
       expect(transactions.first.description, 'December Transaction');
     });
+
+    group('parseCarPayCsv', () {
+      test('parses valid rows, inverts amounts, sets correct account', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-03-21;St1 Sandsjobacka Vast;Lindome;659.71
+2026-03-06;Circle K Ulricehamn;Ulricehamn;644.32
+''';
+        final transactions = parser.parseCarPayCsv(csvContent, 'carpay-202603.csv', {});
+
+        expect(transactions.length, 2);
+
+        final first = transactions.first;
+        expect(first.description, 'St1 Sandsjobacka Vast');
+        expect(first.amount, -659.71);
+        expect(first.sourceAccount, Account.carPay);
+        expect(first.date, DateTime(2026, 3, 21));
+
+        final second = transactions[1];
+        expect(second.description, 'Circle K Ulricehamn');
+        expect(second.amount, -644.32);
+      });
+
+      test('skips header row, returns empty for header-only input', () {
+        const csvContent = 'Datum;Händelse;Referens;Belopp\n';
+        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', {});
+        expect(transactions, isEmpty);
+      });
+
+      test('filters transactions before 2024-12-01', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2024-12-01;Circle K Goteborg;Goteborg;500.00
+2024-11-30;St1 Kungsbacka;Kungsbacka;300.00
+''';
+        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', {});
+
+        expect(transactions.length, 1);
+        expect(transactions.first.date, DateTime(2024, 12, 1));
+      });
+
+      test('skips rows with non-date first column (e.g. subtotal lines)', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-03-21;St1 Sandsjobacka Vast;Lindome;659.71
+Jim Bengtsson delsumma;;;659.71
+Summa;;;659.71
+''';
+        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', {});
+        expect(transactions.length, 1);
+      });
+
+      test('skips rows with fewer than 4 columns', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-03-21;St1 Sandsjobacka Vast
+2026-03-06;Circle K Ulricehamn;Ulricehamn;644.32
+''';
+        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', {});
+        expect(transactions.length, 1);
+        expect(transactions.first.description, 'Circle K Ulricehamn');
+      });
+
+      test('generates stable unique ids for identical transactions', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-03-21;Circle K;Goteborg;100.00
+2026-03-21;Circle K;Goteborg;100.00
+''';
+        final idRegistry = <String, int>{};
+        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', idRegistry);
+
+        expect(transactions.length, 2);
+        expect(transactions[0].id, isNot(equals(transactions[1].id)));
+      });
+    });
   });
 }
