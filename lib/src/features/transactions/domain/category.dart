@@ -40,7 +40,7 @@ enum Category {
     Subcategory.hobby,
     Subcategory.boardGamesBooksAndToys,
     Subcategory.newspapers,
-    Subcategory.streaming,
+    Subcategory.streamingAndPrenumerations,
     Subcategory.videoGames,
     Subcategory.other,
   ]),

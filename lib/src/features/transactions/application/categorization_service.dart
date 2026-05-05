@@ -532,7 +532,7 @@ class CategorizationService {
         date.year == 2026 &&
         date.month == 1 &&
         date.day == 24) {
-      return (Category.entertainment, Subcategory.streaming);
+      return (Category.entertainment, Subcategory.streamingAndPrenumerations);
     }
     if (_matches(description, ['LAGARDERE DUTY FREE G']) &&
         (amount == -26.71) &&
@@ -1604,7 +1604,7 @@ class CategorizationService {
       'help.max.com',
       'tv4 aktiebolag',
     ])) {
-      return (Category.entertainment, Subcategory.streaming);
+      return (Category.entertainment, Subcategory.streamingAndPrenumerations);
     }
     if (_matches(lowerDesc, ['klarna*bonnier-local'])) {
       return (Category.entertainment, Subcategory.newspapers);

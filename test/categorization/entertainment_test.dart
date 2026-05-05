@@ -21,7 +21,7 @@ void main() {
         -129,
         dummyDate,
         Category.entertainment,
-        Subcategory.streaming,
+        Subcategory.streamingAndPrenumerations,
       );
       expectCategory(
         service,
@@ -29,7 +29,7 @@ void main() {
         -59,
         dummyDate,
         Category.entertainment,
-        Subcategory.streaming,
+        Subcategory.streamingAndPrenumerations,
       );
       expectCategory(
         service,
@@ -37,7 +37,7 @@ void main() {
         -74.5,
         dummyDate,
         Category.entertainment,
-        Subcategory.streaming,
+        Subcategory.streamingAndPrenumerations,
       );
 
       // Override 2026-01-26
@@ -47,7 +47,7 @@ void main() {
         -9.0,
         DateTime(2026, 1, 24),
         Category.entertainment,
-        Subcategory.streaming,
+        Subcategory.streamingAndPrenumerations,
       );
     });
 
@@ -289,7 +289,7 @@ void main() {
         -100.0,
         DateTime(2025, 1, 1),
         Category.entertainment,
-        Subcategory.streaming,
+        Subcategory.streamingAndPrenumerations,
       );
     });
 
@@ -379,7 +379,7 @@ void main() {
         -129.0,
         dummyDate,
         Category.entertainment,
-        Subcategory.streaming,
+        Subcategory.streamingAndPrenumerations,
       );
     });
   });

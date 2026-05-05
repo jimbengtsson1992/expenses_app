@@ -165,7 +165,7 @@ const List<KnownRecurringPattern> knownRecurringPatterns = [
   KnownRecurringPattern(
     descriptionPattern: 'spotify',
     category: Category.entertainment,
-    subcategory: Subcategory.streaming,
+    subcategory: Subcategory.streamingAndPrenumerations,
     type: TransactionType.expense,
     typicalDayOfMonth: 18,
   ),

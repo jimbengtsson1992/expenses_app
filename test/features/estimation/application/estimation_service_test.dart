@@ -274,7 +274,7 @@ void main() {
         averageAmount: 179,
         typicalDayOfMonth: 15,
         category: Category.entertainment,
-        subcategory: Subcategory.streaming,
+        subcategory: Subcategory.streamingAndPrenumerations,
         type: TransactionType.expense,
         occurrenceCount: 5,
       );
@@ -295,7 +295,7 @@ void main() {
           date: DateTime(2025, 2, 15),
           amount: -179,
           category: Category.entertainment,
-          subcategory: Subcategory.streaming,
+          subcategory: Subcategory.streamingAndPrenumerations,
           description: 'Netflix Premium',
         ),
       ];
@@ -313,7 +313,7 @@ void main() {
         averageAmount: 179,
         typicalDayOfMonth: 25,
         category: Category.entertainment,
-        subcategory: Subcategory.streaming,
+        subcategory: Subcategory.streamingAndPrenumerations,
         type: TransactionType.expense,
         occurrenceCount: 5,
       );
@@ -466,7 +466,7 @@ void main() {
         averageAmount: 179,
         typicalDayOfMonth: 15,
         category: Category.entertainment,
-        subcategory: Subcategory.streaming,
+        subcategory: Subcategory.streamingAndPrenumerations,
         type: TransactionType.expense,
         occurrenceCount: 5,
       );
@@ -488,7 +488,7 @@ void main() {
           date: DateTime(2025, 1, 15),
           amount: -179,
           category: Category.entertainment,
-          subcategory: Subcategory.streaming,
+          subcategory: Subcategory.streamingAndPrenumerations,
         ),
       ];
 

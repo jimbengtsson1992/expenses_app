@@ -32,7 +32,7 @@ enum Subcategory {
   hobby('Hobby'),
   boardGamesBooksAndToys('Brädspel, Böcker & Leksaker'),
   newspapers('Tidningar'),
-  streaming('Streaming'),
+  streamingAndPrenumerations('Streaming & Subscriptions'),
   snuff('Snus'),
   videoGames('TV-spel'),
 
