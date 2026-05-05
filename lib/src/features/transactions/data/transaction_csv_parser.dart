@@ -224,6 +224,80 @@ class TransactionCsvParser {
     return expenses;
   }
 
+  List<Transaction> parseCarPayCsv(
+    String content,
+    String filename,
+    Map<String, int> idRegistry,
+  ) {
+    final rows = const CsvToListConverter(fieldDelimiter: ';', eol: '\n').convert(content);
+    final expenses = <Transaction>[];
+    const sourceAccount = Account.carPay;
+
+    for (var i = 1; i < rows.length; i++) {
+      final row = rows[i];
+      if (row.length < 4) continue;
+
+      final dateStr = row[0].toString();
+      if (!_dateRowPattern.hasMatch(dateStr)) continue;
+
+      final date = _isoDashFormat.parse(dateStr);
+      if (date.isBefore(_startParams)) continue;
+
+      final description = row[1].toString();
+      final amountStr = row[3].toString();
+
+      double rawAmount = 0;
+      if (row[3] is num) {
+        rawAmount = (row[3] as num).toDouble();
+      } else {
+        rawAmount = double.tryParse(amountStr) ?? 0;
+      }
+
+      final amount = -rawAmount;
+
+      final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
+
+      final excludeFromOverview =
+          shouldExcludeFromOverview(description, amount, date) ||
+          _userRulesRepository.isExcluded(id);
+
+      Category category;
+      Subcategory subcategory;
+
+      final override = _userRulesRepository.getOverride(id);
+      if (override != null) {
+        category = override.$1;
+        subcategory = override.$2;
+      } else {
+        final rule = _userRulesRepository.getRule(description);
+        if (rule != null) {
+          category = rule.$1;
+          subcategory = rule.$2;
+        } else {
+          final result = _categorizationService.categorize(description, amount, date);
+          category = result.$1;
+          subcategory = result.$2;
+        }
+      }
+
+      expenses.add(
+        Transaction(
+          id: id,
+          date: date,
+          amount: amount,
+          description: description,
+          category: category,
+          subcategory: subcategory,
+          sourceAccount: sourceAccount,
+          sourceFilename: filename,
+          excludeFromOverview: excludeFromOverview,
+          rawCsvData: row.join(';'),
+        ),
+      );
+    }
+    return expenses;
+  }
+
   String _generateStableId(
     DateTime date,
     double amount,

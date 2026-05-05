@@ -83,13 +83,3 @@ python3 .agent/skills/convert_carpay_pdf_to_csv/test_convert.py
 ```
 
 The test suite includes unit tests for amount normalisation, row filtering, sorting, deduplication, and an integration test against `assets/data/kontoutdrag-202603.pdf` (skipped automatically if the file is absent).
-
-## Flutter app parser (separate task)
-
-The CSV output requires a corresponding parser in the Flutter app. When adding the parser, follow the pattern in `lib/src/features/transactions/data/transaction_csv_parser.dart`:
-
-- **Detection**: filename contains `carpay` (case-insensitive) → `parseCarPayCsv()`
-- **Columns**: `[0]` Datum (yyyy-MM-dd), `[1]` Händelse, `[2]` Referens, `[3]` Belopp
-- **Account**: `Account.carPay`
-- **Amount**: invert sign (positive in CSV = expense, same as SAS Mastercard)
-- **Skip**: header row (row 0)
