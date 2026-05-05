@@ -47,10 +47,14 @@ class ExpensesRepository {
         allExpenses.addAll(
           parser.parseNordeaCsv(content, filename, idRegistry),
         );
+      } else if (filename.toUpperCase().contains('CARPAY')) {
+        allExpenses.addAll(
+          parser.parseCarPayCsv(content, filename, idRegistry),
+        );
       } else {
         // Assume SAS/Transaction export
         allExpenses.addAll(
-          parser.parseSasAmexCsv(content, filename, idRegistry),
+          parser.parseSasMastercardCsv(content, filename, idRegistry),
         );
       }
     }

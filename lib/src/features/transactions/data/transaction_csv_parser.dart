@@ -10,7 +10,7 @@ import '../domain/subcategory.dart';
 import '../application/categorization_service.dart';
 import 'user_rules_repository.dart';
 
-enum AmexSection { none, other, purchases }
+enum MastercardSection { none, other, purchases }
 
 class TransactionCsvParser {
   TransactionCsvParser(this._categorizationService, this._userRulesRepository);
@@ -19,14 +19,16 @@ class TransactionCsvParser {
   final UserRulesRepository _userRulesRepository;
 
   static final _startParams = DateTime(2024, 12, 1);
+  static final _nordeaDateFormat = DateFormat('yyyy/MM/dd');
+  static final _isoDashFormat = DateFormat('yyyy-MM-dd');
+  static final _dateRowPattern = RegExp(r'^\d{4}-\d{2}-\d{2}$');
 
   List<Transaction> parseNordeaCsv(
     String content,
     String filename,
     Map<String, int> idRegistry,
   ) {
-    // Nordea: Semi-colon separated.
-    // Format: Bokföringsdag;Belopp;Avsändare;Mottagare;Namn;Rubrik;Saldo;Valuta;
+    // Nordea: Semicolon-separated. Format: Bokföringsdag;Belopp;Avsändare;Mottagare;Namn;Rubrik;Saldo;Valuta
     // Commas for decimals.
     final rows = const CsvToListConverter(
       fieldDelimiter: ';',
@@ -34,28 +36,14 @@ class TransactionCsvParser {
     ).convert(content);
     final expenses = <Transaction>[];
 
-    // Determine Source Account Name from filename
-
-    Account sourceAccount = Account.values.firstWhere(
+    final sourceAccount = Account.values.firstWhere(
       (account) =>
           account.accountNumber != null &&
           filename
               .replaceAll(' ', '')
-              .contains(
-                account.accountNumber!.replaceAll(' ', ''),
-              ), // flexible match
+              .contains(account.accountNumber!.replaceAll(' ', '')),
       orElse: () => Account.unknown,
     );
-    // Double check with simpler containment if flexible match fails or just use a standard contains?
-    // Filenames usually look like "1127 25 18949.csv".
-    // Let's stick to the previous logic's robustness but using the loop.
-    if (sourceAccount == Account.unknown) {
-      try {
-        sourceAccount = Account.values.firstWhere(
-          (a) => a.accountNumber != null && filename.contains(a.accountNumber!),
-        );
-      } catch (_) {}
-    }
 
     // Skip header (row 0)
     for (var i = 1; i < rows.length; i++) {
@@ -66,38 +54,24 @@ class TransactionCsvParser {
       final amountStr = row[1].toString(); // 2000,00 or -1414,00
       final description = row[5].toString(); // Rubrik
 
-      // Date Parse
-      final date = DateFormat('yyyy/MM/dd').parse(dateStr);
+      final date = _nordeaDateFormat.parse(dateStr);
       if (date.isBefore(_startParams)) continue;
 
-      // Amount Parse
       final amount = double.tryParse(amountStr.replaceAll(',', '.')) ?? 0;
 
       // Filter Transfers - No longer filter them out completely
       // if (_isInternalTransfer(description)) continue;
 
-      // Generate ID
-      final id = _generateStableId(
-        date,
-        amount,
-        description,
-        sourceAccount,
-        idRegistry,
-      );
+      final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
 
-      // Determine exclusion
       final excludeFromOverview =
           shouldExcludeFromOverview(description, amount, date) ||
           _userRulesRepository.isExcluded(id);
-
-      // Filter SAS Payments (to avoid dupe)
-      if (description.contains('Betalning BG 595-4300 SAS EUROBONUS')) continue;
 
       // Categorize Priority:
       // 1. Specific Override (ID based)
       // 2. User Rule (Description based)
       // 3. Fallback to Service (Hardcoded)
-
       Category category;
       Subcategory subcategory;
 
@@ -111,11 +85,7 @@ class TransactionCsvParser {
           category = rule.$1;
           subcategory = rule.$2;
         } else {
-          final result = _categorizationService.categorize(
-            description,
-            amount,
-            date,
-          );
+          final result = _categorizationService.categorize(description, amount, date);
           category = result.$1;
           subcategory = result.$2;
         }
@@ -131,7 +101,6 @@ class TransactionCsvParser {
           subcategory: subcategory,
           sourceAccount: sourceAccount,
           sourceFilename: filename,
-
           excludeFromOverview: excludeFromOverview,
           rawCsvData: row.join(';'),
         ),
@@ -140,7 +109,7 @@ class TransactionCsvParser {
     return expenses;
   }
 
-  List<Transaction> parseSasAmexCsv(
+  List<Transaction> parseSasMastercardCsv(
     String content,
     String filename,
     Map<String, int> idRegistry,
@@ -150,9 +119,9 @@ class TransactionCsvParser {
       eol: '\n',
     ).convert(content);
     final expenses = <Transaction>[];
-    const sourceAccount = Account.sasAmex;
+    const sourceAccount = Account.sasMastercard;
 
-    AmexSection currentSection = AmexSection.none;
+    MastercardSection currentSection = MastercardSection.none;
 
     for (var i = 0; i < rows.length; i++) {
       final row = rows[i];
@@ -160,67 +129,36 @@ class TransactionCsvParser {
 
       final firstCol = row[0].toString();
 
-      // Detect Section Headers
       if (firstCol.contains('Totalt övriga')) {
-        // This section contains Payments (negative) and Fees (positive)
-        // We want to enter this section but filter carefully.
-        // The headers "Datum;..." will follow, which triggers the actual data reading.
-        // We just need to know we are "approaching/in" this section's context.
-        // Actually, the loop below detects 'Datum' to start reading.
-        // We can set a flag here that says "Next data block is Other".
-        currentSection = AmexSection.other;
+        currentSection = MastercardSection.other;
         continue;
       }
 
       if (firstCol.contains('Köp/uttag')) {
-        currentSection = AmexSection.purchases;
+        currentSection = MastercardSection.purchases;
         continue;
       }
 
-      // Detect start of data table headers
-      if (firstCol == 'Datum' &&
-          row.length > 6 &&
-          row[2].toString() == 'Specifikation') {
-        // Headers found. The section flag should already be set by the title above it.
-        // If not (first section might not have title? No, usually does), default to purchases?
-        // In the file provided:
-        // Line 1: Transaktionsexport...
-        // Line 3: Totalt övriga händelser
-        // Line 4: Datum...
-        // Line 26: Köp/uttag
-        // Line 27: Datum...
+      if (firstCol == 'Datum' && row.length > 6 && row[2].toString() == 'Specifikation') {
         continue;
       }
 
-      // Check for End of Section (Sum lines)
       if (row.length > 2 && row[2].toString().startsWith('Summa')) {
-        // End of current block data
-        // currentSection = AmexSection.none; // Optional, or just leave it until next title
         continue;
       }
 
-      // Date check to ensure it's a data row
-      if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(firstCol)) continue;
+      if (!_dateRowPattern.hasMatch(firstCol)) continue;
 
-      // If we haven't identified a section, assume Purchases if unidentified?
-      // Or just proceed.
-      // safely default to purchases if unknown?
-      final section = currentSection == AmexSection.none
-          ? AmexSection.purchases
+      final section = currentSection == MastercardSection.none
+          ? MastercardSection.purchases
           : currentSection;
 
-      // ---------------------------------------------------------
-      // DATA ROW PARSING
-      // ---------------------------------------------------------
-
-      final dateStr = firstCol;
       final description = row[2].toString();
       final amountStr = row[6].toString(); // Belopp
 
-      final date = DateFormat('yyyy-MM-dd').parse(dateStr);
+      final date = _isoDashFormat.parse(firstCol);
       if (date.isBefore(_startParams)) continue;
 
-      // Parse amount
       double rawAmount = 0;
       if (row[6] is num) {
         rawAmount = (row[6] as num).toDouble();
@@ -228,41 +166,29 @@ class TransactionCsvParser {
         rawAmount = double.tryParse(amountStr.replaceAll(',', '')) ?? 0;
       }
 
-      // Filter Logic based on Section
-      if (section == AmexSection.other) {
-        // In "Totalt övriga händelser":
-        // Negative values are Payments (e.g. -28000). Skip these.
-        // Positive values are Fees (e.g. 2335). Keep these.
+      if (section == MastercardSection.other) {
+        // In "Totalt övriga händelser": negative = payment (skip), positive = fee (keep).
         if (rawAmount < 0) continue;
       }
 
-      // Standard Filter: "BETALT BG DATUM" is an explicit payment marker too.
-      // Usually negative in 'other', but good to keep as safety.
+      // "BETALT BG DATUM" is an explicit payment marker in addition to the negative-amount guard.
       if (description.contains('BETALT BG DATUM')) continue;
 
-      // Invert amount:
-      // Amex File: Positive = Cost (e.g. 130). We want Negative (-130).
-      // Amex File: Positive Fee (2335). We want Negative (-2335).
-      // Amex File: Negative Refund/Payment (-100). We want Positive (100).
+      // Mastercard CSV: positive = expense/fee, negative = refund. Invert to our convention.
       final amount = -rawAmount;
 
-      // Generate ID
-      final id = _generateStableId(
-        date,
-        amount,
-        description,
-        sourceAccount,
-        idRegistry,
-      );
+      final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
 
-      // Categorize Priority
-      Category category;
-      Subcategory subcategory;
-
-      // Determine exclusion
       final excludeFromOverview =
           shouldExcludeFromOverview(description, amount, date) ||
           _userRulesRepository.isExcluded(id);
+
+      // Categorize Priority:
+      // 1. Specific Override (ID based)
+      // 2. User Rule (Description based)
+      // 3. Fallback to Service (Hardcoded)
+      Category category;
+      Subcategory subcategory;
 
       final override = _userRulesRepository.getOverride(id);
       if (override != null) {
@@ -274,11 +200,7 @@ class TransactionCsvParser {
           category = rule.$1;
           subcategory = rule.$2;
         } else {
-          final result = _categorizationService.categorize(
-            description,
-            amount,
-            date,
-          );
+          final result = _categorizationService.categorize(description, amount, date);
           category = result.$1;
           subcategory = result.$2;
         }
@@ -294,7 +216,6 @@ class TransactionCsvParser {
           subcategory: subcategory,
           sourceAccount: sourceAccount,
           sourceFilename: filename,
-
           excludeFromOverview: excludeFromOverview,
           rawCsvData: row.join(';'),
         ),
@@ -303,7 +224,80 @@ class TransactionCsvParser {
     return expenses;
   }
 
-  // Generate a deterministic stable ID
+  List<Transaction> parseCarPayCsv(
+    String content,
+    String filename,
+    Map<String, int> idRegistry,
+  ) {
+    final rows = const CsvToListConverter(fieldDelimiter: ';', eol: '\n').convert(content);
+    final expenses = <Transaction>[];
+    const sourceAccount = Account.carPay;
+
+    for (var i = 1; i < rows.length; i++) {
+      final row = rows[i];
+      if (row.length < 4) continue;
+
+      final dateStr = row[0].toString();
+      if (!_dateRowPattern.hasMatch(dateStr)) continue;
+
+      final date = _isoDashFormat.parse(dateStr);
+      if (date.isBefore(_startParams)) continue;
+
+      final description = row[1].toString();
+      final amountStr = row[3].toString();
+
+      double rawAmount = 0;
+      if (row[3] is num) {
+        rawAmount = (row[3] as num).toDouble();
+      } else {
+        rawAmount = double.tryParse(amountStr) ?? 0;
+      }
+
+      final amount = -rawAmount;
+
+      final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
+
+      final excludeFromOverview =
+          shouldExcludeFromOverview(description, amount, date) ||
+          _userRulesRepository.isExcluded(id);
+
+      Category category;
+      Subcategory subcategory;
+
+      final override = _userRulesRepository.getOverride(id);
+      if (override != null) {
+        category = override.$1;
+        subcategory = override.$2;
+      } else {
+        final rule = _userRulesRepository.getRule(description);
+        if (rule != null) {
+          category = rule.$1;
+          subcategory = rule.$2;
+        } else {
+          final result = _categorizationService.categorize(description, amount, date);
+          category = result.$1;
+          subcategory = result.$2;
+        }
+      }
+
+      expenses.add(
+        Transaction(
+          id: id,
+          date: date,
+          amount: amount,
+          description: description,
+          category: category,
+          subcategory: subcategory,
+          sourceAccount: sourceAccount,
+          sourceFilename: filename,
+          excludeFromOverview: excludeFromOverview,
+          rawCsvData: row.join(';'),
+        ),
+      );
+    }
+    return expenses;
+  }
+
   String _generateStableId(
     DateTime date,
     double amount,
@@ -311,19 +305,12 @@ class TransactionCsvParser {
     Account sourceAccount,
     Map<String, int> idRegistry,
   ) {
-    // strict ISO string might include time if not careful, ensure we use what we have
-    // Use a clean format for the key
-    final dateStr = DateFormat('yyyy-MM-dd').format(date);
     final rawKey =
-        '${dateStr}_${amount.toStringAsFixed(2)}_${description}_${sourceAccount.name}';
+        '${_isoDashFormat.format(date)}_${amount.toStringAsFixed(2)}_${description}_${sourceAccount.name}';
 
     final bytes = utf8.encode(rawKey);
-    final hash = sha256
-        .convert(bytes)
-        .toString()
-        .substring(0, 16); // Shorten for readability/space
+    final hash = sha256.convert(bytes).toString().substring(0, 16);
 
-    // Check collision
     if (idRegistry.containsKey(hash)) {
       final count = idRegistry[hash]! + 1;
       idRegistry[hash] = count;
@@ -341,10 +328,10 @@ class TransactionCsvParser {
   ) {
     if (isInternalTransfer(description)) return true;
 
-    // User requested exclusions
+    final upperDesc = description.toUpperCase();
+
     // Jollyroom refund and payment (approx 1889 SEK)
-    if (description.contains('Jollyroom AB') &&
-        (amount.abs() - 1889.0).abs() < 0.01) {
+    if (description.contains('Jollyroom AB') && (amount.abs() - 1889.0).abs() < 0.01) {
       return true;
     }
 
@@ -357,7 +344,7 @@ class TransactionCsvParser {
       return true;
     }
 
-    // Amex: 2025-11-12;2025-11-13;JINX DYNASTY;GOTEBORG;SEK;0;1485
+    // Mastercard: 2025-11-12;2025-11-13;JINX DYNASTY;GOTEBORG;SEK;0;1485
     // Parsed amount is -1485.0
     if (description.contains('JINX DYNASTY') &&
         (amount - -1485.0).abs() < 0.01 &&
@@ -367,18 +354,15 @@ class TransactionCsvParser {
       return true;
     }
 
-    if (description.contains('95561384521')) {
-      // Louise Avanza
+    if (description.contains('95561384521')) { // Louise Avanza
       return true;
     }
 
-    if (description.contains('95580391031')) {
-      // Shared Avanza (Savings account)
+    if (description.contains('95580391031')) { // Shared Avanza (Savings account)
       return true;
     }
 
-    if (description.contains('95580675161')) {
-      // Shared Avanza (ISK)
+    if (description.contains('95580675161')) { // Shared Avanza (ISK)
       return true;
     }
 
@@ -395,7 +379,7 @@ class TransactionCsvParser {
       return true;
     }
 
-    if (description.toUpperCase().contains('AVANZA')) {
+    if (upperDesc.contains('AVANZA')) {
       return true;
     }
 
@@ -419,9 +403,6 @@ class TransactionCsvParser {
     }
 
     // Exclude Swish between Jim and Louise
-    // "Swish inbetalning RAGNAR,LOUISE", "Swish inbetalning Bengtsson,Jim", etc.
-    // Case insensitive matching and flexible spacing (handled by contains)
-    final upperDesc = description.toUpperCase();
     if (upperDesc.contains('SWISH INBETALNING RAGNAR,LOUISE') ||
         upperDesc.contains('SWISH INBETALNING RAGNAR, LOUISE') ||
         upperDesc.contains('SWISH INBETALNING BENGTSSON,JIM') ||
@@ -442,8 +423,7 @@ class TransactionCsvParser {
       return true;
     }
 
-    // Exclude FOODIE
-    // Amount -169.0
+    // Exclude FOODIE | Amount -169.0
     if (description.contains('FOODIE') &&
         (amount - -169.0).abs() < 0.01 &&
         date.year == 2025 &&
@@ -456,28 +436,19 @@ class TransactionCsvParser {
   }
 
   bool isInternalTransfer(String description) {
-    // Check if any of known accounts is in description
     for (final acc in Account.values) {
       final accNum = acc.accountNumber;
       if (accNum == null) continue;
 
-      // Remove spaces from acc for matching? "3016 28 91261" vs "30162891261"?
-      // File has spaces usually.
+      // Strip spaces from both sides to handle "3016 28 91261" vs "30162891261"
       if (description.contains(accNum)) return true;
-      // Also check without spaces just in case
-      if (description
-          .replaceAll(' ', '')
-          .contains(accNum.replaceAll(' ', ''))) {
-        return true;
-      }
+      if (description.replaceAll(' ', '').contains(accNum.replaceAll(' ', ''))) return true;
     }
 
-    if (description.toLowerCase().contains('överföring')) return true;
-    if (description.toLowerCase().contains('lån') &&
-        !description.toLowerCase().contains('omsättning lån')) {
-      return true;
-    }
-    if (description.toLowerCase().contains('autogiro avanza bank')) return true;
+    final lowerDesc = description.toLowerCase();
+    if (lowerDesc.contains('överföring')) return true;
+    if (lowerDesc.contains('lån') && !lowerDesc.contains('omsättning lån')) return true;
+    if (lowerDesc.contains('autogiro avanza bank')) return true;
 
     return false;
   }

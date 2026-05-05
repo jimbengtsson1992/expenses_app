@@ -1,6 +1,6 @@
 ---
 name: Convert XLSX to CSV
-description: Converts an Amex/SAS XLSX transaction export to the semicolon-delimited CSV format required by the Expenses app.
+description: Converts a SAS Mastercard XLSX transaction export to the semicolon-delimited CSV format required by the Expenses app.
 ---
 
 # Convert XLSX to CSV
@@ -10,7 +10,7 @@ description: Converts an Amex/SAS XLSX transaction export to the semicolon-delim
 > When converting a new export to a *new filename*, you **MUST** identify the previous transaction CSV and use `--merge-source <old_file.csv>` to preserve history. Failure to do so will result in data loss.
 
 
-This skill converts Excel transaction files (commonly from Amex/SAS) into a semicolon-delimited CSV format. It handles date formatting (`yyyy-MM-dd`) and merges new data with existing CSV files to preserve history.
+This skill converts Excel transaction files (commonly from SAS Mastercard) into a semicolon-delimited CSV format. It handles date formatting (`yyyy-MM-dd`) and merges new data with existing CSV files to preserve history.
 
 ## Requirements
 
