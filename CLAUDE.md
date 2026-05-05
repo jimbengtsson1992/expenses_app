@@ -9,3 +9,4 @@
 @.agent/recurring_rules.md
 
 @.agent/skills/convert_xlsx_to_csv/SKILL.md
+@.agent/skills/convert_carpay_pdf_to_csv/SKILL.md
