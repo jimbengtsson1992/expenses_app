@@ -959,6 +959,25 @@ void main() {
         Subcategory.lunch,
       );
     });
+    test('New Rules 2026-05-05 (Request)', () {
+      expectCategory(
+        service,
+        'HASSELSSONS MACKLUCKAN',
+        -119.0,
+        DateTime(2025, 1, 1),
+        Category.food,
+        Subcategory.lunch,
+      );
+      // Override: Circle K Ulricehamn is coffee, not fuel (Mastercard, inverted amount)
+      expectCategory(
+        service,
+        'CIRCLE K ULRICEHAMN',
+        -130.0,
+        DateTime(2026, 3, 6),
+        Category.food,
+        Subcategory.coffee,
+      );
+    });
     test('New Rules 2026-04-14 (Request)', () {
       expectCategory(
         service,

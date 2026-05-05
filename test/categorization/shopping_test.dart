@@ -827,6 +827,26 @@ void main() {
         Subcategory.baby,
       );
     });
+    test('New Rules 2026-05-05 (Request)', () {
+      // Nordea: 2026/04/18;-200,00;...;Swish betalning GRÖNBERGS INTERIÖR;...
+      expectCategory(
+        service,
+        'Swish betalning GRÖNBERGS INTERIÖR',
+        -200.0,
+        DateTime(2026, 4, 18),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      // Mastercard: 2026-04-25;...;E-VILLE.COM;HELSINKI;SEK;0.0;578.0 (inverted to -578)
+      expectCategory(
+        service,
+        'E-VILLE.COM',
+        -578.0,
+        DateTime(2026, 4, 25),
+        Category.shopping,
+        Subcategory.baby,
+      );
+    });
     test('New Rules 2026-04-14 (Request)', () {
       // Keywords
       expectCategory(

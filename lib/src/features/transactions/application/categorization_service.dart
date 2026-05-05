@@ -129,6 +129,9 @@ class CategorizationService {
       if (_matches(description, ['LOOMISP*SEVEN VENDING']) && date.day == 31) {
         return (Category.other, Subcategory.other);
       }
+      if (_matches(description, ['CIRCLE K ULRICEHAMN']) && (amount == -130.0 || amount == 130.0) && date.day == 6) {
+        return (Category.food, Subcategory.coffee);
+      }
     }
 
     // April 2026 Overrides
@@ -165,6 +168,12 @@ class CategorizationService {
       }
       if (_matches(description, ['WIKIMEDIA']) && (amount == -33.0 || amount == 33.0) && date.day == 12) {
         return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['Swish betalning GRÖNBERGS INTERIÖR']) && amount == -200.0 && date.day == 18) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['E-VILLE.COM']) && (amount == -578.0 || amount == 578.0) && date.day == 25) {
+        return (Category.shopping, Subcategory.baby);
       }
     }
 
@@ -1603,6 +1612,7 @@ class CategorizationService {
       'amazon prime',
       'help.max.com',
       'tv4 aktiebolag',
+      'bookbeat',
     ])) {
       return (Category.entertainment, Subcategory.streamingAndPrenumerations);
     }
@@ -1678,7 +1688,7 @@ class CategorizationService {
       return (Category.food, Subcategory.takeaway);
     }
 
-    if (_matches(lowerDesc, ['masaki halsosushi ab', 'swish betalning sjöstrand bäck, nat'])) {
+    if (_matches(lowerDesc, ['masaki halsosushi ab', 'swish betalning sjöstrand bäck, nat', 'mackluckan'])) {
       return (Category.food, Subcategory.lunch);
     }
     if (_matches(lowerDesc, [

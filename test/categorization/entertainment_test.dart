@@ -382,5 +382,15 @@ void main() {
         Subcategory.streamingAndPrenumerations,
       );
     });
+    test('New Rules 2026-05-05 (Request)', () {
+      expectCategory(
+        service,
+        'BOOKBEAT',
+        -79.0,
+        dummyDate,
+        Category.entertainment,
+        Subcategory.streamingAndPrenumerations,
+      );
+    });
   });
 }
