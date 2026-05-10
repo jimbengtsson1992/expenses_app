@@ -908,5 +908,72 @@ void main() {
         Subcategory.baby,
       );
     });
+    test('New Rules 2026-05-10b (Request)', () {
+      // Keyword: BLOMSTERLANDET → decor
+      expectCategory(
+        service,
+        'BLOMSTERLANDET',
+        -100.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.decor,
+      );
+      // Override: LOOMISP*DAHLS BAGERI-4 (Mastercard 2026-05-01, 99.0 inverted) → coffee
+      expectCategory(
+        service,
+        'LOOMISP*DAHLS BAGERI-4',
+        -99.0,
+        DateTime(2026, 5, 1),
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Override: Swish betalning GÖRAN BENGTSSON (Nordea 2026-05-02) → tools
+      expectCategory(
+        service,
+        'Swish betalning GÖRAN BENGTSSON',
+        -200.0,
+        DateTime(2026, 5, 2),
+        Category.shopping,
+        Subcategory.tools,
+      );
+    });
+    test('New Rules 2026-05-10 (Request)', () {
+      // Keyword: SP MOMKIND APS → baby
+      expectCategory(
+        service,
+        'SP MOMKIND APS',
+        -500.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.baby,
+      );
+      // Override: CAMELLIA I GOTE (Mastercard 2026-04-18, 95.0 inverted) → decor
+      expectCategory(
+        service,
+        'CAMELLIA I GOTE',
+        -95.0,
+        DateTime(2026, 4, 18),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      // Override: Autogiro K*Boob/ImseV (Nordea 2026-04-27) → baby
+      expectCategory(
+        service,
+        'Autogiro K*Boob/ImseV',
+        -1497.0,
+        DateTime(2026, 4, 27),
+        Category.shopping,
+        Subcategory.baby,
+      );
+      // Override: Autogiro K*kappahl.co (Nordea 2026-04-27) → baby
+      expectCategory(
+        service,
+        'Autogiro K*kappahl.co',
+        -2142.35,
+        DateTime(2026, 4, 27),
+        Category.shopping,
+        Subcategory.baby,
+      );
+    });
   });
 }

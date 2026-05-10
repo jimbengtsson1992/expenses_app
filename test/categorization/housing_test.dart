@@ -201,5 +201,16 @@ void main() {
         Subcategory.cleaning,
       );
     });
+    test('New Rules 2026-05-10 (Request)', () {
+      // Keyword: Open banking 48521300790 → cleaning
+      expectCategory(
+        service,
+        'Open banking 48521300790',
+        -500.0,
+        dummyDate,
+        Category.housing,
+        Subcategory.cleaning,
+      );
+    });
   });
 }

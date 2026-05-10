@@ -154,5 +154,17 @@ void main() {
         Subcategory.supplements,
       );
     });
+
+    test('New Rules 2026-05-10 (Request)', () {
+      // Override: STADIUM FREDSGA (Mastercard 2026-04-24, 399.0 inverted) → gym
+      expectCategory(
+        service,
+        'STADIUM FREDSGA',
+        -399.0,
+        DateTime(2026, 4, 24),
+        Category.health,
+        Subcategory.gym,
+      );
+    });
   });
 }
