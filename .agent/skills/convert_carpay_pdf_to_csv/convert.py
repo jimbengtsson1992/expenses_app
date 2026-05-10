@@ -6,6 +6,7 @@ import re
 import argparse
 
 DATE_PATTERN = re.compile(r'^\d{4}-\d{2}-\d{2}$')
+PENDING_MARKER = '[PENDING]'
 
 
 def normalise_amount(s):
@@ -113,6 +114,41 @@ def clean_existing_csv(path):
     return df
 
 
+def resolve_pending(df_old, df_new):
+    """Remove pending transactions matched by date+amount in the new PDF data. Warn about unmatched ones."""
+    pending_mask = df_old['Händelse'].str.contains(PENDING_MARKER, na=False, regex=False)
+    if not pending_mask.any():
+        return df_old
+
+    df_pending = df_old[pending_mask]
+    df_history = df_old[~pending_mask]
+
+    kept_pending = []
+    resolved_count = 0
+
+    for _, row in df_pending.iterrows():
+        match = df_new[
+            (df_new['Datum'] == row['Datum']) &
+            (abs(df_new['Belopp'] - row['Belopp']) < 0.01)
+        ]
+        if not match.empty:
+            resolved_count += 1
+        else:
+            kept_pending.append(row)
+
+    if resolved_count:
+        print(f"Resolved {resolved_count} pending transaction(s) with PDF data.")
+
+    if kept_pending:
+        print(f"\nWARNING: {len(kept_pending)} pending transaction(s) NOT matched in PDF (kept in CSV):")
+        for row in kept_pending:
+            print(f"  ! {row['Datum']} | {row['Händelse']} | {row['Referens']} | {row['Belopp']}")
+        print("Review these manually — they may belong to a different PDF period.\n")
+        return pd.concat([df_history, pd.DataFrame(kept_pending)], ignore_index=True)
+
+    return df_history
+
+
 def sort_df(df):
     return df.sort_values(
         by=['Datum', 'Händelse', 'Belopp'],
@@ -135,6 +171,7 @@ def convert_carpay_pdf_to_csv(input_path, output_path, merge_source=None):
         try:
             print(f"Merging with existing history from '{merge_file}'...")
             df_old = clean_existing_csv(merge_file)
+            df_old = resolve_pending(df_old, df_new)
             df_final = pd.concat([df_new, df_old], ignore_index=True)
             dedup_cols = ['Datum', 'Händelse', 'Referens', 'Belopp']
             df_final = df_final.drop_duplicates(subset=dedup_cols, keep='first')
