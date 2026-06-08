@@ -10,3 +10,4 @@
 
 @.agent/skills/convert_xlsx_to_csv/SKILL.md
 @.agent/skills/convert_carpay_pdf_to_csv/SKILL.md
+@.agent/skills/add_pending_carpay/SKILL.md

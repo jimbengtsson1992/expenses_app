@@ -10,9 +10,15 @@ description: >
 
 # Convert CarPay PDF to CSV
 
-This skill extracts transactions from CarPay/Ziklo Bank PDF statements and writes a semicolon-delimited CSV that the expense tracker app can parse.
+> [!IMPORTANT]
+> **AI AGENT INSTRUCTIONS**:
+> CarPay PDFs are monthly — each PDF contains only that month's transactions, not the full history.
+> Always target `assets/data/carpay.csv` as the single canonical output file.
+> If it already exists the script merges automatically. If a dated file exists instead
+> (e.g. `carpay-202603.csv`), use `--merge-source <dated_file.csv>` and delete the dated
+> file afterwards to avoid loading duplicate data in the Flutter app.
 
-It mirrors the workflow of `convert_xlsx_to_csv` but reads PDFs instead of Excel files.
+This skill extracts transactions from CarPay/Ziklo Bank PDF statements and **merges** them into a single accumulating `carpay.csv`. Since each PDF contains only one month of data, history is preserved across runs.
 
 ## Requirements
 
@@ -22,30 +28,32 @@ pip3 install -r .agent/skills/convert_carpay_pdf_to_csv/requirements.txt
 
 ## Usage
 
-```bash
-python3 .agent/skills/convert_carpay_pdf_to_csv/convert.py <input.pdf> <output.csv> [--merge-source <existing.csv>]
-```
-
-### Standard (same output file, auto-merge)
+Always target the single canonical CSV:
 
 ```bash
-python3 .agent/skills/convert_carpay_pdf_to_csv/convert.py \
-  assets/data/kontoutdrag-202603.pdf \
-  assets/data/carpay.csv
+python3 .agent/skills/convert_carpay_pdf_to_csv/convert.py <input.pdf> assets/data/carpay.csv
 ```
 
-If `carpay.csv` already exists, the script merges and deduplicates automatically.
+If `assets/data/carpay.csv` already exists, the script merges the new PDF's transactions into it, deduplicates, and re-sorts. No extra flags needed.
 
-### New output file (explicit merge)
+### First time / migration from a dated file
 
-When writing to a **new filename**, provide the old file explicitly to preserve history:
+If `carpay.csv` doesn't exist yet but a dated file does (e.g. `carpay-202603.csv`), seed history from it:
 
 ```bash
 python3 .agent/skills/convert_carpay_pdf_to_csv/convert.py \
   assets/data/kontoutdrag-202604.pdf \
-  assets/data/carpay-2026.csv \
-  --merge-source assets/data/carpay-old.csv
+  assets/data/carpay.csv \
+  --merge-source assets/data/carpay-202603.csv
 ```
+
+Then **delete the dated file** — the Flutter app loads every `carpay*.csv` it finds, so keeping both causes duplicate March transactions in the app.
+
+```bash
+rm assets/data/carpay-202603.csv
+```
+
+From now on, always pass `assets/data/carpay.csv` as the output.
 
 ## Output CSV format
 
@@ -59,7 +67,7 @@ Datum;Händelse;Referens;Belopp
 
 **Amounts**: positive = expense. The Flutter parser for `Account.carPay` inverts the sign, matching the SAS Mastercard convention.
 
-**Filename convention**: name output files so they contain `carpay` (case-insensitive) for the Flutter app to detect them correctly, e.g. `carpay-202603.csv` or `carpay.csv`.
+**Filename**: the output file must contain `carpay` (case-insensitive) for the Flutter app to detect it correctly.
 
 ## Safe update workflow
 
@@ -75,6 +83,7 @@ Datum;Händelse;Referens;Belopp
 - Subtotal and total rows (e.g. "Jim Bengtsson delsumma", "Summa") are filtered by checking that the first column matches `YYYY-MM-DD`.
 - Amounts use Swedish format in the PDF (`644,32`) and are normalised to dot-decimal.
 - Deduplication key: `[Datum, Händelse, Referens, Belopp]`.
+- Pending entries added via `add_pending_carpay` are automatically resolved when the matching PDF data arrives (matched by date + amount ±0.01 SEK). Unresolved ones generate a warning for manual review.
 
 ## Testing
 

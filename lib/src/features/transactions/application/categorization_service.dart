@@ -134,6 +134,16 @@ class CategorizationService {
       }
     }
 
+    // May 2026 Overrides
+    if (date.year == 2026 && date.month == 5) {
+      if (_matches(description, ['LOOMISP*DAHLS BAGERI-4']) && (amount == -99.0 || amount == 99.0) && date.day == 1) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['Swish betalning GÖRAN BENGTSSON']) && amount == -200.0 && date.day == 2) {
+        return (Category.shopping, Subcategory.tools);
+      }
+    }
+
     // April 2026 Overrides
     if (date.year == 2026 && date.month == 4) {
       if (_matches(description, ['LOOMISP*SEVEN VENDING']) && date.day == 1) {
@@ -173,6 +183,18 @@ class CategorizationService {
         return (Category.shopping, Subcategory.decor);
       }
       if (_matches(description, ['E-VILLE.COM']) && (amount == -578.0 || amount == 578.0) && date.day == 25) {
+        return (Category.shopping, Subcategory.baby);
+      }
+      if (_matches(description, ['CAMELLIA I GOTE']) && (amount == -95.0 || amount == 95.0) && date.day == 18) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['STADIUM FREDSGA']) && (amount == -399.0 || amount == 399.0) && date.day == 24) {
+        return (Category.health, Subcategory.gym);
+      }
+      if (_matches(description, ['Autogiro K*Boob/ImseV']) && amount == -1497.0 && date.day == 27) {
+        return (Category.shopping, Subcategory.baby);
+      }
+      if (_matches(description, ['Autogiro K*kappahl.co']) && amount == -2142.35 && date.day == 27) {
         return (Category.shopping, Subcategory.baby);
       }
     }
@@ -1919,6 +1941,7 @@ class CategorizationService {
       'designtorget ostra h',
       'boutique tinna',
       'bunchery by blomrum',
+      'blomsterlandet',
     ])) {
       return (Category.shopping, Subcategory.decor);
     }
@@ -1931,6 +1954,7 @@ class CategorizationService {
       'baby world',
       'babysam',
       'jollyroom',
+      'sp momkind aps',
     ])) {
       return (Category.shopping, Subcategory.baby);
     }
@@ -2176,6 +2200,7 @@ class CategorizationService {
     if (_matches(lowerDesc, [
       'renahus',
       'betalning bg 5020-7042 fortnox fina',
+      'open banking 48521300790',
     ])) {
       return (Category.housing, Subcategory.cleaning);
     }
