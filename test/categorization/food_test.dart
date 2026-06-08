@@ -164,6 +164,32 @@ void main() {
         Category.food,
         Subcategory.coffee,
       );
+
+      // New Rules 2026-06-08
+      expectCategory(
+        service,
+        'PINCH PANTRY AB',
+        -120,
+        dummyDate,
+        Category.food,
+        Subcategory.coffee,
+      );
+      expectCategory(
+        service,
+        'ZETTLE_*PRALINBODEN',
+        -248.0,
+        DateTime(2026, 6, 2),
+        Category.food,
+        Subcategory.coffee,
+      );
+      expectCategory(
+        service,
+        'MCDMOLNDAL',
+        -90.0,
+        DateTime(2026, 6, 5),
+        Category.food,
+        Subcategory.coffee,
+      );
     });
 
     test('Lunch', () {

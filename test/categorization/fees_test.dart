@@ -23,6 +23,24 @@ void main() {
         Category.fees,
         Subcategory.bankFees,
       );
+
+      // New Rules 2026-06-08
+      expectCategory(
+        service,
+        'År-/mån aug 2026 tom jul 2027',
+        -2335.0,
+        DateTime(2026, 6, 5),
+        Category.fees,
+        Subcategory.bankFees,
+      );
+      expectCategory(
+        service,
+        'År-/mån aug 2026 tom jul 2027',
+        -295.0,
+        DateTime(2026, 6, 5),
+        Category.fees,
+        Subcategory.bankFees,
+      );
     });
 
     test('Tax', () {

@@ -171,6 +171,28 @@ class CategorizationService {
       }
     }
 
+    // June 2026 Overrides
+    if (date.year == 2026 && date.month == 6) {
+      if (_matches(description, ['COOLSHOP.SE']) && (amount == -2764.0 || amount == 2764.0) && date.day == 1) {
+        return (Category.shopping, Subcategory.baby);
+      }
+      if (_matches(description, ['ZETTLE_*PRALINBODEN']) && (amount == -248.0 || amount == 248.0) && date.day == 2) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['År-/mån aug 2026 tom jul 2027']) && (amount == -2335.0 || amount == 2335.0) && date.day == 5) {
+        return (Category.fees, Subcategory.bankFees);
+      }
+      if (_matches(description, ['År-/mån aug 2026 tom jul 2027']) && (amount == -295.0 || amount == 295.0) && date.day == 5) {
+        return (Category.fees, Subcategory.bankFees);
+      }
+      if (_matches(description, ['MCDMOLNDAL']) && (amount == -90.0 || amount == 90.0) && date.day == 5) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['APOHEM.SE']) && (amount == -299.0 || amount == 299.0) && date.day == 5) {
+        return (Category.shopping, Subcategory.beauty);
+      }
+    }
+
     // April 2026 Overrides
     if (date.year == 2026 && date.month == 4) {
       if (_matches(description, ['LOOMISP*SEVEN VENDING']) && date.day == 1) {
@@ -1918,6 +1940,7 @@ class CategorizationService {
       'gelaterian goteborg',
       'roots cafe',
       'loomisp*seven vending',
+      'pinch pantry ab',
     ])) {
       return (Category.food, Subcategory.coffee);
     }

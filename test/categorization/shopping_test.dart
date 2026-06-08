@@ -153,6 +153,16 @@ void main() {
         Category.shopping,
         Subcategory.beauty,
       );
+
+      // New Rules 2026-06-08
+      expectCategory(
+        service,
+        'APOHEM.SE',
+        -299.0,
+        DateTime(2026, 6, 5),
+        Category.shopping,
+        Subcategory.beauty,
+      );
     });
 
     test('Decor', () {
@@ -971,6 +981,16 @@ void main() {
         'Autogiro K*kappahl.co',
         -2142.35,
         DateTime(2026, 4, 27),
+        Category.shopping,
+        Subcategory.baby,
+      );
+
+      // New Rules 2026-06-08
+      expectCategory(
+        service,
+        'COOLSHOP.SE',
+        -2764.0,
+        DateTime(2026, 6, 1),
         Category.shopping,
         Subcategory.baby,
       );
