@@ -355,5 +355,25 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-06-08 (Request)', () {
+      // Override: ZETTLE_*SELECTED BRAND (Mastercard 2026-05-15, 200.0 inverted) → other
+      expectCategory(
+        service,
+        'ZETTLE_*SELECTED BRAND',
+        -200.0,
+        DateTime(2026, 5, 15),
+        Category.other,
+        Subcategory.other,
+      );
+      // Override: FRIENDS DONATION (Mastercard 2026-05-28, 5.0 inverted) → other
+      expectCategory(
+        service,
+        'FRIENDS DONATION',
+        -5.0,
+        DateTime(2026, 5, 28),
+        Category.other,
+        Subcategory.other,
+      );
+    });
   });
 }

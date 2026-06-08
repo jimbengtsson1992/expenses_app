@@ -996,5 +996,87 @@ void main() {
         Subcategory.coffee,
       );
     });
+    test('New Rules 2026-06-08 (Request)', () {
+      // Keywords: coffee
+      expectCategory(
+        service,
+        'GELATERIAN GOTEBORG',
+        -89.0,
+        dummyDate,
+        Category.food,
+        Subcategory.coffee,
+      );
+      expectCategory(
+        service,
+        'ROOTS CAFE',
+        -75.0,
+        dummyDate,
+        Category.food,
+        Subcategory.coffee,
+      );
+      // LOOMISP*SEVEN VENDING → coffee (generic date, not an overridden date)
+      expectCategory(
+        service,
+        'LOOMISP*SEVEN VENDING',
+        -45.0,
+        DateTime(2026, 5, 10),
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Override: PEAKABREW COFFEE AB (Mastercard 2026-05-09, 367.0 inverted) → lunch
+      expectCategory(
+        service,
+        'PEAKABREW COFFEE AB',
+        -367.0,
+        DateTime(2026, 5, 9),
+        Category.food,
+        Subcategory.lunch,
+      );
+      // Override: LOOMISP*SEVEN VENDING (Mastercard 2026-05-25, 32.0 inverted) → coffee
+      expectCategory(
+        service,
+        'LOOMISP*SEVEN VENDING',
+        -32.0,
+        DateTime(2026, 5, 25),
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Override: Swish betalning VÄSTRA GÖTALANDSREG (Nordea 2026-05-24, -90) → takeaway
+      expectCategory(
+        service,
+        'Swish betalning VÄSTRA GÖTALANDSREG',
+        -90.0,
+        DateTime(2026, 5, 24),
+        Category.food,
+        Subcategory.takeaway,
+      );
+      // Override: Swish betalning 24SEVEN VENDING SWE (Nordea 2026-05-25, -210) → takeaway
+      expectCategory(
+        service,
+        'Swish betalning 24SEVEN VENDING SWE',
+        -210.0,
+        DateTime(2026, 5, 25),
+        Category.food,
+        Subcategory.takeaway,
+      );
+      // Override: Swish betalning 24SEVEN VENDING SWE (Nordea 2026-05-25, -170) → takeaway
+      expectCategory(
+        service,
+        'Swish betalning 24SEVEN VENDING SWE',
+        -170.0,
+        DateTime(2026, 5, 25),
+        Category.food,
+        Subcategory.takeaway,
+      );
+      // Override: Swish betalning 24SEVEN VENDING SWE (Nordea 2026-05-27, -190) → takeaway
+      expectCategory(
+        service,
+        'Swish betalning 24SEVEN VENDING SWE',
+        -190.0,
+        DateTime(2026, 5, 27),
+        Category.food,
+        Subcategory.takeaway,
+      );
+    });
   });
 }

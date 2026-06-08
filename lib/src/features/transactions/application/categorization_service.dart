@@ -142,6 +142,33 @@ class CategorizationService {
       if (_matches(description, ['Swish betalning GÖRAN BENGTSSON']) && amount == -200.0 && date.day == 2) {
         return (Category.shopping, Subcategory.tools);
       }
+      if (_matches(description, ['PEAKABREW COFFEE AB']) && (amount == -367.0 || amount == 367.0) && date.day == 9) {
+        return (Category.food, Subcategory.lunch);
+      }
+      if (_matches(description, ['ZETTLE_*SELECTED BRAND']) && (amount == -200.0 || amount == 200.0) && date.day == 15) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['Swish betalning VÄSTRA GÖTALANDSREG']) && amount == -90.0 && date.day == 24) {
+        return (Category.food, Subcategory.takeaway);
+      }
+      if (_matches(description, ['Swish betalning 24SEVEN VENDING SWE']) && amount == -210.0 && date.day == 25) {
+        return (Category.food, Subcategory.takeaway);
+      }
+      if (_matches(description, ['Swish betalning 24SEVEN VENDING SWE']) && amount == -170.0 && date.day == 25) {
+        return (Category.food, Subcategory.takeaway);
+      }
+      if (_matches(description, ['LOOMISP*SEVEN VENDING']) && (amount == -32.0 || amount == 32.0) && date.day == 25) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['Swish betalning 24SEVEN VENDING SWE']) && amount == -190.0 && date.day == 27) {
+        return (Category.food, Subcategory.takeaway);
+      }
+      if (_matches(description, ['FRIENDS DONATION']) && (amount == -5.0 || amount == 5.0) && date.day == 28) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['Kortköp 260530 AHLENS Goeteborg Kun']) && date.day == 31) {
+        return (Category.shopping, Subcategory.gifts);
+      }
     }
 
     // April 2026 Overrides
@@ -1888,6 +1915,9 @@ class CategorizationService {
       'stenugnsbageriet heden',
       'da matteo - magasinsga',
       'gelato',
+      'gelaterian goteborg',
+      'roots cafe',
+      'loomisp*seven vending',
     ])) {
       return (Category.food, Subcategory.coffee);
     }
@@ -2036,6 +2066,7 @@ class CategorizationService {
       'rusta',
       'plantagen',
       'nordiskagalleriet',
+      'marbodal',
     ])) {
       return (Category.shopping, Subcategory.furniture); // Approximation
     }

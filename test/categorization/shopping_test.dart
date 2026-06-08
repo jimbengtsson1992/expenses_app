@@ -975,5 +975,25 @@ void main() {
         Subcategory.baby,
       );
     });
+    test('New Rules 2026-06-08 (Request)', () {
+      // Keyword: MARBODAL → furniture
+      expectCategory(
+        service,
+        'MARBODAL STORE',
+        -500.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.furniture,
+      );
+      // Override: Kortköp 260530 AHLENS Goeteborg Kun (Nordea 2026-05-31, -454) → gifts
+      expectCategory(
+        service,
+        'Kortköp 260530 AHLENS Goeteborg Kun',
+        -454.0,
+        DateTime(2026, 5, 31),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+    });
   });
 }
