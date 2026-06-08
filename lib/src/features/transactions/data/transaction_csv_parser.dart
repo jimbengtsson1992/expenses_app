@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:csv/csv.dart';
+import 'package:flutter/foundation.dart' show debugPrint;
 import 'package:intl/intl.dart';
 
 import '../domain/transaction.dart';
@@ -54,7 +55,13 @@ class TransactionCsvParser {
       final amountStr = row[1].toString(); // 2000,00 or -1414,00
       final description = row[5].toString(); // Rubrik
 
-      final date = _nordeaDateFormat.parse(dateStr);
+      DateTime date;
+      try {
+        date = _nordeaDateFormat.parse(dateStr);
+      } catch (_) {
+        debugPrint('[NordeaParser] Skipping row $i — invalid date: "$dateStr"');
+        continue;
+      }
       if (date.isBefore(_startParams)) continue;
 
       final amount = double.tryParse(amountStr.replaceAll(',', '.')) ?? 0;

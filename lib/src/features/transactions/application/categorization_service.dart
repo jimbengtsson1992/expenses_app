@@ -157,6 +157,9 @@ class CategorizationService {
       if (_matches(description, ['Swish betalning 24SEVEN VENDING SWE']) && amount == -170.0 && date.day == 25) {
         return (Category.food, Subcategory.takeaway);
       }
+      if (_matches(description, ['Swish betalning 24SEVEN VENDING SWE']) && amount == -85.0 && date.day == 26) {
+        return (Category.food, Subcategory.takeaway);
+      }
       if (_matches(description, ['LOOMISP*SEVEN VENDING']) && (amount == -32.0 || amount == 32.0) && date.day == 25) {
         return (Category.food, Subcategory.coffee);
       }

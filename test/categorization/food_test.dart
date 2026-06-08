@@ -1103,6 +1103,15 @@ void main() {
         Category.food,
         Subcategory.takeaway,
       );
+      // Override: Swish betalning 24SEVEN VENDING SWE (Nordea 2026-05-26, -85) → takeaway
+      expectCategory(
+        service,
+        'Swish betalning 24SEVEN VENDING SWE',
+        -85.0,
+        DateTime(2026, 5, 26),
+        Category.food,
+        Subcategory.takeaway,
+      );
     });
   });
 }
