@@ -87,6 +87,16 @@ void main() {
         Category.housing,
         Subcategory.cleaning,
       );
+
+      // June 2026 Override
+      expectCategory(
+        service,
+        'Open banking 99604221700695',
+        -628.00,
+        DateTime(2026, 6, 4),
+        Category.housing,
+        Subcategory.cleaning,
+      );
     });
 
     test('Electricity', () {

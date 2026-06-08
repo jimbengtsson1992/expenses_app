@@ -191,6 +191,9 @@ class CategorizationService {
       if (_matches(description, ['APOHEM.SE']) && (amount == -299.0 || amount == 299.0) && date.day == 5) {
         return (Category.shopping, Subcategory.beauty);
       }
+      if (_matches(description, ['Open banking 99604221700695']) && amount == -628.0 && date.day == 4) {
+        return (Category.housing, Subcategory.cleaning);
+      }
     }
 
     // April 2026 Overrides
