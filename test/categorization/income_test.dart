@@ -95,6 +95,17 @@ void main() {
       );
     });
 
+    test('Child Benefit', () {
+      expectCategory(
+        service,
+        'BARNBDR',
+        1250,
+        dummyDate,
+        Category.income,
+        Subcategory.childBenefit,
+      );
+    });
+
     test('Other (Income)', () {
       expectCategory(
         service,

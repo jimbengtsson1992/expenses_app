@@ -375,5 +375,16 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-06-21 (Request)', () {
+      // Override: Swish betalning RAGNAR, MIRANDA (Nordea 2026-06-20, -500) → other
+      expectCategory(
+        service,
+        'Swish betalning RAGNAR, MIRANDA',
+        -500.0,
+        DateTime(2026, 6, 20),
+        Category.other,
+        Subcategory.other,
+      );
+    });
   });
 }

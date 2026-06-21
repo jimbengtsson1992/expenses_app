@@ -76,6 +76,7 @@ enum Category {
     Subcategory.salary,
     Subcategory.interest,
     Subcategory.loan,
+    Subcategory.childBenefit,
     Subcategory.tax,
     Subcategory.kitchenRenovation,
     Subcategory.other,

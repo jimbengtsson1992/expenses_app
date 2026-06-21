@@ -1113,5 +1113,25 @@ void main() {
         Subcategory.takeaway,
       );
     });
+    test('New Rules 2026-06-21 (Request)', () {
+      // Override: CLARION HOTEL DRAKEN (Mastercard 2026-06-09, 1023.75 inverted) → restaurant
+      expectCategory(
+        service,
+        'CLARION HOTEL DRAKEN',
+        -1023.75,
+        DateTime(2026, 6, 9),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      // Override: ROGER NILSSON STAVERSH (Mastercard 2026-06-13, 70.0 inverted) → groceries
+      expectCategory(
+        service,
+        'ROGER NILSSON STAVERSH',
+        -70.0,
+        DateTime(2026, 6, 13),
+        Category.food,
+        Subcategory.groceries,
+      );
+    });
   });
 }

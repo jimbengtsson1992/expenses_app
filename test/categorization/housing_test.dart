@@ -222,5 +222,16 @@ void main() {
         Subcategory.cleaning,
       );
     });
+    test('New Rules 2026-06-21 (Request)', () {
+      // Override: MART MATTSSON OCH CO (Mastercard 2026-06-12, 400.0 inverted) → other
+      expectCategory(
+        service,
+        'MART MATTSSON OCH CO',
+        -400.0,
+        DateTime(2026, 6, 12),
+        Category.housing,
+        Subcategory.other,
+      );
+    });
   });
 }

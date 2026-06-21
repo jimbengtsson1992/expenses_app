@@ -392,5 +392,16 @@ void main() {
         Subcategory.streamingAndPrenumerations,
       );
     });
+    test('New Rules 2026-06-21 (Request)', () {
+      // Override: NORTIC.SE (Mastercard 2026-06-19, 160.0 inverted) → entertainment/other
+      expectCategory(
+        service,
+        'NORTIC.SE',
+        -160.0,
+        DateTime(2026, 6, 19),
+        Category.entertainment,
+        Subcategory.other,
+      );
+    });
   });
 }

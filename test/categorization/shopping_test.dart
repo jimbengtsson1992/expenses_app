@@ -1015,5 +1015,25 @@ void main() {
         Subcategory.gifts,
       );
     });
+    test('New Rules 2026-06-21 (Request)', () {
+      // Override: AVARDA*MED24 (Mastercard 2026-06-07, 348.0 inverted) → baby
+      expectCategory(
+        service,
+        'AVARDA*MED24',
+        -348.0,
+        DateTime(2026, 6, 7),
+        Category.shopping,
+        Subcategory.baby,
+      );
+      // Override: AIMN SPORTSWEAR (Mastercard 2026-06-08, 1671.25 inverted) → gifts
+      expectCategory(
+        service,
+        'AIMN SPORTSWEAR',
+        -1671.25,
+        DateTime(2026, 6, 8),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+    });
   });
 }

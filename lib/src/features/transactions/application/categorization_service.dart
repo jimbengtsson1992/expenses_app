@@ -197,6 +197,27 @@ class CategorizationService {
       if (_matches(description, ['Open banking 99604221700695']) && amount == -628.0 && date.day == 4) {
         return (Category.housing, Subcategory.cleaning);
       }
+      if (_matches(description, ['AVARDA*MED24']) && (amount == -348.0 || amount == 348.0) && date.day == 7) {
+        return (Category.shopping, Subcategory.baby);
+      }
+      if (_matches(description, ['AIMN SPORTSWEAR']) && (amount == -1671.25 || amount == 1671.25) && date.day == 8) {
+        return (Category.shopping, Subcategory.gifts);
+      }
+      if (_matches(description, ['CLARION HOTEL DRAKEN']) && (amount == -1023.75 || amount == 1023.75) && date.day == 9) {
+        return (Category.food, Subcategory.restaurant);
+      }
+      if (_matches(description, ['MART MATTSSON OCH CO']) && (amount == -400.0 || amount == 400.0) && date.day == 12) {
+        return (Category.housing, Subcategory.other);
+      }
+      if (_matches(description, ['ROGER NILSSON STAVERSH']) && (amount == -70.0 || amount == 70.0) && date.day == 13) {
+        return (Category.food, Subcategory.groceries);
+      }
+      if (_matches(description, ['NORTIC.SE']) && (amount == -160.0 || amount == 160.0) && date.day == 19) {
+        return (Category.entertainment, Subcategory.other);
+      }
+      if (_matches(description, ['Swish betalning RAGNAR, MIRANDA']) && amount == -500.0 && date.day == 20) {
+        return (Category.other, Subcategory.other);
+      }
     }
 
     // April 2026 Overrides
@@ -1587,6 +1608,9 @@ class CategorizationService {
       }
       if (_matches(lowerDesc, ['ränta'])) {
         return (Category.income, Subcategory.interest);
+      }
+      if (_matches(lowerDesc, ['barnbdr'])) {
+        return (Category.income, Subcategory.childBenefit);
       }
       return (Category.income, Subcategory.other);
     }
