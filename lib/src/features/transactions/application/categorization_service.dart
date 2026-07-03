@@ -218,6 +218,21 @@ class CategorizationService {
       if (_matches(description, ['Swish betalning RAGNAR, MIRANDA']) && amount == -500.0 && date.day == 20) {
         return (Category.other, Subcategory.other);
       }
+      if (_matches(description, ['FESKEKORKA']) && (amount == -214.0 || amount == 214.0) && date.day == 21) {
+        return (Category.food, Subcategory.restaurant);
+      }
+      if (_matches(description, ['SE0234']) && (amount == -331.0 || amount == 331.0) && date.day == 25) {
+        return (Category.other, Subcategory.other);
+      }
+      if (_matches(description, ['Open Banking BG 5734-9797 Patientfa']) && amount == -130.0 && date.day == 25) {
+        return (Category.health, Subcategory.doctor);
+      }
+      if (_matches(description, ['MCDGBGFROLUNDAMCDRIVE']) && (amount == -178.0 || amount == 178.0) && date.day == 27) {
+        return (Category.food, Subcategory.lunch);
+      }
+      if (_matches(description, ['Swish betalning FORTNOX FINANS AB']) && amount == -1256.0 && date.day == 30) {
+        return (Category.housing, Subcategory.cleaning);
+      }
     }
 
     // April 2026 Overrides
@@ -2223,6 +2238,7 @@ class CategorizationService {
       'sanna andrén',
       'style barbershop',
       'beauty style va',
+      'bokadirekt - bokning',
     ])) {
       return (Category.health, Subcategory.beauty);
     }

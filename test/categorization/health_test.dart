@@ -166,5 +166,26 @@ void main() {
         Subcategory.gym,
       );
     });
+
+    test('New Rules 2026-07-03 (Request)', () {
+      // Keyword: BOKADIREKT - BOKNING → beauty
+      expectCategory(
+        service,
+        'BOKADIREKT - BOKNING',
+        -350.0,
+        dummyDate,
+        Category.health,
+        Subcategory.beauty,
+      );
+      // Override: Open Banking BG 5734-9797 Patientfa (Nordea 2026-06-25, -130) → doctor
+      expectCategory(
+        service,
+        'Open Banking BG 5734-9797 Patientfa',
+        -130.0,
+        DateTime(2026, 6, 25),
+        Category.health,
+        Subcategory.doctor,
+      );
+    });
   });
 }

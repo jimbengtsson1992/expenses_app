@@ -386,5 +386,16 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-07-03 (Request)', () {
+      // Override: SE0234 (Mastercard 2026-06-25, 331.0 inverted) → other
+      expectCategory(
+        service,
+        'SE0234',
+        -331.0,
+        DateTime(2026, 6, 25),
+        Category.other,
+        Subcategory.other,
+      );
+    });
   });
 }

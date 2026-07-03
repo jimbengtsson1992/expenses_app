@@ -233,5 +233,16 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-07-03 (Request)', () {
+      // Override: Swish betalning FORTNOX FINANS AB (Nordea 2026-06-30, -1256) → cleaning
+      expectCategory(
+        service,
+        'Swish betalning FORTNOX FINANS AB',
+        -1256.0,
+        DateTime(2026, 6, 30),
+        Category.housing,
+        Subcategory.cleaning,
+      );
+    });
   });
 }

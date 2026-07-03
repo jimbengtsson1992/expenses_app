@@ -1133,5 +1133,35 @@ void main() {
         Subcategory.groceries,
       );
     });
+    test('New Rules 2026-07-03 (Request)', () {
+      // Override: FESKEKORKA (Mastercard 2026-06-21, 214.0 inverted) → restaurant
+      // (overrides the FESKEKORKA groceries keyword for this date/amount)
+      expectCategory(
+        service,
+        'FESKEKORKA',
+        -214.0,
+        DateTime(2026, 6, 21),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      // Keyword still applies on other dates: FESKEKORKA → groceries
+      expectCategory(
+        service,
+        'FESKEKORKA',
+        -214.0,
+        DateTime(2025, 1, 1),
+        Category.food,
+        Subcategory.groceries,
+      );
+      // Override: MCDGBGFROLUNDAMCDRIVE (Mastercard 2026-06-27, 178.0 inverted) → lunch
+      expectCategory(
+        service,
+        'MCDGBGFROLUNDAMCDRIVE',
+        -178.0,
+        DateTime(2026, 6, 27),
+        Category.food,
+        Subcategory.lunch,
+      );
+    });
   });
 }
