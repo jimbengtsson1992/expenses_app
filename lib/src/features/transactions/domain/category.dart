@@ -77,6 +77,7 @@ enum Category {
     Subcategory.interest,
     Subcategory.loan,
     Subcategory.childBenefit,
+    Subcategory.parentalBenefit,
     Subcategory.tax,
     Subcategory.kitchenRenovation,
     Subcategory.other,

@@ -1163,5 +1163,98 @@ void main() {
         Subcategory.lunch,
       );
     });
+
+    test('New Rules 2026-07-19 (Request)', () {
+      // Keyword: AHLSTROMS KONDITORI → coffee
+      expectCategory(
+        service,
+        'AHLSTROMS KONDITORI',
+        -85.0,
+        dummyDate,
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Override: Swish betalning Adeline Fredriksson (Nordea 2026-07-02, -300) → takeaway
+      expectCategory(
+        service,
+        'Swish betalning Adeline Fredriksson',
+        -300.0,
+        DateTime(2026, 7, 2),
+        Category.food,
+        Subcategory.takeaway,
+      );
+      // Override: Swish betalning M Magnusson Potatis (Nordea 2026-07-10, -110) → groceries
+      expectCategory(
+        service,
+        'Swish betalning M Magnusson Potatis',
+        -110.0,
+        DateTime(2026, 7, 10),
+        Category.food,
+        Subcategory.groceries,
+      );
+      // Override: HEMMAKVÄLL HALM (Mastercard 2026-07-11, 34.9 inverted) → groceries
+      expectCategory(
+        service,
+        'HEMMAKVÄLL HALM',
+        -34.9,
+        DateTime(2026, 7, 11),
+        Category.food,
+        Subcategory.groceries,
+      );
+      // Override: SODRA LIDEN (Mastercard 2026-07-14, 673.05 inverted) → restaurant
+      expectCategory(
+        service,
+        'SODRA LIDEN',
+        -673.05,
+        DateTime(2026, 7, 14),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      // Override: HUMLEGARDEN (Mastercard 2026-07-17, 757.0 inverted) → restaurant
+      expectCategory(
+        service,
+        'HUMLEGARDEN',
+        -757.0,
+        DateTime(2026, 7, 17),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      // Keyword: CAFE IMPERIET → coffee
+      expectCategory(
+        service,
+        'CAFE IMPERIET',
+        -55.0,
+        dummyDate,
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Override: Swish betalning RAGNAR, CAMILLA (Nordea 2026-07-13, -400) → groceries
+      expectCategory(
+        service,
+        'Swish betalning RAGNAR, CAMILLA',
+        -400.0,
+        DateTime(2026, 7, 13),
+        Category.food,
+        Subcategory.groceries,
+      );
+      // Override: ZETTLE_*CAFEBATARNA AB (Mastercard 2026-07-17, 20.0 inverted) → coffee
+      expectCategory(
+        service,
+        'ZETTLE_*CAFEBATARNA AB',
+        -20.0,
+        DateTime(2026, 7, 17),
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Override: STYRSO BIERGARTEN AB (Mastercard 2026-07-17, 38.0 inverted) → coffee
+      expectCategory(
+        service,
+        'STYRSO BIERGARTEN AB',
+        -38.0,
+        DateTime(2026, 7, 17),
+        Category.food,
+        Subcategory.coffee,
+      );
+    });
   });
 }

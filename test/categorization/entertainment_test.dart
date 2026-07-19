@@ -403,5 +403,25 @@ void main() {
         Subcategory.other,
       );
     });
+
+    test('New Rules 2026-07-19 (Request)', () {
+      // Overrides: SAS tickets (Mastercard 2026-07-05, 655.0 inverted) → travel
+      expectCategory(
+        service,
+        'SAS  1172548653232',
+        -655.0,
+        DateTime(2026, 7, 5),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+      expectCategory(
+        service,
+        'SAS  1172548653233',
+        -655.0,
+        DateTime(2026, 7, 5),
+        Category.entertainment,
+        Subcategory.travel,
+      );
+    });
   });
 }

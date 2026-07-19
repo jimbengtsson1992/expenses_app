@@ -124,5 +124,25 @@ void main() {
         Subcategory.other,
       );
     });
+
+    test('New Rules 2026-07-19 (Request)', () {
+      // Keyword: FKASSA → parental benefit
+      expectCategory(
+        service,
+        'FKASSA 199408266709',
+        15000.0,
+        dummyDate,
+        Category.income,
+        Subcategory.parentalBenefit,
+      );
+      expectCategory(
+        service,
+        'FKASSA 199207300758',
+        12000.0,
+        dummyDate,
+        Category.income,
+        Subcategory.parentalBenefit,
+      );
+    });
   });
 }

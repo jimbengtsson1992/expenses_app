@@ -1035,5 +1035,62 @@ void main() {
         Subcategory.gifts,
       );
     });
+
+    test('New Rules 2026-07-19 (Request)', () {
+      // Keyword: LITEN KARIN HB → baby
+      expectCategory(
+        service,
+        'LITEN KARIN HB',
+        -499.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.baby,
+      );
+      // Override: Autogiro K*SHOWERNESS (Nordea 2026-07-01, -768) → decor
+      expectCategory(
+        service,
+        'Autogiro K*SHOWERNESS',
+        -768.0,
+        DateTime(2026, 7, 1),
+        Category.shopping,
+        Subcategory.decor,
+      );
+      // Override: KJELLCO KUNGSG GBG (Mastercard 2026-07-08, 149.9 inverted) → electronics
+      expectCategory(
+        service,
+        'KJELLCO KUNGSG GBG',
+        -149.9,
+        DateTime(2026, 7, 8),
+        Category.shopping,
+        Subcategory.electronics,
+      );
+      // Override: CLAS OHLSON (Mastercard 2026-07-11, 1698.0 inverted) → electronics
+      expectCategory(
+        service,
+        'CLAS OHLSON',
+        -1698.0,
+        DateTime(2026, 7, 11),
+        Category.shopping,
+        Subcategory.electronics,
+      );
+      // Keyword still applies on other dates: CLAS OHLSON → tools
+      expectCategory(
+        service,
+        'CLAS OHLSON',
+        -199.0,
+        dummyDate,
+        Category.shopping,
+        Subcategory.tools,
+      );
+      // Override: Autogiro K*Birkenstoc (Nordea 2026-07-01, -1550) → clothes
+      expectCategory(
+        service,
+        'Autogiro K*Birkenstoc',
+        -1550.0,
+        DateTime(2026, 7, 1),
+        Category.shopping,
+        Subcategory.clothes,
+      );
+    });
   });
 }

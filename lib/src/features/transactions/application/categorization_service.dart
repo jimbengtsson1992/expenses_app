@@ -235,6 +235,55 @@ class CategorizationService {
       }
     }
 
+    // July 2026 Overrides
+    if (date.year == 2026 && date.month == 7) {
+      if (_matches(description, ['Autogiro K*SHOWERNESS']) && amount == -768.0 && date.day == 1) {
+        return (Category.shopping, Subcategory.decor);
+      }
+      if (_matches(description, ['Swish betalning Adeline Fredriksson']) && amount == -300.0 && date.day == 2) {
+        return (Category.food, Subcategory.takeaway);
+      }
+      if (_matches(description, ['SAS  1172548653232']) && (amount == -655.0 || amount == 655.0) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['SAS  1172548653233']) && (amount == -655.0 || amount == 655.0) && date.day == 5) {
+        return (Category.entertainment, Subcategory.travel);
+      }
+      if (_matches(description, ['KJELLCO KUNGSG GBG']) && (amount == -149.9 || amount == 149.9) && date.day == 8) {
+        return (Category.shopping, Subcategory.electronics);
+      }
+      if (_matches(description, ['LYA NAILS & SPA']) && (amount == -450.0 || amount == 450.0) && date.day == 9) {
+        return (Category.health, Subcategory.beauty);
+      }
+      if (_matches(description, ['Swish betalning M Magnusson Potatis']) && amount == -110.0 && date.day == 10) {
+        return (Category.food, Subcategory.groceries);
+      }
+      if (_matches(description, ['HEMMAKVÄLL HALM']) && (amount == -34.9 || amount == 34.9) && date.day == 11) {
+        return (Category.food, Subcategory.groceries);
+      }
+      if (_matches(description, ['CLAS OHLSON']) && (amount == -1698.0 || amount == 1698.0) && date.day == 11) {
+        return (Category.shopping, Subcategory.electronics);
+      }
+      if (_matches(description, ['SODRA LIDEN']) && (amount == -673.05 || amount == 673.05) && date.day == 14) {
+        return (Category.food, Subcategory.restaurant);
+      }
+      if (_matches(description, ['HUMLEGARDEN']) && (amount == -757.0 || amount == 757.0) && date.day == 17) {
+        return (Category.food, Subcategory.restaurant);
+      }
+      if (_matches(description, ['Swish betalning RAGNAR, CAMILLA']) && amount == -400.0 && date.day == 13) {
+        return (Category.food, Subcategory.groceries);
+      }
+      if (_matches(description, ['ZETTLE_*CAFEBATARNA AB']) && (amount == -20.0 || amount == 20.0) && date.day == 17) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['STYRSO BIERGARTEN AB']) && (amount == -38.0 || amount == 38.0) && date.day == 17) {
+        return (Category.food, Subcategory.coffee);
+      }
+      if (_matches(description, ['Autogiro K*Birkenstoc']) && amount == -1550.0 && date.day == 1) {
+        return (Category.shopping, Subcategory.clothes);
+      }
+    }
+
     // April 2026 Overrides
     if (date.year == 2026 && date.month == 4) {
       if (_matches(description, ['LOOMISP*SEVEN VENDING']) && date.day == 1) {
@@ -1627,6 +1676,9 @@ class CategorizationService {
       if (_matches(lowerDesc, ['barnbdr'])) {
         return (Category.income, Subcategory.childBenefit);
       }
+      if (_matches(description, ['FKASSA 199408266709', 'FKASSA 199207300758'])) {
+        return (Category.income, Subcategory.parentalBenefit);
+      }
       return (Category.income, Subcategory.other);
     }
 
@@ -1778,6 +1830,10 @@ class CategorizationService {
       'betalning bg 5597-7003 sportdansklu',
     ])) {
       return (Category.shopping, Subcategory.gifts);
+    }
+    // Must precede groceries: description contains 'ICA'
+    if (_matches(lowerDesc, ['apotek hjartat ica max'])) {
+      return (Category.health, Subcategory.pharmacy);
     }
     if (_matches(lowerDesc, [
       'ica',
@@ -1986,10 +2042,12 @@ class CategorizationService {
       'roots cafe',
       'loomisp*seven vending',
       'pinch pantry ab',
+      'ahlstroms konditori',
+      'cafe imperiet',
     ])) {
       return (Category.food, Subcategory.coffee);
     }
-    if (_matches(lowerDesc, ['mmsports', 'mm sports ab'])) {
+    if (_matches(lowerDesc, ['mmsports', 'mm sports ab', 'orvelin e-handel ab'])) {
       return (Category.health, Subcategory.supplements);
     }
 
@@ -2053,6 +2111,7 @@ class CategorizationService {
       'babysam',
       'jollyroom',
       'sp momkind aps',
+      'liten karin hb',
     ])) {
       return (Category.shopping, Subcategory.baby);
     }

@@ -187,5 +187,35 @@ void main() {
         Subcategory.doctor,
       );
     });
+
+    test('New Rules 2026-07-19 (Request)', () {
+      // Keyword: APOTEK HJARTAT ICA MAX → pharmacy (must not hit 'ica' groceries rule)
+      expectCategory(
+        service,
+        'APOTEK HJARTAT ICA MAX',
+        -215.0,
+        dummyDate,
+        Category.health,
+        Subcategory.pharmacy,
+      );
+      // Override: LYA NAILS & SPA (Mastercard 2026-07-09, 450.0 inverted) → beauty
+      expectCategory(
+        service,
+        'LYA NAILS & SPA',
+        -450.0,
+        DateTime(2026, 7, 9),
+        Category.health,
+        Subcategory.beauty,
+      );
+      // Keyword: ORVELIN E-HANDEL AB → supplements
+      expectCategory(
+        service,
+        'ORVELIN E-HANDEL AB',
+        -349.0,
+        dummyDate,
+        Category.health,
+        Subcategory.supplements,
+      );
+    });
   });
 }

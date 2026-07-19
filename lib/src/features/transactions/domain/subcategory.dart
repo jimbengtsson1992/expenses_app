@@ -61,6 +61,7 @@ enum Subcategory {
   interest('Ränta'),
   loan('Lån'),
   childBenefit('Barnbidrag'),
+  parentalBenefit('Föräldrapenning'),
 
   // --- Övrigt (Other) ---
   personalInsurance('Personförsäkringar'),
