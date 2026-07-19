@@ -54,6 +54,7 @@ pip3 install -r .agent/skills/convert_xlsx_to_csv/requirements.txt
 - **Merging & Deduplication**: The script merges new data with the existing CSV history. Duplicates are identified using a subset of core fields (`[Datum, Specifikation, Ort, Valuta, Utl. belopp, Belopp]`) *ignoring* `Bokfört`. If a collision occurs between a pending transaction (empty `Bokfört`) and a cleared one (has `Bokfört`), the cleared transaction is kept.
 - **Sorting**: Output is strictly sorted by `Datum` (descending), followed by `Specifikation` (ascending) and `Belopp` (ascending) to maintain a highly stable history and prevent old rows from swapping places.
 - **Credit Card Payments**: Rows classified as payments to the credit card (containing "Inbetalning", negative amount, and empty location) are automatically filtered out.
+- **Input Cleanup**: After a successful conversion (and validation, unless `--no-validate` is used), the input `.xlsx` file is **deleted** — its data now lives in the CSV. Pass `--keep-input` to preserve it.
 
 ## Testing & Validation
 
@@ -92,6 +93,6 @@ python3 .agent/skills/convert_xlsx_to_csv/convert.py \
   assets/data/transactions.csv
 ```
  
-If the update is successful AND the output passes validation (no duplicates, sorted correctly), the script will automatically **delete** the `.bak` file to keep the directory clean.
- 93: 
- 94: If validation fails (e.g. duplicate rows found), the `.bak` file is PRESERVED so you can revert if needed.
+If the update is successful AND the output passes validation (no duplicates, sorted correctly), the script will automatically **delete** the `.bak` file to keep the directory clean, and then **delete the input `.xlsx` file** (unless `--keep-input` is passed).
+
+If validation fails (e.g. duplicate rows found), the `.bak` file is PRESERVED so you can revert if needed, and the input `.xlsx` is NOT deleted.

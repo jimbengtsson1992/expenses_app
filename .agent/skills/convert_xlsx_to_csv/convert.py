@@ -236,15 +236,16 @@ if __name__ == "__main__":
     parser.add_argument("output_file", help="Path to the output CSV file")
     parser.add_argument("--merge-source", help="Path to an existing CSV file to merge history from", default=None)
     parser.add_argument("--no-validate", action="store_true", help="Skip validation steps")
-    
+    parser.add_argument("--keep-input", action="store_true", help="Do not delete the input XLSX after a successful conversion")
+
     args = parser.parse_args()
-    
+
     if not os.path.exists(args.input_file):
         print(f"Error: Input file '{args.input_file}' not found.")
         sys.exit(1)
 
     convert_xlsx_to_csv(args.input_file, args.output_file, merge_source=args.merge_source)
-    
+
     if not args.no_validate:
         if validate_csv(args.output_file):
             # Validation passed, remove backup
@@ -255,3 +256,8 @@ if __name__ == "__main__":
         else:
             print("Validation failed (issues found). Backup file preserved.")
             sys.exit(1)
+
+    # Success: the data now lives in the CSV, so the source XLSX is no longer needed
+    if not args.keep_input and os.path.exists(args.input_file):
+        os.remove(args.input_file)
+        print(f"Input file '{args.input_file}' deleted.")
