@@ -53,6 +53,37 @@ void main() {
       );
     });
 
+    test('DISCOVERCARS 2026-07-27 is tagged florence-2026', () {
+      expect(
+        matchKnownTrip('DISCOVERCARS.COM', -6337.72, DateTime(2026, 7, 27)),
+        'florence-2026',
+      );
+      expect(
+        matchKnownTrip('DISCOVERCARS.COM', -6337.72, DateTime(2026, 7, 26)),
+        isNull,
+      );
+    });
+
+    test('SAS 1172548653233/32 2026-07-05 are tagged florence-2026', () {
+      expect(
+        matchKnownTrip('SAS  1172548653233', -655.0, DateTime(2026, 7, 5)),
+        'florence-2026',
+      );
+      expect(
+        matchKnownTrip('SAS  1172548653232', -655.0, DateTime(2026, 7, 5)),
+        'florence-2026',
+      );
+      // Wrong date / amount must not match.
+      expect(
+        matchKnownTrip('SAS  1172548653233', -655.0, DateTime(2026, 7, 6)),
+        isNull,
+      );
+      expect(
+        matchKnownTrip('SAS  1172548653232', -656.0, DateTime(2026, 7, 5)),
+        isNull,
+      );
+    });
+
     test(
       'every entry in knownTripTransactions references a registered trip',
       () {

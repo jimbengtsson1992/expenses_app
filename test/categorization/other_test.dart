@@ -397,5 +397,16 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-08-30 (Request)', () {
+      // Override: POLISEN 1400 GO (Mastercard 2026-07-21, 1000.0 inverted) → other
+      expectCategory(
+        service,
+        'POLISEN 1400 GO',
+        -1000.0,
+        DateTime(2026, 7, 21),
+        Category.other,
+        Subcategory.other,
+      );
+    });
   });
 }

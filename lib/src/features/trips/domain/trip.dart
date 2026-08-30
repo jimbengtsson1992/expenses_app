@@ -58,6 +58,30 @@ const knownTripTransactions = <KnownTripTransaction>[
   //   amount: -2450.0,
   //   year: 2026, month: 6, day: 12,
   // ),
+  KnownTripTransaction(
+    tripId: 'florence-2026',
+    descriptionContains: 'DISCOVERCARS',
+    amount: -6337.72,
+    year: 2026,
+    month: 7,
+    day: 27,
+  ),
+  KnownTripTransaction(
+    tripId: 'florence-2026',
+    descriptionContains: 'SAS  1172548653233',
+    amount: -655.0,
+    year: 2026,
+    month: 7,
+    day: 5,
+  ),
+  KnownTripTransaction(
+    tripId: 'florence-2026',
+    descriptionContains: 'SAS  1172548653232',
+    amount: -655.0,
+    year: 2026,
+    month: 7,
+    day: 5,
+  ),
 ];
 
 String? matchKnownTrip(

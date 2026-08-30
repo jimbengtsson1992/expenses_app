@@ -1798,6 +1798,28 @@ class CategorizationService {
         date.day == 30) {
       return (Category.food, Subcategory.restaurant);
     }
+    // 2026-08-30 request
+    if (_matches(description, ['POLISEN 1400 GO']) &&
+        amount == -1000.0 &&
+        date.year == 2026 &&
+        date.month == 7 &&
+        date.day == 21) {
+      return (Category.other, Subcategory.other);
+    }
+    if (_matches(description, ['Swish betalning LUCAS MALINA']) &&
+        amount == -120.0 &&
+        date.year == 2026 &&
+        date.month == 7 &&
+        date.day == 26) {
+      return (Category.food, Subcategory.groceries);
+    }
+    if (_matches(description, ['SARO BLOMSTERMALA REST']) &&
+        amount == -1148.7 &&
+        date.year == 2026 &&
+        date.month == 7 &&
+        date.day == 31) {
+      return (Category.food, Subcategory.restaurant);
+    }
 
     return null;
   }

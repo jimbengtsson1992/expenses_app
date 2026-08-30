@@ -15,6 +15,7 @@ import '../domain/category.dart';
 import '../domain/subcategory.dart';
 import '../domain/transaction_type.dart';
 import '../domain/account.dart';
+import '../../trips/domain/trip.dart';
 
 class TransactionsListScreen extends ConsumerStatefulWidget {
   const TransactionsListScreen({
@@ -725,6 +726,7 @@ class _TransactionsListScreenState
                           : Colors
                                 .white; // Is dark mode default? Assuming user wants clean UI.
 
+                      final trip = tripById(expense.tripId);
                       return ListTile(
                         leading: Container(
                           padding: const EdgeInsets.all(8),
@@ -751,6 +753,16 @@ class _TransactionsListScreenState
                               const SizedBox(width: 8),
                               Text(
                                 '• ${expense.subcategory.displayName}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                            if (trip != null) ...[
+                              const SizedBox(width: 8),
+                              Text(
+                                '• ${trip.emoji} ${trip.name}',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey,
