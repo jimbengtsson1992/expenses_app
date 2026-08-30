@@ -11,6 +11,8 @@ Personal expense tracker for 1 user. Imports CSVs (Nordea, SAS Mastercard), auto
 - **Logic**: `CategorizationService` (Regex/Keyword matching).
 - **UI**: `ExpensesListScreen`, `DashboardScreen`.
 
+**Trips**: `lib/src/features/trips/` — `domain/trip.dart` (`allTrips`, `knownTripTransactions`, `matchKnownTrip`), `application/trip_providers.dart` (`tripTransactionsProvider`), `presentation/trip_card.dart`.
+
 ## 💾 Data & parsing
 **Files**: `assets/data/*.csv`. Detected via filename keywords.
 - **Nordea**: (`Personkonto`, `Sparkonto`) -> `Date;Amount;Sender;Receiver;Name;Title;Balance;Currency`. `yyyy/MM/dd`.
@@ -22,3 +24,4 @@ Personal expense tracker for 1 user. Imports CSVs (Nordea, SAS Mastercard), auto
 - **Deduplication**: Filters "Bill Payments" in Mastercard to avoid double counting from Nordea.
 - **Date Filter**: Hardcoded start date (`2024-12-01`).
 - **Estimation**: Predicts month-end totals via `EstimationService`. See `.agent/estimation_rules.md`.
+- **Trips**: `Transaction.tripId` (nullable) groups manually tagged transactions for a cross-month total (dashboard `TripCard`, period-independent net sum). Tagging: transaction detail screen → `UserRulesRepository.assignTrip` (SharedPreferences key `trip_assignments`; tagging removes any existing override). Parser: `tripId` = prefs ?? `matchKnownTrip(desc, amount, date)`; `tripId != null` ⇒ `(entertainment, travel)` unless a user override exists. Excluded from estimates. Persist to code via export prompt → `knownTripTransactions`. `clearAll()` wipes trip assignments.

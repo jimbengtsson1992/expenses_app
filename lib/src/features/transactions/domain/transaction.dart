@@ -22,6 +22,7 @@ abstract class Transaction with _$Transaction {
     @Default(Subcategory.unknown) Subcategory subcategory,
     @Default(false) bool excludeFromOverview,
     String? rawCsvData,
+    String? tripId,
   }) = _Transaction;
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>

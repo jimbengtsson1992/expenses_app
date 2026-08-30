@@ -126,7 +126,7 @@ void main() {
         Category.transport,
         Subcategory.car,
       );
-      
+
       // Overrides
       expectCategory(
         service,

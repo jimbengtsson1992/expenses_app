@@ -281,7 +281,6 @@ void main() {
       );
     });
 
-
     test('Streaming Overrides', () {
       expectCategory(
         service,

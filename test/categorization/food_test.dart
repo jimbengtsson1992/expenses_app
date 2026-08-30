@@ -1256,5 +1256,25 @@ void main() {
         Subcategory.coffee,
       );
     });
+    test('New Rules 2026-08-30 (Request)', () {
+      // Override: Swish LUCAS MALINA 2026-07-26 -120 → groceries
+      expectCategory(
+        service,
+        'Swish betalning LUCAS MALINA',
+        -120.0,
+        DateTime(2026, 7, 26),
+        Category.food,
+        Subcategory.groceries,
+      );
+      // Override: SARO BLOMSTERMALA REST (Mastercard 2026-07-31, 1148.7 inverted) → restaurant
+      expectCategory(
+        service,
+        'SARO BLOMSTERMALA REST',
+        -1148.7,
+        DateTime(2026, 7, 31),
+        Category.food,
+        Subcategory.restaurant,
+      );
+    });
   });
 }

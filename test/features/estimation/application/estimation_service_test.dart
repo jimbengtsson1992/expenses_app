@@ -30,6 +30,7 @@ void main() {
     required Subcategory subcategory,
     String description = 'Test transaction',
     bool excludeFromOverview = false,
+    String? tripId,
   }) {
     return Transaction(
       id: 'id_${date.toIso8601String()}_$amount',
@@ -41,6 +42,7 @@ void main() {
       sourceAccount: Account.gemensamt,
       sourceFilename: 'test.csv',
       excludeFromOverview: excludeFromOverview,
+      tripId: tripId,
     );
   }
 
@@ -153,6 +155,41 @@ void main() {
       expect(result, isNotNull);
       expect(result!.actualIncome, 5000);
       expect(result.actualExpenses, 300);
+    });
+
+    test('excludes trip-tagged transactions from actuals', () {
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
+
+      final now = DateTime(2025, 2, 15);
+      const period = DatePeriod.month(2025, 2);
+
+      final transactions = [
+        createTransaction(
+          date: DateTime(2025, 2, 10),
+          amount: -200,
+          category: Category.food,
+          subcategory: Subcategory.groceries,
+        ),
+        createTransaction(
+          date: DateTime(2025, 2, 12),
+          amount: -3000,
+          category: Category.entertainment,
+          subcategory: Subcategory.travel,
+          tripId: 'florence-2026',
+        ), // Trip-tagged: excluded
+      ];
+
+      final result = service.calculateEstimate(period, transactions, now);
+
+      expect(result, isNotNull);
+      expect(result!.actualExpenses, 200);
+      expect(result.categoryEstimates[Category.entertainment]?.actual ?? 0, 0);
     });
 
     test('excludes transactions with excludeFromOverview = true', () {
@@ -581,6 +618,53 @@ void main() {
       final foodEstimate = result!.categoryEstimates[Category.food];
       expect(foodEstimate, isNotNull);
       expect(foodEstimate!.historicalAverage, 1000);
+    });
+
+    test('excludes trip-tagged transactions from historical averages', () {
+      when(
+        mockRecurringService.detectRecurringPatterns(
+          any,
+          forYear: anyNamed('forYear'),
+          forMonth: anyNamed('forMonth'),
+        ),
+      ).thenReturn([]);
+
+      final now = DateTime(2025, 3, 15);
+      const period = DatePeriod.month(2025, 3);
+
+      final history = [
+        // Normal travel in January: counts
+        createTransaction(
+          date: DateTime(2025, 1, 15),
+          amount: -1000,
+          category: Category.entertainment,
+          subcategory: Subcategory.travel,
+        ),
+        // Trip-tagged travel in January: excluded despite same category
+        createTransaction(
+          date: DateTime(2025, 1, 20),
+          amount: -8000,
+          category: Category.entertainment,
+          subcategory: Subcategory.travel,
+          tripId: 'florence-2026',
+        ),
+        // Normal travel in February: counts
+        createTransaction(
+          date: DateTime(2025, 2, 15),
+          amount: -2000,
+          category: Category.entertainment,
+          subcategory: Subcategory.travel,
+        ),
+      ];
+
+      final result = service.calculateEstimate(period, history, now);
+
+      expect(result, isNotNull);
+
+      // Average = (1000+2000)/2 = 1500 — the 8000 trip spend must not inflate it
+      final estimate = result!.categoryEstimates[Category.entertainment];
+      expect(estimate, isNotNull);
+      expect(estimate!.historicalAverage, 1500);
     });
   });
 

@@ -12,6 +12,7 @@
 1. **CSV Parsing**: Any Logic/Regex changes.
 2. **Exclusions**: `excludeFromOverview` logic.
 3. **Categorization**: `CategorizationService` & rules. See `.agent/categorization_rules.md`.
+4. **Trips**: `tripId` parser priority, `matchKnownTrip`, estimation exclusion. Tests in `test/features/trips/`, `test/parsers/`.
 
 ## ⚡️ Quick Context
 - **Stack**: Flutter, Riverpod (Generator), GoRouter, Freezed, fl_chart, Intl.
@@ -19,3 +20,4 @@
 - **Parsing**:
   - **Nordea**: Semicolon, `yyyy/MM/dd`, Filter internal transfers (`_isInternalTransfer`).
   - **Mastercard**: Semicolon, `yyyy-MM-dd`, Section-based ("Köp/uttag"), Inverted amounts.
+- **Trips**: `Transaction.tripId` forces `(entertainment, travel)`; hardcode via `knownTripTransactions` in `trips/domain/trip.dart`, never via a categorization override.

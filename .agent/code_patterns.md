@@ -47,6 +47,15 @@ if (col[2] == 'Specifikation') inSection = true;
 if (col[2].startsWith('Summa')) inSection = false;
 ```
 
+### Per-Row Priority (all 3 parsers)
+```dart
+tripId   = userRules.getTripId(id) ?? matchKnownTrip(desc, amount, date);
+category = userRules.getOverride(id)            // 1. manual override wins
+        ?? (tripId != null ? (entertainment, travel) : null)  // 2. trip
+        ?? userRules.getRule(desc)              // 3. user keyword rule
+        ?? categorizationService.categorize(...); // 4. code
+```
+
 ### Amount Handling
 - **Nordea**: `double.parse(s.replaceAll(',', '.'))`
 - **Mastercard**: Invert sign (Positive in CSV = Expense). `s.replaceAll(',', '')` (thousands sep is space/comma, decimal is point).

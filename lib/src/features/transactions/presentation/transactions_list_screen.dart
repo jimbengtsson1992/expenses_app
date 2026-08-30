@@ -15,6 +15,7 @@ import '../domain/category.dart';
 import '../domain/subcategory.dart';
 import '../domain/transaction_type.dart';
 import '../domain/account.dart';
+import '../../trips/domain/trip.dart';
 
 class TransactionsListScreen extends ConsumerStatefulWidget {
   const TransactionsListScreen({
@@ -148,6 +149,12 @@ class _TransactionsListScreenState
     final rules = rulesRepo.getAllRules();
     final overrides = rulesRepo.getAllOverrides();
     final exclusions = rulesRepo.getAllExclusions();
+    final tripAssignments = rulesRepo.getAllTripAssignments();
+    final hasAny =
+        rules.isNotEmpty ||
+        overrides.isNotEmpty ||
+        exclusions.isNotEmpty ||
+        tripAssignments.isNotEmpty;
 
     // Fetch all transactions to look up details/CSV data for overrides
     // This ensures we have the data even if it's not in the current month view
@@ -164,9 +171,9 @@ class _TransactionsListScreenState
       'IMPORTANT: Create tests for any new or changed logic to prevent regressions.\n',
     );
 
-    if (rules.isEmpty && overrides.isEmpty && exclusions.isEmpty) {
+    if (!hasAny) {
       buffer.clear(); // Clear header
-      buffer.writeln('No rules, overrides, or exclusions saved.');
+      buffer.writeln('No rules, overrides, exclusions, or trip tags saved.');
     } else {
       // 1. General Rules
       if (rules.isNotEmpty) {
@@ -237,6 +244,36 @@ class _TransactionsListScreenState
             buffer.writeln('- Exclude Transaction ID: `$id` (Details unknown)');
           }
         }
+        buffer.writeln();
+      }
+
+      // 4. Trip Assignments
+      if (tripAssignments.isNotEmpty) {
+        buffer.writeln('### Trip Assignments');
+        buffer.writeln(
+          'Add each entry below to `knownTripTransactions` in `lib/src/features/trips/domain/trip.dart` '
+          'as a `KnownTripTransaction`. Matching is by description substring + amount + date. '
+          'The parser categorizes trip-tagged transactions as Category.entertainment / Subcategory.travel '
+          'automatically — do NOT add a separate categorization override for them.',
+        );
+        for (final entry in tripAssignments.entries) {
+          final id = entry.key;
+          final tripId = entry.value;
+          final expense = expenseMap[id];
+          if (expense != null) {
+            final dateStr = DateFormat('yyyy-MM-dd').format(expense.date);
+            buffer.writeln(
+              '- Trip `$tripId`: "${expense.description}" (Amount: ${expense.amount}, Date: $dateStr)',
+            );
+            buffer.writeln(
+              "  -> KnownTripTransaction(tripId: '$tripId', descriptionContains: '${expense.description}', amount: ${expense.amount}, year: ${expense.date.year}, month: ${expense.date.month}, day: ${expense.date.day})",
+            );
+          } else {
+            buffer.writeln(
+              '- Trip `$tripId`: Transaction ID `$id` (Details unknown)',
+            );
+          }
+        }
       }
     }
 
@@ -256,7 +293,7 @@ class _TransactionsListScreenState
           ),
         ),
         actions: [
-          if (rules.isNotEmpty || overrides.isNotEmpty || exclusions.isNotEmpty)
+          if (hasAny)
             TextButton(
               onPressed: () async {
                 Navigator.of(ctx).pop();
@@ -289,11 +326,17 @@ class _TransactionsListScreenState
           ElevatedButton(
             onPressed: () async {
               try {
-                final file = File('/Users/jimbengtsson/Desktop/rules_prompt.txt');
+                final file = File(
+                  '/Users/jimbengtsson/Desktop/rules_prompt.txt',
+                );
                 await file.writeAsString(code);
                 if (mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Sparat till Skrivbordet (rules_prompt.txt)')),
+                    const SnackBar(
+                      content: Text(
+                        'Sparat till Skrivbordet (rules_prompt.txt)',
+                      ),
+                    ),
                   );
                 }
               } catch (e) {
@@ -302,7 +345,9 @@ class _TransactionsListScreenState
                   await file.writeAsString(code);
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Sparat till rules_prompt.txt (lokalt)')),
+                      const SnackBar(
+                        content: Text('Sparat till rules_prompt.txt (lokalt)'),
+                      ),
                     );
                   }
                 } catch (e2) {
@@ -681,6 +726,7 @@ class _TransactionsListScreenState
                           : Colors
                                 .white; // Is dark mode default? Assuming user wants clean UI.
 
+                      final trip = tripById(expense.tripId);
                       return ListTile(
                         leading: Container(
                           padding: const EdgeInsets.all(8),
@@ -707,6 +753,16 @@ class _TransactionsListScreenState
                               const SizedBox(width: 8),
                               Text(
                                 '• ${expense.subcategory.displayName}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                            if (trip != null) ...[
+                              const SizedBox(width: 8),
+                              Text(
+                                '• ${trip.emoji} ${trip.name}',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey,

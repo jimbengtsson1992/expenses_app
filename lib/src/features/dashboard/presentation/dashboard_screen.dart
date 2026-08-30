@@ -10,6 +10,8 @@ import '../../transactions/domain/transaction_type.dart';
 import '../../estimation/application/monthly_estimate_provider.dart';
 import '../../estimation/domain/monthly_estimate.dart';
 import '../../shared/domain/excluded_from_estimates.dart';
+import '../../trips/domain/trip.dart';
+import '../../trips/presentation/trip_card.dart';
 
 import '../application/date_period_provider.dart';
 
@@ -346,6 +348,15 @@ class _DashboardContent extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: 24),
+
+        // Trip cards (totals across all months, independent of period)
+        ...allTrips.map(
+          (t) => Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: TripCard(trip: t),
+          ),
+        ),
+        const SizedBox(height: 16),
 
         Text(
           'Utgifter per Kategori',

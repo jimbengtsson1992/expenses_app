@@ -9,6 +9,7 @@ import '../domain/transaction_type.dart';
 import '../domain/transaction.dart';
 import '../domain/category.dart';
 import '../domain/subcategory.dart';
+import '../../trips/domain/trip.dart';
 
 class TransactionDetailScreen extends ConsumerWidget {
   const TransactionDetailScreen({super.key, required this.expenseId});
@@ -28,6 +29,7 @@ class TransactionDetailScreen extends ConsumerWidget {
 
           final currency = NumberFormat.currency(locale: 'sv', symbol: 'kr');
           final dateFormat = DateFormat('d MMMM yyyy', 'sv');
+          final trip = tripById(expense.tripId);
 
           return ListView(
             padding: const EdgeInsets.all(24),
@@ -136,6 +138,42 @@ class TransactionDetailScreen extends ConsumerWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // Trip Field (Editable)
+              InkWell(
+                onTap: () => _showTripDialog(context, ref, expense),
+                borderRadius: BorderRadius.circular(12),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.white24),
+                  ),
+                  padding: const EdgeInsets.all(2.0),
+                  child: _DetailRow(
+                    label: 'Resa (Klicka för att ändra)',
+                    content: Row(
+                      children: [
+                        if (trip != null) ...[
+                          Text(
+                            trip.emoji,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(width: 8),
+                        ],
+                        Text(
+                          trip?.name ?? 'Ingen resa',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -267,6 +305,70 @@ class TransactionDetailScreen extends ConsumerWidget {
         error: (err, stack) => Center(child: Text('Error: $err')),
       ),
     );
+  }
+
+  Future<void> _showTripDialog(
+    BuildContext context,
+    WidgetRef ref,
+    Transaction expense,
+  ) async {
+    final selection = await showDialog<_TripSelection>(
+      context: context,
+      builder: (ctx) => SimpleDialog(
+        title: const Text('Tagga till resa'),
+        children: [
+          for (final trip in allTrips)
+            SimpleDialogOption(
+              onPressed: () => Navigator.of(ctx).pop(_TripSelection(trip)),
+              child: Text(
+                '${trip.emoji} ${trip.name}',
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
+          if (expense.tripId != null)
+            SimpleDialogOption(
+              onPressed: () =>
+                  Navigator.of(ctx).pop(const _TripSelection(null)),
+              child: const Text(
+                'Ingen resa (ta bort taggning)',
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
+        ],
+      ),
+    );
+
+    if (selection == null) return; // Cancelled
+
+    final repo = await ref.read(userRulesRepositoryProvider.future);
+    final trip = selection.trip;
+
+    if (trip != null) {
+      await repo.assignTrip(expense.id, trip.id);
+      // The parser categorizes trip-tagged transactions as Nöje & Fritid /
+      // Resor, but a per-transaction override would take precedence — drop
+      // it so the trip category applies.
+      if (repo.getOverride(expense.id) != null) {
+        await repo.removeOverride(expense.id);
+      }
+    } else {
+      await repo.clearTrip(expense.id);
+    }
+
+    ref.invalidate(userRulesRepositoryProvider);
+    ref.invalidate(expensesRepositoryProvider);
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            trip != null
+                ? 'Taggad till ${trip.name} (Nöje & Fritid / Resor)'
+                : 'Taggning till resa borttagen',
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _showEditDialog(
@@ -519,4 +621,11 @@ class _DetailRow extends StatelessWidget {
       ],
     );
   }
+}
+
+/// Wraps the dialog result so "no trip selected" (null trip) can be
+/// distinguished from a cancelled dialog (null selection).
+class _TripSelection {
+  const _TripSelection(this.trip);
+  final Trip? trip;
 }
