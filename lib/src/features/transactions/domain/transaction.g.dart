@@ -19,6 +19,7 @@ _Transaction _$TransactionFromJson(Map<String, dynamic> json) => _Transaction(
       Subcategory.unknown,
   excludeFromOverview: json['excludeFromOverview'] as bool? ?? false,
   rawCsvData: json['rawCsvData'] as String?,
+  tripId: json['tripId'] as String?,
 );
 
 Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
@@ -33,6 +34,7 @@ Map<String, dynamic> _$TransactionToJson(_Transaction instance) =>
       'subcategory': _$SubcategoryEnumMap[instance.subcategory]!,
       'excludeFromOverview': instance.excludeFromOverview,
       'rawCsvData': instance.rawCsvData,
+      'tripId': instance.tripId,
     };
 
 const _$CategoryEnumMap = {
@@ -107,6 +109,8 @@ const _$SubcategoryEnumMap = {
   Subcategory.salary: 'salary',
   Subcategory.interest: 'interest',
   Subcategory.loan: 'loan',
+  Subcategory.childBenefit: 'childBenefit',
+  Subcategory.parentalBenefit: 'parentalBenefit',
   Subcategory.personalInsurance: 'personalInsurance',
   Subcategory.godfather: 'godfather',
   Subcategory.mobileSubscription: 'mobileSubscription',

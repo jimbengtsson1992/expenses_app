@@ -10,6 +10,7 @@ import '../domain/category.dart';
 import '../domain/subcategory.dart';
 import '../application/categorization_service.dart';
 import 'user_rules_repository.dart';
+import '../../trips/domain/trip.dart';
 
 enum MastercardSection { none, other, purchases }
 
@@ -69,16 +70,27 @@ class TransactionCsvParser {
       // Filter Transfers - No longer filter them out completely
       // if (_isInternalTransfer(description)) continue;
 
-      final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
+      final id = _generateStableId(
+        date,
+        amount,
+        description,
+        sourceAccount,
+        idRegistry,
+      );
 
       final excludeFromOverview =
           shouldExcludeFromOverview(description, amount, date) ||
           _userRulesRepository.isExcluded(id);
 
+      final tripId =
+          _userRulesRepository.getTripId(id) ??
+          matchKnownTrip(description, amount, date);
+
       // Categorize Priority:
       // 1. Specific Override (ID based)
-      // 2. User Rule (Description based)
-      // 3. Fallback to Service (Hardcoded)
+      // 2. Trip tag -> (entertainment, travel)
+      // 3. User Rule (Description based)
+      // 4. Fallback to Service (Hardcoded)
       Category category;
       Subcategory subcategory;
 
@@ -86,13 +98,21 @@ class TransactionCsvParser {
       if (override != null) {
         category = override.$1;
         subcategory = override.$2;
+      } else if (tripId != null) {
+        // Trip-tagged transactions always show under Nöje & Fritid / Resor
+        category = Category.entertainment;
+        subcategory = Subcategory.travel;
       } else {
         final rule = _userRulesRepository.getRule(description);
         if (rule != null) {
           category = rule.$1;
           subcategory = rule.$2;
         } else {
-          final result = _categorizationService.categorize(description, amount, date);
+          final result = _categorizationService.categorize(
+            description,
+            amount,
+            date,
+          );
           category = result.$1;
           subcategory = result.$2;
         }
@@ -110,6 +130,7 @@ class TransactionCsvParser {
           sourceFilename: filename,
           excludeFromOverview: excludeFromOverview,
           rawCsvData: row.join(';'),
+          tripId: tripId,
         ),
       );
     }
@@ -146,7 +167,9 @@ class TransactionCsvParser {
         continue;
       }
 
-      if (firstCol == 'Datum' && row.length > 6 && row[2].toString() == 'Specifikation') {
+      if (firstCol == 'Datum' &&
+          row.length > 6 &&
+          row[2].toString() == 'Specifikation') {
         continue;
       }
 
@@ -184,16 +207,27 @@ class TransactionCsvParser {
       // Mastercard CSV: positive = expense/fee, negative = refund. Invert to our convention.
       final amount = -rawAmount;
 
-      final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
+      final id = _generateStableId(
+        date,
+        amount,
+        description,
+        sourceAccount,
+        idRegistry,
+      );
 
       final excludeFromOverview =
           shouldExcludeFromOverview(description, amount, date) ||
           _userRulesRepository.isExcluded(id);
 
+      final tripId =
+          _userRulesRepository.getTripId(id) ??
+          matchKnownTrip(description, amount, date);
+
       // Categorize Priority:
       // 1. Specific Override (ID based)
-      // 2. User Rule (Description based)
-      // 3. Fallback to Service (Hardcoded)
+      // 2. Trip tag -> (entertainment, travel)
+      // 3. User Rule (Description based)
+      // 4. Fallback to Service (Hardcoded)
       Category category;
       Subcategory subcategory;
 
@@ -201,13 +235,21 @@ class TransactionCsvParser {
       if (override != null) {
         category = override.$1;
         subcategory = override.$2;
+      } else if (tripId != null) {
+        // Trip-tagged transactions always show under Nöje & Fritid / Resor
+        category = Category.entertainment;
+        subcategory = Subcategory.travel;
       } else {
         final rule = _userRulesRepository.getRule(description);
         if (rule != null) {
           category = rule.$1;
           subcategory = rule.$2;
         } else {
-          final result = _categorizationService.categorize(description, amount, date);
+          final result = _categorizationService.categorize(
+            description,
+            amount,
+            date,
+          );
           category = result.$1;
           subcategory = result.$2;
         }
@@ -225,6 +267,7 @@ class TransactionCsvParser {
           sourceFilename: filename,
           excludeFromOverview: excludeFromOverview,
           rawCsvData: row.join(';'),
+          tripId: tripId,
         ),
       );
     }
@@ -236,7 +279,10 @@ class TransactionCsvParser {
     String filename,
     Map<String, int> idRegistry,
   ) {
-    final rows = const CsvToListConverter(fieldDelimiter: ';', eol: '\n').convert(content);
+    final rows = const CsvToListConverter(
+      fieldDelimiter: ';',
+      eol: '\n',
+    ).convert(content);
     final expenses = <Transaction>[];
     const sourceAccount = Account.carPay;
 
@@ -262,11 +308,21 @@ class TransactionCsvParser {
 
       final amount = -rawAmount;
 
-      final id = _generateStableId(date, amount, description, sourceAccount, idRegistry);
+      final id = _generateStableId(
+        date,
+        amount,
+        description,
+        sourceAccount,
+        idRegistry,
+      );
 
       final excludeFromOverview =
           shouldExcludeFromOverview(description, amount, date) ||
           _userRulesRepository.isExcluded(id);
+
+      final tripId =
+          _userRulesRepository.getTripId(id) ??
+          matchKnownTrip(description, amount, date);
 
       Category category;
       Subcategory subcategory;
@@ -275,13 +331,21 @@ class TransactionCsvParser {
       if (override != null) {
         category = override.$1;
         subcategory = override.$2;
+      } else if (tripId != null) {
+        // Trip-tagged transactions always show under Nöje & Fritid / Resor
+        category = Category.entertainment;
+        subcategory = Subcategory.travel;
       } else {
         final rule = _userRulesRepository.getRule(description);
         if (rule != null) {
           category = rule.$1;
           subcategory = rule.$2;
         } else {
-          final result = _categorizationService.categorize(description, amount, date);
+          final result = _categorizationService.categorize(
+            description,
+            amount,
+            date,
+          );
           category = result.$1;
           subcategory = result.$2;
         }
@@ -299,6 +363,7 @@ class TransactionCsvParser {
           sourceFilename: filename,
           excludeFromOverview: excludeFromOverview,
           rawCsvData: row.join(';'),
+          tripId: tripId,
         ),
       );
     }
@@ -338,7 +403,8 @@ class TransactionCsvParser {
     final upperDesc = description.toUpperCase();
 
     // Jollyroom refund and payment (approx 1889 SEK)
-    if (description.contains('Jollyroom AB') && (amount.abs() - 1889.0).abs() < 0.01) {
+    if (description.contains('Jollyroom AB') &&
+        (amount.abs() - 1889.0).abs() < 0.01) {
       return true;
     }
 
@@ -361,15 +427,18 @@ class TransactionCsvParser {
       return true;
     }
 
-    if (description.contains('95561384521')) { // Louise Avanza
+    if (description.contains('95561384521')) {
+      // Louise Avanza
       return true;
     }
 
-    if (description.contains('95580391031')) { // Shared Avanza (Savings account)
+    if (description.contains('95580391031')) {
+      // Shared Avanza (Savings account)
       return true;
     }
 
-    if (description.contains('95580675161')) { // Shared Avanza (ISK)
+    if (description.contains('95580675161')) {
+      // Shared Avanza (ISK)
       return true;
     }
 
@@ -449,12 +518,18 @@ class TransactionCsvParser {
 
       // Strip spaces from both sides to handle "3016 28 91261" vs "30162891261"
       if (description.contains(accNum)) return true;
-      if (description.replaceAll(' ', '').contains(accNum.replaceAll(' ', ''))) return true;
+      if (description
+          .replaceAll(' ', '')
+          .contains(accNum.replaceAll(' ', ''))) {
+        return true;
+      }
     }
 
     final lowerDesc = description.toLowerCase();
     if (lowerDesc.contains('överföring')) return true;
-    if (lowerDesc.contains('lån') && !lowerDesc.contains('omsättning lån')) return true;
+    if (lowerDesc.contains('lån') && !lowerDesc.contains('omsättning lån')) {
+      return true;
+    }
     if (lowerDesc.contains('autogiro avanza bank')) return true;
 
     return false;

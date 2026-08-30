@@ -22,6 +22,7 @@ class UserRulesRepository {
   static const _overridesKey = 'categorization_overrides';
   static const _rulesKey = 'categorization_rules';
   static const _exclusionsKey = 'categorization_exclusions';
+  static const _tripAssignmentsKey = 'trip_assignments';
 
   // ID -> {category: 'food', subcategory: 'groceries'}
   Map<String, (Category, Subcategory)> _overridesCache = {};
@@ -29,6 +30,8 @@ class UserRulesRepository {
   Map<String, (Category, Subcategory)> _rulesCache = {};
   // Set of ID
   Set<String> _exclusionsCache = {};
+  // ID -> trip id (see allTrips in trips/domain/trip.dart)
+  Map<String, String> _tripAssignmentsCache = {};
 
   void load() {
     // Load Overrides
@@ -67,6 +70,19 @@ class UserRulesRepository {
     if (exclusionsList != null) {
       _exclusionsCache = exclusionsList.toSet();
     }
+
+    // Load Trip Assignments
+    final tripAssignmentsJson = _prefs.getString(_tripAssignmentsKey);
+    if (tripAssignmentsJson != null) {
+      try {
+        final Map<String, dynamic> decoded = jsonDecode(tripAssignmentsJson);
+        _tripAssignmentsCache = decoded.map(
+          (key, value) => MapEntry(key, value as String),
+        );
+      } catch (e) {
+        debugPrint('Error loading trip assignments: $e');
+      }
+    }
   }
 
   // --- Public Getters (Sync) ---
@@ -102,6 +118,12 @@ class UserRulesRepository {
 
   Set<String> getAllExclusions() => Set.from(_exclusionsCache);
 
+  String? getTripId(String transactionId) =>
+      _tripAssignmentsCache[transactionId];
+
+  Map<String, String> getAllTripAssignments() =>
+      Map.from(_tripAssignmentsCache);
+
   // --- Public Setters (Async) ---
 
   Future<void> addOverride(
@@ -111,6 +133,21 @@ class UserRulesRepository {
   ) async {
     _overridesCache[transactionId] = (category, subcategory);
     await _saveOverrides();
+  }
+
+  Future<void> removeOverride(String transactionId) async {
+    _overridesCache.remove(transactionId);
+    await _saveOverrides();
+  }
+
+  Future<void> assignTrip(String transactionId, String tripId) async {
+    _tripAssignmentsCache[transactionId] = tripId;
+    await _saveTripAssignments();
+  }
+
+  Future<void> clearTrip(String transactionId) async {
+    _tripAssignmentsCache.remove(transactionId);
+    await _saveTripAssignments();
   }
 
   Future<void> addRule(
@@ -140,9 +177,11 @@ class UserRulesRepository {
     _overridesCache.clear();
     _rulesCache.clear();
     _exclusionsCache.clear();
+    _tripAssignmentsCache.clear();
     await _prefs.remove(_overridesKey);
     await _prefs.remove(_rulesKey);
     await _prefs.remove(_exclusionsKey);
+    await _prefs.remove(_tripAssignmentsKey);
   }
 
   // --- Internal Persistence ---
@@ -169,5 +208,12 @@ class UserRulesRepository {
 
   Future<void> _saveExclusions() async {
     await _prefs.setStringList(_exclusionsKey, _exclusionsCache.toList());
+  }
+
+  Future<void> _saveTripAssignments() async {
+    await _prefs.setString(
+      _tripAssignmentsKey,
+      jsonEncode(_tripAssignmentsCache),
+    );
   }
 }

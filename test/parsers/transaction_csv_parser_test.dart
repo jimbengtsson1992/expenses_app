@@ -316,7 +316,11 @@ Datum;Händelse;Referens;Belopp
 2026-03-21;St1 Sandsjobacka Vast;Lindome;659.71
 2026-03-06;Circle K Ulricehamn;Ulricehamn;644.32
 ''';
-        final transactions = parser.parseCarPayCsv(csvContent, 'carpay-202603.csv', {});
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay-202603.csv',
+          {},
+        );
 
         expect(transactions.length, 2);
 
@@ -333,7 +337,11 @@ Datum;Händelse;Referens;Belopp
 
       test('skips header row, returns empty for header-only input', () {
         const csvContent = 'Datum;Händelse;Referens;Belopp\n';
-        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', {});
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
         expect(transactions, isEmpty);
       });
 
@@ -343,7 +351,11 @@ Datum;Händelse;Referens;Belopp
 2024-12-01;Circle K Goteborg;Goteborg;500.00
 2024-11-30;St1 Kungsbacka;Kungsbacka;300.00
 ''';
-        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', {});
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
 
         expect(transactions.length, 1);
         expect(transactions.first.date, DateTime(2024, 12, 1));
@@ -356,7 +368,11 @@ Datum;Händelse;Referens;Belopp
 Jim Bengtsson delsumma;;;659.71
 Summa;;;659.71
 ''';
-        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', {});
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
         expect(transactions.length, 1);
       });
 
@@ -366,9 +382,95 @@ Datum;Händelse;Referens;Belopp
 2026-03-21;St1 Sandsjobacka Vast
 2026-03-06;Circle K Ulricehamn;Ulricehamn;644.32
 ''';
-        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', {});
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
         expect(transactions.length, 1);
         expect(transactions.first.description, 'Circle K Ulricehamn');
+      });
+
+      test('populates tripId from user rules repository', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-03-21;St1 Sandsjobacka Vast;Lindome;659.71
+''';
+        when(
+          mockUserRulesRepository.getTripId(any),
+        ).thenReturn('florence-2026');
+
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
+
+        expect(transactions.length, 1);
+        expect(transactions.first.tripId, 'florence-2026');
+      });
+
+      test(
+        'trip-tagged transaction is categorized as entertainment/travel',
+        () {
+          const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-09-05;Trattoria Firenze;Firenze;450.00
+''';
+          when(
+            mockUserRulesRepository.getTripId(any),
+          ).thenReturn('florence-2026');
+          when(
+            mockCategorizationService.categorize(any, any, any),
+          ).thenReturn((Category.food, Subcategory.restaurant));
+
+          final transactions = parser.parseCarPayCsv(
+            csvContent,
+            'carpay.csv',
+            {},
+          );
+
+          expect(transactions.first.category, Category.entertainment);
+          expect(transactions.first.subcategory, Subcategory.travel);
+        },
+      );
+
+      test('user override takes precedence over trip categorization', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-09-05;Trattoria Firenze;Firenze;450.00
+''';
+        when(
+          mockUserRulesRepository.getTripId(any),
+        ).thenReturn('florence-2026');
+        when(
+          mockUserRulesRepository.getOverride(any),
+        ).thenReturn((Category.food, Subcategory.restaurant));
+
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
+
+        expect(transactions.first.tripId, 'florence-2026');
+        expect(transactions.first.category, Category.food);
+        expect(transactions.first.subcategory, Subcategory.restaurant);
+      });
+
+      test('tripId is null when no trip assignment exists', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-03-21;St1 Sandsjobacka Vast;Lindome;659.71
+''';
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
+
+        expect(transactions.length, 1);
+        expect(transactions.first.tripId, isNull);
       });
 
       test('generates stable unique ids for identical transactions', () {
@@ -378,7 +480,11 @@ Datum;Händelse;Referens;Belopp
 2026-03-21;Circle K;Goteborg;100.00
 ''';
         final idRegistry = <String, int>{};
-        final transactions = parser.parseCarPayCsv(csvContent, 'carpay.csv', idRegistry);
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          idRegistry,
+        );
 
         expect(transactions.length, 2);
         expect(transactions[0].id, isNot(equals(transactions[1].id)));

@@ -95,6 +95,8 @@ class EstimationService {
       if (t.excludeFromOverview) continue;
       // Exclude renovation/loan from estimates
       if (isExcludedFromEstimates(t.category, t.subcategory)) continue;
+      // Trip-tagged transactions are one-offs — keep them out of estimates
+      if (t.tripId != null) continue;
 
       if (t.type == TransactionType.income) {
         actualIncome += t.amount.abs();
@@ -217,6 +219,7 @@ class EstimationService {
     for (final t in history) {
       if (t.excludeFromOverview) continue;
       if (isExcludedFromEstimates(t.category, t.subcategory)) continue;
+      if (t.tripId != null) continue;
       final key = '${t.date.year}-${t.date.month}';
       monthlyTotals.putIfAbsent(key, () => {});
       monthlyTotals[key]!.update(
@@ -256,6 +259,7 @@ class EstimationService {
     for (final t in history) {
       if (t.excludeFromOverview) continue;
       if (isExcludedFromEstimates(t.category, t.subcategory)) continue;
+      if (t.tripId != null) continue;
       final key = '${t.date.year}-${t.date.month}';
       monthlyTotals.putIfAbsent(key, () => {});
       monthlyTotals[key]!.putIfAbsent(t.category, () => {});

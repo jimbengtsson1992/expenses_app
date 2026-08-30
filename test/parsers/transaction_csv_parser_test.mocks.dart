@@ -117,6 +117,23 @@ class MockUserRulesRepository extends _i1.Mock
           as Set<String>);
 
   @override
+  String? getTripId(String? transactionId) =>
+      (super.noSuchMethod(
+            Invocation.method(#getTripId, [transactionId]),
+            returnValueForMissingStub: null,
+          )
+          as String?);
+
+  @override
+  Map<String, String> getAllTripAssignments() =>
+      (super.noSuchMethod(
+            Invocation.method(#getAllTripAssignments, []),
+            returnValue: <String, String>{},
+            returnValueForMissingStub: <String, String>{},
+          )
+          as Map<String, String>);
+
+  @override
   _i6.Future<void> addOverride(
     String? transactionId,
     _i3.Category? category,
@@ -128,6 +145,33 @@ class MockUserRulesRepository extends _i1.Mock
               category,
               subcategory,
             ]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> removeOverride(String? transactionId) =>
+      (super.noSuchMethod(
+            Invocation.method(#removeOverride, [transactionId]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> assignTrip(String? transactionId, String? tripId) =>
+      (super.noSuchMethod(
+            Invocation.method(#assignTrip, [transactionId, tripId]),
+            returnValue: _i6.Future<void>.value(),
+            returnValueForMissingStub: _i6.Future<void>.value(),
+          )
+          as _i6.Future<void>);
+
+  @override
+  _i6.Future<void> clearTrip(String? transactionId) =>
+      (super.noSuchMethod(
+            Invocation.method(#clearTrip, [transactionId]),
             returnValue: _i6.Future<void>.value(),
             returnValueForMissingStub: _i6.Future<void>.value(),
           )
