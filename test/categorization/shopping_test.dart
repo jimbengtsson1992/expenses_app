@@ -1092,5 +1092,64 @@ void main() {
         Subcategory.clothes,
       );
     });
+    test('New Rules 2026-09-05 (Request)', () {
+      // Override: LEXINGTON HOME GOT (Mastercard 2026-08-02, 245 / 295 inverted) → gifts
+      expectCategory(
+        service,
+        'LEXINGTON HOME GOT',
+        -245.0,
+        DateTime(2026, 8, 2),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+      expectCategory(
+        service,
+        'LEXINGTON HOME GOT',
+        -295.0,
+        DateTime(2026, 8, 2),
+        Category.shopping,
+        Subcategory.gifts,
+      );
+      // Other amount on the same date is not affected by the override.
+      expect(
+        service.categorize('LEXINGTON HOME GOT', -100.0, DateTime(2026, 8, 2)),
+        isNot((Category.shopping, Subcategory.gifts)),
+      );
+      // Override: BLOCKET AB (Mastercard 2026-08-21, 859 inverted) → baby
+      expectCategory(
+        service,
+        'BLOCKET AB',
+        -859.0,
+        DateTime(2026, 8, 21),
+        Category.shopping,
+        Subcategory.baby,
+      );
+      // Override: KAPPAHL GOETEBORG AVEN (Mastercard 2026-08-26) → baby (184.3) / clothes (358)
+      expectCategory(
+        service,
+        'KAPPAHL GOETEBORG AVEN',
+        -184.3,
+        DateTime(2026, 8, 26),
+        Category.shopping,
+        Subcategory.baby,
+      );
+      expectCategory(
+        service,
+        'KAPPAHL GOETEBORG AVEN',
+        -358.0,
+        DateTime(2026, 8, 26),
+        Category.shopping,
+        Subcategory.clothes,
+      );
+      // Other amount on the same date must not become baby.
+      expect(
+        service.categorize(
+          'KAPPAHL GOETEBORG AVEN',
+          -500.0,
+          DateTime(2026, 8, 26),
+        ),
+        isNot((Category.shopping, Subcategory.baby)),
+      );
+    });
   });
 }

@@ -1820,6 +1820,126 @@ class CategorizationService {
         date.day == 31) {
       return (Category.food, Subcategory.restaurant);
     }
+    // 2026-09-05 request
+    if (_matches(description, ['LEXINGTON HOME GOT']) &&
+        (amount == -245.0 || amount == -295.0) &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 2) {
+      return (Category.shopping, Subcategory.gifts);
+    }
+    if (_matches(description, ['BAGERI SAF']) &&
+        amount == -252.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 3) {
+      return (Category.food, Subcategory.coffee);
+    }
+    if (_matches(description, ['Open banking 99604221700695']) &&
+        amount == -1256.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 3) {
+      return (Category.housing, Subcategory.cleaning);
+    }
+    if (_matches(description, ['CPH.DK']) &&
+        amount == -2065.54 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 6) {
+      return (Category.transport, Subcategory.parking);
+    }
+    if (_matches(description, ['Swish betalning GÖRAN BENGTSSON']) &&
+        amount == -616.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 6) {
+      return (Category.food, Subcategory.takeaway);
+    }
+    if (_matches(description, ['CIRCLE K VARBERG NORD']) &&
+        amount == -79.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 14) {
+      return (Category.food, Subcategory.coffee);
+    }
+    if (_matches(description, ['AQUA BARN AB']) &&
+        amount == -2499.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 21) {
+      return (Category.health, Subcategory.gym);
+    }
+    if (_matches(description, ['APOHEM.SE']) &&
+        amount == -735.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 21) {
+      return (Category.health, Subcategory.pharmacy);
+    }
+    if (_matches(description, ['BLOCKET AB']) &&
+        amount == -859.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 21) {
+      return (Category.shopping, Subcategory.baby);
+    }
+    if (_matches(description, ['Swish betalning LINN HANTOFT']) &&
+        amount == -516.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 22) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['MCSNACKSCANDINAVIUM']) &&
+        amount == -35.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 23) {
+      return (Category.food, Subcategory.coffee);
+    }
+    if (_matches(description, ['Open banking 99604221700695']) &&
+        amount == -1907.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 25) {
+      return (Category.housing, Subcategory.renovation);
+    }
+    if (_matches(description, ['KAPPAHL GOETEBORG AVEN']) &&
+        amount == -184.3 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 26) {
+      return (Category.shopping, Subcategory.baby);
+    }
+    if (_matches(description, ['KAPPAHL GOETEBORG AVEN']) &&
+        amount == -358.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 26) {
+      return (Category.shopping, Subcategory.clothes);
+    }
+    if (_matches(description, ['LEMON GARDEN GOTEBORG']) &&
+        amount == -499.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 29) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['Swish betalning FRÖLUNDA MASSAGE AN']) &&
+        amount == -895.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 30) {
+      return (Category.health, Subcategory.doctor);
+    }
+    if (_matches(description, ['STAR BOWLING GA.TEBORG']) &&
+        amount == -440.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 31) {
+      return (Category.other, Subcategory.other);
+    }
 
     return null;
   }
@@ -1830,6 +1950,14 @@ class CategorizationService {
     DateTime date,
     String lowerDesc,
   ) {
+    // Benefit payouts (2026-09-05 request): keyword only, independent of sign.
+    if (_matches(description, ['Barnbidrag'])) {
+      return (Category.income, Subcategory.childBenefit);
+    }
+    if (_matches(description, ['Dagersättning'])) {
+      return (Category.income, Subcategory.parentalBenefit);
+    }
+
     // --- Income (> 0) ---
     if (amount > 0) {
       if (_matches(lowerDesc, ['lön', 'salary', 'werks'])) {

@@ -144,5 +144,26 @@ void main() {
         Subcategory.parentalBenefit,
       );
     });
+
+    test('New Rules 2026-09-05 (Request)', () {
+      // Keyword: Barnbidrag → child benefit
+      expectCategory(
+        service,
+        'Insättning Barnbidrag',
+        1250.0,
+        dummyDate,
+        Category.income,
+        Subcategory.childBenefit,
+      );
+      // Keyword: Dagersättning → parental benefit
+      expectCategory(
+        service,
+        'Dagersättning FKASSA',
+        8000.0,
+        dummyDate,
+        Category.income,
+        Subcategory.parentalBenefit,
+      );
+    });
   });
 }

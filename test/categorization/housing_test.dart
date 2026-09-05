@@ -244,5 +244,34 @@ void main() {
         Subcategory.cleaning,
       );
     });
+    test('New Rules 2026-09-05 (Request)', () {
+      // Override: Open banking 99604221700695 (Nordea 2026-08-03, -1256) → cleaning
+      expectCategory(
+        service,
+        'Open banking 99604221700695',
+        -1256.0,
+        DateTime(2026, 8, 3),
+        Category.housing,
+        Subcategory.cleaning,
+      );
+      // Override: Open banking 99604221700695 (Nordea 2026-08-25, -1907) → renovation
+      expectCategory(
+        service,
+        'Open banking 99604221700695',
+        -1907.0,
+        DateTime(2026, 8, 25),
+        Category.housing,
+        Subcategory.renovation,
+      );
+      // Same description with the cleaning amount/date stays cleaning.
+      expect(
+        service.categorize(
+          'Open banking 99604221700695',
+          -1907.0,
+          DateTime(2026, 8, 3),
+        ),
+        isNot((Category.housing, Subcategory.renovation)),
+      );
+    });
   });
 }

@@ -157,5 +157,21 @@ void main() {
         Subcategory.parking,
       );
     });
+    test('New Rules 2026-09-05 (Request)', () {
+      // Override: CPH.DK (Mastercard 2026-08-06, 2065.54 inverted) → parking
+      expectCategory(
+        service,
+        'CPH.DK',
+        -2065.54,
+        DateTime(2026, 8, 6),
+        Category.transport,
+        Subcategory.parking,
+      );
+      // Wrong amount must not match the override.
+      expect(
+        service.categorize('CPH.DK', -2000.0, DateTime(2026, 8, 6)),
+        isNot((Category.transport, Subcategory.parking)),
+      );
+    });
   });
 }

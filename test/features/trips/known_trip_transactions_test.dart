@@ -84,6 +84,15 @@ void main() {
       );
     });
 
+    test('CPH.DK 2026-08-06 is tagged florence-2026', () {
+      expect(
+        matchKnownTrip('CPH.DK', -2065.54, DateTime(2026, 8, 6)),
+        'florence-2026',
+      );
+      expect(matchKnownTrip('CPH.DK', -2065.54, DateTime(2026, 8, 7)), isNull);
+      expect(matchKnownTrip('CPH.DK', -2000.0, DateTime(2026, 8, 6)), isNull);
+    });
+
     test(
       'every entry in knownTripTransactions references a registered trip',
       () {

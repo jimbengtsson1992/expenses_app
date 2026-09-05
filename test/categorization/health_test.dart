@@ -217,5 +217,43 @@ void main() {
         Subcategory.supplements,
       );
     });
+    test('New Rules 2026-09-05 (Request)', () {
+      // Override: Betalning BG 127-7078 AQUA BARN AB (Nordea 2026-08-21, -2499) → gym
+      expectCategory(
+        service,
+        'Betalning BG 127-7078 AQUA BARN AB',
+        -2499.0,
+        DateTime(2026, 8, 21),
+        Category.health,
+        Subcategory.gym,
+      );
+      // Override: APOHEM.SE (Mastercard 2026-08-21, 735 inverted) → pharmacy
+      expectCategory(
+        service,
+        'APOHEM.SE',
+        -735.0,
+        DateTime(2026, 8, 21),
+        Category.health,
+        Subcategory.pharmacy,
+      );
+      // Override: Swish betalning FRÖLUNDA MASSAGE AN (Nordea 2026-08-30, -895) → doctor
+      expectCategory(
+        service,
+        'Swish betalning FRÖLUNDA MASSAGE AN',
+        -895.0,
+        DateTime(2026, 8, 30),
+        Category.health,
+        Subcategory.doctor,
+      );
+      // Wrong amount must not match the override.
+      expect(
+        service.categorize(
+          'Betalning BG 127-7078 AQUA BARN AB',
+          -100.0,
+          DateTime(2026, 8, 21),
+        ),
+        isNot((Category.health, Subcategory.gym)),
+      );
+    });
   });
 }

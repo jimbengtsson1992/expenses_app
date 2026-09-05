@@ -1276,5 +1276,71 @@ void main() {
         Subcategory.restaurant,
       );
     });
+    test('New Rules 2026-09-05 (Request)', () {
+      // Override: BAGERI SAF (Mastercard 2026-08-03, 252 inverted) → coffee
+      expectCategory(
+        service,
+        'BAGERI SAF',
+        -252.0,
+        DateTime(2026, 8, 3),
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Wrong date must not match the override.
+      expect(
+        service.categorize('BAGERI SAF', -252.0, DateTime(2026, 8, 4)),
+        isNot((Category.food, Subcategory.coffee)),
+      );
+      // Override: Swish betalning GÖRAN BENGTSSON (Nordea 2026-08-06, -616) → takeaway
+      expectCategory(
+        service,
+        'Swish betalning GÖRAN BENGTSSON',
+        -616.0,
+        DateTime(2026, 8, 6),
+        Category.food,
+        Subcategory.takeaway,
+      );
+      // Override: CIRCLE K VARBERG NORD (Mastercard 2026-08-14, 79 inverted) → coffee
+      expectCategory(
+        service,
+        'CIRCLE K VARBERG NORD',
+        -79.0,
+        DateTime(2026, 8, 14),
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Override: Swish betalning LINN HANTOFT (Nordea 2026-08-22, -516) → restaurant
+      expectCategory(
+        service,
+        'Swish betalning LINN HANTOFT',
+        -516.0,
+        DateTime(2026, 8, 22),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      // Override: MCSNACKSCANDINAVIUM (Mastercard 2026-08-23, 35 inverted) → coffee
+      expectCategory(
+        service,
+        'MCSNACKSCANDINAVIUM',
+        -35.0,
+        DateTime(2026, 8, 23),
+        Category.food,
+        Subcategory.coffee,
+      );
+      // Override: LEMON GARDEN GOTEBORG. (Mastercard 2026-08-29, 499 inverted) → restaurant
+      expectCategory(
+        service,
+        'LEMON GARDEN GOTEBORG.',
+        -499.0,
+        DateTime(2026, 8, 29),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      // Wrong date must not match the override.
+      expect(
+        service.categorize('MCSNACKSCANDINAVIUM', -35.0, DateTime(2026, 8, 24)),
+        isNot((Category.food, Subcategory.coffee)),
+      );
+    });
   });
 }

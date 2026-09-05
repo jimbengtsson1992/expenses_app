@@ -408,5 +408,16 @@ void main() {
         Subcategory.other,
       );
     });
+    test('New Rules 2026-09-05 (Request)', () {
+      // Override: STAR BOWLING GA.TEBORG (Mastercard 2026-08-31, 440.0 inverted) → other
+      expectCategory(
+        service,
+        'STAR BOWLING GA.TEBORG',
+        -440.0,
+        DateTime(2026, 8, 31),
+        Category.other,
+        Subcategory.other,
+      );
+    });
   });
 }
