@@ -8,6 +8,7 @@ enum Subcategory {
   broadband('Bredband'),
   cleaning('Städning'),
   kitchenRenovation('Köksrenovering'),
+  renovation('Renovering & Hantverkare'),
 
   // --- Mat & Dryck (Food) ---
   groceries('Matbutik'),

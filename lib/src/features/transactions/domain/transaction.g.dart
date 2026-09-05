@@ -71,6 +71,7 @@ const _$SubcategoryEnumMap = {
   Subcategory.broadband: 'broadband',
   Subcategory.cleaning: 'cleaning',
   Subcategory.kitchenRenovation: 'kitchenRenovation',
+  Subcategory.renovation: 'renovation',
   Subcategory.groceries: 'groceries',
   Subcategory.restaurant: 'restaurant',
   Subcategory.lunch: 'lunch',

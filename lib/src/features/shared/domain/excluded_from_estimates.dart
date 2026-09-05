@@ -6,6 +6,7 @@ import '../../transactions/domain/subcategory.dart';
 /// These are one-time or unusual expenses that skew averages.
 const excludedFromEstimates = [
   (category: Category.housing, subcategory: Subcategory.kitchenRenovation),
+  (category: Category.housing, subcategory: Subcategory.renovation),
   (category: Category.income, subcategory: Subcategory.loan),
   (category: Category.income, subcategory: Subcategory.kitchenRenovation),
 ];

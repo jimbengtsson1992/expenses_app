@@ -10,6 +10,7 @@ enum Category {
     Subcategory.broadband,
     Subcategory.cleaning,
     Subcategory.kitchenRenovation,
+    Subcategory.renovation,
     Subcategory.other,
   ]),
 
