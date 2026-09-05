@@ -1940,6 +1940,56 @@ class CategorizationService {
         date.day == 31) {
       return (Category.other, Subcategory.other);
     }
+    // 2026-09-05 request (batch 2)
+    if (_matches(description, ['BOKADIREKT I STOCKHOLM']) &&
+        amount == -1800.0 &&
+        date.year == 2026 &&
+        date.month == 7 &&
+        date.day == 19) {
+      return (Category.health, Subcategory.gym);
+    }
+    if (_matches(description, ['TILAKO STUDIO']) &&
+        amount == -950.0 &&
+        date.year == 2026 &&
+        date.month == 7 &&
+        date.day == 22) {
+      return (Category.health, Subcategory.beauty);
+    }
+    if (_matches(description, ['PIADA MIA']) &&
+        amount == -95.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 10) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['Swish betalning Golda Jartun']) &&
+        amount == -220.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 13) {
+      return (Category.food, Subcategory.lunch);
+    }
+    if (_matches(description, ['PUTA MADRE']) &&
+        amount == -489.5 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 20) {
+      return (Category.food, Subcategory.restaurant);
+    }
+    if (_matches(description, ['Swish betalning MEISA TILAKO']) &&
+        amount == -950.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 20) {
+      return (Category.health, Subcategory.beauty);
+    }
+    if (_matches(description, ['WEIQ X CHOCOLATERIAN B']) &&
+        amount == -359.0 &&
+        date.year == 2026 &&
+        date.month == 8 &&
+        date.day == 22) {
+      return (Category.food, Subcategory.lunch);
+    }
 
     return null;
   }

@@ -255,5 +255,49 @@ void main() {
         isNot((Category.health, Subcategory.gym)),
       );
     });
+
+    test('New Rules 2026-09-05 batch 2 (Request)', () {
+      // Override: BOKADIREKT I STOCKHOLM (Mastercard 2026-07-19, 1800 inverted) → gym
+      expectCategory(
+        service,
+        'BOKADIREKT I STOCKHOLM',
+        -1800.0,
+        DateTime(2026, 7, 19),
+        Category.health,
+        Subcategory.gym,
+      );
+      // Override: TILAKO STUDIO (Mastercard 2026-07-22, 950 inverted) → beauty
+      expectCategory(
+        service,
+        'TILAKO STUDIO',
+        -950.0,
+        DateTime(2026, 7, 22),
+        Category.health,
+        Subcategory.beauty,
+      );
+      // Override: Swish betalning MEISA TILAKO (Nordea 2026-08-20, -950) → beauty
+      expectCategory(
+        service,
+        'Swish betalning MEISA TILAKO',
+        -950.0,
+        DateTime(2026, 8, 20),
+        Category.health,
+        Subcategory.beauty,
+      );
+      // Wrong amount must not match the override.
+      expect(
+        service.categorize(
+          'BOKADIREKT I STOCKHOLM',
+          -100.0,
+          DateTime(2026, 7, 19),
+        ),
+        isNot((Category.health, Subcategory.gym)),
+      );
+      // Wrong date must not match the override.
+      expect(
+        service.categorize('TILAKO STUDIO', -950.0, DateTime(2026, 7, 23)),
+        isNot((Category.health, Subcategory.beauty)),
+      );
+    });
   });
 }

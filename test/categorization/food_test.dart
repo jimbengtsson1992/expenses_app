@@ -1342,5 +1342,58 @@ void main() {
         isNot((Category.food, Subcategory.coffee)),
       );
     });
+
+    test('New Rules 2026-09-05 batch 2 (Request)', () {
+      // Override: PIADA MIA (Mastercard 2026-08-10, 95 inverted) → lunch
+      expectCategory(
+        service,
+        'PIADA MIA',
+        -95.0,
+        DateTime(2026, 8, 10),
+        Category.food,
+        Subcategory.lunch,
+      );
+      // Override: Swish betalning Golda Jartun (Nordea 2026-08-13, -220) → lunch
+      expectCategory(
+        service,
+        'Swish betalning Golda Jartun',
+        -220.0,
+        DateTime(2026, 8, 13),
+        Category.food,
+        Subcategory.lunch,
+      );
+      // Override: PUTA MADRE (Mastercard 2026-08-20, 489.5 inverted) → restaurant
+      expectCategory(
+        service,
+        'PUTA MADRE',
+        -489.5,
+        DateTime(2026, 8, 20),
+        Category.food,
+        Subcategory.restaurant,
+      );
+      // Override: WEIQ X CHOCOLATERIAN B (Mastercard 2026-08-22, 359 inverted) → lunch
+      expectCategory(
+        service,
+        'WEIQ X CHOCOLATERIAN B',
+        -359.0,
+        DateTime(2026, 8, 22),
+        Category.food,
+        Subcategory.lunch,
+      );
+      // Wrong date must not match the override.
+      expect(
+        service.categorize('PIADA MIA', -95.0, DateTime(2026, 8, 11)),
+        isNot((Category.food, Subcategory.lunch)),
+      );
+      // Wrong amount must not match the override.
+      expect(
+        service.categorize(
+          'WEIQ X CHOCOLATERIAN B',
+          -100.0,
+          DateTime(2026, 8, 22),
+        ),
+        isNot((Category.food, Subcategory.lunch)),
+      );
+    });
   });
 }
