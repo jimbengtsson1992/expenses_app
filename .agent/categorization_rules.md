@@ -3,7 +3,7 @@
 ## 🧠 Decision Logic
 - **Specific Override**: Use when rule depends on **Date** AND **Amount**. (e.g., "Swish on 2025-03-30 for -100kr").
 - **Keyword Rule**: Use when rule depends ONLY on **Description**. (e.g., "MCDONALDS always Food/Restaurant").
-- **Trip Transaction** (export prompt `### Trip Assignments`): add a `KnownTripTransaction` in `lib/src/features/trips/domain/trip.dart`. Do **NOT** add an override — parser derives `(entertainment, travel)` from `tripId`. See `.agent/development_guide.md` → Hardcode Trip Tags.
+- **Trip Transaction** (export prompt `### Trip Assignments`): add a `KnownTripTransaction` in `lib/src/features/trips/domain/trip.dart`. The trip tag does **not** set the category — if the export also lists an override or keyword rule for the same transaction, add that too. See `.agent/development_guide.md` → Hardcode Trip Tags.
 
 ## 🚨 MANDATE
 **EVERY** new rule MUST have a corresponding test case in `test/categorization/`.

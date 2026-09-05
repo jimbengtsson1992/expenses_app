@@ -47,13 +47,12 @@ if (col[2] == 'Specifikation') inSection = true;
 if (col[2].startsWith('Summa')) inSection = false;
 ```
 
-### Per-Row Priority (all 3 parsers)
+### Per-Row Priority (all 3 parsers, via `_resolveTripId` / `_resolveCategory` in `TransactionCsvParser`)
 ```dart
-tripId   = userRules.getTripId(id) ?? matchKnownTrip(desc, amount, date);
+tripId   = userRules.getTripId(id) ?? matchKnownTrip(desc, amount, date); // independent of category
 category = userRules.getOverride(id)            // 1. manual override wins
-        ?? (tripId != null ? (entertainment, travel) : null)  // 2. trip
-        ?? userRules.getRule(desc)              // 3. user keyword rule
-        ?? categorizationService.categorize(...); // 4. code
+        ?? userRules.getRule(desc)              // 2. user keyword rule
+        ?? categorizationService.categorize(...); // 3. code
 ```
 
 ### Amount Handling

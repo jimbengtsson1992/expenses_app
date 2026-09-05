@@ -410,32 +410,57 @@ Datum;Händelse;Referens;Belopp
         expect(transactions.first.tripId, 'florence-2026');
       });
 
-      test(
-        'trip-tagged transaction is categorized as entertainment/travel',
-        () {
-          const csvContent = '''
+      test('trip-tagged transaction keeps its normal category', () {
+        const csvContent = '''
 Datum;Händelse;Referens;Belopp
 2026-09-05;Trattoria Firenze;Firenze;450.00
 ''';
-          when(
-            mockUserRulesRepository.getTripId(any),
-          ).thenReturn('florence-2026');
-          when(
-            mockCategorizationService.categorize(any, any, any),
-          ).thenReturn((Category.food, Subcategory.restaurant));
+        when(
+          mockUserRulesRepository.getTripId(any),
+        ).thenReturn('florence-2026');
+        when(
+          mockCategorizationService.categorize(any, any, any),
+        ).thenReturn((Category.food, Subcategory.restaurant));
 
-          final transactions = parser.parseCarPayCsv(
-            csvContent,
-            'carpay.csv',
-            {},
-          );
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
 
-          expect(transactions.first.category, Category.entertainment);
-          expect(transactions.first.subcategory, Subcategory.travel);
-        },
-      );
+        expect(transactions.first.tripId, 'florence-2026');
+        expect(transactions.first.category, Category.food);
+        expect(transactions.first.subcategory, Subcategory.restaurant);
+      });
 
-      test('user override takes precedence over trip categorization', () {
+      test('user keyword rule applies alongside trip tag', () {
+        const csvContent = '''
+Datum;Händelse;Referens;Belopp
+2026-09-05;Conad Firenze;Firenze;120.00
+''';
+        when(
+          mockUserRulesRepository.getTripId(any),
+        ).thenReturn('florence-2026');
+        when(
+          mockUserRulesRepository.getRule(any),
+        ).thenReturn((Category.food, Subcategory.groceries));
+        when(
+          mockCategorizationService.categorize(any, any, any),
+        ).thenReturn((Category.other, Subcategory.unknown));
+
+        final transactions = parser.parseCarPayCsv(
+          csvContent,
+          'carpay.csv',
+          {},
+        );
+
+        expect(transactions.first.tripId, 'florence-2026');
+        expect(transactions.first.category, Category.food);
+        expect(transactions.first.subcategory, Subcategory.groceries);
+        verifyNever(mockCategorizationService.categorize(any, any, any));
+      });
+
+      test('user override applies alongside trip tag', () {
         const csvContent = '''
 Datum;Händelse;Referens;Belopp
 2026-09-05;Trattoria Firenze;Firenze;450.00

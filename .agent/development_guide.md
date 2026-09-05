@@ -27,7 +27,7 @@ fvm flutter run
 3. Tests: `test/features/trips/`, `test/features/transactions/data/user_rules_repository_test.dart`.
 
 ### Hardcode Trip Tags (from export prompt)
-Add a `KnownTripTransaction(tripId:, descriptionContains:, amount:, year:, month:, day:)` to `knownTripTransactions` in `lib/src/features/trips/domain/trip.dart` for each `### Trip Assignments` line. Do NOT add a categorization override — the parser derives `(entertainment, travel)` from the trip. Test: `test/features/trips/known_trip_transactions_test.dart`.
+Add a `KnownTripTransaction(tripId:, descriptionContains:, amount:, year:, month:, day:)` to `knownTripTransactions` in `lib/src/features/trips/domain/trip.dart` for each `### Trip Assignments` line. The trip tag does not affect category; any override/keyword rule the export lists for the same transaction is added as usual. Test: `test/features/trips/known_trip_transactions_test.dart`.
 
 ### UI Dev
 - **Files**: `lib/src/features/.../presentation/`.

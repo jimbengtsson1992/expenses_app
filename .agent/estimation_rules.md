@@ -24,7 +24,7 @@ const excludedFromEstimates = [
 ```
 
 ### Trip-tagged transactions - Per-transaction excluded
-`EstimationService` skips any transaction with `tripId != null` (actuals + category/subcategory averages). Trips are one-off bursts; excluding per-transaction keeps normal `(entertainment, travel)` spending in forecasts. **Never** add `(entertainment, travel)` to `excludedFromEstimates` for a trip — it would erase all regular travel from estimates.
+`EstimationService` skips any transaction with `tripId != null` (actuals + category/subcategory averages), regardless of its category — a trip restaurant bill won't inflate food averages, and regular `(entertainment, travel)` spending stays in forecasts. **Never** add a category to `excludedFromEstimates` for a trip — it would erase all regular spending in that category from estimates.
 
 ## 🔄 Recurring Detection Thresholds
 - **Min occurrences**: 3 (prevents false positives from 2 similar transactions)

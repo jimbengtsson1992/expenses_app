@@ -25,6 +25,35 @@ class TransactionCsvParser {
   static final _isoDashFormat = DateFormat('yyyy-MM-dd');
   static final _dateRowPattern = RegExp(r'^\d{4}-\d{2}-\d{2}$');
 
+  /// Trip membership: user assignment (SharedPreferences) first, then the
+  /// hardcoded [knownTripTransactions]. Independent of category.
+  String? _resolveTripId(
+    String id,
+    String description,
+    double amount,
+    DateTime date,
+  ) {
+    return _userRulesRepository.getTripId(id) ??
+        matchKnownTrip(description, amount, date);
+  }
+
+  /// Categorize Priority:
+  /// 1. Specific Override (ID based)
+  /// 2. User Rule (Description based)
+  /// 3. Fallback to Service (Hardcoded)
+  (Category, Subcategory) _resolveCategory(
+    String id,
+    String description,
+    double amount,
+    DateTime date,
+  ) {
+    final override = _userRulesRepository.getOverride(id);
+    if (override != null) return override;
+    final rule = _userRulesRepository.getRule(description);
+    if (rule != null) return rule;
+    return _categorizationService.categorize(description, amount, date);
+  }
+
   List<Transaction> parseNordeaCsv(
     String content,
     String filename,
@@ -82,41 +111,14 @@ class TransactionCsvParser {
           shouldExcludeFromOverview(description, amount, date) ||
           _userRulesRepository.isExcluded(id);
 
-      final tripId =
-          _userRulesRepository.getTripId(id) ??
-          matchKnownTrip(description, amount, date);
+      final tripId = _resolveTripId(id, description, amount, date);
 
-      // Categorize Priority:
-      // 1. Specific Override (ID based)
-      // 2. Trip tag -> (entertainment, travel)
-      // 3. User Rule (Description based)
-      // 4. Fallback to Service (Hardcoded)
-      Category category;
-      Subcategory subcategory;
-
-      final override = _userRulesRepository.getOverride(id);
-      if (override != null) {
-        category = override.$1;
-        subcategory = override.$2;
-      } else if (tripId != null) {
-        // Trip-tagged transactions always show under Nöje & Fritid / Resor
-        category = Category.entertainment;
-        subcategory = Subcategory.travel;
-      } else {
-        final rule = _userRulesRepository.getRule(description);
-        if (rule != null) {
-          category = rule.$1;
-          subcategory = rule.$2;
-        } else {
-          final result = _categorizationService.categorize(
-            description,
-            amount,
-            date,
-          );
-          category = result.$1;
-          subcategory = result.$2;
-        }
-      }
+      final (category, subcategory) = _resolveCategory(
+        id,
+        description,
+        amount,
+        date,
+      );
 
       expenses.add(
         Transaction(
@@ -219,41 +221,14 @@ class TransactionCsvParser {
           shouldExcludeFromOverview(description, amount, date) ||
           _userRulesRepository.isExcluded(id);
 
-      final tripId =
-          _userRulesRepository.getTripId(id) ??
-          matchKnownTrip(description, amount, date);
+      final tripId = _resolveTripId(id, description, amount, date);
 
-      // Categorize Priority:
-      // 1. Specific Override (ID based)
-      // 2. Trip tag -> (entertainment, travel)
-      // 3. User Rule (Description based)
-      // 4. Fallback to Service (Hardcoded)
-      Category category;
-      Subcategory subcategory;
-
-      final override = _userRulesRepository.getOverride(id);
-      if (override != null) {
-        category = override.$1;
-        subcategory = override.$2;
-      } else if (tripId != null) {
-        // Trip-tagged transactions always show under Nöje & Fritid / Resor
-        category = Category.entertainment;
-        subcategory = Subcategory.travel;
-      } else {
-        final rule = _userRulesRepository.getRule(description);
-        if (rule != null) {
-          category = rule.$1;
-          subcategory = rule.$2;
-        } else {
-          final result = _categorizationService.categorize(
-            description,
-            amount,
-            date,
-          );
-          category = result.$1;
-          subcategory = result.$2;
-        }
-      }
+      final (category, subcategory) = _resolveCategory(
+        id,
+        description,
+        amount,
+        date,
+      );
 
       expenses.add(
         Transaction(
@@ -320,36 +295,14 @@ class TransactionCsvParser {
           shouldExcludeFromOverview(description, amount, date) ||
           _userRulesRepository.isExcluded(id);
 
-      final tripId =
-          _userRulesRepository.getTripId(id) ??
-          matchKnownTrip(description, amount, date);
+      final tripId = _resolveTripId(id, description, amount, date);
 
-      Category category;
-      Subcategory subcategory;
-
-      final override = _userRulesRepository.getOverride(id);
-      if (override != null) {
-        category = override.$1;
-        subcategory = override.$2;
-      } else if (tripId != null) {
-        // Trip-tagged transactions always show under Nöje & Fritid / Resor
-        category = Category.entertainment;
-        subcategory = Subcategory.travel;
-      } else {
-        final rule = _userRulesRepository.getRule(description);
-        if (rule != null) {
-          category = rule.$1;
-          subcategory = rule.$2;
-        } else {
-          final result = _categorizationService.categorize(
-            description,
-            amount,
-            date,
-          );
-          category = result.$1;
-          subcategory = result.$2;
-        }
-      }
+      final (category, subcategory) = _resolveCategory(
+        id,
+        description,
+        amount,
+        date,
+      );
 
       expenses.add(
         Transaction(

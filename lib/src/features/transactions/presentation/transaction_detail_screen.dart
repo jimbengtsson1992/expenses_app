@@ -345,12 +345,6 @@ class TransactionDetailScreen extends ConsumerWidget {
 
     if (trip != null) {
       await repo.assignTrip(expense.id, trip.id);
-      // The parser categorizes trip-tagged transactions as Nöje & Fritid /
-      // Resor, but a per-transaction override would take precedence — drop
-      // it so the trip category applies.
-      if (repo.getOverride(expense.id) != null) {
-        await repo.removeOverride(expense.id);
-      }
     } else {
       await repo.clearTrip(expense.id);
     }
@@ -363,7 +357,7 @@ class TransactionDetailScreen extends ConsumerWidget {
         SnackBar(
           content: Text(
             trip != null
-                ? 'Taggad till ${trip.name} (Nöje & Fritid / Resor)'
+                ? 'Taggad till ${trip.name}'
                 : 'Taggning till resa borttagen',
           ),
         ),

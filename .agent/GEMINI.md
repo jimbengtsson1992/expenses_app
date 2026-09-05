@@ -20,4 +20,4 @@
 - **Parsing**:
   - **Nordea**: Semicolon, `yyyy/MM/dd`, Filter internal transfers (`_isInternalTransfer`).
   - **Mastercard**: Semicolon, `yyyy-MM-dd`, Section-based ("Köp/uttag"), Inverted amounts.
-- **Trips**: `Transaction.tripId` forces `(entertainment, travel)`; hardcode via `knownTripTransactions` in `trips/domain/trip.dart`, never via a categorization override.
+- **Trips**: `Transaction.tripId` only groups spend for the dashboard trip total; it does **NOT** affect category. Hardcode via `knownTripTransactions` in `trips/domain/trip.dart`; category overrides/rules for trip transactions are added normally.

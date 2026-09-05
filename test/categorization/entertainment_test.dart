@@ -117,6 +117,15 @@ void main() {
         Category.entertainment,
         Subcategory.travel,
       );
+      // Car rental (Florence trip 2026) — categorized by keyword, not by trip tag
+      expectCategory(
+        service,
+        'DISCOVERCARS',
+        -6337.72,
+        dummyDate,
+        Category.entertainment,
+        Subcategory.travel,
+      );
 
       // New Rules 2026-02-01
       expectCategory(

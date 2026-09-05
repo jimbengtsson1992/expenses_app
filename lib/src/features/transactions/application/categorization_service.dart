@@ -1912,6 +1912,7 @@ class CategorizationService {
       'vr snabbtåg sverige',
       'hallandstrafike',
       'clarionhotel',
+      'discovercars',
     ])) {
       return (Category.entertainment, Subcategory.travel);
     }

@@ -253,8 +253,8 @@ class _TransactionsListScreenState
         buffer.writeln(
           'Add each entry below to `knownTripTransactions` in `lib/src/features/trips/domain/trip.dart` '
           'as a `KnownTripTransaction`. Matching is by description substring + amount + date. '
-          'The parser categorizes trip-tagged transactions as Category.entertainment / Subcategory.travel '
-          'automatically — do NOT add a separate categorization override for them.',
+          'A trip tag only groups the transaction under the trip; it does NOT affect its category. '
+          'If the same transaction also appears under Category Overrides or Keyword Rules above, add those as usual.',
         );
         for (final entry in tripAssignments.entries) {
           final id = entry.key;
