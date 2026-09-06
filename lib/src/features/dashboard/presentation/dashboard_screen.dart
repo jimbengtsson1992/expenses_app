@@ -10,6 +10,7 @@ import '../../transactions/domain/transaction_type.dart';
 import '../../estimation/application/monthly_estimate_provider.dart';
 import '../../estimation/domain/monthly_estimate.dart';
 import '../../shared/domain/excluded_from_estimates.dart';
+import '../../trips/application/trip_providers.dart';
 import '../../trips/domain/trip.dart';
 import '../../trips/presentation/trip_card.dart';
 
@@ -210,6 +211,12 @@ class _DashboardContent extends ConsumerWidget {
     final sortedIncomeCategories = incomeCategoryTotals.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
 
+    // Trips that have at least one transaction in this period
+    final tripGroups = groupByTrip(expenses);
+    final tripsInPeriod = allTrips
+        .where((t) => tripGroups.containsKey(t.id))
+        .toList();
+
     // Formatter
     final currency = NumberFormat.currency(
       locale: 'sv',
@@ -349,14 +356,22 @@ class _DashboardContent extends ConsumerWidget {
         ),
         const SizedBox(height: 24),
 
-        // Trip cards (totals across all months, independent of period)
-        ...allTrips.map(
-          (t) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: TripCard(trip: t),
+        // Trips with transactions in the selected period only
+        if (tripsInPeriod.isNotEmpty) ...[
+          Text('Resor', style: Theme.of(context).textTheme.titleLarge),
+          const SizedBox(height: 16),
+          ...tripsInPeriod.map(
+            (t) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: TripCard(
+                trip: t,
+                transactions: tripGroups[t.id]!,
+                subtitle: 'Denna period',
+              ),
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
+          const SizedBox(height: 16),
+        ],
 
         Text(
           'Utgifter per Kategori',

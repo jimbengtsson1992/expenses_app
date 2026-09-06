@@ -2,6 +2,7 @@ import 'package:expenses/src/features/dashboard/presentation/dashboard_screen.da
 import 'package:expenses/src/features/transactions/presentation/transaction_detail_screen.dart';
 import 'package:expenses/src/features/transactions/presentation/transactions_list_screen.dart';
 import 'package:expenses/src/features/chat/presentation/chat_screen.dart';
+import 'package:expenses/src/features/trips/presentation/trips_screen.dart';
 import 'package:expenses/src/features/transactions/domain/account.dart';
 import 'package:expenses/src/features/transactions/domain/category.dart';
 import 'package:expenses/src/features/transactions/domain/transaction_type.dart';
@@ -25,6 +26,9 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
           routes: [TypedGoRoute<ExpenseDetailRoute>(path: 'detail/:id')],
         ),
       ],
+    ),
+    TypedStatefulShellBranch<TripsBranch>(
+      routes: [TypedGoRoute<TripsRoute>(path: '/trips')],
     ),
     TypedStatefulShellBranch<ChatBranch>(
       routes: [TypedGoRoute<ChatRoute>(path: '/chat')],
@@ -52,6 +56,10 @@ class DashboardBranch extends StatefulShellBranchData {
 
 class TransactionsBranch extends StatefulShellBranchData {
   const TransactionsBranch();
+}
+
+class TripsBranch extends StatefulShellBranchData {
+  const TripsBranch();
 }
 
 class ChatBranch extends StatefulShellBranchData {
@@ -104,6 +112,16 @@ class ExpenseDetailRoute extends GoRouteData with $ExpenseDetailRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return TransactionDetailScreen(expenseId: id);
+  }
+}
+
+@immutable
+class TripsRoute extends GoRouteData with $TripsRoute {
+  const TripsRoute();
+
+  @override
+  Page<void> buildPage(BuildContext context, GoRouterState state) {
+    return const NoTransitionPage(child: TripsScreen());
   }
 }
 
