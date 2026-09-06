@@ -68,4 +68,4 @@ bool _isInternalTransfer(String desc) {
 ```
 
 ## Routing (GoRouter)
-Type-safe routes via `go_router_builder`. `routes.dart`.
+Type-safe routes via `go_router_builder`. `routes.dart`. Bottom-nav branch order in `@TypedStatefulShellRoute` **must** match `NavigationDestination` order in `common_widgets/scaffold_with_bottom_nav_bar.dart` (Översikt, Transaktioner, Resor, Fråga AI).

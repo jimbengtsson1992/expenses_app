@@ -23,7 +23,7 @@ fvm flutter run
 
 ### Add Trip
 1. Add one const entry to `allTrips` in `lib/src/features/trips/domain/trip.dart` (`Trip(id: 'x-2027', name: 'X', emoji: '🏝')`). No codegen.
-2. Dashboard card + tagging UI pick it up automatically. User tags transactions via transaction detail screen ("Resa").
+2. Resor tab, dashboard card (only when the trip has transactions in the selected period) and tagging UI pick it up automatically. User tags transactions via transaction detail screen ("Resa").
 3. Tests: `test/features/trips/`, `test/features/transactions/data/user_rules_repository_test.dart`.
 
 ### Hardcode Trip Tags (from export prompt)

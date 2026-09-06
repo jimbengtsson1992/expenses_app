@@ -31,6 +31,11 @@ class ScaffoldWithBottomNavBar extends StatelessWidget {
             label: 'Transaktioner',
           ),
           NavigationDestination(
+            icon: Icon(Icons.flight_outlined),
+            selectedIcon: Icon(Icons.flight),
+            label: 'Resor',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.chat_bubble_outline),
             selectedIcon: Icon(Icons.chat_bubble),
             label: 'Fråga AI',

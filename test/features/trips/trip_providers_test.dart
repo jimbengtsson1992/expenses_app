@@ -39,6 +39,53 @@ Transaction createTransaction({
 }
 
 void main() {
+  group('groupByTrip', () {
+    test('groups by tripId, drops untagged, preserves order', () {
+      final transactions = [
+        createTransaction(id: '1', date: DateTime(2026, 9, 5), tripId: 'a'),
+        createTransaction(id: '2', date: DateTime(2026, 9, 4)),
+        createTransaction(id: '3', date: DateTime(2026, 9, 3), tripId: 'b'),
+        createTransaction(id: '4', date: DateTime(2026, 6, 1), tripId: 'a'),
+      ];
+
+      final groups = groupByTrip(transactions);
+
+      expect(groups.keys, {'a', 'b'});
+      expect(groups['a']!.map((t) => t.id), ['1', '4']);
+      expect(groups['b']!.map((t) => t.id), ['3']);
+    });
+
+    test('returns empty map when nothing is tagged', () {
+      final groups = groupByTrip([
+        createTransaction(id: '1', date: DateTime(2026, 9, 5)),
+      ]);
+
+      expect(groups, isEmpty);
+    });
+
+    test('period-filtered input yields only that period (dashboard case)', () {
+      final all = [
+        createTransaction(
+          id: 'june',
+          date: DateTime(2026, 6, 10),
+          tripId: 'florence-2026',
+        ),
+        createTransaction(
+          id: 'sept',
+          date: DateTime(2026, 9, 5),
+          tripId: 'florence-2026',
+        ),
+      ];
+      final september = all.where((t) => t.date.month == 9);
+      final july = all.where((t) => t.date.month == 7);
+
+      expect(groupByTrip(september)['florence-2026']!.map((t) => t.id), [
+        'sept',
+      ]);
+      expect(groupByTrip(july), isEmpty);
+    });
+  });
+
   test(
     'tripTransactionsProvider returns tagged transactions across months',
     () async {

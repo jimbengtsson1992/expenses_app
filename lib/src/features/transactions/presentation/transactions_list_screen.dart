@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../common_widgets/net_result_badge.dart';
-import '../../../routing/routes.dart';
 
 import '../../shared/presentation/period_selector.dart';
 import '../../dashboard/application/date_period_provider.dart';
@@ -15,7 +14,7 @@ import '../domain/category.dart';
 import '../domain/subcategory.dart';
 import '../domain/transaction_type.dart';
 import '../domain/account.dart';
-import '../../trips/domain/trip.dart';
+import 'transaction_list_tile.dart';
 
 class TransactionsListScreen extends ConsumerStatefulWidget {
   const TransactionsListScreen({
@@ -460,13 +459,6 @@ class _TransactionsListScreenState
 
           final netResult = totalIncome - totalExpenses;
 
-          final currency = NumberFormat.currency(
-            locale: 'sv',
-            symbol: 'kr',
-            decimalDigits: 0,
-          );
-          final dateFormat = DateFormat('d MMM', 'sv');
-
           return Column(
             children: [
               // --- Build Filter UI ---
@@ -717,94 +709,9 @@ class _TransactionsListScreenState
                     itemCount: filteredExpenses.length,
                     separatorBuilder: (c, i) =>
                         const Divider(height: 1, indent: 70),
-                    itemBuilder: (context, index) {
-                      final expense = filteredExpenses[index];
-                      final isIncome = expense.type == TransactionType.income;
-                      final amountStr = currency.format(expense.amount);
-                      final color = isIncome
-                          ? Colors.green
-                          : Colors
-                                .white; // Is dark mode default? Assuming user wants clean UI.
-
-                      final trip = tripById(expense.tripId);
-                      return ListTile(
-                        leading: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Color(
-                              expense.category.colorValue,
-                            ).withValues(alpha: 0.2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            expense.category.emoji,
-                            style: const TextStyle(fontSize: 24),
-                          ),
-                        ),
-                        title: Text(
-                          expense.description,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        subtitle: Row(
-                          children: [
-                            Text(dateFormat.format(expense.date)),
-                            if (expense.subcategory != Subcategory.unknown) ...[
-                              const SizedBox(width: 8),
-                              Text(
-                                '• ${expense.subcategory.displayName}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                            if (trip != null) ...[
-                              const SizedBox(width: 8),
-                              Text(
-                                '• ${trip.emoji} ${trip.name}',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                            const SizedBox(width: 8),
-                            Text(
-                              '• ${expense.sourceAccount.displayName}',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (expense.excludeFromOverview)
-                              const Padding(
-                                padding: EdgeInsets.only(right: 8.0),
-                                child: Icon(
-                                  Icons.visibility_off,
-                                  size: 16,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            Text(
-                              amountStr,
-                              style: TextStyle(
-                                color: color,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        onTap: () =>
-                            ExpenseDetailRoute(id: expense.id).push(context),
-                      );
-                    },
+                    itemBuilder: (context, index) => TransactionListTile(
+                      transaction: filteredExpenses[index],
+                    ),
                   ),
                 ),
             ],
